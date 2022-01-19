@@ -87,7 +87,7 @@ At present, for testing purposes follow the below mentioned steps to build an im
 - The docker image built from above step, can be either pushed to Docker Hub or OCI Container Registry (OCIR) or to a Local Docker Registry depending on the requirements.
     - [How to push the image to Docker Hub](https://docs.docker.com/docker-hub/repos/#pushing-a-docker-container-image-to-docker-hub)
     - [How to push the image to OCIR](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/index.html).
-    - [How to push the image to Local Registry](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/index.html).
+    - [How to push the image to Local Registry](https://docs.docker.com/registry/deploying/).
     
 ### Deploying Kuberenetes resources using Kubectl
 
@@ -164,11 +164,11 @@ These yaml files needs to be applied using kubectl to create the necessary resou
 
 ##### fluentd-deployment.yaml
 
-Refer [this](#fluentd-daemonset.yaml) section.
+Refer [this](#fluentd-daemonsetyaml) section.
 
-##### secrets.yaml
+##### secrets.yaml (Optional)
 
-Refer [this](#secrets.yaml) section.
+Refer [this](#secretsyaml-optional) section.
 
 ##### Commands Reference
 
