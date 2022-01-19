@@ -1,0 +1,103 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oci-la-fluentd-objects-configmap
+  namespace: kube-system
+data:
+  # file-like keys
+  fluent.conf: |
+    @include kubernetes.conf
+
+    # Match block to set info required for oci-logging-analytics fluentd outplugin
+    <match k8s.**>
+        @type oci-logging-analytics
+        enable_ruby               true
+        namespace                 "#{ENV['FLUENT_OCI_NAMESPACE']}"
+        endpoint                  "#{ENV['FLUENT_OCI_ENDPOINT']}"
+        config_file_location      "#{ENV['FLUENT_OCI_CONFIG_LOCATION'] || ''}"
+        profile_name              "#{ENV['FLUENT_OCI_PROFILE'] || 'DEFAULT'}"
+        plugin_log_location       "#{ENV['FLUENT_OCI_LOG_LOCATION'] || '/var/log/'}"
+        plugin_log_level          "#{ENV['FLUENT_OCI_LOG_LEVEL'] || 'info'}"
+        plugin_log_file_size      "#{ENV['FLUENT_OCI_LOG_FILE_SIZE'] || '10MB'}"
+        plugin_log_file_count     "#{ENV['FLUENT_OCI_LOG_FILE_COUNT'] || 10}"				
+        <buffer>
+            @type                           file
+            path                            "#{ENV['FLUENT_OCI_BUFFER_PATH'] || '/var/log/oci_la_fluentd_outplugin/objects/buffer/'}"
+            flush_thread_count              "#{ENV['FLUENT_OCI_FLUSH_THREAD_COUNT'] || 1}"
+            chunk_limit_size                "#{ENV['FLUENT_OCI_CHUNK_LIMIT_SIZE'] || '2m'}"   # 2MB
+            total_limit_size                "#{ENV['FLUENT_OCI_TOTAL_LIMIT_SIZE'] || 5368709120}" # 5GB
+            flush_interval                  "#{ENV['FLUENT_OCI_FLUSH_INTERVAL'] || 30}" # seconds
+            flush_thread_interval           "#{ENV['FLUENT_OCI_FLUSH_THREAD_INTERVAL'] || 0.5}"
+            flush_thread_burst_interval     "#{ENV['FLUENT_OCI_FLUSH_THREAD_BURST_INTERVAL'] || 0.05}"
+            retry_wait                      "#{ENV['FLUENT_OCI_RETRY_WAIT'] || 2}" # seconds
+            retry_max_times                 "#{ENV['FLUENT_OCI_RETRY_MAX_TIMES'] || 17}"
+            retry_exponential_backoff_base  "#{ENV['FLUENT_OCI_RETRY_EXPONENTIAL_BACKOFF_BASE'] || 2}"
+            retry_forever                   "#{ENV['FLUENT_OCI_RETRY_FOREVER'] || true}"
+            disable_chunk_backup true
+        </buffer>
+    </match>
+  kubernetes.conf: |
+    # To ignore all the fluentd core generated events
+    <label @FLUENT_LOG>
+      <match fluent.**>
+        @type null
+        @id ignore_fluent_logs
+      </match>
+    </label>
+
+    <source>
+      @type kubernetes_objects
+      tag k8s.*
+
+      <pull>
+        resource_name nodes
+        interval 5m
+      </pull>
+      <pull>
+        resource_name pods
+        interval 5m
+      </pull>
+      <pull>
+        resource_name namespaces
+        interval 5m
+      </pull>
+
+      <watch>
+        resource_name events
+      </watch>
+
+    </source>
+
+    <source>
+
+      @type kubernetes_objects
+      tag k8s.*
+      api_version apps/v1
+
+      <pull>
+        resource_name daemon_sets
+        interval 5m
+      </pull>
+      <pull>
+        resource_name replica_sets
+        interval 5m
+      </pull>
+      <pull>
+        resource_name deployments
+        interval 5m
+      </pull>
+
+    </source>
+
+    <filter k8s.**>
+      @type record_transformer
+      enable_ruby true
+      <record>
+        oci_la_metadata ${{'Kubernetes Cluster Name': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_NAME'] || 'UNDEFINED'}", 'Kubernetes Cluster ID': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_ID'] || 'UNDEFINED'}"}}
+        oci_la_log_group_id "#{ENV['FLUENT_OCI_KUBERNETES_OBJECTS_LOGGROUP_ID'] || ENV['FLUENT_OCI_DEFAULT_LOGGROUP_ID']}"
+        oci_la_log_path ${tag}
+        oci_la_log_source_name "Kubernetes Object Logs"
+        message ${record}
+        tag ${tag}
+      </record>
+    </filter>
