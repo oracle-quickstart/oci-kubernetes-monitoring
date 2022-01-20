@@ -1,0 +1,568 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oci-la-fluentd-logs-configmap
+  namespace: kube-system
+data:
+  # file-like keys
+  fluent.conf: |
+    @include kubernetes.conf
+
+    # Filter to add kubernetes metadata
+    <filter oci.**>
+      @type kubernetes_metadata
+      @id filter_kube_metadata
+      kubernetes_url "#{ENV['FLUENT_FILTER_KUBERNETES_URL'] || 'https://' + ENV.fetch('KUBERNETES_SERVICE_HOST') + ':' + ENV.fetch('KUBERNETES_SERVICE_PORT') + '/api'}"
+      verify_ssl "#{ENV['KUBERNETES_VERIFY_SSL'] || true}"
+      ca_file "#{ENV['KUBERNETES_CA_FILE']}"
+      skip_labels "#{ENV['FLUENT_KUBERNETES_METADATA_SKIP_LABELS'] || 'false'}"
+      skip_container_metadata "#{ENV['FLUENT_KUBERNETES_METADATA_SKIP_CONTAINER_METADATA'] || 'false'}"
+      skip_master_url "#{ENV['FLUENT_KUBERNETES_METADATA_SKIP_MASTER_URL'] || 'false'}"
+      skip_namespace_metadata "#{ENV['FLUENT_KUBERNETES_METADATA_SKIP_NAMESPACE_METADATA'] || 'false'}"
+      watch "#{ENV['FLUENT_KUBERNETES_WATCH'] || 'true'}"
+    </filter>
+    
+    # Match block to set info required for oci-logging-analytics fluentd outplugin
+    <match oci.**>
+        @type oci-logging-analytics
+        enable_ruby               true
+        namespace                 "#{ENV['FLUENT_OCI_NAMESPACE']}"
+        config_file_location      "#{ENV['FLUENT_OCI_CONFIG_LOCATION'] || ''}"
+        profile_name              "#{ENV['FLUENT_OCI_PROFILE'] || 'DEFAULT'}"
+        plugin_log_location       "#{ENV['FLUENT_OCI_LOG_LOCATION'] || '/var/log/'}"
+        plugin_log_level          "#{ENV['FLUENT_OCI_LOG_LEVEL'] || 'info'}"
+        plugin_log_file_size      "#{ENV['FLUENT_OCI_LOG_FILE_SIZE'] || '10MB'}"
+        plugin_log_file_count     "#{ENV['FLUENT_OCI_LOG_FILE_COUNT'] || 10}"
+        kubernetes_metadata_keys_mapping     {"container_name":"Container","namespace_name":"Namespace","pod_name":"Pod","container_image":"Container Image Name","host":"Node"}
+        <buffer>
+            @type                           file
+            path                            "#{ENV['FLUENT_OCI_BUFFER_PATH'] || '/var/log/oci_la_fluentd_outplugin/logs/buffer/'}"
+            flush_thread_count              "#{ENV['FLUENT_OCI_FLUSH_THREAD_COUNT'] || 1}" 
+            chunk_limit_size                "#{ENV['FLUENT_OCI_CHUNK_LIMIT_SIZE'] || '2m'}"   # 2MB
+            total_limit_size                "#{ENV['FLUENT_OCI_TOTAL_LIMIT_SIZE'] || 5368709120}" # 5GB
+            flush_interval                  "#{ENV['FLUENT_OCI_FLUSH_INTERVAL'] || 30}" # seconds
+            flush_thread_interval           "#{ENV['FLUENT_OCI_FLUSH_THREAD_INTERVAL'] || 0.5}"
+            flush_thread_burst_interval     "#{ENV['FLUENT_OCI_FLUSH_THREAD_BURST_INTERVAL'] || 0.05}"
+            retry_wait                      "#{ENV['FLUENT_OCI_RETRY_WAIT'] || 2}" # seconds
+            retry_max_times                 "#{ENV['FLUENT_OCI_RETRY_MAX_TIMES'] || 17}"
+            retry_exponential_backoff_base  "#{ENV['FLUENT_OCI_RETRY_EXPONENTIAL_BACKOFF_BASE'] || 2}"
+            retry_forever                   "#{ENV['FLUENT_OCI_RETRY_FOREVER'] || true}"
+            disable_chunk_backup true
+        </buffer>
+    </match>
+  kubernetes.conf: |
+    # To ignore all the fluentd core generated events
+    <label @FLUENT_LOG>
+    <match fluent.**>
+       @type null
+       @id ignore_fluent_logs
+       </match>
+    </label>
+
+    # Config for Kube Proxy Logs Collection
+    # Source config section to collect Kube Proxy logs from /var/log/containers/kube-proxy-*.log using Fluentd tail plugin.    
+    <source>
+       @type tail
+       @id in_tail_kube_proxy
+       path_key tailed_path
+       path /var/log/containers/kube-proxy-*.log
+       pos_file /var/log/oci_la_fluentd_outplugin/pos/kube-proxy.logs.pos
+       tag oci.oke.kube-proxy.*
+       read_from_head "#{ENV['FLUENT_OCI_READ_FROM_HEAD'] || true}" 
+       <parse>
+       @type json 
+       </parse>
+    </source>
+    
+    # Record transformer filter to apply Logging Analytics configuration to each record.
+    <filter oci.oke.kube-proxy.**>
+       @type record_transformer
+       enable_ruby true
+       <record>
+       oci_la_metadata ${{'Kubernetes Cluster Name': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_NAME'] || 'UNDEFINED'}", 'Kubernetes Cluster ID': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_ID'] || 'UNDEFINED'}"}}	   
+       oci_la_log_group_id "#{ENV['FLUENT_OCI_KUBERNETES_LOGGROUP_ID'] || ENV['FLUENT_OCI_DEFAULT_LOGGROUP_ID']}" 
+       oci_la_log_path "${record['tailed_path']}"
+       oci_la_log_source_name "Kubernetes Proxy Logs"
+       message "${record['log']}"
+       tag ${tag}
+       </record>
+    </filter>
+   
+    # Concat filter to handle multi-line log records.
+    <filter oci.oke.kube-proxy.**>
+       @type concat
+       key message
+       stream_identity_key stream
+       multiline_start_regexp /^\S\d{2}\d{2}\s+[^\:]+:[^\:]+:[^\.]+\.\d{0,3}/
+    </filter>
+    
+    # Config for Kube Flannel Logs Collection
+    # Source config section to collect Kube Flannel logs from /var/log/containers/kube-flannel-*.log using Fluentd tail plugin.
+    <source>
+       @type tail
+       @id in_tail_kube_flannel
+       path_key tailed_path
+       path /var/log/containers/kube-flannel-*.log
+       pos_file /var/log/oci_la_fluentd_outplugin/pos/kube-flannel.logs.pos
+       tag oci.oke.kube-flannel.*
+       read_from_head "#{ENV['FLUENT_OCI_READ_FROM_HEAD'] || true}" 
+       <parse>
+       @type json 
+       </parse>
+    </source>
+    
+    # Record transformer filter to apply Logging Analytics configuration to each record.
+    <filter oci.oke.kube-flannel.**>
+       @type record_transformer
+       enable_ruby true
+       <record>
+       oci_la_metadata ${{'Kubernetes Cluster Name': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_NAME'] || 'UNDEFINED'}", 'Kubernetes Cluster ID': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_ID'] || 'UNDEFINED'}"}}	   
+       oci_la_log_group_id "#{ENV['FLUENT_OCI_KUBERNETES_LOGGROUP_ID'] || ENV['FLUENT_OCI_DEFAULT_LOGGROUP_ID']}" 
+       oci_la_log_path "${record['tailed_path']}" 
+       oci_la_log_source_name "Kubernetes Flannel Logs"
+       message "${record['log']}"
+       tag ${tag}
+       </record>
+    </filter>
+
+    # Concat filter to handle multi-line log records.
+    <filter oci.oke.kube-flannel.**>
+       @type concat
+       key message
+       stream_identity_key stream
+       multiline_start_regexp /^\S\d{2}\d{2}\s+[^\:]+:[^\:]+:[^\.]+\.\d{0,3}/
+    </filter>
+    
+    # Config for Kube DNS Autoscalar Logs Collection
+    # Source config section to collect Kube DNS Autoscalar logs from /var/log/containers/kube-dns-autoscaler-*.log using Fluentd tail plugin.
+    <source>
+       @type tail
+       @id in_tail_kube_dns_autoscaler
+       path_key tailed_path
+       path /var/log/containers/kube-dns-autoscaler-*.log
+       pos_file /var/log/oci_la_fluentd_outplugin/pos/kube-dns-autoscaler.logs.pos
+       tag oci.oke.kube-dns-autoscaler.*
+       read_from_head "#{ENV['FLUENT_OCI_READ_FROM_HEAD'] || true}" 
+       <parse>
+       @type json 
+       </parse>
+    </source>
+    
+    # Record transformer filter to apply Logging Analytics configuration to each record.
+    <filter oci.oke.kube-dns-autoscaler.**>
+       @type record_transformer
+       enable_ruby true
+       <record>
+       oci_la_metadata ${{'Kubernetes Cluster Name': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_NAME'] || 'UNDEFINED'}", 'Kubernetes Cluster ID': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_ID'] || 'UNDEFINED'}"}}	   
+       oci_la_log_group_id "#{ENV['FLUENT_OCI_KUBERNETES_LOGGROUP_ID'] || ENV['FLUENT_OCI_DEFAULT_LOGGROUP_ID']}"
+       oci_la_log_path "${record['tailed_path']}" 
+       oci_la_log_source_name "Kubernetes DNS Autoscaler Logs"
+       message "${record['log']}"
+       tag ${tag}
+       </record>
+    </filter>
+
+    # Concat filter to handle multi-line log records.
+    <filter oci.oke.kube-dns-autoscaler.**>
+       @type concat
+       key message
+       stream_identity_key stream
+       multiline_start_regexp /^\S\d{2}\d{2}\s+[^\:]+:[^\:]+:[^\.]+\.\d{0,3}/
+    </filter>
+    
+    # Config for Coredns Logs Collection
+    # Source config section to collect Coredns logs from /var/log/containers/coredns-*.log using Fluentd tail plugin.
+    <source>
+       @type tail
+       @id in_tail_coredns
+       path_key tailed_path
+       path /var/log/containers/coredns-*.log
+       pos_file /var/log/oci_la_fluentd_outplugin/pos/coredns.logs.pos
+       tag oci.oke.kube.coredns.*
+       read_from_head "#{ENV['FLUENT_OCI_READ_FROM_HEAD'] || true}" 
+       <parse>
+       @type json 
+       </parse>
+    </source>
+    
+    # Record transformer filter to apply Logging Analytics configuration to each record.
+    <filter oci.oke.kube.coredns.**>
+       @type record_transformer
+       enable_ruby true
+       <record>
+       oci_la_metadata ${{'Kubernetes Cluster Name': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_NAME'] || 'UNDEFINED'}", 'Kubernetes Cluster ID': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_ID'] || 'UNDEFINED'}"}}	   
+       oci_la_log_group_id "#{ENV['FLUENT_OCI_KUBERNETES_LOGGROUP_ID'] || ENV['FLUENT_OCI_DEFAULT_LOGGROUP_ID']}"
+       oci_la_log_path "${record['tailed_path']}"
+       oci_la_log_source_name "Kubernetes Core DNS Logs"
+       message "${record['log']}"
+       tag ${tag}
+       </record>
+    </filter>
+
+    # Concat filter to handle multi-line log records.
+    <filter oci.oke.kube.coredns.**>
+       @type concat
+       key message
+       stream_identity_key stream
+       multiline_start_regexp /^\[[^\]]+\]\s+/
+    </filter>
+    
+    # Config for CSI Node Logs Collection
+    # Source config section to collect CSI Node logs from /var/log/containers/csi-oci-node-*.log using Fluentd tail plugin.
+    <source>
+       @type tail
+       @id in_tail_csinode
+       path_key tailed_path
+       path /var/log/containers/csi-oci-node-*.log
+       pos_file /var/log/oci_la_fluentd_outplugin/pos/csinode.logs.pos
+       tag oci.oke.csinode.*
+       read_from_head "#{ENV['FLUENT_OCI_READ_FROM_HEAD'] || true}" 
+       <parse>
+       @type json 
+       </parse>
+    </source>
+    
+    # Record transformer filter to apply Logging Analytics configuration to each record.
+    <filter oci.oke.csinode.**>
+       @type record_transformer
+       enable_ruby true
+       <record>
+       oci_la_metadata ${{'Kubernetes Cluster Name': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_NAME'] || 'UNDEFINED'}", 'Kubernetes Cluster ID': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_ID'] || 'UNDEFINED'}"}}	   
+       oci_la_log_group_id "#{ENV['FLUENT_OCI_KUBERNETES_LOGGROUP_ID'] || ENV['FLUENT_OCI_DEFAULT_LOGGROUP_ID']}" 
+       oci_la_log_path "${record['tailed_path']}"
+       oci_la_log_source_name "Kubernetes CSI Node Driver Logs"
+       message "${record['log']}"
+       tag ${tag}
+       </record>
+    </filter>
+    
+    # Config for Proxymux Logs Collection
+    # Source config section to collect Proxymux logs from /var/log/containers/proxymux-client-*.log using Fluentd tail plugin.
+    <source>
+       @type tail
+       @id in_tail_proxymux
+       path_key tailed_path
+       path /var/log/containers/proxymux-client-*.log
+       pos_file /var/log/oci_la_fluentd_outplugin/pos/proxymux.logs.pos
+       tag oci.oke.proxymux-client.*
+       read_from_head "#{ENV['FLUENT_OCI_READ_FROM_HEAD'] || true}" 
+       <parse>
+       @type json 
+       </parse>
+    </source>
+    
+    # Record transformer filter to apply Logging Analytics configuration to each record.
+    <filter oci.oke.proxymux-client.**>
+       @type record_transformer
+       enable_ruby true
+       <record>
+       oci_la_metadata ${{'Kubernetes Cluster Name': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_NAME'] || 'UNDEFINED'}", 'Kubernetes Cluster ID': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_ID'] || 'UNDEFINED'}"}}	   
+       oci_la_log_group_id "#{ENV['FLUENT_OCI_KUBERNETES_LOGGROUP_ID'] || ENV['FLUENT_OCI_DEFAULT_LOGGROUP_ID']}"
+       oci_la_log_path "${record['tailed_path']}" 
+       oci_la_log_source_name "OKE Proxymux Client Logs"
+       message "${record['log']}"
+       tag ${tag}
+       </record>
+    </filter>
+    
+    # Config for Cluster Autoscalar Logs Collection
+    # Source config section to collect Cluster Autoscalar logs from /var/log/containers/cluster-autoscaler-*.log using Fluentd tail plugin.
+    <source>
+       @type tail
+       @id in_tail_cluster_autoscaler
+       path_key tailed_path
+       path /var/log/containers/cluster-autoscaler-*.log
+       pos_file /var/log/oci_la_fluentd_outplugin/pos/cluster-autoscaler.logs.pos
+       tag oci.oke.cluster-autoscaler.*
+       read_from_head "#{ENV['FLUENT_OCI_READ_FROM_HEAD'] || true}" 
+       <parse>
+       @type json 
+       </parse>
+    </source>
+    
+    # Record transformer filter to apply Logging Analytics configuration to each record.
+    <filter oci.oke.cluster-autoscaler.**>
+       @type record_transformer
+       enable_ruby true
+       <record>
+       oci_la_metadata ${{'Kubernetes Cluster Name': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_NAME'] || 'UNDEFINED'}", 'Kubernetes Cluster ID': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_ID'] || 'UNDEFINED'}"}}	   
+       oci_la_log_group_id "#{ENV['FLUENT_OCI_KUBERNETES_LOGGROUP_ID'] || ENV['FLUENT_OCI_DEFAULT_LOGGROUP_ID']}" 
+       oci_la_log_path "${record['tailed_path']}"
+       oci_la_log_source_name "Kubernetes Autoscaler Logs"
+       message "${record['log']}"
+       tag ${tag}
+       </record>
+    </filter>
+
+    # Concat filter to handle multi-line log records.
+    <filter oci.oke.cluster-autoscaler.**>
+       @type concat
+       key message
+       stream_identity_key stream
+       multiline_start_regexp /^\S\d{2}\d{2}\s+[^\:]+:[^\:]+:[^\.]+\.\d{0,3}/
+    </filter>
+    
+    # Config for Cronlog Logs Collection
+    # Source config section to collect Cronlog logs from /var/log/cron* using Fluentd tail plugin.
+    <source>
+       @type tail
+       @id in_tail_cronlog
+       path_key tailed_path
+       path /var/log/cron*
+       pos_file /var/log/oci_la_fluentd_outplugin/pos/cronlog.logs.pos
+       tag oci.oke.syslog.cronlog.*
+       read_from_head "#{ENV['FLUENT_OCI_READ_FROM_HEAD'] || true}" 
+       <parse>
+       @type multiline
+       format_firstline /^(?:(?:\d+\s+)?<([^>]*)>(?:\d+\s+)?)?\S+\s+\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2}\s+/
+       format1 /^(?<message>.*)/
+       </parse>
+    </source>
+    
+    # Record transformer filter to apply Logging Analytics configuration to each record.
+    <filter oci.oke.syslog.cronlog.**>
+       @type record_transformer
+       enable_ruby true
+       <record>
+       oci_la_metadata ${{'Node':"#{ENV['K8S_NODE_NAME'] || 'UNDEFINED'}", 'Kubernetes Cluster Name': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_NAME'] || 'UNDEFINED'}", 'Kubernetes Cluster ID': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_ID'] || 'UNDEFINED'}"}}
+       oci_la_log_group_id "#{ENV['FLUENT_OCI_SYSLOG_LOGGROUP_ID'] || ENV['FLUENT_OCI_DEFAULT_LOGGROUP_ID']}" 
+       oci_la_log_path "${record['tailed_path']}"
+       oci_la_log_source_name "Linux Cron Logs"
+       tag ${tag}
+       </record>
+    </filter>
+
+    # Config for Securelog Logs Collection
+    # Source config section to collect Securelog logs from /var/log/secure* using Fluentd tail plugin.
+    <source>
+       @type tail
+       @id in_tail_securelog
+       path_key tailed_path
+       path /var/log/secure*
+       pos_file /var/log/oci_la_fluentd_outplugin/pos/securelog.logs.pos
+       tag oci.oke.syslog.securelog.*
+       read_from_head "#{ENV['FLUENT_OCI_READ_FROM_HEAD'] || true}" 
+       <parse>
+       @type multiline
+       format_firstline /^(?:(?:\d+\s+)?<([^>]*)>(?:\d+\s+)?)?\S+\s+\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2}\s+/
+       format1 /^(?<message>.*)/
+       </parse>
+    </source>
+    
+    # Record transformer filter to apply Logging Analytics configuration to each record.
+    <filter oci.oke.syslog.securelog.**>
+       @type record_transformer
+       enable_ruby true
+       <record>
+       oci_la_metadata ${{'Node':"#{ENV['K8S_NODE_NAME'] || 'UNDEFINED'}", 'Kubernetes Cluster Name': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_NAME'] || 'UNDEFINED'}", 'Kubernetes Cluster ID': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_ID'] || 'UNDEFINED'}"}}
+       oci_la_log_group_id "#{ENV['FLUENT_OCI_SYSLOG_LOGGROUP_ID'] || ENV['FLUENT_OCI_DEFAULT_LOGGROUP_ID']}" 
+       oci_la_log_path "${record['tailed_path']}" 
+       oci_la_log_source_name "Linux Secure Logs"
+       tag ${tag}
+       </record>
+    </filter>
+
+    # Config for Syslog Logs Collection
+    # Source config section to collect Syslog logs from /var/log/messages* using Fluentd tail plugin.
+    <source>
+       @type tail
+       @id in_tail_syslog
+       path_key tailed_path
+       path /var/log/messages*
+       pos_file /var/log/oci_la_fluentd_outplugin/pos/syslog.logs.pos
+       tag oci.oke.syslog.messages.**
+       read_from_head "#{ENV['FLUENT_OCI_READ_FROM_HEAD'] || true}" 
+       <parse>
+       @type multiline
+       format_firstline /^(?:(?:\d+\s+)?<([^>]*)>(?:\d+\s+)?)?\S+\s+\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2}\s+/
+       format1 /^(?<message>.*)/
+       </parse>
+    </source>
+    
+    # Match block to filter kubelet logs from syslogs
+    <match oci.oke.syslog.messages.**>
+       @type rewrite_tag_filter
+       <rule>
+       key message
+       pattern /kubelet:/
+       tag oci.oke.syslog.kubelet.*
+       </rule>
+       <rule>
+       key message
+       pattern  /^((?!kubelet:).)*$/
+       tag oci.oke.syslog.syslog.*
+       </rule>
+    </match>
+    
+    # Record transformer filter to apply Logging Analytics configuration to each record.
+    <filter oci.oke.syslog.kubelet.**>
+       @type record_transformer
+       enable_ruby true
+       <record>
+       oci_la_metadata ${{'Node':"#{ENV['K8S_NODE_NAME'] || 'UNDEFINED'}", 'Kubernetes Cluster Name': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_NAME'] || 'UNDEFINED'}", 'Kubernetes Cluster ID': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_ID'] || 'UNDEFINED'}"}}
+       oci_la_log_group_id "#{ENV['FLUENT_OCI_KUBERNETES_LOGGROUP_ID'] || ENV['FLUENT_OCI_DEFAULT_LOGGROUP_ID']}" 
+       oci_la_log_path "${record['tailed_path']}"
+       oci_la_log_source_name "Kubernetes Kubelet Logs"
+       tag ${tag}
+       </record>
+    </filter>
+
+    # Record transformer filter to apply Logging Analytics configuration to each record.
+    <filter oci.oke.syslog.syslog.**>
+       @type record_transformer
+       enable_ruby true
+       <record>
+       oci_la_metadata ${{'Node':"#{ENV['K8S_NODE_NAME'] || 'UNDEFINED'}", 'Kubernetes Cluster Name': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_NAME'] || 'UNDEFINED'}", 'Kubernetes Cluster ID': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_ID'] || 'UNDEFINED'}"}}
+       oci_la_log_group_id "#{ENV['FLUENT_OCI_SYSLOG_LOGGROUP_ID'] || ENV['FLUENT_OCI_DEFAULT_LOGGROUP_ID']}" 
+       oci_la_log_path "${record['tailed_path']}" 
+       oci_la_log_source_name "Linux Syslog Logs"
+       tag ${tag}
+       </record>
+    </filter>
+    
+    # Config for Mail Delivery Logs Collection
+    # Source config section to collect Mail Delivery Logs from /var/log/maillog* using Fluentd tail plugin.
+    <source>
+       @type tail
+       @id in_tail_maillog
+       path_key tailed_path
+       path /var/log/maillog*
+       pos_file /var/log/oci_la_fluentd_outplugin/pos/maillog.logs.pos
+       tag oci.oke.syslog.maillog.*
+       read_from_head "#{ENV['FLUENT_OCI_READ_FROM_HEAD'] || true}"
+       <parse>
+       @type multiline
+       format_firstline /^(?:(?:\d+\s+)?<([^>]*)>(?:\d+\s+)?)?\S+\s+\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2}\s+/
+       format1 /^(?<message>.*)/
+       </parse>
+    </source>
+
+    # Record transformer filter to apply Logging Analytics configuration to each record.
+    <filter oci.oke.syslog.maillog.**>
+       @type record_transformer
+       enable_ruby true
+       <record>
+       oci_la_metadata ${{'Node':"#{ENV['K8S_NODE_NAME'] || 'UNDEFINED'}", 'Kubernetes Cluster Name': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_NAME'] || 'UNDEFINED'}", 'Kubernetes Cluster ID': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_ID'] || 'UNDEFINED'}"}}
+       oci_la_log_group_id "#{ENV['FLUENT_OCI_SYSLOG_LOGGROUP_ID'] || ENV['FLUENT_OCI_DEFAULT_LOGGROUP_ID']}"
+       oci_la_log_path "${record['tailed_path']}"
+       oci_la_log_source_name "Linux Mail Delivery Logs"
+       tag ${tag}
+       </record>
+    </filter>
+   
+    # Config for Linux Audit Logs Collection
+    # Source config section to collect Linux Audit Logs from /var/log/audit/audit* using Fluentd tail plugin.
+    <source>
+       @type tail
+       @id in_tail_linuxauditlog
+       path_key tailed_path
+       path /var/log/audit/audit*
+       pos_file /var/log/oci_la_fluentd_outplugin/pos/linuxauditlog.logs.pos
+       tag oci.oke.syslog.linuxauditlog.*
+       read_from_head "#{ENV['FLUENT_OCI_READ_FROM_HEAD'] || true}"
+       <parse>
+       @type none
+       </parse>
+    </source>
+
+    # Record transformer filter to apply Logging Analytics configuration to each record.
+    <filter oci.oke.syslog.linuxauditlog.**>
+       @type record_transformer
+       enable_ruby true
+       <record>
+       oci_la_metadata ${{'Node':"#{ENV['K8S_NODE_NAME'] || 'UNDEFINED'}", 'Kubernetes Cluster Name': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_NAME'] || 'UNDEFINED'}", 'Kubernetes Cluster ID': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_ID'] || 'UNDEFINED'}"}}
+       oci_la_log_group_id "#{ENV['FLUENT_OCI_SYSLOG_LOGGROUP_ID'] || ENV['FLUENT_OCI_DEFAULT_LOGGROUP_ID']}"
+       oci_la_log_path "${record['tailed_path']}"
+       oci_la_log_source_name "Linux Audit Logs"
+       tag ${tag}
+       </record>
+    </filter>
+   
+    # Config for Ksplice Logs Collection
+    # Source config section to collect Ksplice Logs from /var/log/uptrack* using Fluentd tail plugin.
+    <source>
+       @type tail
+       @id in_tail_uptracklog
+       path_key tailed_path
+       path /var/log/uptrack*
+       pos_file /var/log/oci_la_fluentd_outplugin/pos/uptracklog.logs.pos
+       tag oci.oke.syslog.uptracklog.*
+       read_from_head "#{ENV['FLUENT_OCI_READ_FROM_HEAD'] || true}"
+       <parse>
+       @type multiline
+       format_firstline /^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}/
+       format1 /^(?<message>.*)/
+       </parse>
+    </source>
+
+    # Record transformer filter to apply Logging Analytics configuration to each record.
+    <filter oci.oke.syslog.uptracklog.**>
+       @type record_transformer
+       enable_ruby true
+       <record>
+       oci_la_metadata ${{'Node':"#{ENV['K8S_NODE_NAME'] || 'UNDEFINED'}", 'Kubernetes Cluster Name': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_NAME'] || 'UNDEFINED'}", 'Kubernetes Cluster ID': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_ID'] || 'UNDEFINED'}"}}
+       oci_la_log_group_id "#{ENV['FLUENT_OCI_SYSLOG_LOGGROUP_ID'] || ENV['FLUENT_OCI_DEFAULT_LOGGROUP_ID']}"
+       oci_la_log_path "${record['tailed_path']}"
+       oci_la_log_source_name "Ksplice Logs"
+       tag ${tag}
+       </record>
+    </filter>
+
+    # Config for YUM Logs Collection
+    # Source config section to collect YUM Logs from /var/log/yum.log* using Fluentd tail plugin.
+    <source>
+       @type tail
+       @id in_tail_yumlog
+       path_key tailed_path
+       path /var/log/yum.log*
+       pos_file /var/log/oci_la_fluentd_outplugin/pos/yum.logs.pos
+       tag oci.oke.syslog.yumlog.*
+       read_from_head "#{ENV['FLUENT_OCI_READ_FROM_HEAD'] || true}"
+       <parse>
+       @type none
+       </parse>
+    </source>
+
+    # Record transformer filter to apply Logging Analytics configuration to each record.
+    <filter oci.oke.syslog.yumlog.**>
+       @type record_transformer
+       enable_ruby true
+       <record>
+       oci_la_metadata ${{'Node':"#{ENV['K8S_NODE_NAME'] || 'UNDEFINED'}", 'Kubernetes Cluster Name': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_NAME'] || 'UNDEFINED'}", 'Kubernetes Cluster ID': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_ID'] || 'UNDEFINED'}"}}
+       oci_la_log_group_id "#{ENV['FLUENT_OCI_SYSLOG_LOGGROUP_ID'] || ENV['FLUENT_OCI_DEFAULT_LOGGROUP_ID']}"
+       oci_la_log_path "${record['tailed_path']}"
+       oci_la_log_source_name "Linux YUM Logs"
+       tag ${tag}
+       </record>
+    </filter>
+
+    # Config for Container Logs Collection (except for the ones which are specifically configured above)
+    # Source config section to collect Container logs from /var/log/containers/*.log using Fluentd tail plugin.
+    <source>
+       @type tail
+       @id in_tail_containerlogs
+       path_key tailed_path
+       path /var/log/containers/*.log
+       pos_file /var/log/oci_la_fluentd_outplugin/pos/containerlogs.logs.pos
+       tag oci.oke.containerlogs.*
+       read_from_head "#{ENV['FLUENT_OCI_READ_FROM_HEAD'] || true}"
+       # Modify the exclude path once a specific container log config is explictly defined to avoid duplicate collection.
+       exclude_path ["/var/log/containers/kube-proxy-*.log", "/var/log/containers/kube-flannel-*.log", "/var/log/containers/kube-dns-autoscaler-*.log", "/var/log/containers/coredns-*.log", "/var/log/containers/csi-oci-node-*.log", "/var/log/containers/proxymux-client-*.log", "/var/log/containers/cluster-autoscaler-*.log"]
+       <parse>
+       @type json
+       </parse>
+    </source>
+
+    # Record transformer filter to apply Logging Analytics configuration to each record.
+    <filter oci.oke.containerlogs.**>
+       @type record_transformer
+       enable_ruby true
+       <record>
+       oci_la_metadata ${{'Kubernetes Cluster Name': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_NAME'] || 'UNDEFINED'}", 'Kubernetes Cluster ID': "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_ID'] || 'UNDEFINED'}"}}	   
+       oci_la_log_group_id "#{ENV['FLUENT_OCI_KUBERNETES_LOGGROUP_ID'] || ENV['FLUENT_OCI_DEFAULT_LOGGROUP_ID']}"
+       oci_la_log_path "${record['tailed_path']}"
+       oci_la_log_source_name "Kubernetes Container Generic Logs"
+       message "${record['log']}"
+       tag ${tag}
+       </record>
+    </filter>
