@@ -2,19 +2,17 @@
 
 ## About
 
-This provides an end-to-end monitoring solution for Oracle Container Engine for Kubernetes (OKE) and other forms of Kubernetes Clusters, 
-using Logging Analytics, Monitoring other Oracle Cloud Infrastructure (OCI) Services.
+This provides an end-to-end monitoring solution for Oracle Container Engine for Kubernetes (OKE) and other forms of Kubernetes Clusters using Logging Analytics, Monitoring and other Oracle Cloud Infrastructure (OCI) Services.
 
 ## Logs
 
-This solutions offers collection of various logs of a Kubernetes cluster, out of the box into OCI Logging Analytics and offer rich analytics on top of it. 
-Users may choose to customise the log collection by modifying the out of the box configuration that it provides.
+This solutions offers collection of various logs of a Kubernetes cluster into OCI Logging Analytics and offer rich analytics on top of the collected logs. Users may choose to customise the log collection by modifying the out of the box configuration that it provides.
 
 ### Kubernetes System/Service Logs
 
 OKE or Kubernetes comes up with some built-in services where each one has different responsibilities and they run on one or more nodes in the cluster either as Deployments or DaemonSets. 
 
-The following service logs are configured to collect out of the box:
+The following service logs are configured to be collected out of the box:
 - Kube Proxy
 - Kube Flannel
 - Kubelet
@@ -26,7 +24,7 @@ The following service logs are configured to collect out of the box:
 
 ### Linux System Logs
 
-The following Linux system logs are configured to collect out of the box:
+The following Linux system logs are configured to be collected out of the box:
 - Syslog 
 - Secure logs
 - Cron logs
@@ -44,7 +42,7 @@ The following are various Control Plane components in OKE/Kubernetes.
 - Cloud Controller Manager
 - etcd
 
-At present, control plane logs are not covered as part of out of the box collection, as these logs are not exposed to customers OKE. 
+At present, control plane logs are not covered as part of out of the box collection, as these logs are not exposed to OKE customers. 
 The out of the box collection for these logs will be available soon for generic Kubernetes clusters and for OKE (when OKE make it available for end users).
 
 ### Application Pod/Container Logs
@@ -84,7 +82,7 @@ At present, for testing purposes follow the below mentioned steps to build an im
 - Download all the files from [this dir](/logan/docker-images/v1.0/debian/) into a local machine having access to internet.
 - Run the following command to build the docker image.
     - *docker build -t fluentd_oci_la -f Dockerfile .*
-- The docker image built from above step, can be either pushed to Docker Hub or OCI Container Registry (OCIR) or to a Local Docker Registry depending on the requirements.
+- The docker image built from the above step, can either be pushed to Docker Hub or OCI Container Registry (OCIR) or to a Local Docker Registry depending on the requirements.
     - [How to push the image to Docker Hub](https://docs.docker.com/docker-hub/repos/#pushing-a-docker-container-image-to-docker-hub)
     - [How to push the image to OCIR](https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/registry/index.html).
     - [How to push the image to Local Registry](https://docs.docker.com/registry/deploying/).
@@ -104,7 +102,6 @@ These yaml files needs to be applied using kubectl to create the necessary resou
 
 - This file contains the necessary out of the box fluentd configuration to collect Kubernetes System/Service Logs, Linux System Logs and Application Pod/Container Logs. 
 - Some log locations may differ for Kubernetes clusters other than OKE, EKS and may need modifications accordingly. 
-A comprehensive out of the box covering typical kubernetes clusters will be available soon.
 - Use configmap-docker.yaml for Kubernetes clusters based off Docker runtime (e.g., OKE < 1.20) and configmap-cri.yaml for Kubernetes clusters based off CRI-O.
 - Inline comments are available in the file for each of the source/filter/match blocks for easy reference for making any changes to the configuration.
 - Refer [this](https://docs.oracle.com/en/learn/oci_logging_analytics_fluentd/) to learn about each of the Logging Analytics Fluentd Output plugin configuration parameters.
@@ -115,18 +112,18 @@ A comprehensive out of the box covering typical kubernetes clusters will be avai
 
 ##### fluentd-daemonset.yaml
 
-- This file has all the necessary resources to deploy to run the Fluentd docker image as Daemonset.
+- This file has all the necessary resources required to deploy and run the Fluentd docker image as Daemonset.
 - Inline comments are available in the file describing each of the fields/sections. 
 - Make sure to replace the fields with actual values before deploying. 
 - At minimum, <IMAGE_URL>, <OCI_LOGGING_ANALYTICS_LOG_GROUP_ID>, <OCI_TENANCY_NAMESPACE> needs to be updated. 
-- It is recommended to update, <KUBERNETES_CLUSTER_OCID>,<KUBERNETES_CLUSTER_NAME> too tag all the logs with corresponding Kubernetes cluster at Logging Analytics. 
+- It is recommended to update <KUBERNETES_CLUSTER_OCID>,<KUBERNETES_CLUSTER_NAME> too, to tag all the logs processed with corresponding Kubernetes cluster at Logging Analytics. 
 
 ##### secrets.yaml (Optional)
 
 - At present, InstancePrincipal and OCI Config File (UserPrincipal) based Auth/AuthZ are supported for Fluentd to talk to OCI Logging Analytics APIs. 
 - We recommend to use InstancePrincipal based AuthZ for OKE and all clusters which are running on OCI VMs and that is the default auth type configured. 
 - Applying this file is not required when using InstancePrincipal based auth type.
-- You need to modify this file to fill out the values under config section with appropriate values.
+- When config file based Authz is used, modify this file to fill out the values under config section with appropriate values.
 
 ##### Commands Reference
 
@@ -146,7 +143,7 @@ clusterrolebinding.rbac.authorization.k8s.io/oci-la-fluentd-logs-clusterrolebind
 daemonset.apps/oci-la-fluentd-daemonset created
 ```
 
-You may use the following command to restart DaemonSet upon any applying any modifications to configmap or secrets to reflect the changes into the Fluentd.
+Use the following command to restart DaemonSet after applying any modifications to configmap or secrets to reflect the changes into the Fluentd.
 
 ```
 kubectl rollout restart daemonset oci-la-fluentd-daemonset -n=kubectl
@@ -185,7 +182,7 @@ clusterrolebinding.rbac.authorization.k8s.io/oci-la-fluentd-objects-clusterroleb
 deployment.apps/oci-la-fluentd-deployment created
 ```
 
-You may use the following command to restart DaemonSet upon any applying any modifications to configmap or secrets to reflect the changes into the Fluentd.
+Use the following command to restart Deployment after applying any modifications to configmap or secrets to reflect the changes into the Fluentd.
 
 ```
 kubectl rollout restart deployment oci-la-fluentd-deployment -n=kubectl
