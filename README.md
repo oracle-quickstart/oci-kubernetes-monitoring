@@ -73,7 +73,19 @@ The following are the list of objects supported at present:
 
 - Logging Analytics Service must be enabled in the given OCI region before trying out the following Solution. Refer [Logging Analytics Quick Start](https://docs.oracle.com/en-us/iaas/logging-analytics/doc/quick-start.html) for details.
 - Create a Logging Analytics LogGroup(s) if not have done already. Refer [Create Log Group](https://docs.oracle.com/en-us/iaas/logging-analytics/doc/create-logging-analytics-resources.html#GUID-D1758CFB-861F-420D-B12F-34D1CC5E3E0E).
-
+- Enable access to the log group(s) to uploads logs from Kubernetes environment:
+    - For InstancePrincipal based AuthZ (recommended for OKE and Kubernetes clusters running on OCI):
+        - Create a dynamic group including relevant OCI Instances. Refer [this](https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/managingdynamicgroups.htm) for details about managing dynamic groups.
+        - Add an IAM policy like, 
+        ```
+        Allow dynamic-group <dynamic_group_name> to {LOG_ANALYTICS_LOG_GROUP_UPLOAD_LOGS} in compartment <Logging Analytics LogGroup's compartment_name>
+        ```
+    - For Config file based (user principal) AuthZ:
+        - Add an IAM policy like,
+        ```
+        Allow group <user_group_name> to {LOG_ANALYTICS_LOG_GROUP_UPLOAD_LOGS} in compartment <Logging Analytics LogGroup's compartment_name>
+        ```
+		
 ### Docker Image
 
 We are in the process of building a docker image based off Oracle Linux 8 including Fluentd, OCI Logging Analytics Output Plugin and all the required dependencies. 
@@ -146,7 +158,7 @@ daemonset.apps/oci-la-fluentd-daemonset created
 Use the following command to restart DaemonSet after applying any modifications to configmap or secrets to reflect the changes into the Fluentd.
 
 ```
-kubectl rollout restart daemonset oci-la-fluentd-daemonset -n=kubectl
+kubectl rollout restart daemonset oci-la-fluentd-daemonset -n=kube-system
 ```
 
 #### To enable Kubernetes Objects collection
@@ -185,7 +197,7 @@ deployment.apps/oci-la-fluentd-deployment created
 Use the following command to restart Deployment after applying any modifications to configmap or secrets to reflect the changes into the Fluentd.
 
 ```
-kubectl rollout restart deployment oci-la-fluentd-deployment -n=kubectl
+kubectl rollout restart deployment oci-la-fluentd-deployment -n=kube-system
 ```
 
 ### Deploying Kuberenetes resources using Helm
