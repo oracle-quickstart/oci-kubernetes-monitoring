@@ -43,7 +43,7 @@ The following are various Control Plane components in OKE/Kubernetes.
 - etcd
 
 At present, control plane logs are not covered as part of out of the box collection, as these logs are not exposed to OKE customers. 
-The out of the box collection for these logs will be available soon for generic Kubernetes clusters and for OKE (when OKE make it available for end users).
+The out of the box collection for these logs will be available soon for generic Kubernetes clusters and for OKE (when OKE makes these logs accessible to end users).
 
 ### Application Pod/Container Logs
 All the logs from application pods writing STDOUT/STDERR are typically available under /var/log/containers/. 
