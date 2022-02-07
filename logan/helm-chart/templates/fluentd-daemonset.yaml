@@ -1,0 +1,115 @@
+---
+{{- $authtype := .Values.authtype | lower }}
+{{- $imagePullSecrets := .Values.image.imagePullSecrets }}
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ include "oci-la-fluentd.name" . }}-daemonset
+  namespace: {{ default "kube-system" .Values.namespace }}
+  labels:
+    app: {{ include "oci-la-fluentd.name" . }}-logs
+    version: v1
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "oci-la-fluentd.name" . }}-logs
+      version: v1
+  template:
+    metadata:
+      annotations:
+        {{- if eq $authtype "config" }}
+        checksum/secrets: {{ include (print $.Template.BasePath "/oci-config-secrets.yaml") . | sha256sum }}
+        {{- end}}
+        checksum/configmap: {{ include (print $.Template.BasePath "/configmap-logs.yaml") . | sha256sum }}
+      labels:
+        app: {{ include "oci-la-fluentd.name" . }}-logs
+        version: v1
+    spec:
+      serviceAccountName: {{ include "oci-la-fluentd.name" . }}-serviceaccount
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+      {{- if $imagePullSecrets }}	
+      imagePullSecrets:		  
+      - name: {{ .Values.image.imagePullSecrets }}
+      {{- end}}
+      containers:
+      - name: {{ include "oci-la-fluentd.name" . }}-logs
+        image: {{ .Values.image.url }}
+        imagePullPolicy: {{ default "IfNotPresent" .Values.image.imagePullPolicy }}
+        env:
+          - name: FLUENTD_CONF
+            value: {{ .Values.fluentd.path }}/{{ .Values.fluentd.file }}
+          - name: K8S_NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+          - name: FLUENT_OCI_DEFAULT_LOGGROUP_ID
+            value: {{ .Values.ociLALogGroupID }}
+          - name: FLUENT_OCI_NAMESPACE
+            value: {{ .Values.ociLANamespace }}
+          - name: FLUENT_OCI_KUBERNETES_CLUSTER_ID
+            value: {{ .Values.kubernetesClusterID }}
+          - name: FLUENT_OCI_KUBERNETES_CLUSTER_NAME
+            value: {{ .Values.kubernetesClusterName }}
+          {{- if eq $authtype "config" }}
+          - name: FLUENT_OCI_CONFIG_LOCATION
+            value: {{ .Values.oci.path }}/{{ .Values.oci.file }}
+          {{- end }} 
+          {{- if .Values.extraEnv }}
+          {{- toYaml .Values.extraEnv | nindent 10 }}
+          {{- end }}
+        {{- if .Values.resources }}
+        resources: {{- toYaml .Values.resources | nindent 10 }}
+        {{- end }}
+        volumeMounts:
+        - name: varlog
+          mountPath: /var/log
+        # Mount all relevant locations depending on where the actual logs presents.
+        - name: dockercontainerlogdirectory
+          mountPath: {{ .Values.volumes.podsHostPath }}
+          readOnly: true
+        - name: dockercontainerdatadirectory
+          mountPath: {{ .Values.volumes.containerdataHostPath }}
+          readOnly: true  
+        {{- if eq $authtype "config" }}
+        # Mount directory where oci config exists
+        - name: ociconfigdir
+          mountPath: {{ .Values.oci.path }}
+          readOnly: true
+        {{- end }}
+        # Mount directory where fluentd config exists
+        - name: fluentdconfigdir
+          mountPath: {{ .Values.fluentd.path }}
+          readOnly: true
+        {{- if .Values.extraVolumeMounts }}
+        {{- toYaml .Values.extraVolumeMounts | nindent 8 }}
+        {{- end }}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      {{- if .Values.extraVolumes }}
+      {{- toYaml .Values.extraVolumes | nindent 6 }}
+      {{- end }}
+      - name: varlog
+        hostPath:
+          path: /var/log
+      # Mount all relevant locations depending on where the actual logs presents.
+      - name: dockercontainerlogdirectory
+        hostPath:
+          path: {{ .Values.volumes.podsHostPath }}
+      - name: dockercontainerdatadirectory
+        hostPath:
+          path: {{ .Values.volumes.containerdataHostPath }}		  
+      {{- if eq $authtype "config" }}
+      # Mount directory where oci config exists
+      - name: ociconfigdir
+        projected:
+          sources:
+              - secret:
+                  name: {{ include "oci-la-fluentd.name" . }}-credentials-secret
+      {{- end }}
+      # Mount directory where fluentd config exists
+      - name: fluentdconfigdir
+        configMap:
+          # Provide the name of the ConfigMap to mount.
+          name: {{ include "oci-la-fluentd.name" . }}-logs-configmap

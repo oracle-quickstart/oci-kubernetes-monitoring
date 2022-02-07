@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "oci-la-fluentd.name" . }}-logs-configmap
+  namespace: {{ default "kube-system" .Values.namespace }}
+data:
+  # file-like keys
+  {{- range $key, $value := .Values.fluentd.configMapLogsFiles }}
+  {{ $key }}: |
+    {{- include "common.tplvalues.render" (dict "value" $value "context" $) | nindent 4 }}
+  {{- end }}
