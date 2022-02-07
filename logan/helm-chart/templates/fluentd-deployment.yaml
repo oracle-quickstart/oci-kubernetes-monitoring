@@ -26,7 +26,7 @@ spec:
         version: v1
     spec:
       serviceAccountName: {{ include "oci-la-fluentd.name" . }}-serviceaccount
-	  {{- if $imagePullSecrets }}	
+      {{- if $imagePullSecrets }}	
       imagePullSecrets:		  
       - name: {{ .Values.image.imagePullSecrets }}
       {{- end}}
