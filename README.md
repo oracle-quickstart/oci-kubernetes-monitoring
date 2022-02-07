@@ -46,6 +46,7 @@ At present, control plane logs are not covered as part of out of the box collect
 The out of the box collection for these logs will be available soon for generic Kubernetes clusters and for OKE (when OKE makes these logs accessible to end users).
 
 ### Application Pod/Container Logs
+
 All the logs from application pods writing STDOUT/STDERR are typically available under /var/log/containers/. 
 Application which are having custom log handlers (say log4j or similar) may route their logs differently but in general would be available on the node (through a volume).
 
@@ -91,7 +92,7 @@ The following are the list of objects supported at present:
 We are in the process of building a docker image based off Oracle Linux 8 including Fluentd, OCI Logging Analytics Output Plugin and all the required dependencies. 
 All the dependencies will be build from source and installed into the image. This image soon would be available to use as a pre-built image as is (OR) to create a custom image using this image as a base image.
 At present, for testing purposes follow the below mentioned steps to build an image using official Fluentd Docker Image as base image (off Debian).
-- Download all the files from [this dir](/logan/docker-images/v1.0/debian/) into a local machine having access to internet.
+- Download all the files from [this dir](logan/docker-images/v1.0/debian/) into a local machine having access to internet.
 - Run the following command to build the docker image.
     - *docker build -t fluentd_oci_la -f Dockerfile .*
 - The docker image built from the above step, can either be pushed to Docker Hub or OCI Container Registry (OCIR) or to a Local Docker Registry depending on the requirements.
@@ -107,7 +108,7 @@ At present, for testing purposes follow the below mentioned steps to build an im
 
 #### To enable Logs collection
 
-Download all the yaml files from [this dir](/logan/kubernetes-resources/logs-collection/).
+Download all the yaml files from [this dir](logan/kubernetes-resources/logs-collection/).
 These yaml files needs to be applied using kubectl to create the necessary resources that enables the logs collection into Logging Analytics through a Fluentd based DaemonSet.
 
 ##### configmap-docker.yaml | configmap-cri.yaml
@@ -163,7 +164,7 @@ kubectl rollout restart daemonset oci-la-fluentd-daemonset -n=kube-system
 
 #### To enable Kubernetes Objects collection
 
-Download all the yaml files from [this dir](/logan/kubernetes-resources/objects-collection/).
+Download all the yaml files from [this dir](logan/kubernetes-resources/objects-collection/).
 These yaml files needs to be applied using kubectl to create the necessary resources that enables the Kuberetes Objects collection into Logging Analytics.
 
 ##### configMap-objects.yaml
@@ -202,15 +203,42 @@ kubectl rollout restart deployment oci-la-fluentd-deployment -n=kube-system
 
 ### Deploying Kuberenetes resources using Helm
 
-Coming soon ...
+#### Pre-requisites
 
+- Install helm if not done already. Refer [this](https://helm.sh/docs/intro/install/).
+- Download the helm chart from [this dir](logan/helm-chart/).
 
+#### values.yaml
 
+- This file contains all the default values possible to setup the logs and objects collection, but few values needs to be provided either through an external values.yaml file or by modifying this file. It is recommended to use external values.yaml to override any values.
+- Inline documentation has the description and possible values for each of the configuration parameters.
+- At minimum, the following needs to be set accordingly. image:url, ociLANamespace, ociLALogGroupID. It is recommended to set kubernetesClusterID and kubernetesClusterName too, to tag all the logs processed with corresponding Kubernetes cluster at Logging Analytics. 
+- Use "docker" as runtime for Kubernetes clusters based off Docker runtime (e.g., OKE < 1.20) and "cri" for Kubernetes clusters based off CRI-O. The default is "cri".
+- Use "InstancePrincipal" as authtype for OKE and all clusters which are running on OCI VMs and "config" as authtype for OCI Config file based Auth/AuthZ. config under oci section needs to be updated with relevant info when authtype is chosen as "config". The default is "InstancePrincipal".
 
+#### Commands Reference
 
+It is recommended to validate the values using the following `helm template` command before actually installing. Provide path to exterval values.yaml and path to helm-chart.
 
+```
+helm template --values <path-to-external-values.yaml> <path-to-helm-chart>
+```
 
+Now, the chart can be installed using the following `helm install` command. Provide a desired release name, path to exterval values.yaml and path to helm-chart.
 
+```
+helm install <release-name> --values <path-to-external-values.yaml> <path-to-helm-chart>
+```
 
+Use the following `helm upgrade` command if any further changes to values.yaml needs to be applied or a new chart version needs to be deployed. Refer [this](https://helm.sh/docs/helm/helm_upgrade/) for further details on `helm upgrade`.
 
+```
+helm upgrade <release-name> --values <path-to-external-values.yaml> <path-to-helm-chart>
+```
+
+Use the following `helm uninstall` command to delete the chart. Provide the release name used when creating the chart.
+
+```
+helm uninstall <release-name>
+```
  

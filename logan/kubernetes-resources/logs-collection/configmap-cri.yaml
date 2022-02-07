@@ -555,7 +555,6 @@ data:
        oci_la_log_group_id "#{ENV['FLUENT_OCI_KUBERNETES_LOGGROUP_ID'] || ENV['FLUENT_OCI_DEFAULT_LOGGROUP_ID']}"
        oci_la_log_path "${record['tailed_path']}"
        oci_la_log_source_name "Kubernetes Container Generic Logs"
-       message "${record['log']}"
        tag ${tag}
        </record>
     </filter>
