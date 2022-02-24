@@ -96,8 +96,10 @@ The following are the list of objects supported at present:
 
 We are in the process of building a docker image based off Oracle Linux 8 including Fluentd, OCI Logging Analytics Output Plugin and all the required dependencies. 
 All the dependencies will be build from source and installed into the image. This image soon would be available to use as a pre-built image as is (OR) to create a custom image using this image as a base image.
-At present, for testing purposes follow the below mentioned steps to build an image using official Fluentd Docker Image as base image (off Debian).
-- Download all the files from [this dir](logan/docker-images/v1.0/debian/) into a local machine having access to internet.
+At present, follow the below mentioned steps to build an image either using Dockerfile off Oracle Linux 8 as base image (OR) Dockerfile off Fluentd base image from Dockerhub (off Debian).
+- Download all the files from one of the below mentioned dirs into a local machine having access to internet.
+    - [OL8](logan/docker-images/v1.0/oraclelinux/8/)
+	- [Debian](logan/docker-images/v1.0/debian/) 
 - Run the following command to build the docker image.
     - *docker build -t fluentd_oci_la -f Dockerfile .*
 - The docker image built from the above step, can either be pushed to Docker Hub or OCI Container Registry (OCIR) or to a Local Docker Registry depending on the requirements.

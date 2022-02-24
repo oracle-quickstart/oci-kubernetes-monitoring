@@ -97,10 +97,10 @@ spec:
           ## parameters to limit the memory and requests for the pods
           resources:
             limits:
-              memory: 750Mi
+              memory: 500Mi
             requests:
               cpu: 100m
-              memory: 500Mi
+              memory: 250Mi
           volumeMounts:
             - name: varlog
               mountPath: /var/log

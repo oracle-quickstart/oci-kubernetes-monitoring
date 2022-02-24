@@ -1,6 +1,6 @@
 ### Referred version from fluentd-kubernetes-daemonset gitgub repo ###
 
-FROM fluent/fluentd:v1.14.1-debian-1.0 
+FROM fluent/fluentd:v1.14.3-debian-1.0 
 
 USER root
 WORKDIR /home/fluent
