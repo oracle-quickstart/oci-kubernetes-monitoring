@@ -29,10 +29,10 @@ extraEnv: []
 ## parameters to set requests and limits for memory and cpu
 resources:
    limits:
-      memory: 750Mi
+      memory: 500Mi
    requests:
       cpu: 100m
-      memory: 500Mi
+      memory: 250Mi
 ## @param extraVolumes Extra volumes. Below is an example extra volume
 ##   - name: tmpDir
 ##     hostPath:
