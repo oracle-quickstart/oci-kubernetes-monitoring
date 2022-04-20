@@ -1,5 +1,11 @@
 # Change Log
 
+## 2022-04-20
+### Added
+- Pod Annotations based customiation of configuration paremeters (oci_la_log_source_name, oci_la_log_group_id, oci_la_entity_id) for logs collected through "Kubernetes Container Generic Logs".
+- README update for custom configuration documentation.
+- Flush interval and timeout label configuration for Concat plugin section.
+ 
 ## 2022-02-24
 ### Added
 - Oracle Linux 8 based Docker Image support.
