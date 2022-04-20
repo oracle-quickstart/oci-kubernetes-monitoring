@@ -98,39 +98,49 @@ fluentd:
             skip_master_url "#{ENV['FLUENT_KUBERNETES_METADATA_SKIP_MASTER_URL'] || 'false'}"
             skip_namespace_metadata "#{ENV['FLUENT_KUBERNETES_METADATA_SKIP_NAMESPACE_METADATA'] || 'false'}"
             watch "#{ENV['FLUENT_KUBERNETES_WATCH'] || 'true'}"
+            de_dot false
+            annotation_match [ ".*" ]
          </filter>
 
-         # Match block to set info required for oci-logging-analytics fluentd output plugin
+         # Match block to ensure all the logs including concat plugin timeout logs will have same label
          <match oci.**>
-            @type oci-logging-analytics
-            enable_ruby               true
-            namespace                 "#{ENV['FLUENT_OCI_NAMESPACE']}"
-            endpoint                  "#{ENV['FLUENT_OCI_ENDPOINT']}"
-            {{- if eq $authtype "config" }}
-            config_file_location      "#{ENV['FLUENT_OCI_CONFIG_LOCATION'] || '/var/opt/.oci/config'}"
-            profile_name              "#{ENV['FLUENT_OCI_PROFILE'] || 'DEFAULT'}"
-            {{- end }} 
-            plugin_log_location       "#{ENV['FLUENT_OCI_LOG_LOCATION'] || '/var/log/'}" 
-            plugin_log_level          "#{ENV['FLUENT_OCI_LOG_LEVEL'] || 'info'}"
-            plugin_log_file_size      "#{ENV['FLUENT_OCI_LOG_FILE_SIZE'] || '10MB'}"
-            plugin_log_file_count     "#{ENV['FLUENT_OCI_LOG_FILE_COUNT'] || 10}"
-            kubernetes_metadata_keys_mapping     {"container_name":"Container","namespace_name":"Namespace","pod_name":"Pod","container_image":"Container Image Name","host":"Node"}
-            <buffer>
-                  @type                           file
-                  path                            "#{ENV['FLUENT_OCI_BUFFER_PATH'] || '/var/log/oci_la_fluentd_outplugin/logs/buffer/'}"
-                  flush_thread_count              "#{ENV['FLUENT_OCI_FLUSH_THREAD_COUNT'] || 1}" 
-                  chunk_limit_size                "#{ENV['FLUENT_OCI_CHUNK_LIMIT_SIZE'] || '2m'}"   # 2MB
-                  total_limit_size                "#{ENV['FLUENT_OCI_TOTAL_LIMIT_SIZE'] || 5368709120}" # 5GB
-                  flush_interval                  "#{ENV['FLUENT_OCI_FLUSH_INTERVAL'] || 30}" # seconds
-                  flush_thread_interval           "#{ENV['FLUENT_OCI_FLUSH_THREAD_INTERVAL'] || 0.5}"
-                  flush_thread_burst_interval     "#{ENV['FLUENT_OCI_FLUSH_THREAD_BURST_INTERVAL'] || 0.05}"
-                  retry_wait                      "#{ENV['FLUENT_OCI_RETRY_WAIT'] || 2}" # seconds
-                  retry_max_times                 "#{ENV['FLUENT_OCI_RETRY_MAX_TIMES'] || 17}"
-                  retry_exponential_backoff_base  "#{ENV['FLUENT_OCI_RETRY_EXPONENTIAL_BACKOFF_BASE'] || 2}"
-                  retry_forever                   "#{ENV['FLUENT_OCI_RETRY_FOREVER'] || true}"
-                  disable_chunk_backup true
-            </buffer>
+            @type relabel
+            @label @NORMAL
          </match>
+
+         # Match block to set info required for oci-logging-analytics fluentd output plugin
+         <label @NORMAL>
+            <match oci.**>
+               @type oci-logging-analytics
+               enable_ruby               true
+               namespace                 "#{ENV['FLUENT_OCI_NAMESPACE']}"
+               endpoint                  "#{ENV['FLUENT_OCI_ENDPOINT']}"
+               {{- if eq $authtype "config" }}
+               config_file_location      "#{ENV['FLUENT_OCI_CONFIG_LOCATION'] || '/var/opt/.oci/config'}"
+               profile_name              "#{ENV['FLUENT_OCI_PROFILE'] || 'DEFAULT'}"
+               {{- end }}
+               plugin_log_location       "#{ENV['FLUENT_OCI_LOG_LOCATION'] || '/var/log/'}"
+               plugin_log_level          "#{ENV['FLUENT_OCI_LOG_LEVEL'] || 'info'}"
+               plugin_log_file_size      "#{ENV['FLUENT_OCI_LOG_FILE_SIZE'] || '10MB'}"
+               plugin_log_file_count     "#{ENV['FLUENT_OCI_LOG_FILE_COUNT'] || 10}"
+               kubernetes_metadata_keys_mapping     {"container_name":"Container","namespace_name":"Namespace","pod_name":"Pod","container_image":"Container Image Name","host":"Node"}
+               <buffer>
+                     @type                           file
+                     path                            "#{ENV['FLUENT_OCI_BUFFER_PATH'] || '/var/log/oci_la_fluentd_outplugin/logs/buffer/'}"
+                     flush_thread_count              "#{ENV['FLUENT_OCI_FLUSH_THREAD_COUNT'] || 1}"
+                     chunk_limit_size                "#{ENV['FLUENT_OCI_CHUNK_LIMIT_SIZE'] || '2m'}"   # 2MB
+                     total_limit_size                "#{ENV['FLUENT_OCI_TOTAL_LIMIT_SIZE'] || 5368709120}" # 5GB
+                     flush_interval                  "#{ENV['FLUENT_OCI_FLUSH_INTERVAL'] || 30}" # seconds
+                     flush_thread_interval           "#{ENV['FLUENT_OCI_FLUSH_THREAD_INTERVAL'] || 0.5}"
+                     flush_thread_burst_interval     "#{ENV['FLUENT_OCI_FLUSH_THREAD_BURST_INTERVAL'] || 0.05}"
+                     retry_wait                      "#{ENV['FLUENT_OCI_RETRY_WAIT'] || 2}" # seconds
+                     retry_max_times                 "#{ENV['FLUENT_OCI_RETRY_MAX_TIMES'] || 17}"
+                     retry_exponential_backoff_base  "#{ENV['FLUENT_OCI_RETRY_EXPONENTIAL_BACKOFF_BASE'] || 2}"
+                     retry_forever                   "#{ENV['FLUENT_OCI_RETRY_FOREVER'] || true}"
+                     disable_chunk_backup true
+               </buffer>
+            </match>
+         </label>
       # kubernetes config file data which is included in main fluentd config file.
       kubernetes.conf: |
          {{- $runtime := .Values.runtime | lower }}
@@ -181,6 +191,8 @@ fluentd:
             @type concat
             key message
             stream_identity_key stream
+            flush_interval "#{ENV['FLUENT_CONCAT_FLUSH_INTERVAL'] || 60}" # seconds
+            timeout_label "@NORMAL"
             multiline_start_regexp /^\S\d{2}\d{2}\s+[^\:]+:[^\:]+:[^\.]+\.\d{0,3}/
          </filter>
 
@@ -224,6 +236,8 @@ fluentd:
             @type concat
             key message
             stream_identity_key stream
+            flush_interval "#{ENV['FLUENT_CONCAT_FLUSH_INTERVAL'] || 60}" # seconds
+            timeout_label "@NORMAL"
             multiline_start_regexp /^\S\d{2}\d{2}\s+[^\:]+:[^\:]+:[^\.]+\.\d{0,3}/
          </filter>
 
@@ -267,6 +281,8 @@ fluentd:
             @type concat
             key message
             stream_identity_key stream
+            flush_interval "#{ENV['FLUENT_CONCAT_FLUSH_INTERVAL'] || 60}" # seconds
+            timeout_label "@NORMAL"
             multiline_start_regexp /^\S\d{2}\d{2}\s+[^\:]+:[^\:]+:[^\.]+\.\d{0,3}/
          </filter>
 
@@ -310,6 +326,8 @@ fluentd:
             @type concat
             key message
             stream_identity_key stream
+            flush_interval "#{ENV['FLUENT_CONCAT_FLUSH_INTERVAL'] || 60}" # seconds
+            timeout_label "@NORMAL"
             multiline_start_regexp /^\[[^\]]+\]\s+/
          </filter>
 
@@ -423,6 +441,8 @@ fluentd:
             @type concat
             key message
             stream_identity_key stream
+            flush_interval "#{ENV['FLUENT_CONCAT_FLUSH_INTERVAL'] || 60}" # seconds
+            timeout_label "@NORMAL"
             multiline_start_regexp /^\S\d{2}\d{2}\s+[^\:]+:[^\:]+:[^\.]+\.\d{0,3}/
          </filter>
 
@@ -681,15 +701,33 @@ fluentd:
             </parse>
          </source>
 
+         # Filter to add kubernetes metadata
+         <filter oci.oke.containerlogs.**>
+            @type kubernetes_metadata
+            @id filter_kube_metadata_containerlogs
+            kubernetes_url "#{ENV['FLUENT_FILTER_KUBERNETES_URL'] || 'https://' + ENV.fetch('KUBERNETES_SERVICE_HOST') + ':' + ENV.fetch('KUBERNETES_SERVICE_PORT') + '/api'}"
+            verify_ssl "#{ENV['KUBERNETES_VERIFY_SSL'] || true}"
+            ca_file "#{ENV['KUBERNETES_CA_FILE']}"
+            skip_labels "#{ENV['FLUENT_KUBERNETES_METADATA_SKIP_LABELS'] || 'false'}"
+            skip_container_metadata "#{ENV['FLUENT_KUBERNETES_METADATA_SKIP_CONTAINER_METADATA'] || 'false'}"
+            skip_master_url "#{ENV['FLUENT_KUBERNETES_METADATA_SKIP_MASTER_URL'] || 'false'}"
+            skip_namespace_metadata "#{ENV['FLUENT_KUBERNETES_METADATA_SKIP_NAMESPACE_METADATA'] || 'false'}"
+            watch "#{ENV['FLUENT_KUBERNETES_WATCH'] || 'true'}"
+            de_dot false
+            annotation_match [ ".*" ]
+         </filter>
+
          # Record transformer filter to apply Logging Analytics configuration to each record.
          <filter oci.oke.containerlogs.**>
             @type record_transformer
             enable_ruby true
             <record>
             oci_la_metadata ${{"{{"}}"Kubernetes Cluster Name": "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_NAME'] || 'UNDEFINED'}", "Kubernetes Cluster ID": "#{ENV['FLUENT_OCI_KUBERNETES_CLUSTER_ID'] || 'UNDEFINED'}"{{"}}"}}
-            oci_la_log_group_id "#{ENV['FLUENT_OCI_KUBERNETES_LOGGROUP_ID'] || ENV['FLUENT_OCI_DEFAULT_LOGGROUP_ID']}"
+            oci_la_log_group_id ${record.dig("kubernetes", "annotations", "oracle.com/oci_la_log_group_id") ? record.dig("kubernetes", "annotations", "oracle.com/oci_la_log_group_id") : "#{ENV['FLUENT_OCI_KUBERNETES_LOGGROUP_ID'] || ENV['FLUENT_OCI_DEFAULT_LOGGROUP_ID']}"}
             oci_la_log_path "${record['tailed_path']}"
-            oci_la_log_source_name "Kubernetes Container Generic Logs"
+            oci_la_log_source_name ${record.dig("kubernetes", "annotations", "oracle.com/oci_la_log_source_name") ? record.dig("kubernetes", "annotations", "oracle.com/oci_la_log_source_name") : "Kubernetes Container Generic Logs"}
+            oci_la_entity_id ${record.dig("kubernetes", "annotations", "oracle.com/oci_la_entity_id") ? record.dig("kubernetes", "annotations", "oracle.com/oci_la_entity_id") : ""}
+            oci_la_log_set ${record.dig("kubernetes", "annotations", "oracle.com/oci_la_log_set") ? record.dig("kubernetes", "annotations", "oracle.com/oci_la_log_set") : ""} 
             {{- if eq $runtime "docker" }}
             message "${record['log']}" 
             {{- end }}
