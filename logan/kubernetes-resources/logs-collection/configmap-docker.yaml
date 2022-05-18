@@ -576,7 +576,7 @@ data:
     # Filter to add kubernetes metadata
     <filter oci.oke.containerlogs.**>
       @type kubernetes_metadata
-      @id filter_kube_metadata
+      @id filter_kube_metadata_containerlogs
       kubernetes_url "#{ENV['FLUENT_FILTER_KUBERNETES_URL'] || 'https://' + ENV.fetch('KUBERNETES_SERVICE_HOST') + ':' + ENV.fetch('KUBERNETES_SERVICE_PORT') + '/api'}"
       verify_ssl "#{ENV['KUBERNETES_VERIFY_SSL'] || true}"
       ca_file "#{ENV['KUBERNETES_CA_FILE']}"

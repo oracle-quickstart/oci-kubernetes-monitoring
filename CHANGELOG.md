@@ -1,5 +1,13 @@
 # Change Log
 
+## 2022-05-18
+### Added
+- Metrics support from OCI Logging Analytics Fluentd Output Plugin.
+### Security
+- fluent-plugin-kubernetes_metadata_filter version upgrade to 2.9.5 & fluent-plugin-kubernetes-objects version upgrade to 1.1.12, for kubeclient gem upgrade to ~4.9.3 containing security fixes.
+### Breaking Changes
+- fluent-plugin-kubernetes-objects upgrade has breaking changes w.r.t Fluentd configuration for Kubernetes Object Collection.
+
 ## 2022-04-20
 ### Added
 - Pod Annotations based customiation of configuration paremeters (oci_la_log_source_name, oci_la_log_group_id, oci_la_entity_id) for logs collected through "Kubernetes Container Generic Logs".

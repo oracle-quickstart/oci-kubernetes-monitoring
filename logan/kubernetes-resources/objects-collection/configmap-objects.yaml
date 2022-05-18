@@ -71,8 +71,9 @@ data:
     <source>
 
       @type kubernetes_objects
-      tag k8s.*
-      api_version apps/v1
+      tag k8s.*      
+      api_version v1
+      api_endpoint apis/apps
 
       <pull>
         resource_name daemon_sets
