@@ -593,7 +593,6 @@ data:
        oci_la_log_source_name ${record.dig("kubernetes", "annotations", "oracle.com/oci_la_log_source_name") ? record.dig("kubernetes", "annotations", "oracle.com/oci_la_log_source_name") : "Kubernetes Container Generic Logs"}
        oci_la_entity_id ${record.dig("kubernetes", "annotations", "oracle.com/oci_la_entity_id") ? record.dig("kubernetes", "annotations", "oracle.com/oci_la_entity_id") : ""}
        oci_la_log_set ${record.dig("kubernetes", "annotations", "oracle.com/oci_la_log_set") ? record.dig("kubernetes", "annotations", "oracle.com/oci_la_log_set") : ""}
-       message "${record['log']}"
        tag ${tag}
        </record>
     </filter>

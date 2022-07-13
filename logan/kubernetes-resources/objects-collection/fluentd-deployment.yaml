@@ -22,6 +22,7 @@ rules:
       - watch
   - apiGroups:
       - apps
+      - batch
     resources:
       - '*'
     verbs:
