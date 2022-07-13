@@ -1,5 +1,9 @@
 # Change Log
 
+## 2022-07-13
+### Added
+- Collection support for StatefulSet, Job and CronJob objects.
+
 ## 2022-05-18
 ### Added
 - Metrics support from OCI Logging Analytics Fluentd Output Plugin.

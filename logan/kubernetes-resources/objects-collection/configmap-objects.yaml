@@ -87,6 +87,43 @@ data:
         resource_name deployments
         interval 5m
       </pull>
+      <pull>
+        resource_name stateful_sets
+        interval 5m
+      </pull>
+
+    </source>
+
+    <source>
+
+      @type kubernetes_objects
+      tag k8s.*
+      api_version v1
+      api_endpoint apis/batch
+
+      <pull>
+        resource_name jobs
+        interval 5m
+      </pull>
+      <pull>
+        resource_name cron_jobs
+        interval 5m
+      </pull>
+
+    </source>
+    
+    # To support cronJob Object collection for Kubernetes versions <= 1.19 where cronJob is available under v1beta1 api version.
+    <source>
+
+      @type kubernetes_objects
+      tag k8s.*
+      api_version v1beta1
+      api_endpoint apis/batch
+
+      <pull>
+        resource_name cron_jobs
+        interval 5m
+      </pull>
 
     </source>
 
