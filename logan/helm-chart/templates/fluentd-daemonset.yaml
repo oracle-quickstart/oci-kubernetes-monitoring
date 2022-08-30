@@ -25,11 +25,15 @@ spec:
         app: {{ include "oci-la-fluentd.name" . }}-logs
         version: v1
     spec:
+      {{- if .Values.createServiceAccount }}
       serviceAccountName: {{ include "oci-la-fluentd.name" . }}-serviceaccount
+      {{- else }}
+      serviceAccountName: "{{ .Values.serviceAccount | required (printf "serviceAccount is required when createServiceAccount is false") }}"
+      {{- end }}
       tolerations:
       - key: node-role.kubernetes.io/master
         effect: NoSchedule
-      {{- if $imagePullSecrets }}	
+	  {{- if $imagePullSecrets }}	
       imagePullSecrets:		  
       - name: {{ .Values.image.imagePullSecrets }}
       {{- end}}

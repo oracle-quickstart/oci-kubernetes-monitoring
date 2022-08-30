@@ -271,11 +271,38 @@ This approach works for all the use-cases, except for multi-line plain text form
  - oracle.com/oci_la_log_group_id => to use custom logGroupId (oci_la_log_group_id)
  - oracle.com/oci_la_entity_id => to use custom entityId (oci_la_entity_id)
 
+#### Through customLogs section
+
+In this approach, all that you need to do is to provide the necessary configuration information like log file path, logSource, multiline start regular expression (in case of multi-line logs) in the customLogs section of values.yaml.
+Using this information the corresponding Fluentd configuration is generated automatically.
+
+**Note** This approach is valid only when using helm chart based installation.
+
+The following example demonstrates a container customLogs configuration
+```
+      #custom-id1:
+         #path: /var/log/containers/custom*.log
+         #ociLALogSourceName: "Custom1 Logs"
+         #multilineStartRegExp:
+         # Set isContainerLog to false if the log is not a container log (/var/log/containers/*.log). Default value is true.
+         #isContainerLog: true
+```
+
+The following example demonstrates a non container customLogs configuration
+```
+      #custom-id2:
+         #path: /var/log/custom/*.log
+         #ociLALogSourceName: "Custom2 Logs"
+         #multilineStartRegExp:
+         # Set isContainerLog to false if the log is not a container log (/var/log/containers/*.log). Default value is true.
+         #isContainerLog: false
+```
+
 #### Through Custom Fluentd conf
 
-In this approach, a new set of Source, Filter sections have to be created in the fluentd config. 
+In this approach, a new set of Source, Filter sections have to be created in the customFluentdConf section of values.yaml. 
 The following example demonstrates a custom fluentd config to tag /var/log/containers/frontend*.log with logSource "Guestbook Frontend Logs" 
-(*to be added to helm-chart values.yaml, under fluentd:configMapLogsFiles:kubernetes.conf value if using helm chart OR to either of configmap-cri.yaml / configmap-docker.yaml if using kubectl approach).
+(*to be added to helm-chart values.yaml, under customFluentdConf section if using helm chart OR to either of configmap-cri.yaml / configmap-docker.yaml if using kubectl approach).
 
 ```
          <source>
@@ -314,4 +341,55 @@ The following example demonstrates a custom fluentd config to tag /var/log/conta
 **Note**: The log path */var/log/containers/frontend-*.log* has to be excluded from the generic container logs to avoid duplicate log collection. Add the log path to *exclude_path* value under *in_tail_containerlogs* source section.
 
 In addition to the above, you may need to modify the source section to add *multiline* parser, if the logs are of plain text multi-line format (OR) add a concat plugin filter if the logs are of say multi-line but wrapped in json.
-Refer OOB fluentd config in the helm-cahrt values.yaml for examples.
+Refer OOB fluentd config in the helm-chart values.yaml for examples.
+
+
+### How to use your own ServiceAccount ?
+
+**Note**: This is supported only through the helm chart based deployment. 
+
+By default, a cluster role, cluster role binding and serviceaccount will be created for the Fluentd pods to access (readonly) various objects within the cluster for supporting logs and objects collection. However, if you want to use your own serviceaccount, you can do the same by setting the "createServiceAccount" variable to false and providing your own serviceaccount in the "serviceAccount" variable. Ensure that the serviceaccount should be in the same namespace as the namespace used for the whole deployment. The namespace for the whole deployment can be set using the "namespace" variable, whose default value is "kube-system".
+
+The serviceaccount must be binded to a cluster role defined in your cluster, which allows access to various objects metadata. The following sample is a recommended minimalistic role definition as of chart version 2.0.0.
+
+```
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: oci-la-fluentd-generic-clusterrole
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - '*'
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - apps
+      - batch
+    resources:
+      - '*'
+    verbs:
+      - get
+      - list
+      - watch
+```
+
+Once you have the cluster role defined, to bind the cluster role to your serviceaccount use the following cluster role binding definition.
+
+```
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: oci-la-fluentd-generic-clusterrolebinding
+roleRef:
+  kind: ClusterRole
+  name: oci-la-fluentd-generic-clusterrole
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+  - kind: ServiceAccount
+    name: <serviceaccount>
+    namespace: <namespace>
+```

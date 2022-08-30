@@ -6,7 +6,8 @@
     "namespace",
     "image",
     "ociLANamespace",
-    "ociLALogGroupID"
+    "ociLALogGroupID",
+    "fluentd"
   ],
   "properties": {
     "image": {
