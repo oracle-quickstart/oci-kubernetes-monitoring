@@ -25,7 +25,11 @@ spec:
         app: {{ include "oci-la-fluentd.name" . }}-objects
         version: v1
     spec:
+      {{- if .Values.createServiceAccount }}
       serviceAccountName: {{ include "oci-la-fluentd.name" . }}-serviceaccount
+      {{- else }}
+      serviceAccountName: "{{ .Values.serviceAccount | required (printf "serviceAccount is required when createServiceAccount is false") }}"
+      {{- end }}
       {{- if $imagePullSecrets }}	
       imagePullSecrets:		  
       - name: {{ .Values.image.imagePullSecrets }}

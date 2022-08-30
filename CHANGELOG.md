@@ -1,5 +1,12 @@
 # Change Log
 
+## 2022-08-30
+### Added
+- Helm chart templatisation/parameterisation to provide granular level control on the chart and its values. 
+- Support for custom ServiceAccount. 
+### Breaking Changes
+- If you have not modified any of the templates values.yaml for any customisation including custom Fluentd configuration etc., then upgrading to this version is a non breaking change. In case, if you have any modifications or customisations, then you may need to adjust those according to the new templatisation format before upgrading to this version.
+
 ## 2022-07-13
 ### Added
 - Collection support for StatefulSet, Job and CronJob objects.
