@@ -1,0 +1,159 @@
+# Title shown in Application Information tab.
+title: Logging Analytics HelmChart Deployment to OKE Cluster 
+# Sub Title shown in Application Information tab.
+description: Deploy Logging Analytics Helm Chart to monitor OKE cluster logs
+informationalText: Deploy Logging Analytics Helm Chart to monitor OKE cluster logs
+schemaVersion: 1.1.0
+version: "20221003"
+
+# URL of Logo Icon used on Application Information tab. Logo must be 130x130 pixels.
+# (Optional)
+#logoUrl: https://cloudmarketplace.oracle.com/marketplace/content?contentId=53066708
+
+source:
+  type: quickstart
+
+locale: "en"
+
+variableGroups:
+  - title: "Defualt inputs"
+    variables: 
+      - tenancy_ocid
+      - compartment_ocid
+      - region
+      - current_user_ocid
+    visible: false
+
+  - title: "OKE Cluster Details"
+    variables:
+      - oke_cluster_compartment
+      - oke_cluster_ocid
+      - oke_cluster_name
+      - oke_containerImage_url
+      - oke_namespace
+
+  - title: "Logging Analytics"
+    variables:
+    - la_namespace
+    - la_logGroup_id
+
+  - title: "Agent Configuration"
+    variables:
+      - fluentd_baseDir_path
+
+
+variables:
+
+  oke_cluster_compartment:
+    type: oci:identity:compartment:id
+    required: true    
+    title: OKE Cluster Compartment
+    description: Compartment which the OKE Cluster belogs to
+    default: compartment_ocid
+
+  oke_cluster_ocid:
+    type: oci:container:cluster:id
+    dependsOn:
+      compartmentId: ${oke_cluster_compartment}
+    title: OKE Cluster
+    description: Target OKE Cluster
+    required: true
+
+  # string field
+  oke_cluster_name:
+    type: string
+    minLength: 1
+    maxLength: 255
+    title: OKE Cluster Name
+    description: OKE Cluster Name
+    required: true
+
+  # string field
+  oke_containerImage_url:
+    type: string
+    minLength: 1
+    maxLength: 255
+    title: Container Image
+    description: Enter remote URL to fetch Container Image
+    required: true
+
+  # string field
+  oke_namespace:
+    type: string
+    minLength: 1
+    maxLength: 255
+    title: OKE Cluster Namespace (Optional)
+    description: Enter OKE Namespace to deploy helm-chart
+    default: kube-system
+    required: true
+
+  # string field
+  fluentd_baseDir_path:
+    type: string
+    maxLength: 255
+    minLength: 1
+    title: fluentd Agent Base Directory (Optional)
+    description: Base Directory Path of fluentd agent
+    default: /var/log
+    required: true
+
+  # string field
+  la_namespace:
+    type: string
+    maxLength: 40
+    minLength: 1
+    title: Logging Analytics Namespace
+    description: Enter Logging Analytics Namespace
+    required: true
+
+  # string field
+  la_logGroup_id:
+    type: string
+    maxLength: 255
+    minLength: 1
+    title: LogGroup OCID
+    description: This LogGroup will store the data collected from OKE cluster.
+    required: true
+
+# outputs:
+
+#   controlCenterUrl:
+#     type: link
+#     title: Control Center
+#     displayText: Control Center
+#     visible: false
+
+#   schemaRegistryUrl:
+#     type: link
+#     title: Schema Registry
+#     displayText: Schema Registry
+
+#   schemaRegistryPublicIps:
+#     type: csv
+#     title: Public IPs
+
+#   schemaRegistryLoadBalancer:
+#     type: ocid
+#     title: Load Balancer
+
+#   brokerPublicIps:
+#     type: csv
+
+#   connectUrl:
+#     type: link
+#     title: Connect
+#     displayText: Connect
+
+#   connectPublicIps:
+#     type: csv
+#     title: Public IPs
+
+#   restUrl:
+#     type: link
+#     title: Rest API
+
+# # primaryOutputButton is a reference to a link output that creates a primary button
+# # on the Application Information tab.
+# # (Optional) if not provided, no primary button is shown.  Also if the output
+# # referenced is not a link output, no button is shown.
+# primaryOutputButton: ${controlCenterUrl}
