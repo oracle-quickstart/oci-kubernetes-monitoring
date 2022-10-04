@@ -1,10 +1,7 @@
-# When defined in the Terraform configuration, 
-# the following variables automatically prepopulate with values on the Console pages used to create and edit the stack. 
+# When defined in the Terraform configuration, the following variables automatically prepopulate with values on the Console pages used to create and edit the stack. 
 # The stack's values are used when you select the Terraform actions Plan, Apply, and Destroy.
 # - tenancy_ocid (tenancy OCID)
-# - compartment_ocid (compartment OCID)
 # - region (region)
-# - current_user_ocid (OCID of the current user)
 #
 # Ref - https://docs.oracle.com/en-us/iaas/Content/ResourceManager/Concepts/terraformconfigresourcemanager_topic-schema.htm#console-howto__prepop
 
@@ -13,20 +10,12 @@ variable "tenancy_ocid" {
   type = string
 }
 
-variable "compartment_ocid" {
-  type = string
-}
-
 variable "region" {
   type = string
 }
 
-variable "current_user_ocid" {
-  type = string
-}
-
 ####
-##  Inputs for HelmChart deployment in OKE Cluster Deployment
+##  Inputs for deploying helm-chart
 ####
 
 # OKE Cluster Compartment
@@ -44,27 +33,27 @@ variable "oke_cluster_name" {
   type = string
 }
 
-# OKE Container Image URL
-variable "oke_containerImage_url" {
+# OCI LA Fluentd Container Image
+variable "container_image_url" {
   type = string
 }
 
-# OKE Namespace
-variable "oke_namespace" {
+# Kubernetes Namespace
+variable "kubernetes_namespace" {
   type = string
 }
 
-# fluentd base direcotry path
+# Fluentd Base Directory
 variable "fluentd_baseDir_path" {
   type = string
 }
 
-# Logging Analytics namespace
-variable "la_namespace" {
+# OCI Logging Analytics Namespace
+variable "oci_la_namespace" {
   type = string
 }
 
-# Logging Analytics LogGroupID
-variable "la_logGroup_id" {
+# OCI Logging Analytics LogGroup OCID
+variable "oci_la_logGroup_id" {
   type = string
 }

@@ -1,3 +1,5 @@
+# Update this oci provider when using terraform locally to have all other relevent fields set
+# https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/terraformproviderconfiguration.htm
 provider "oci" {
   tenancy_ocid = var.tenancy_ocid
   region       = var.region
