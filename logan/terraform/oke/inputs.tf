@@ -57,3 +57,8 @@ variable "oci_la_namespace" {
 variable "oci_la_logGroup_id" {
   type = string
 }
+
+# Compartment for creating dashboards and saved-searches
+variable oci_la_compartment_ocid {
+  type = string
+}

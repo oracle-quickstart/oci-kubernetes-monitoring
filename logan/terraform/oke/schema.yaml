@@ -32,6 +32,7 @@ variableGroups:
     variables:
     - oci_la_namespace
     - oci_la_logGroup_id
+    - oci_la_compartment_ocid
 
   - title: "Fluentd Configuration"
     variables:
@@ -104,3 +105,10 @@ variables:
     title: OCI Logging Analytics LogGroup OCID
     description: The LogGroup in which the collected log data to be stored
     required: true
+
+  oci_la_compartment_ocid:
+    type: oci:identity:compartment:id
+    required: true    
+    title: OCI Logging Analytics Compartment
+    description: Compartment for creating dashboards and saved-searches
+    default: compartment_ocid
