@@ -1,3 +1,24 @@
+terraform {
+  required_version = ">= 1.0"
+  required_providers {
+    oci = {
+      source  = "oracle/oci"
+      version = ">= 4.96.0"
+      # https://registry.terraform.io/providers/hashicorp/oci/4.85.0
+    }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "2.7.1"
+      # https://registry.terraform.io/providers/hashicorp/helm/2.1.0
+    }
+    local = {
+      source  = "hashicorp/local"
+      version = "2.2.3"
+      # https://registry.terraform.io/providers/hashicorp/local/2.1.0
+    }
+  }
+}
+
 # Update this oci provider when using terraform locally to have all other relevent fields set
 # https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/terraformproviderconfiguration.htm
 provider "oci" {
