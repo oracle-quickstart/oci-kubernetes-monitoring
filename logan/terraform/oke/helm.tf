@@ -96,8 +96,8 @@ data "helm_template" "oci-kubernetes-monitoring" {
   }
 }
 
-# kubeconfig when using Terraform locally. Not used by Oracle Resource Manager
+# Helm release artifacts for local testing and validation. Not used by helm resource.
 resource "local_file" "helm_release" {
   content  = tostring(data.helm_template.oci-kubernetes-monitoring.manifest)
-  filename = "${path.module}/gitignore/helmrelease.yaml"
+  filename = "${path.module}/local/helmrelease.yaml"
 }

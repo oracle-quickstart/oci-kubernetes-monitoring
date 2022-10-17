@@ -5,7 +5,7 @@ data "oci_containerengine_cluster_kube_config" "oke" {
 # kubeconfig when using Terraform locally. Not used by Oracle Resource Manager
 resource "local_file" "oke_kubeconfig" {
   content  = data.oci_containerengine_cluster_kube_config.oke.content
-  filename = "${path.module}/gitignore/kubeconfig"
+  filename = "${path.module}/local/kubeconfig"
 }
 
 locals {
