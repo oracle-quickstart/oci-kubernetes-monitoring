@@ -43,12 +43,17 @@ variable "kubernetes_namespace" {
   type = string
 }
 
+# Option to create Kubernetes Namespace
+variable "opt_create_kubernetes_namespace"  {
+  type = bool
+}
+
 # Fluentd Base Directory
 variable "fluentd_baseDir_path" {
   type = string
 }
 
-# OCI Logging Analytics Namespace
+# OCI Logging Analytics Service Namespace
 variable "oci_la_namespace" {
   type = string
 }
@@ -56,9 +61,21 @@ variable "oci_la_namespace" {
 # OCI Logging Analytics LogGroup OCID
 variable "oci_la_logGroup_id" {
   type = string
+  default = ""
 }
 
 # Compartment for creating dashboards and saved-searches
 variable oci_la_compartment_ocid {
+  type = string
+}
+
+# Option to create Logging Analytics
+variable "opt_use_existing_la_logGroup"  {
+  type = bool
+}
+
+# New Log Group to collect Kubernetes data
+variable oci_la_logGroup_name {
+  default = ""
   type = string
 }

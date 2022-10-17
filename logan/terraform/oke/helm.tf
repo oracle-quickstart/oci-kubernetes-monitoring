@@ -1,8 +1,12 @@
+locals  {
+  oci_la_logGroup_id = var.opt_use_existing_la_logGroup ? var.oci_la_logGroup_id : oci_log_analytics_log_analytics_log_group.new_log_group[0].id
+}
 
 resource "helm_release" "oci-kubernetes-monitoring" {
   name  = "oci-kubernetes-monitoring"
   chart = "${path.module}/../../helm-chart"
   namespace = var.kubernetes_namespace
+  create_namespace = var.opt_create_kubernetes_namespace
 
   set {
     name  = "image.url"
@@ -31,7 +35,7 @@ resource "helm_release" "oci-kubernetes-monitoring" {
 
   set {
     name  = "ociLALogGroupID"
-    value = var.oci_la_logGroup_id
+    value = local.oci_la_logGroup_id
   }
 
   set {
@@ -49,6 +53,7 @@ data "helm_template" "oci-kubernetes-monitoring" {
   name  = "oci-kubernetes-monitoring"
   chart = "${path.module}/../../helm-chart"
   namespace = var.kubernetes_namespace
+  create_namespace = var.opt_create_kubernetes_namespace
 
   set {
     name  = "image.url"
@@ -77,7 +82,7 @@ data "helm_template" "oci-kubernetes-monitoring" {
 
   set {
     name  = "ociLALogGroupID"
-    value = var.oci_la_logGroup_id
+    value = local.oci_la_logGroup_id
   }
 
   set {

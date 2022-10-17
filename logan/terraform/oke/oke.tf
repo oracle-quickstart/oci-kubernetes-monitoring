@@ -7,3 +7,7 @@ resource "local_file" "oke_kubeconfig" {
   content  = data.oci_containerengine_cluster_kube_config.oke.content
   filename = "${path.module}/gitignore/kubeconfig"
 }
+
+locals {
+  kubernetesClusterName = data.oci_containerengine_cluster_kube_config.oke
+}
