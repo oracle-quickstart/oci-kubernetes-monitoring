@@ -10,22 +10,22 @@
 ####
 
 variable "enable_local_testing" {
-  type = bool
+  type    = bool
   default = false
 }
 
 variable "enable_helm_release" {
-  type = bool
+  type    = bool
   default = true
 }
 
 variable "enable_dashboard_import" {
-  type = bool
+  type    = bool
   default = true
 }
 
 variable "enable_la_resources" {
-  type = bool
+  type    = bool
   default = true
 }
 
@@ -46,8 +46,8 @@ variable "region" {
 ####
 
 # Option to create Dynamic Group and Policies
-variable "opt_create_dynamicGroup_and_policies"  {
-  type = bool
+variable "opt_create_dynamicGroup_and_policies" {
+  type    = bool
   default = true
 }
 
@@ -76,7 +76,7 @@ variable "kubernetes_namespace" {
 }
 
 # Option to create Kubernetes Namespace
-variable "opt_create_kubernetes_namespace"  {
+variable "opt_create_kubernetes_namespace" {
   type = bool
 }
 
@@ -85,25 +85,25 @@ variable "opt_create_kubernetes_namespace"  {
 ####
 
 # Compartment for creating dashboards and saved-searches
-variable oci_la_compartment_ocid {
+variable "oci_la_compartment_ocid" {
   type = string
 }
 
 # Option to create Logging Analytics
-variable "opt_use_existing_la_logGroup"  {
+variable "opt_use_existing_la_logGroup" {
   type = bool
 }
 
 # OCI Logging Analytics LogGroup OCID
 variable "oci_la_logGroup_id" {
-  type = string
+  type    = string
   default = ""
 }
 
 # New Log Group to collect Kubernetes data
-variable oci_la_logGroup_name {
+variable "oci_la_logGroup_name" {
   default = ""
-  type = string
+  type    = string
 }
 
 ####

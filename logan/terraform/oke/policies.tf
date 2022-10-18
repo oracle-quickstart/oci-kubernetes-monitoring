@@ -1,14 +1,14 @@
 # Dynmaic Group
 resource "oci_identity_dynamic_group" "oke_dynamic_group" {
-    #Required
-    compartment_id = var.tenancy_ocid
-    description = "Required for sending data from OKE Cluster to OCI Logging Analytics"
-    matching_rule = "ANY {${join(",", local.dynamic_group_matching_rules)}}"
-    name = "${local.la_compartment_name}_DynamicGroup"
+  #Required
+  compartment_id = var.tenancy_ocid
+  description    = "Required for sending data from OKE Cluster to OCI Logging Analytics"
+  matching_rule  = "ANY {${join(",", local.dynamic_group_matching_rules)}}"
+  name           = "${local.la_compartment_name}_DynamicGroup"
 
-    provider = oci.home_region
+  provider = oci.home_region
 
-    count = var.opt_create_dynamicGroup_and_policies ? 1 : 0
+  count = var.opt_create_dynamicGroup_and_policies ? 1 : 0
 
 }
 
@@ -28,24 +28,24 @@ resource "oci_identity_policy" "oke_dynamic_group_policies" {
 
 # Logging Analytics Compartment
 data "oci_identity_compartment" "oci_la_compartment" {
-    id = var.oci_la_compartment_ocid
+  id = var.oci_la_compartment_ocid
 }
 
 # Logging Analytics Compartment Name
 locals {
-    la_compartment_name = data.oci_identity_compartment.oci_la_compartment.name
+  la_compartment_name = data.oci_identity_compartment.oci_la_compartment.name
 }
 
 # Concat Matching Rules
-locals  {
-    dynamic_group_matching_rules =  concat(
+locals {
+  dynamic_group_matching_rules = concat(
     local.instances_in_compartment_rule,
     local.clusters_in_compartment_rule
-    )
+  )
 }
 
 # Individual Rules
 locals {
-  instances_in_compartment_rule    = ["ALL {instance.compartment.id = '${var.oke_cluster_compartment}'}"]
-  clusters_in_compartment_rule     = ["ALL {resource.type = 'cluster', resource.compartment.id = '${var.oke_cluster_compartment}'}"]
+  instances_in_compartment_rule = ["ALL {instance.compartment.id = '${var.oke_cluster_compartment}'}"]
+  clusters_in_compartment_rule  = ["ALL {resource.type = 'cluster', resource.compartment.id = '${var.oke_cluster_compartment}'}"]
 }
