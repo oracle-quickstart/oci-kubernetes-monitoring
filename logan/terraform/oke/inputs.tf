@@ -30,7 +30,7 @@ variable "enable_la_resources" {
 }
 
 ####
-##  OCI provider Inputs
+##  Defualt inputs
 ####
 
 variable "tenancy_ocid" {
@@ -42,7 +42,7 @@ variable "region" {
 }
 
 ####
-##  Inputs for deploying helm-chart
+##  OKE Cluster Information
 ####
 
 # OKE Cluster Compartment
@@ -75,16 +75,9 @@ variable "opt_create_kubernetes_namespace"  {
   type = bool
 }
 
-# Fluentd Base Directory
-variable "fluentd_baseDir_path" {
-  type = string
-}
-
-# OCI Logging Analytics LogGroup OCID
-variable "oci_la_logGroup_id" {
-  type = string
-  default = ""
-}
+####
+##  OCI Logging Analytics Information
+####
 
 # Compartment for creating dashboards and saved-searches
 variable oci_la_compartment_ocid {
@@ -96,8 +89,23 @@ variable "opt_use_existing_la_logGroup"  {
   type = bool
 }
 
+# OCI Logging Analytics LogGroup OCID
+variable "oci_la_logGroup_id" {
+  type = string
+  default = ""
+}
+
 # New Log Group to collect Kubernetes data
 variable oci_la_logGroup_name {
   default = ""
+  type = string
+}
+
+####
+##  Fluentd Configuration
+####
+
+# Fluentd Base Directory
+variable "fluentd_baseDir_path" {
   type = string
 }

@@ -45,12 +45,19 @@ variableGroups:
       - fluentd_baseDir_path
 
 variables:
+
+  ####
+  ##  OKE Cluster Information
+  ####
+
+  # OKE Cluster Compartment
   oke_cluster_compartment:
     type: oci:identity:compartment:id
     required: true    
     title: OKE Cluster Compartment
     default: compartment_ocid
 
+  # OKE Cluster OCID
   oke_cluster_ocid:
     type: oci:container:cluster:id
     dependsOn:
@@ -58,7 +65,7 @@ variables:
     title: OKE Cluster
     required: true
 
-  # string field
+  # OKE Cluster Name
   oke_cluster_name:
     type: string
     minLength: 1
@@ -66,7 +73,7 @@ variables:
     title: OKE Cluster Name
     required: true
 
-  # string field
+  # OCI LA Fluentd Container Image
   container_image_url:
     type: string
     minLength: 1
@@ -75,7 +82,7 @@ variables:
     description: Image URL of OCI LA Fluentd Container
     required: true
 
-  # string field
+  # Kubernetes Namespace
   kubernetes_namespace:
     type: string
     minLength: 1
@@ -85,7 +92,7 @@ variables:
     default: kube-system
     required: true
 
-  # renders variable as a check box
+  # Option to create Kubernetes Namespace
   opt_create_kubernetes_namespace:
     type: boolean
     title: If checked, entered namespace will be created if it doesn't exist already
@@ -93,16 +100,11 @@ variables:
     default: true
     required: true
 
-  # string field
-  fluentd_baseDir_path:
-    type: string
-    maxLength: 255
-    minLength: 1
-    title: Fluentd Base Directory
-    description: Base directory on the node (with read write permission) to store fluentd plugin's related data
-    default: /var/log
-    required: true
+  ####
+  ##  OCI Logging Analytics Information
+  ####
 
+  # Compartment for creating dashboards and saved-searches
   oci_la_compartment_ocid:
     type: oci:identity:compartment:id
     required: true    
@@ -110,7 +112,7 @@ variables:
     description: Compartment for creating dashboards and saved-searches
     default: compartment_ocid
 
-  # renders variable as a check box
+  # Option to create Logging Analytics
   opt_use_existing_la_logGroup:
     type: boolean
     title: Use an existing LogGroup
@@ -118,7 +120,7 @@ variables:
     default: true
     required: true
 
-  # string field
+  # OCI Logging Analytics LogGroup OCID
   oci_la_logGroup_id:
     type: oci:logan:loggroup:id
     dependsOn:
@@ -130,6 +132,7 @@ variables:
       and: 
         - opt_use_existing_la_logGroup
 
+  # New Log Group to collect Kubernetes data
   oci_la_logGroup_name:
     type: string
     maxLength: 30
@@ -141,3 +144,17 @@ variables:
       not: 
         - opt_use_existing_la_logGroup
     pattern: "^[a-zA-Z0-9]+$"
+
+  ####
+  ##  Fluentd Configuration
+  ####
+
+  # Fluentd Base Directory
+  fluentd_baseDir_path:
+    type: string
+    maxLength: 255
+    minLength: 1
+    title: Fluentd Base Directory
+    description: Base directory on the node (with read write permission) to store fluentd plugin's related data
+    default: /var/log
+    required: true
