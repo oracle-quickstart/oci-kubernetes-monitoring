@@ -65,11 +65,6 @@ variable "oke_cluster_ocid" {
   type = string
 }
 
-# OKE Cluster Name
-variable "oke_cluster_name" {
-  type = string
-}
-
 # OCI LA Fluentd Container Image
 variable "container_image_url" {
   type = string

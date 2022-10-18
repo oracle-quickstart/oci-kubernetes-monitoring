@@ -32,7 +32,6 @@ variableGroups:
     variables:
       - oke_cluster_compartment
       - oke_cluster_ocid
-      - oke_cluster_name
       - container_image_url
       - kubernetes_namespace
       - opt_create_kubernetes_namespace
@@ -79,14 +78,6 @@ variables:
     dependsOn:
       compartmentId: ${oke_cluster_compartment}
     title: OKE Cluster
-    required: true
-
-  # OKE Cluster Name
-  oke_cluster_name:
-    type: string
-    minLength: 1
-    maxLength: 255
-    title: OKE Cluster Name
     required: true
 
   # OCI LA Fluentd Container Image

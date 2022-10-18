@@ -19,7 +19,7 @@ resource "helm_release" "oci-kubernetes-monitoring" {
 
   set {
     name  = "kubernetesClusterName"
-    value = var.oke_cluster_name
+    value = local.cluster_name
   }
 
   set {
@@ -69,7 +69,7 @@ data "helm_template" "oci-kubernetes-monitoring" {
 
   set {
     name  = "kubernetesClusterName"
-    value = var.oke_cluster_name
+    value = local.cluster_name
   }
 
   set {
