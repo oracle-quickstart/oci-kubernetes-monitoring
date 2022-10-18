@@ -80,11 +80,6 @@ variable "fluentd_baseDir_path" {
   type = string
 }
 
-# OCI Logging Analytics Service Namespace
-variable "oci_la_namespace" {
-  type = string
-}
-
 # OCI Logging Analytics LogGroup OCID
 variable "oci_la_logGroup_id" {
   type = string

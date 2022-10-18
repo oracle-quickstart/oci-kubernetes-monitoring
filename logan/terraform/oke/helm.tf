@@ -34,7 +34,7 @@ resource "helm_release" "oci-kubernetes-monitoring" {
 
   set {
     name  = "ociLANamespace"
-    value = var.oci_la_namespace
+    value = local.oci_la_namespace
   }
 
   set {
@@ -84,7 +84,7 @@ data "helm_template" "oci-kubernetes-monitoring" {
 
   set {
     name  = "ociLANamespace"
-    value = var.oci_la_namespace
+    value = local.oci_la_namespace
   }
 
   set {

@@ -39,7 +39,6 @@ variableGroups:
     - opt_use_existing_la_logGroup
     - oci_la_logGroup_id
     - oci_la_logGroup_name
-    - oci_la_namespace
 
   - title: "Fluentd Configuration"
     variables:
@@ -102,15 +101,6 @@ variables:
     title: Fluentd Base Directory
     description: Base directory on the node (with read write permission) to store fluentd plugin's related data
     default: /var/log
-    required: true
-
-  # string field
-  oci_la_namespace:
-    type: string
-    maxLength: 30
-    minLength: 5
-    title: OCI Logging Analytics Service Namespace
-    description: "Visit: https://cloud.oracle.com/loganalytics/service to find Logging Analytics service namespace"
     required: true
 
   oci_la_compartment_ocid:
