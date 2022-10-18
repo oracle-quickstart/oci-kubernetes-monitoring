@@ -15,7 +15,7 @@ resource "oci_identity_dynamic_group" "oke_dynamic_group" {
 # Policy
 resource "oci_identity_policy" "oke_dynamic_group_policies" {
   name           = "${local.la_compartment_name}_DynamicGroup_Policy"
-  description    = "Allow OCI_Kubernetes_Monitoring_DynamicGroup to upload logs to log analytics service"
+  description    = "Allow ${local.la_compartment_name}_DynamicGroup to upload logs to Logging Analytics Service"
   compartment_id = var.oci_la_compartment_ocid # Place policy at tenant level
   statements     = ["Allow group OCI_Kubernetes_Monitoring_DynamicGroup to {LOG_ANALYTICS_LOG_GROUP_UPLOAD_LOGS} in compartment ${local.la_compartment_name}"]
 
