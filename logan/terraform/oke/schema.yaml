@@ -160,3 +160,4 @@ variables:
     description: Base directory on the node (with read write permission) to store fluentd plugin's related data
     default: /var/log
     required: true
+    pattern: "^/[\w- /]*$"
