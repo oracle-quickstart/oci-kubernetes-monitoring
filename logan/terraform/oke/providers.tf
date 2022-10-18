@@ -26,6 +26,12 @@ provider "oci" {
   region       = var.region
 }
 
+provider "oci" {
+  alias        = "home_region"
+  tenancy_ocid = var.tenancy_ocid
+  region       = local.home_region
+}
+
 # https://docs.cloud.oracle.com/en-us/iaas/Content/ContEng/Tasks/contengdownloadkubeconfigfile.htm#notes
 provider "helm" {
   kubernetes {

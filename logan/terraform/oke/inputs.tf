@@ -42,6 +42,16 @@ variable "region" {
 }
 
 ####
+##  Dynamic Group and Policies
+####
+
+# Option to create Dynamic Group and Policies
+variable "opt_create_dynamicGroup_and_policies"  {
+  type = bool
+  default = true
+}
+
+####
 ##  OKE Cluster Information
 ####
 

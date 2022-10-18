@@ -24,6 +24,10 @@ variableGroups:
       - enable_la_resources
     visible: false
 
+  - title: "Dynamic Group and Policies"
+    variables:
+      - opt_create_dynamicGroup_and_policies
+
   - title: "OKE Cluster Information"
     variables:
       - oke_cluster_compartment
@@ -45,6 +49,18 @@ variableGroups:
       - fluentd_baseDir_path
 
 variables:
+
+  ####
+  ##  Dynamic Group and Policies
+  ####
+
+  # Option to create Dynamic Group and Policies
+  opt_create_dynamicGroup_and_policies:
+    type: boolean
+    title: Create required Dynamic Group and Policies
+    description: "Ref: https://github.com/oracle-quickstart/oci-kubernetes-monitoring#pre-requisites"
+    default: true
+    required: true
 
   ####
   ##  OKE Cluster Information
