@@ -35,11 +35,11 @@ variableGroups:
 
   - title: "OCI Logging Analytics Information"
     variables:
+    - oci_la_compartment_ocid
     - opt_use_existing_la_logGroup
     - oci_la_logGroup_id
     - oci_la_logGroup_name
     - oci_la_namespace
-    - oci_la_compartment_ocid
 
   - title: "Fluentd Configuration"
     variables:
@@ -123,18 +123,18 @@ variables:
   # renders variable as a check box
   opt_use_existing_la_logGroup:
     type: boolean
-    title: Use an existing Log Group to collect Kubernetes Data ?
-    description: "UnCheck to create a new Logging Analytics LogGroup instead"
+    title: Use an existing LogGroup
+    description: "UnCheck to create a new LogGroup"
     default: true
     required: true
 
   # string field
   oci_la_logGroup_id:
-    type: string
-    maxLength: 255
-    minLength: 1
-    title: OCI Logging Analytics LogGroup OCID
-    description: The LogGroup in which the collected log data to be stored
+    type: oci:logan:loggroup:id
+    dependsOn:
+      compartmentId: ${oci_la_compartment_ocid}
+    title: OCI Logging Analytics LogGroup
+    description: LogGroup to store collected logs
     required: true
     visible: 
       and: 
@@ -145,7 +145,7 @@ variables:
     maxLength: 30
     minLength: 5
     required: true    
-    title: OCI Logging Analytics Log Group
+    title: "*New* OCI Logging Analytics LogGroup Name"
     description: Note - LogGroup Names must be unique in a tenant
     visible: 
       not: 
