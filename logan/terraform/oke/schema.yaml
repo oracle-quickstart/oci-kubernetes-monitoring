@@ -21,6 +21,7 @@ variableGroups:
       - enable_local_testing
       - enable_helm_release
       - enable_dashboard_import
+      - enable_la_resources
     visible: false
 
   - title: "OKE Cluster Information"

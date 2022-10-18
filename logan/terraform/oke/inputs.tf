@@ -24,6 +24,11 @@ variable "enable_dashboard_import" {
   default = true
 }
 
+variable "enable_la_resources" {
+  type = bool
+  default = true
+}
+
 ####
 ##  OCI provider Inputs
 ####

@@ -3,7 +3,7 @@ resource "oci_log_analytics_log_analytics_log_group" "new_log_group" {
     compartment_id = var.oci_la_compartment_ocid
     display_name = var.oci_la_logGroup_name
     namespace = var.oci_la_namespace
-    count = var.opt_use_existing_la_logGroup ? 0 : 1
+    count = !var.opt_use_existing_la_logGroup && var.enable_la_resources ? 1 : 0
     description = "LogGroup for Kubernetes Logs"
 
     # Preconditions are supported in terraform v 1.2.0+
