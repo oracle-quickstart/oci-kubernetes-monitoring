@@ -135,15 +135,15 @@ variables:
   # New Log Group to collect Kubernetes data
   oci_la_logGroup_name:
     type: string
-    maxLength: 30
-    minLength: 5
+    maxLength: 255
+    minLength: 1
     required: true    
     title: "*New* OCI Logging Analytics LogGroup Name"
     description: Note - LogGroup Names must be unique in a tenant
     visible: 
       not: 
         - opt_use_existing_la_logGroup
-    pattern: "^[a-zA-Z0-9]+$"
+    pattern: "^([a-zA-Z0-9]|[a-zA-Z0-9][\\ a-zA-Z0-9_\-]*[\\a-zA-Z\-0-9_])$"
 
   ####
   ##  Fluentd Configuration
