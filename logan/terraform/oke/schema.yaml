@@ -80,7 +80,7 @@ variables:
     maxLength: 255
     title: OCI LA Fluentd Container Image
     description: Image URL of OCI LA Fluentd Container
-    pattern: "^\S+$"
+    pattern: '^[\S]+$'
     required: true
 
   # Kubernetes Namespace
@@ -91,7 +91,7 @@ variables:
     title: Kubernetes Namespace
     description: Kubernetes Namespace in which the monitoring solution to be deployed
     default: kube-system
-    pattern: "^([a-z0-9]|[a-z][a-z\-0-9]*[a-z0-9])$" #Ref - https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#dns-label-names
+    pattern: '^([a-z0-9]|[a-z][a-z\-0-9]*[a-z0-9])$' #Ref - https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#dns-label-names
     required: true
 
   # Option to create Kubernetes Namespace
@@ -145,7 +145,7 @@ variables:
     visible: 
       not: 
         - opt_use_existing_la_logGroup
-    pattern: "^([a-zA-Z0-9]|[a-zA-Z0-9][\\ a-zA-Z0-9_\-]*[\\a-zA-Z\-0-9_])$"
+    pattern: '^([a-zA-Z0-9]|[a-zA-Z0-9][\\ a-zA-Z0-9_\-]*[\\a-zA-Z\-0-9_])$'
 
   ####
   ##  Fluentd Configuration
@@ -160,4 +160,4 @@ variables:
     description: Base directory on the node (with read write permission) to store fluentd plugin's related data
     default: /var/log
     required: true
-    pattern: "^/[\w- /]*$"
+    pattern: '^/[\w- /]*$'
