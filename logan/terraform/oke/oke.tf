@@ -6,8 +6,5 @@ data "oci_containerengine_cluster_kube_config" "oke" {
 resource "local_file" "oke_kubeconfig" {
   content  = data.oci_containerengine_cluster_kube_config.oke.content
   filename = "${path.module}/local/kubeconfig"
-}
-
-locals {
-  kubernetesClusterName = data.oci_containerengine_cluster_kube_config.oke
+  count = var.enable_local_testing ? 1 : 0
 }

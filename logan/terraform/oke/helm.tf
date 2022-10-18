@@ -1,4 +1,7 @@
 locals  {
+  # Select LogGroup OCID from 
+  #  - LogGroup OCID porivded by user for an exisiting LogGroup
+  #  - logaAnalytics.tf generates a new LogGroup for User
   oci_la_logGroup_id = var.opt_use_existing_la_logGroup ? var.oci_la_logGroup_id : oci_log_analytics_log_analytics_log_group.new_log_group[0].id
 }
 
@@ -7,6 +10,7 @@ resource "helm_release" "oci-kubernetes-monitoring" {
   chart = "${path.module}/../../helm-chart"
   namespace = var.kubernetes_namespace
   create_namespace = var.opt_create_kubernetes_namespace
+  count = var.enable_helm_release ? 1 : 0
 
   set {
     name  = "image.url"
@@ -49,11 +53,14 @@ resource "helm_release" "oci-kubernetes-monitoring" {
   }
 }
 
+# helm template for release artifacts testing and validation
+# this resouece is not used by helm release
 data "helm_template" "oci-kubernetes-monitoring" {
   name  = "oci-kubernetes-monitoring"
   chart = "${path.module}/../../helm-chart"
   namespace = var.kubernetes_namespace
   create_namespace = var.opt_create_kubernetes_namespace
+  count = var.enable_local_testing ? 1 : 0
 
   set {
     name  = "image.url"
@@ -98,6 +105,7 @@ data "helm_template" "oci-kubernetes-monitoring" {
 
 # Helm release artifacts for local testing and validation. Not used by helm resource.
 resource "local_file" "helm_release" {
-  content  = tostring(data.helm_template.oci-kubernetes-monitoring.manifest)
+  content  = tostring(data.helm_template.oci-kubernetes-monitoring[0].manifest)
   filename = "${path.module}/local/helmrelease.yaml"
+  count = var.enable_local_testing ? 1 : 0
 }

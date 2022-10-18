@@ -1,5 +1,5 @@
 locals  {
-    dashboard_files=["oke_cluster_summary.json"]
+    dashboard_files = var.enable_dashboard_import ? ["oke_cluster_summary.json"] : [ ]
 }
 
 resource "oci_management_dashboard_management_dashboards_import" "multiple_dashboard_files" {

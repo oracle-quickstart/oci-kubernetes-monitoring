@@ -5,6 +5,28 @@
 #
 # Ref - https://docs.oracle.com/en-us/iaas/Content/ResourceManager/Concepts/terraformconfigresourcemanager_topic-schema.htm#console-howto__prepop
 
+####
+## Switches
+####
+
+variable "enable_local_testing" {
+  type = bool
+  default = false
+}
+
+variable "enable_helm_release" {
+  type = bool
+  default = true
+}
+
+variable "enable_dashboard_import" {
+  type = bool
+  default = true
+}
+
+####
+##  OCI provider Inputs
+####
 
 variable "tenancy_ocid" {
   type = string
