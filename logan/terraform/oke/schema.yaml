@@ -80,16 +80,18 @@ variables:
     maxLength: 255
     title: OCI LA Fluentd Container Image
     description: Image URL of OCI LA Fluentd Container
+    pattern: "^\S+$"
     required: true
 
   # Kubernetes Namespace
   kubernetes_namespace:
     type: string
     minLength: 1
-    maxLength: 255
+    maxLength: 63
     title: Kubernetes Namespace
     description: Kubernetes Namespace in which the monitoring solution to be deployed
     default: kube-system
+    pattern: "^([a-z0-9]|[a-z][a-z\-0-9]*[a-z0-9])$" #Ref - https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#dns-label-names
     required: true
 
   # Option to create Kubernetes Namespace
