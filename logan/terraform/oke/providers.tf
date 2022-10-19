@@ -16,6 +16,10 @@ terraform {
       version = "2.2.3"
       # https://registry.terraform.io/providers/hashicorp/local/2.1.0
     }
+    null = {
+      source = "hashicorp/null"
+      version = "3.1.1"
+    }
   }
 }
 
@@ -51,4 +55,8 @@ locals {
   cluster_ca_certificate = base64decode(yamldecode(data.oci_containerengine_cluster_kube_config.oke.content)["clusters"][0]["cluster"]["certificate-authority-data"])
   cluster_id             = yamldecode(data.oci_containerengine_cluster_kube_config.oke.content)["users"][0]["user"]["exec"]["args"][4]
   cluster_region         = yamldecode(data.oci_containerengine_cluster_kube_config.oke.content)["users"][0]["user"]["exec"]["args"][6]
+}
+
+provider "null" {
+  # Configuration options
 }
