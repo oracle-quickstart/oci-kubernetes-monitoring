@@ -10,7 +10,7 @@ locals {
   oke_compartment_id = var.oke_cluster_compartment
 
   # Dynmaic Group Resource
-  dynamic_group_name = "dynmaicGroup-${local.uuid}"
+  dynamic_group_name = "dynamicGroup-${local.uuid}"
   dynamic_group_desc = "OKE Cluster Instances running in ${local.la_compartment_name}"
   instances_in_compartment_rule = ["ALL {instance.compartment.id = '${var.oke_cluster_compartment}'}"]
   clusters_in_compartment_rule  = ["ALL {resource.type = 'cluster', resource.compartment.id = '${var.oke_cluster_compartment}'}"]
