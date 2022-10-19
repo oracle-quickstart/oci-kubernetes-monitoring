@@ -20,7 +20,7 @@ locals {
   # Policy
   policy_name = "policy-${local.uuid}"
   policy_desc = "Allow ${local.dynamic_group_name} to upload logs to Logging Analytics Service in ${local.la_compartment_name} compartment."
-  policy_statements = [ "Allow group ${local.dynamic_group_name} to {LOG_ANALYTICS_LOG_GROUP_UPLOAD_LOGS} in compartment ${local.la_compartment_name}" ]
+  policy_statements = [ "Allow dynamic-group ${local.dynamic_group_name} to {LOG_ANALYTICS_LOG_GROUP_UPLOAD_LOGS} in compartment ${local.la_compartment_name}" ]
 }
 
 # Logging Analytics Compartment
