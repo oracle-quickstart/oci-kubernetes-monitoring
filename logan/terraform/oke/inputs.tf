@@ -11,7 +11,7 @@
 
 variable "enable_local_testing" {
   type    = bool
-  default = false
+  default = true
 }
 
 variable "enable_helm_release" {
