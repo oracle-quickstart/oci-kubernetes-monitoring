@@ -27,6 +27,7 @@ resource "null_resource" "cluster_details" {
   provisioner "local-exec" {
     command = "rm -f $OUTPUT_FILE"
     when    = destroy
+    on_failure = continue
     #command = "echo 'Hello' > $OUTPUT_FILE"
     environment = {
       OUTPUT_FILE = "${path.module}/local/clusterDetails.json"
