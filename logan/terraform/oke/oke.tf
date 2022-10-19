@@ -17,7 +17,6 @@ resource "null_resource" "cluster_details" {
 
   provisioner "local-exec" {
     command = "oci ce cluster get --cluster-id=$CLUSTER_ID > $OUTPUT_FILE"
-    #command = "echo 'Hello' > $OUTPUT_FILE"
     environment = {
       CLUSTER_ID  = "${var.oke_cluster_ocid}"
       OUTPUT_FILE = "${path.module}/local/clusterDetails.json"
@@ -28,7 +27,6 @@ resource "null_resource" "cluster_details" {
     command = "rm -f $OUTPUT_FILE"
     when    = destroy
     on_failure = continue
-    #command = "echo 'Hello' > $OUTPUT_FILE"
     environment = {
       OUTPUT_FILE = "${path.module}/local/clusterDetails.json"
     }
