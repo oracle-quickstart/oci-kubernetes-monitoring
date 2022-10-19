@@ -104,8 +104,8 @@ variables:
   # Option to create Kubernetes Namespace
   opt_create_kubernetes_namespace:
     type: boolean
-    title: If checked, entered namespace will be created if it doesn't exist already
-    description: UnChecking this option can lead to failure when entered namespace doesn't exist in cluster
+    title: Create namespace, if doesn't exist
+    description: Note- Un-checking this option can lead to failure when namespace doesn't exist in cluster
     default: true
     required: true
 
@@ -118,14 +118,14 @@ variables:
     type: oci:identity:compartment:id
     required: true    
     title: OCI Logging Analytics Compartment
-    description: Compartment for creating dashboards and saved-searches
+    description: Compartment for creating dashboards, saved-searches and logGroup
     default: compartment_ocid
 
   # Option to create Logging Analytics
   opt_use_existing_la_logGroup:
     type: boolean
-    title: Use an existing LogGroup
-    description: "UnCheck to create a new LogGroup"
+    title: Select an existing LogGroup
+    description: "Un-check to create a new LogGroup"
     default: true
     required: true
 
@@ -148,7 +148,7 @@ variables:
     minLength: 1
     required: true    
     title: "*New* OCI Logging Analytics LogGroup Name"
-    description: Note - LogGroup Names must be unique in a tenant
+    description: Note - LogGroup name must be unique in a tenant
     visible: 
       not: 
         - opt_use_existing_la_logGroup
@@ -164,7 +164,7 @@ variables:
     maxLength: 255
     minLength: 1
     title: Fluentd Base Directory
-    description: Base directory on the node (with read write permission) to store fluentd plugin's related data
+    description: Base directory on the node (with read & write permission) to store fluentd plugin's related data
     default: /var/log
     required: true
     pattern: '^/[\w- /]*$'
