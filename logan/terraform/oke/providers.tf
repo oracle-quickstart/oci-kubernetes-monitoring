@@ -20,10 +20,14 @@ terraform {
       source = "hashicorp/null"
       version = "3.1.1"
     }
+    random = {
+      source = "hashicorp/random"
+      version = "3.4.3"
+    }
   }
 }
 
-# Update this oci provider when using terraform locally to have all other relevent fields set
+# Default Terraform Provider to be used when deploying as Resource Manager Stack
 # https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/terraformproviderconfiguration.htm
 provider "oci" {
   tenancy_ocid = var.tenancy_ocid
@@ -57,6 +61,10 @@ locals {
   cluster_region         = yamldecode(data.oci_containerengine_cluster_kube_config.oke.content)["users"][0]["user"]["exec"]["args"][6]
 }
 
-provider "null" {
-  # Configuration options
-}
+# provider "null" {
+#   # Configuration options
+# }
+
+# provider "random" {
+#   # Configuration options
+# }
