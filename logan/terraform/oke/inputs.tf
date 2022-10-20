@@ -6,6 +6,18 @@
 # Ref - https://docs.oracle.com/en-us/iaas/Content/ResourceManager/Concepts/terraformconfigresourcemanager_topic-schema.htm#console-howto__prepop
 
 ####
+##  Defualt inputs
+####
+
+variable "tenancy_ocid" {
+  type = string
+}
+
+variable "region" {
+  type = string
+}
+
+####
 ## Switches
 ####
 
@@ -27,18 +39,6 @@ variable "enable_dashboard_import" {
 variable "enable_la_resources" {
   type    = bool
   default = true
-}
-
-####
-##  Defualt inputs
-####
-
-variable "tenancy_ocid" {
-  type = string
-}
-
-variable "region" {
-  type = string
 }
 
 ####

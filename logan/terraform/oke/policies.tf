@@ -11,7 +11,7 @@ locals {
 
   # Dynmaic Group Resource
   dynamic_group_name = "dynamicGroup-${local.uuid}"
-  dynamic_group_desc = "OKE Cluster Instances running in ${local.la_compartment_name}"
+  dynamic_group_desc = "OKE Cluster Instances running in ${local.oke_compartment_name}"
   instances_in_compartment_rule = ["ALL {instance.compartment.id = '${var.oke_cluster_compartment}'}"]
   clusters_in_compartment_rule  = ["ALL {resource.type = 'cluster', resource.compartment.id = '${var.oke_cluster_compartment}'}"]
   dynamic_group_matching_rules = concat(local.instances_in_compartment_rule, local.clusters_in_compartment_rule)
@@ -58,13 +58,4 @@ resource "oci_identity_policy" "oke_dynamic_group_policies" {
 
 # UUID - Unique Identifier for DynamicGroup and Policy Names
 resource "random_uuid" "uuid" {
-}
-
-# Outputs
-output policy_name  {
-  value = local.policy_name
-}
-
-output dynamic_group_name {
-  value = local.dynamic_group_name
 }
