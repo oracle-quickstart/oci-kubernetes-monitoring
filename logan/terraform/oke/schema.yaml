@@ -14,11 +14,14 @@ source:
 locale: "en"
 
 variableGroups:
-  - title: "Defualt inputs"
+  - title: "configuration inputs"
     variables:
+      - auth_tenancy_ocid
       - tenancy_ocid
       - region
-      - enable_local_testing
+      - user_ocid
+      - private_key_path
+      - fingerprint
       - enable_helm_release
       - enable_dashboard_import
       - enable_la_resources
@@ -30,7 +33,7 @@ variableGroups:
 
   - title: "OKE Cluster Information"
     variables:
-      - oke_cluster_compartment
+      - oke_compartment_ocid
       - oke_cluster_ocid
       - container_image_url
       - kubernetes_namespace
@@ -66,7 +69,7 @@ variables:
   ####
 
   # OKE Cluster Compartment
-  oke_cluster_compartment:
+  oke_compartment_ocid:
     type: oci:identity:compartment:id
     required: true    
     title: OKE Cluster Compartment
@@ -76,7 +79,7 @@ variables:
   oke_cluster_ocid:
     type: oci:container:cluster:id
     dependsOn:
-      compartmentId: ${oke_cluster_compartment}
+      compartmentId: ${oke_compartment_ocid}
     title: OKE Cluster
     required: true
 
