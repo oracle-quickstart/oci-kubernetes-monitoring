@@ -6,9 +6,15 @@
 # Ref - https://docs.oracle.com/en-us/iaas/Content/ResourceManager/Concepts/terraformconfigresourcemanager_topic-schema.htm#console-howto__prepop
 
 ####
-##  Defualt inputs
+##  Provider Variables
 ####
 
+variable "auth_tenancy_ocid" {
+  type = string
+}
+
+# In most cases auth_tenancy_ocid and tenancy_ocid will be same 
+# but can differ in case of boat authentication
 variable "tenancy_ocid" {
   type = string
 }
@@ -17,14 +23,24 @@ variable "region" {
   type = string
 }
 
+variable "user_ocid" {
+  type    = string
+  default = ""
+}
+
+variable "private_key_path" {
+  type    = string
+  default = ""
+}
+
+variable "fingerprint" {
+  type    = string
+  default = ""
+}
+
 ####
 ## Switches
 ####
-
-variable "enable_local_testing" {
-  type    = bool
-  default = true
-}
 
 variable "enable_helm_release" {
   type    = bool
@@ -56,7 +72,7 @@ variable "opt_create_dynamicGroup_and_policies" {
 ####
 
 # OKE Cluster Compartment
-variable "oke_cluster_compartment" {
+variable "oke_compartment_ocid" {
   type = string
 }
 

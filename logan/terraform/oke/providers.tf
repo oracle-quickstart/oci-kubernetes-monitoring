@@ -27,17 +27,39 @@ terraform {
   }
 }
 
-# Default Terraform Provider to be used when deploying as Resource Manager Stack
 # https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/terraformproviderconfiguration.htm
 provider "oci" {
-  tenancy_ocid = var.tenancy_ocid
+  tenancy_ocid = var.auth_tenancy_ocid
   region       = var.region
+
+  private_key_path = var.private_key_path
+  fingerprint      = var.fingerprint
+  user_ocid        = var.user_ocid
+}
+
+data "oci_identity_region_subscriptions" "regions" {
+  tenancy_id = var.tenancy_ocid
+}
+
+locals {
+  home_region = [for s in data.oci_identity_region_subscriptions.regions.region_subscriptions : s.region_name if s.is_home_region == true][0]
 }
 
 provider "oci" {
   alias        = "home_region"
-  tenancy_ocid = var.tenancy_ocid
+  tenancy_ocid = var.auth_tenancy_ocid
   region       = local.home_region
+
+  private_key_path = var.private_key_path
+  fingerprint      = var.fingerprint
+  user_ocid        = var.user_ocid
+}
+
+locals {
+  cluster_endpoint       = yamldecode(data.oci_containerengine_cluster_kube_config.oke.content)["clusters"][0]["cluster"]["server"]
+  cluster_ca_certificate = base64decode(yamldecode(data.oci_containerengine_cluster_kube_config.oke.content)["clusters"][0]["cluster"]["certificate-authority-data"])
+  cluster_id             = yamldecode(data.oci_containerengine_cluster_kube_config.oke.content)["users"][0]["user"]["exec"]["args"][4]
+  cluster_region         = yamldecode(data.oci_containerengine_cluster_kube_config.oke.content)["users"][0]["user"]["exec"]["args"][6]
 }
 
 # https://docs.cloud.oracle.com/en-us/iaas/Content/ContEng/Tasks/contengdownloadkubeconfigfile.htm#notes
@@ -51,14 +73,6 @@ provider "helm" {
       command     = "oci"
     }
   }
-}
-
-
-locals {
-  cluster_endpoint       = yamldecode(data.oci_containerengine_cluster_kube_config.oke.content)["clusters"][0]["cluster"]["server"]
-  cluster_ca_certificate = base64decode(yamldecode(data.oci_containerengine_cluster_kube_config.oke.content)["clusters"][0]["cluster"]["certificate-authority-data"])
-  cluster_id             = yamldecode(data.oci_containerengine_cluster_kube_config.oke.content)["users"][0]["user"]["exec"]["args"][4]
-  cluster_region         = yamldecode(data.oci_containerengine_cluster_kube_config.oke.content)["users"][0]["user"]["exec"]["args"][6]
 }
 
 # provider "null" {
