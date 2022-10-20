@@ -21,9 +21,9 @@ resource "local_file" "oke_kubeconfig" {
 
 # This resource generates /local/clusterDetails.json which is used to parse OKE Cluster Name
 resource "null_resource" "cluster_details" {
-  triggers = {
-    action = timestamp()
-  }
+  # triggers = {
+  #   action = timestamp()
+  # }
 
   provisioner "local-exec" {
     command = "oci ce cluster get --cluster-id=$CLUSTER_ID > $OUTPUT_FILE"
