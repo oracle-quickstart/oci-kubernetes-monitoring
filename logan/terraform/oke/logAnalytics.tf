@@ -1,13 +1,13 @@
+locals {
+  oci_la_namespace = data.oci_log_analytics_namespace.tenant_namespace.namespace
+}
+
 data "oci_objectstorage_namespace" "tenant_namespace" {
   compartment_id = var.tenancy_ocid # tenancy ocid
 }
 
 data "oci_log_analytics_namespace" "tenant_namespace" {
   namespace = data.oci_objectstorage_namespace.tenant_namespace.namespace
-}
-
-locals {
-  oci_la_namespace = data.oci_log_analytics_namespace.tenant_namespace.namespace
 }
 
 resource "oci_log_analytics_log_analytics_log_group" "new_log_group" {

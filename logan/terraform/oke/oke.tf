@@ -42,4 +42,3 @@ resource "null_resource" "cluster_details" {
     }
   }
 }
-
