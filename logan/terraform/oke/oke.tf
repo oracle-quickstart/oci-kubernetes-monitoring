@@ -34,8 +34,8 @@ resource "null_resource" "cluster_details" {
   }
 
   provisioner "local-exec" {
-    command = "rm -f $OUTPUT_FILE"
-    when    = destroy
+    command    = "rm -f $OUTPUT_FILE"
+    when       = destroy
     on_failure = continue
     environment = {
       OUTPUT_FILE = "${path.module}/local/clusterDetails.json"

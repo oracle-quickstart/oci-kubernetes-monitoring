@@ -11,7 +11,7 @@ resource "helm_release" "oci-kubernetes-monitoring" {
   namespace        = var.kubernetes_namespace
   create_namespace = var.opt_create_kubernetes_namespace
   count            = var.enable_helm_release ? 1 : 0
-  wait = true
+  wait             = true
 
   set {
     name  = "image.url"
