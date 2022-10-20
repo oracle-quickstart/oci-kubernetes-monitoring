@@ -4,16 +4,16 @@ locals {
 
   # compartments
   la_compartment_name  = data.oci_identity_compartment.oci_la_compartment.name
-  oke_compartment_name = data.oci_identity_compartment.oke_cluster_compartment.name
+  oke_compartment_name = data.oci_identity_compartment.oke_compartment.name
 
   la_compartment_id  = var.oci_la_compartment_ocid
-  oke_compartment_id = var.oke_cluster_compartment
+  oke_compartment_id = var.oke_compartment_ocid
 
   # Dynmaic Group Resource
   dynamic_group_name            = "dynamicGroup-${local.uuid}"
   dynamic_group_desc            = "OKE Cluster Instances running in ${local.oke_compartment_name}"
-  instances_in_compartment_rule = ["ALL {instance.compartment.id = '${var.oke_cluster_compartment}'}"]
-  clusters_in_compartment_rule  = ["ALL {resource.type = 'cluster', resource.compartment.id = '${var.oke_cluster_compartment}'}"]
+  instances_in_compartment_rule = ["ALL {instance.compartment.id = '${var.oke_compartment_ocid}'}"]
+  clusters_in_compartment_rule  = ["ALL {resource.type = 'cluster', resource.compartment.id = '${var.oke_compartment_ocid}'}"]
   dynamic_group_matching_rules  = concat(local.instances_in_compartment_rule, local.clusters_in_compartment_rule)
   complied_dynamic_group_rules  = "ANY {${join(",", local.dynamic_group_matching_rules)}}"
 
@@ -29,8 +29,8 @@ data "oci_identity_compartment" "oci_la_compartment" {
 }
 
 # OKE Compartment
-data "oci_identity_compartment" "oke_cluster_compartment" {
-  id = var.oke_cluster_compartment
+data "oci_identity_compartment" "oke_compartment" {
+  id = var.oke_compartment_ocid
 }
 
 # Dynmaic Group

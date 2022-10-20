@@ -10,8 +10,8 @@ resource "helm_release" "oci-kubernetes-monitoring" {
   chart            = "${path.module}/../../helm-chart"
   namespace        = var.kubernetes_namespace
   create_namespace = var.opt_create_kubernetes_namespace
-  count            = var.enable_helm_release ? 1 : 0
-  wait             = true
+  #count            = var.enable_helm_release ? 1 : 0
+  wait = true
 
   set {
     name  = "image.url"
@@ -45,7 +45,7 @@ resource "helm_release" "oci-kubernetes-monitoring" {
 
   set {
     name  = "ociCompartmentID"
-    value = var.oke_cluster_compartment
+    value = var.oke_compartment_ocid
   }
 
   set {
@@ -61,7 +61,6 @@ data "helm_template" "oci-kubernetes-monitoring" {
   chart            = "${path.module}/../../helm-chart"
   namespace        = var.kubernetes_namespace
   create_namespace = var.opt_create_kubernetes_namespace
-  count            = var.enable_local_testing ? 1 : 0
 
   set {
     name  = "image.url"
@@ -95,7 +94,7 @@ data "helm_template" "oci-kubernetes-monitoring" {
 
   set {
     name  = "ociCompartmentID"
-    value = var.oke_cluster_compartment
+    value = var.oke_compartment_ocid
   }
 
   set {
@@ -106,7 +105,6 @@ data "helm_template" "oci-kubernetes-monitoring" {
 
 # Helm release artifacts for local testing and validation. Not used by helm resource.
 resource "local_file" "helm_release" {
-  content  = tostring(data.helm_template.oci-kubernetes-monitoring[0].manifest)
+  content  = tostring(data.helm_template.oci-kubernetes-monitoring.manifest)
   filename = "${path.module}/local/helmrelease.yaml"
-  count    = var.enable_local_testing ? 1 : 0
 }

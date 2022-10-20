@@ -1,6 +1,6 @@
 locals {
   cluster_details_map = jsondecode(data.local_file.cluster_details.content)
-  cluster_name        = local.cluster_details_map["data"]["name"]
+  cluster_name        = tostring(local.cluster_details_map["data"]["name"])
 }
 
 data "oci_containerengine_cluster_kube_config" "oke" {
@@ -16,14 +16,15 @@ data "local_file" "cluster_details" {
 resource "local_file" "oke_kubeconfig" {
   content  = data.oci_containerengine_cluster_kube_config.oke.content
   filename = "${path.module}/local/kubeconfig"
-  count    = var.enable_local_testing ? 1 : 0
 }
 
 # This resource generates /local/clusterDetails.json which is used to parse OKE Cluster Name
 resource "null_resource" "cluster_details" {
-  # triggers = {
-  #   action = timestamp()
-  # }
+
+  triggers = {
+    #cluster_id = var.oke_cluster_ocid
+    whenOkeConfigUpdates = data.oci_containerengine_cluster_kube_config.oke.content
+  }
 
   provisioner "local-exec" {
     command = "oci ce cluster get --cluster-id=$CLUSTER_ID > $OUTPUT_FILE"
