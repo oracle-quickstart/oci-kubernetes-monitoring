@@ -37,12 +37,12 @@ variable "fingerprint" {
 ####
 
 variable "boat_auth" {
-  type = bool
+  type    = bool
   default = false
 }
 
 variable "root_compartment_ocid" {
-  type = string
+  type    = string
   default = ""
 }
 
