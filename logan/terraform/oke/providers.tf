@@ -29,7 +29,7 @@ terraform {
 
 # https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/terraformproviderconfiguration.htm
 provider "oci" {
-  tenancy_ocid = var.tenancy_ocid
+  tenancy_ocid = var.boat_auth ? var.boat_tenancy_ocid : var.tenancy_ocid
   region       = var.region
 
   private_key_path = var.private_key_path
@@ -38,7 +38,7 @@ provider "oci" {
 }
 
 data "oci_identity_region_subscriptions" "regions" {
-  tenancy_id = var.boat_auth ? var.root_compartment_ocid : var.tenancy_ocid
+  tenancy_id = var.tenancy_ocid
 }
 
 locals {
@@ -47,7 +47,7 @@ locals {
 
 provider "oci" {
   alias        = "home_region"
-  tenancy_ocid = var.tenancy_ocid
+  tenancy_ocid = var.boat_auth ? var.boat_tenancy_ocid : var.tenancy_ocid
   region       = local.home_region
 
   private_key_path = var.private_key_path

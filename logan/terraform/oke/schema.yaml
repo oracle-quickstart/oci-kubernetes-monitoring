@@ -26,7 +26,7 @@ variableGroups:
       - enable_dashboard_import
       - enable_la_resources
       - boat_auth
-      - root_compartment_ocid
+      - boat_tenancy_ocid
     visible: false
 
   - title: "Dynamic Group and Policies"

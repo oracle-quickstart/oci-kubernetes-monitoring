@@ -3,7 +3,7 @@ locals {
   uuid = random_uuid.uuid.result
 
   # compartments
-  root_compartment_ocid = var.boat_auth ? var.root_compartment_ocid : var.tenancy_ocid
+  root_compartment_ocid = var.tenancy_ocid
   la_compartment_name   = data.oci_identity_compartment.oci_la_compartment.name
   oke_compartment_name  = data.oci_identity_compartment.oke_compartment.name
 

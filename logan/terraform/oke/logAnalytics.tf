@@ -3,7 +3,7 @@ locals {
 }
 
 data "oci_objectstorage_namespace" "tenant_namespace" {
-  compartment_id = var.boat_auth ? var.root_compartment_ocid : var.tenancy_ocid # tenancy ocid
+  compartment_id = var.tenancy_ocid # tenancy ocid
 }
 
 data "oci_log_analytics_namespace" "la_namespace" {

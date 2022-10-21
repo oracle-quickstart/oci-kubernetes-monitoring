@@ -41,7 +41,7 @@ variable "boat_auth" {
   default = false
 }
 
-variable "root_compartment_ocid" {
+variable "boat_tenancy_ocid" {
   type    = string
   default = ""
 }
