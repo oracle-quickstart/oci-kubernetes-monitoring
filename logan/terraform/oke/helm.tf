@@ -10,7 +10,7 @@ resource "helm_release" "oci-kubernetes-monitoring" {
   chart            = "${path.module}/../../helm-chart"
   namespace        = var.kubernetes_namespace
   create_namespace = var.opt_create_kubernetes_namespace
-  #count            = var.enable_helm_release ? 1 : 0
+  count            = var.enable_helm_release ? 1 : 0
   wait = true
 
   set {
