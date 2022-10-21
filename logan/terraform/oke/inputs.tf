@@ -9,12 +9,6 @@
 ##  Provider Variables
 ####
 
-variable "auth_tenancy_ocid" {
-  type = string
-}
-
-# In most cases auth_tenancy_ocid and tenancy_ocid will be same 
-# but can differ in case of boat authentication
 variable "tenancy_ocid" {
   type = string
 }
@@ -35,6 +29,20 @@ variable "private_key_path" {
 
 variable "fingerprint" {
   type    = string
+  default = ""
+}
+
+####
+## Boat configuration
+####
+
+variable "boat_auth" {
+  type = bool
+  default = false
+}
+
+variable "root_compartment_ocid" {
+  type = string
   default = ""
 }
 

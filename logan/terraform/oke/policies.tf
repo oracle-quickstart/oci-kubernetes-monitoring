@@ -3,8 +3,10 @@ locals {
   uuid = random_uuid.uuid.result
 
   # compartments
+  root_compartment_ocid = var.boat_auth ? var.root_compartment_ocid : var.tenancy_ocid
   la_compartment_name  = data.oci_identity_compartment.oci_la_compartment.name
   oke_compartment_name = data.oci_identity_compartment.oke_compartment.name
+  
 
   la_compartment_id  = var.oci_la_compartment_ocid
   oke_compartment_id = var.oke_compartment_ocid
@@ -37,7 +39,7 @@ data "oci_identity_compartment" "oke_compartment" {
 resource "oci_identity_dynamic_group" "oke_dynamic_group" {
   name           = local.dynamic_group_name
   description    = local.dynamic_group_desc
-  compartment_id = var.tenancy_ocid
+  compartment_id = local.root_compartment_ocid
   matching_rule  = local.complied_dynamic_group_rules
   provider       = oci.home_region
 

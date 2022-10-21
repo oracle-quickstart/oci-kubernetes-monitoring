@@ -25,6 +25,8 @@ variableGroups:
       - enable_helm_release
       - enable_dashboard_import
       - enable_la_resources
+      - boat_auth
+      - root_compartment_ocid
     visible: false
 
   - title: "Dynamic Group and Policies"
