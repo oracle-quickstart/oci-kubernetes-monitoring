@@ -16,14 +16,6 @@ terraform {
       version = "2.2.3"
       # https://registry.terraform.io/providers/hashicorp/local/2.1.0
     }
-    null = {
-      source  = "hashicorp/null"
-      version = "3.1.1"
-    }
-    random = {
-      source  = "hashicorp/random"
-      version = "3.4.3"
-    }
   }
 }
 
@@ -74,11 +66,3 @@ provider "helm" {
     }
   }
 }
-
-# provider "null" {
-#   # Configuration options
-# }
-
-# provider "random" {
-#   # Configuration options
-# }
