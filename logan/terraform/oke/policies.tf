@@ -55,7 +55,3 @@ resource "oci_identity_policy" "oke_dynamic_group_policies" {
   depends_on = [oci_identity_dynamic_group.oke_dynamic_group]
   count      = var.opt_create_dynamicGroup_and_policies ? 1 : 0
 }
-
-# UUID - Unique Identifier for DynamicGroup and Policy Names
-resource "random_uuid" "uuid" {
-}
