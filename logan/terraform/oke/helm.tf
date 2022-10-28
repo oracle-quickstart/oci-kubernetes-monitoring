@@ -2,7 +2,7 @@ locals {
   # Select LogGroup OCID from 
   #  - LogGroup OCID porivded by user for an exisiting LogGroup
   #  - logaAnalytics.tf generates a new LogGroup for User
-  oci_la_logGroup_id = !var.opt_use_existing_la_logGroup && var.enable_la_resources ? oci_log_analytics_log_analytics_log_group.new_log_group[0].id : var.oci_la_logGroup_id
+  final_oci_la_logGroup_id = !var.opt_use_existing_la_logGroup && var.enable_la_resources ? oci_log_analytics_log_analytics_log_group.new_log_group[0].id : var.oci_la_logGroup_id
 }
 
 resource "helm_release" "oci-kubernetes-monitoring" {
@@ -40,7 +40,7 @@ resource "helm_release" "oci-kubernetes-monitoring" {
 
   set {
     name  = "ociLALogGroupID"
-    value = local.oci_la_logGroup_id
+    value = local.final_oci_la_logGroup_id
   }
 
   set {
@@ -89,7 +89,7 @@ data "helm_template" "oci-kubernetes-monitoring" {
 
   set {
     name  = "ociLALogGroupID"
-    value = local.oci_la_logGroup_id
+    value = local.final_oci_la_logGroup_id
   }
 
   set {

@@ -1,18 +1,15 @@
 locals {
-  # random UUID for creating unique Policy and Dynamic Group
+  # Random UUID for creating unique Policy and Dynamic Group
   # Choosen a random namesapce UUID to represent OCIDs : "a5174906-d7a2-60bc-0c38-1d9ff99d5120"
   namespace_uuid = "a5174906-d7a2-60bc-0c38-1d9ff99d5120"
   uuid = uuidv5(local.namespace_uuid, var.oke_cluster_ocid)
 
-  # compartments
+  # Compartments
   root_compartment_ocid = var.tenancy_ocid
   la_compartment_name   = data.oci_identity_compartment.oci_la_compartment.name
   oke_compartment_name  = data.oci_identity_compartment.oke_compartment.name
 
-  la_compartment_id  = var.oci_la_compartment_ocid
-  oke_compartment_id = var.oke_compartment_ocid
-
-  # Dynmaic Group Resource
+  # Dynmaic Group
   dynamic_group_name            = "dynamicGroup-${local.uuid}"
   dynamic_group_desc            = "OKE Cluster Instances running in ${local.oke_compartment_name}"
   instances_in_compartment_rule = ["ALL {instance.compartment.id = '${var.oke_compartment_ocid}'}"]
@@ -51,7 +48,7 @@ resource "oci_identity_dynamic_group" "oke_dynamic_group" {
 resource "oci_identity_policy" "oke_dynamic_group_policies" {
   name           = local.policy_name
   description    = local.policy_desc
-  compartment_id = local.la_compartment_id
+  compartment_id = var.oci_la_compartment_ocid
   statements     = local.policy_statements
   provider       = oci.home_region
 
