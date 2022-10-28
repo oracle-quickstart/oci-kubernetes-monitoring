@@ -2,7 +2,7 @@ locals {
   # Random UUID for creating unique Policy and Dynamic Group
   # Choosen a random namesapce UUID to represent OCIDs : "a5174906-d7a2-60bc-0c38-1d9ff99d5120"
   namespace_uuid = "a5174906-d7a2-60bc-0c38-1d9ff99d5120"
-  uuid = uuidv5(local.namespace_uuid, var.oke_cluster_ocid)
+  uuid           = uuidv5(local.namespace_uuid, var.oke_cluster_ocid)
 
   # Compartments
   root_compartment_ocid = var.tenancy_ocid
