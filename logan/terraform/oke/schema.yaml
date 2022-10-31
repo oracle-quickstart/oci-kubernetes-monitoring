@@ -9,7 +9,7 @@ version: "20221004"
 #logoUrl: https://cloudmarketplace.oracle.com/marketplace/content?contentId=53066708
 
 source:
-  type: quickstart
+  type: quickstart  # enum - marketplace, quickstart or web
 
 locale: "en"
 
