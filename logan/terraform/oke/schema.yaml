@@ -48,7 +48,6 @@ variableGroups:
   - title: "Dynamic Group and Policies"
     variables:
       - opt_create_dynamicGroup_and_policies
-    visible: false
 
   - title: "Fluentd Configuration"
     variables:
