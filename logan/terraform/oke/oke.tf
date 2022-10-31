@@ -15,4 +15,5 @@ data "oci_containerengine_clusters" "oke_clusters_list" {
 resource "local_file" "oke_kubeconfig" {
   content  = data.oci_containerengine_cluster_kube_config.oke.content
   filename = "${path.module}/local/kubeconfig"
+  count            = var.enable_debugging ? 1 : 0
 }

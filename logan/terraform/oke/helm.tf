@@ -62,6 +62,8 @@ data "helm_template" "oci-kubernetes-monitoring" {
   namespace        = var.kubernetes_namespace
   create_namespace = var.opt_create_kubernetes_namespace
 
+  count            = var.enable_debugging ? 1 : 0
+
   set {
     name  = "image.url"
     value = var.container_image_url
@@ -101,10 +103,13 @@ data "helm_template" "oci-kubernetes-monitoring" {
     name  = "fluentd.baseDir"
     value = var.fluentd_baseDir_path
   }
+
+  
 }
 
 # Helm release artifacts for local testing and validation. Not used by helm resource.
 resource "local_file" "helm_release" {
-  content  = tostring(data.helm_template.oci-kubernetes-monitoring.manifest)
+  content  = tostring(data.helm_template.oci-kubernetes-monitoring[0].manifest)
   filename = "${path.module}/local/helmrelease.yaml"
+  count            = var.enable_debugging ? 1 : 0
 }

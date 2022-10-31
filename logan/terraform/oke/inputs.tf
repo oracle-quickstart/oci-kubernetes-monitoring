@@ -65,6 +65,11 @@ variable "enable_la_resources" {
   default = true
 }
 
+variable "enable_debugging" {
+  type    = bool
+  default = false
+}
+
 ####
 ##  Dynamic Group and Policies
 ####
