@@ -40,5 +40,8 @@ oci_la_logGroup_name = "<add new name for logGroup here>" # leave it unchanged, 
 # OCI Logging Analytics LogGroup
 oci_la_logGroup_id = "" # Add OCID of logGroup if opt_use_existing_la_logGroup=true, leave it empty otherwise
 
+# Option to create Dynamic Group and Policies
+opt_create_dynamicGroup_and_policies = true # if fasle; Dynamic Group & Policy won't be created
+
 # Base directory on the node (with read & write permission) to store fluentd plugin's related data
 fluentd_baseDir_path = "/var/log" # change as required
