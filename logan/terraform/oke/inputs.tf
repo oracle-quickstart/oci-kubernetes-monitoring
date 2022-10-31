@@ -72,7 +72,7 @@ variable "enable_la_resources" {
 # Option to create Dynamic Group and Policies
 variable "opt_create_dynamicGroup_and_policies" {
   type    = bool
-  default = true
+  default = false
 }
 
 ####

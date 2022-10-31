@@ -29,10 +29,6 @@ variableGroups:
       - boat_tenancy_ocid
     visible: false
 
-  - title: "Dynamic Group and Policies"
-    variables:
-      - opt_create_dynamicGroup_and_policies
-
   - title: "OKE Cluster Information"
     variables:
       - oke_compartment_ocid
@@ -47,6 +43,11 @@ variableGroups:
     - opt_use_existing_la_logGroup
     - oci_la_logGroup_id
     - oci_la_logGroup_name
+
+  - title: "Dynamic Group and Policies"
+    variables:
+      - opt_create_dynamicGroup_and_policies
+    visible: false
 
   - title: "Fluentd Configuration"
     variables:

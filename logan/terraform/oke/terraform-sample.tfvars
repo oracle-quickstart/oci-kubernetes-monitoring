@@ -12,9 +12,6 @@ fingerprint      = ""                       # <add key fingerprint>; leave it em
 
 ###  Stack inputs
 
-# Option to create Dynamic Group and Policies
-opt_create_dynamicGroup_and_policies = true # if fasle; Dynamic Group & Policy won't be created
-
 # OKE Cluster Compartment
 oke_compartment_ocid = "<add compartment OCID for OKE cluster here>"
 
