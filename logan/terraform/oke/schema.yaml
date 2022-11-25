@@ -23,7 +23,6 @@ variableGroups:
       - private_key_path
       - fingerprint
       - enable_helm_release
-      - enable_dashboard_import
       - enable_la_resources
       - enable_debugging
       - boat_auth
@@ -45,13 +44,14 @@ variableGroups:
     - oci_la_logGroup_id
     - oci_la_logGroup_name
 
-  - title: "Dynamic Group and Policies"
-    variables:
-      - opt_create_dynamicGroup_and_policies
-
   - title: "Fluentd Configuration"
     variables:
       - fluentd_baseDir_path
+
+  - title: "Setup Options"
+    variables:
+      - opt_create_dynamicGroup_and_policies
+      - enable_dashboard_import
 
 variables:
 
@@ -63,6 +63,14 @@ variables:
   opt_create_dynamicGroup_and_policies:
     type: boolean
     title: Create required Dynamic Group and Policies
+    description: "Ref: https://github.com/oracle-quickstart/oci-kubernetes-monitoring#pre-requisites"
+    default: true
+    required: true
+
+  # Option to Import Dashbords
+  enable_dashboard_import:
+    type: boolean
+    title: Import Pre-build Dashboard and Saved Searches to K8 Monitoring
     description: "Ref: https://github.com/oracle-quickstart/oci-kubernetes-monitoring#pre-requisites"
     default: true
     required: true
