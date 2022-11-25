@@ -22,7 +22,6 @@ variableGroups:
       - user_ocid
       - private_key_path
       - fingerprint
-      - enable_helm_release
       - enable_la_resources
       - enable_debugging
       - boat_auth
@@ -50,6 +49,7 @@ variableGroups:
 
   - title: "Setup Options"
     variables:
+      - enable_helm_release
       - opt_create_dynamicGroup_and_policies
       - enable_dashboard_import
 
@@ -59,6 +59,14 @@ variables:
   ##  Dynamic Group and Policies
   ####
 
+  # Option to install helm chart
+  enable_helm_release:
+    type: boolean
+    title: Deploy K8 Monitoring Solution (helm-chart)
+    description: "Ref: https://github.com/oracle-quickstart/oci-kubernetes-monitoring#pre-requisites"
+    default: true
+    required: true
+
   # Option to create Dynamic Group and Policies
   opt_create_dynamicGroup_and_policies:
     type: boolean
@@ -66,12 +74,14 @@ variables:
     description: "Ref: https://github.com/oracle-quickstart/oci-kubernetes-monitoring#pre-requisites"
     default: true
     required: true
+    visible: 
+      and: 
+        - enable_helm_release
 
   # Option to Import Dashbords
   enable_dashboard_import:
     type: boolean
     title: Import Pre-build Dashboard and Saved Searches to K8 Monitoring
-    description: "Ref: https://github.com/oracle-quickstart/oci-kubernetes-monitoring#pre-requisites"
     default: true
     required: true
 
