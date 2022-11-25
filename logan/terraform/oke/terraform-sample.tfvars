@@ -45,3 +45,7 @@ opt_create_dynamicGroup_and_policies = true # if fasle; Dynamic Group & Policy w
 
 # Base directory on the node (with read & write permission) to store fluentd plugin's related data
 fluentd_baseDir_path = "/var/log" # change as required
+
+# Switches
+enable_dashboard_import = true
+enable_helm_release     = true
