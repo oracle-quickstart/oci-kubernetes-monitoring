@@ -70,18 +70,18 @@ variables:
   # Option to create Dynamic Group and Policies
   opt_create_dynamicGroup_and_policies:
     type: boolean
-    title: Create required Dynamic Group and Policies
+    title: Create required Dynamic Group and Policies (Un-check if already creaetd manually.)
     description: "Ref: https://github.com/oracle-quickstart/oci-kubernetes-monitoring#pre-requisites"
     default: true
     required: true
-    visible: 
-      and: 
-        - enable_helm_release
+    # visible: 
+    #   and: 
+    #     - enable_helm_release
 
   # Option to Import Dashbords
   enable_dashboard_import:
     type: boolean
-    title: Import Pre-build Dashboard and Saved Searches to K8 Monitoring
+    title: Build K8 Dashboards and Saved-Searches
     default: true
     required: true
 
