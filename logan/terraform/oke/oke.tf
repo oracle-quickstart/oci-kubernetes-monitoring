@@ -3,6 +3,7 @@ locals {
   cluster_name      = [for c in local.oke_clusters_list : c.name if c.id == var.oke_cluster_ocid][0]
 }
 
+# This will be used to configure helm provider in provider.tf
 data "oci_containerengine_cluster_kube_config" "oke" {
   cluster_id = var.oke_cluster_ocid
 }
