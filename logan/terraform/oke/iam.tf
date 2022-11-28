@@ -52,10 +52,4 @@ resource "oci_identity_policy" "oke_monitoring_policy" {
 
   depends_on = [oci_identity_dynamic_group.oke_dynamic_group]
   count      = var.opt_create_dynamicGroup_and_policies ? 1 : 0
-
-  lifecycle {
-    ignore_changes = [
-      name,
-    ]
-  }
 }
