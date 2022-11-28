@@ -1,5 +1,5 @@
 locals {
-  dashboard_files = var.enable_dashboard_import ? ["cluster.json", "node.json","pod.json","workload.json"] : []
+  dashboard_files = var.enable_dashboard_import ? ["cluster.json", "node.json", "pod.json", "workload.json"] : []
 }
 
 resource "oci_management_dashboard_management_dashboards_import" "multiple_dashboard_files" {
