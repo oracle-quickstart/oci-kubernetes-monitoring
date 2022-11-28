@@ -28,6 +28,11 @@ variableGroups:
       - boat_tenancy_ocid
     visible: false
 
+  - title: "Pre-requisites"
+    variables:
+      - opt_create_dynamicGroup_and_policies
+    visible: true
+
   - title: "OKE Cluster Information"
     variables:
       - oke_compartment_ocid
@@ -50,7 +55,6 @@ variableGroups:
   - title: "Setup Options"
     variables:
       - enable_helm_release
-      - opt_create_dynamicGroup_and_policies
       - enable_dashboard_import
 
 variables:
