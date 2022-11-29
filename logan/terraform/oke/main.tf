@@ -1,6 +1,6 @@
 // Import Kubernetes Dashboards
 module "import_kubernetes_dashbords"    {
-    source = "../modules/dashboards"
+    source = "./modules/dashboards"
     oci_dashboard_compartment_ocid = var.oci_la_compartment_ocid
 
     count = var.enable_dashboard_import ? 1 : 0
@@ -9,7 +9,7 @@ module "import_kubernetes_dashbords"    {
 // Create Required Polcies and Dynamic Group
 // Needs to be called with OCI Home Region Provider
 module "policy_and_dynamic-group"   {
-    source = "../modules/iam"
+    source = "./modules/iam"
     root_compartment_ocid = var.tenancy_ocid
     oci_la_compartment_ocid = var.oci_la_compartment_ocid
     oke_compartment_ocid = var.oke_compartment_ocid
@@ -24,7 +24,7 @@ module "policy_and_dynamic-group"   {
 
 // Create Logging Analytics Resorces
 module "loggingAnalytics" {
-    source = "../modules/logan"
+    source = "./modules/logan"
     tenancy_ocid = var.tenancy_ocid
     use_existing_logGroup = var.opt_use_existing_la_logGroup
     new_logGroup_name = var.oci_la_logGroup_name
@@ -38,7 +38,7 @@ module "loggingAnalytics" {
 //  - if enable_helm_release is set to false, helm release won't be deployed
 //  - We still need to call this, for the stack to avoid errors when enable_helm_release is set as false
 module "helm_release"   {
-    source = "../modules/helm"
+    source = "./modules/helm"
     
     enable_helm_release = var.enable_helm_release
     enable_helm_debugging = var.enable_helm_debugging
