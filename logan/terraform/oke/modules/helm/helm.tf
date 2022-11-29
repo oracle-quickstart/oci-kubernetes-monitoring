@@ -10,7 +10,7 @@ locals {
 
 resource "helm_release" "oci-kubernetes-monitoring" {
   name             = "oci-kubernetes-monitoring"
-  chart            = "${path.module}/../../../helm-chart"
+  chart            = "${path.module}/../../../../helm-chart"
   namespace        = var.kubernetes_namespace
   create_namespace = var.opt_create_kubernetes_namespace
   wait             = true
@@ -62,7 +62,7 @@ resource "helm_release" "oci-kubernetes-monitoring" {
 # this resouece is not used by helm release
 data "helm_template" "oci-kubernetes-monitoring" {
   name             = "oci-kubernetes-monitoring"
-  chart            = "${path.module}/../../../helm-chart"
+  chart            = "${path.module}/../../../../helm-chart"
   namespace        = var.kubernetes_namespace
   create_namespace = var.opt_create_kubernetes_namespace
 
