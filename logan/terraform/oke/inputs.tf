@@ -129,7 +129,7 @@ variable "opt_use_existing_la_logGroup" {
 # OCI Logging Analytics LogGroup OCID
 variable "oci_la_logGroup_id" {
   type    = string
-  default = ""
+  default = "place-holder"
 }
 
 # New Log Group to collect Kubernetes data
