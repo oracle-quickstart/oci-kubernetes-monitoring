@@ -55,19 +55,15 @@ variable "enable_helm_release" {
   default = true
 }
 
+variable "enable_helm_debugging" {
+  type    = bool
+  default = false
+}
+
+
 variable "enable_dashboard_import" {
   type    = bool
   default = true
-}
-
-variable "enable_la_resources" {
-  type    = bool
-  default = true
-}
-
-variable "enable_debugging" {
-  type    = bool
-  default = false
 }
 
 ####
