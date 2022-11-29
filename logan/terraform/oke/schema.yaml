@@ -35,6 +35,7 @@ variableGroups:
 
   - title: "Dashboard Import Details"
     variables:
+      #- oci_la_compartment_ocid_for_dashboard_import
       - oci_la_compartment_ocid
     visible: 
       not: 
@@ -159,6 +160,14 @@ variables:
   ####
   ##  OCI Logging Analytics Information
   ####
+
+  # Compartment for creating dashboards and saved-searches
+  oci_la_compartment_ocid_for_dashboard_import:
+    type: oci:identity:compartment:id
+    required: true    
+    title: OCI Logging Analytics Compartment
+    description: Compartment for creating dashboards, saved-searches and logGroup
+    default: compartment_ocid
 
   # Compartment for creating dashboards and saved-searches
   oci_la_compartment_ocid:
