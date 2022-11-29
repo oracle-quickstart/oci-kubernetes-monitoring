@@ -33,6 +33,16 @@ variable "fingerprint" {
 }
 
 ####
+## Stack Variable
+####
+
+// Auto-pupulated while running RM Stack
+variable "compartment_ocid" {
+  type = string
+  default = ""
+}
+
+####
 ## Boat configuration
 ####
 
