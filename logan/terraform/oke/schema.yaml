@@ -33,6 +33,13 @@ variableGroups:
       - enable_helm_release
       - enable_dashboard_import
 
+  - title: "Dashboard Import Details"
+    variables:
+      - oci_la_compartment_ocid
+    visible: 
+      not: 
+        - enable_helm_release
+
   - title: "Pre-requisites"
     variables:
       - opt_create_dynamicGroup_and_policies
