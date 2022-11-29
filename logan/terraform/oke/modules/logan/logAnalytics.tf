@@ -17,7 +17,7 @@ resource "oci_log_analytics_log_analytics_log_group" "new_log_group" {
   namespace      = local.oci_la_namespace
   description    = "LogGroup for Kubernetes Logs"
 
-  count = var.use_existing_logGroup ? 1 : 0
+  count = var.use_existing_logGroup ? 0 : 1
 
   # Preconditions are supported in terraform v 1.2.0+
   # Resource Manager supports 1.1.x as of Oct 18th, 2022
