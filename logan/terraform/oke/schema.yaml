@@ -26,6 +26,7 @@ variableGroups:
       - enable_helm_debugging
       - boat_auth
       - boat_tenancy_ocid
+      - compartment_ocid
     visible: false
 
   - title: "Setup Options"
@@ -35,8 +36,8 @@ variableGroups:
 
   - title: "Dashboard Import Details"
     variables:
-      #- oci_la_compartment_ocid_for_dashboard_import
-      - oci_la_compartment_ocid
+      - oci_la_compartment_ocid_for_dashboard_import
+      #- oci_la_compartment_ocid
     visible: 
       not: 
         - enable_helm_release
@@ -166,7 +167,7 @@ variables:
     type: oci:identity:compartment:id
     required: true    
     title: OCI Logging Analytics Compartment
-    description: Compartment for creating dashboards, saved-searches and logGroup
+    description: Compartment for creating dashboards, saved-searches
     default: compartment_ocid
 
   # Compartment for creating dashboards and saved-searches
