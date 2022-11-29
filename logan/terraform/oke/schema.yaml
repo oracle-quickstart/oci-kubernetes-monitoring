@@ -64,6 +64,9 @@ variableGroups:
     - opt_use_existing_la_logGroup
     - oci_la_logGroup_id
     - oci_la_logGroup_name
+    visible: 
+      and: 
+        - enable_helm_release
 
   - title: "Fluentd Configuration"
     variables:
@@ -172,9 +175,6 @@ variables:
     description: "Un-check to create a new LogGroup"
     default: true
     required: true
-    visible: 
-      and: 
-        - enable_helm_release
 
   # OCI Logging Analytics LogGroup OCID
   oci_la_logGroup_id:
@@ -187,7 +187,6 @@ variables:
     visible: 
       and: 
         - opt_use_existing_la_logGroup
-        - enable_helm_release
 
   # New Log Group to collect Kubernetes data
   oci_la_logGroup_name:
