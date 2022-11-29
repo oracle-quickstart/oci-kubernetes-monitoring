@@ -5,6 +5,7 @@ variable "tenancy_ocid" {
 # Option to create Logging Analytics
 variable "use_existing_logGroup" {
   type = bool
+  default = true
 }
 
 # Compartment for creating dashboards and saved-searches
