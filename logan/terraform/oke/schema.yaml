@@ -30,8 +30,8 @@ variableGroups:
 
   - title: "Setup Options"
     variables:
-      - enable_helm_release
       - enable_dashboard_import
+      - enable_helm_release
 
   - title: "Dashboard Import Details"
     variables:
@@ -81,17 +81,17 @@ variables:
   ##  Deployment Options
   ####
 
-  # Option to install helm chart
-  enable_helm_release:
-    type: boolean
-    title: Deploy Kubenetes Monitoring Solution (helm-chart)
-    default: true
-    required: true
-
   # Option to Import Dashbords
   enable_dashboard_import:
     type: boolean
     title: Build Logging Analytics Dashboards for Kubenetes Monitoring
+    default: true
+    required: true
+
+  # Option to install helm chart
+  enable_helm_release:
+    type: boolean
+    title: Deploy Kubenetes Monitoring Solution (helm-chart)
     default: true
     required: true
 
