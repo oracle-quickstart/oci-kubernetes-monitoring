@@ -30,6 +30,9 @@ module "loggingAnalytics" {
     new_logGroup_name = var.oci_la_logGroup_name
     compartment_ocid = var.oci_la_compartment_ocid
     existing_logGroup_id = var.oci_la_logGroup_id
+
+    // Logging Analytics module does not need to run when user opts to only import dashboards
+    count = var.enable_helm_release ? 1 : 0
 }
 
 
