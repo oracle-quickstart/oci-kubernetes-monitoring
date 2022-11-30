@@ -125,12 +125,6 @@ variable "opt_create_kubernetes_namespace" {
 ####
 
 # Compartment for creating dashboards and saved-searches
-variable "oci_la_compartment_ocid_for_dashboard_import" {
-  type = string
-  default = ""
-}
-
-# Compartment for creating dashboards and saved-searches
 variable "oci_la_compartment_ocid" {
   type = string
   default = "place-holder"

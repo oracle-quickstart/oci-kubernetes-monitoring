@@ -34,14 +34,6 @@ variableGroups:
       - enable_dashboard_import
       - enable_helm_release
 
-  - title: "Dashboard Import Details"
-    variables:
-      - oci_la_compartment_ocid_for_dashboard_import
-      #- oci_la_compartment_ocid
-    visible: 
-      not: 
-        - enable_helm_release
-
   - title: "Pre-requisites"
     variables:
       - opt_create_dynamicGroup_and_policies
@@ -66,9 +58,6 @@ variableGroups:
     - opt_use_existing_la_logGroup
     - oci_la_logGroup_id
     - oci_la_logGroup_name
-    visible: 
-      and: 
-        - enable_helm_release
 
   - title: "Fluentd Configuration"
     variables:
@@ -163,14 +152,6 @@ variables:
   ####
 
   # Compartment for creating dashboards and saved-searches
-  oci_la_compartment_ocid_for_dashboard_import:
-    type: oci:identity:compartment:id
-    required: true    
-    title: OCI Logging Analytics Compartment
-    description: Compartment for creating dashboards, saved-searches
-    default: compartment_ocid
-
-  # Compartment for creating dashboards and saved-searches
   oci_la_compartment_ocid:
     type: oci:identity:compartment:id
     required: true    
@@ -185,6 +166,9 @@ variables:
     description: "Un-check to create a new LogGroup"
     default: true
     required: true
+    visible: 
+      and: 
+        - enable_helm_release    
 
   # OCI Logging Analytics LogGroup OCID
   oci_la_logGroup_id:
@@ -197,6 +181,7 @@ variables:
     visible: 
       and: 
         - opt_use_existing_la_logGroup
+        - enable_helm_release  
 
   # New Log Group to collect Kubernetes data
   oci_la_logGroup_name:
@@ -206,9 +191,12 @@ variables:
     required: true    
     title: "*New* OCI Logging Analytics LogGroup Name"
     description: Note - LogGroup name must be unique in a tenant
-    visible: 
-      not: 
-        - opt_use_existing_la_logGroup
+    visible:
+      and:
+        - not: 
+          - opt_use_existing_la_logGroup
+        - and:
+          - enable_helm_release 
     pattern: '^([a-zA-Z0-9]|[a-zA-Z0-9][\\ a-zA-Z0-9_\-]*[\\a-zA-Z\-0-9_])$'
 
   ####
