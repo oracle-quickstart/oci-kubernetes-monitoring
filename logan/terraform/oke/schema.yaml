@@ -158,6 +158,10 @@ variables:
     title: OCI Logging Analytics Compartment
     description: Compartment for creating dashboards, saved-searches and logGroup
     default: compartment_ocid
+    visible: 
+      or: 
+        - enable_helm_release
+        - enable_dashboard_import
 
   # Option to create Logging Analytics
   opt_use_existing_la_logGroup:
