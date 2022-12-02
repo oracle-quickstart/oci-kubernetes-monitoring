@@ -69,7 +69,7 @@ variableGroups:
       and:
         - enable_helm_release
 
-  - title: "Dashboards Information"
+  - title: "Dashboard Information"
     variables:
       - oci_la_dashboard_compartment_ocid
     visible: 
