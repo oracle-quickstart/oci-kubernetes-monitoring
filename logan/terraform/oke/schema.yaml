@@ -104,7 +104,7 @@ variables:
   # Option to create Dynamic Group and Policies
   opt_create_dynamicGroup_and_policies:
     type: boolean
-    title: Create Dynamic Group and Policies required for Kubernetes Monitoring Solution (Un-check if created manually.)
+    title: Create Dynamic Group and Policies required for Kubernetes Monitoring Solution (Un-check if created manually)
     #description: "Ref: https://github.com/oracle-quickstart/oci-kubernetes-monitoring#pre-requisites"
     description: "Note: The auto-created dynamic group may need changes, if node pool(s) compartment is different than cluster compartment."
     default: true
