@@ -124,9 +124,9 @@ variable "oci_la_logGroup_compartment_ocid" {
 }
 
 # Option to create Logging Analytics
-variable "opt_use_existing_la_logGroup" {
+variable "opt_create_new_la_logGroup" {
   type = bool
-  default = true
+  default = false
 }
 
 # OCI Logging Analytics LogGroup OCID

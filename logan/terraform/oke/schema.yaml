@@ -54,7 +54,7 @@ variableGroups:
   - title: "OCI Logging Analytics Information"
     variables:
     - oci_la_logGroup_compartment_ocid
-    - opt_use_existing_la_logGroup
+    - opt_create_new_la_logGroup
     - oci_la_logGroup_id
     - oci_la_logGroup_name
     visible: 
@@ -161,13 +161,6 @@ variables:
     default: compartment_ocid
 
   # Option to create Logging Analytics
-  opt_use_existing_la_logGroup: # change this to create new log group
-    type: boolean
-    title: Create a new LogGroup
-    default: true
-    required: true 
-
-  # Option to create Logging Analytics
   opt_create_new_la_logGroup: # change this to create new log group
     type: boolean
     title: Create a new LogGroup
@@ -177,7 +170,7 @@ variables:
   oci_la_logGroup_id:
     type: oci:logan:loggroup:id
     dependsOn:
-      compartmentId: ${oci_la_compartment_ocid}
+      compartmentId: ${oci_la_logGroup_compartment_ocid}
     title: OCI Logging Analytics LogGroup
     description: LogGroup to store collected logs
     required: true
@@ -194,7 +187,7 @@ variables:
     title: "OCI Logging Analytics LogGroup Name"
     description: "Note: LogGroup name must be unique in a tenant"
     visible:
-      - and: 
+      and: 
         - opt_create_new_la_logGroup
     pattern: '^([a-zA-Z0-9]|[a-zA-Z0-9][\\ a-zA-Z0-9_\-]*[\\a-zA-Z\-0-9_])$'
 
