@@ -167,7 +167,13 @@ variables:
     default: true
     required: true 
 
-  # OCI Logging Analytics LogGroup OCID
+  # Option to create Logging Analytics
+  opt_create_new_la_logGroup: # change this to create new log group
+    type: boolean
+    title: Create a new LogGroup
+    default: false
+
+  # OCI Logging Analytics LogGroup OCID of existing LogGroup
   oci_la_logGroup_id:
     type: oci:logan:loggroup:id
     dependsOn:
@@ -176,8 +182,8 @@ variables:
     description: LogGroup to store collected logs
     required: true
     visible: 
-      and: 
-        - opt_use_existing_la_logGroup
+      not: 
+        - opt_create_new_la_logGroup
 
   # New Log Group to collect Kubernetes data
   oci_la_logGroup_name:
@@ -188,8 +194,8 @@ variables:
     title: "OCI Logging Analytics LogGroup Name"
     description: "Note: LogGroup name must be unique in a tenant"
     visible:
-      - not: 
-        - opt_use_existing_la_logGroup
+      - and: 
+        - opt_create_new_la_logGroup
     pattern: '^([a-zA-Z0-9]|[a-zA-Z0-9][\\ a-zA-Z0-9_\-]*[\\a-zA-Z\-0-9_])$'
 
   ####

@@ -26,7 +26,7 @@ module "policy_and_dynamic-group"   {
 module "loggingAnalytics" {
     source = "./modules/logan"
     tenancy_ocid = var.tenancy_ocid
-    use_existing_logGroup = var.opt_use_existing_la_logGroup
+    create_new_logGroup = var.opt_create_new_la_logGroup
     new_logGroup_name = var.oci_la_logGroup_name
     compartment_ocid = var.oci_la_logGroup_compartment_ocid
     existing_logGroup_id = var.oci_la_logGroup_id
