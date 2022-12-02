@@ -70,7 +70,6 @@ variable "enable_helm_debugging" {
   default = false
 }
 
-
 variable "enable_dashboard_import" {
   type    = bool
   default = true
@@ -102,12 +101,6 @@ variable "oke_cluster_ocid" {
   default = "place-holder"
 }
 
-# OCI LA Fluentd Container Image
-variable "container_image_url" {
-  type = string
-  default = "place-holder"
-}
-
 # Kubernetes Namespace
 variable "kubernetes_namespace" {
   type = string
@@ -124,8 +117,8 @@ variable "opt_create_kubernetes_namespace" {
 ##  OCI Logging Analytics Information
 ####
 
-# Compartment for creating dashboards and saved-searches
-variable "oci_la_compartment_ocid" {
+# Compartment for creating logging analytics LogGroup
+variable "oci_la_logGroup_compartment_ocid" {
   type = string
   default = "place-holder"
 }
@@ -148,9 +141,21 @@ variable "oci_la_logGroup_name" {
   type    = string
 }
 
+# Compartment for creating logging analytics dashboards and saved-searches
+variable "oci_la_dashboard_compartment_ocid" {
+  type = string
+  default = "place-holder"
+}
+
 ####
 ##  Fluentd Configuration
 ####
+
+# OCI LA Fluentd Container Image
+variable "container_image_url" {
+  type = string
+  default = "place-holder"
+}
 
 # Fluentd Base Directory
 variable "fluentd_baseDir_path" {

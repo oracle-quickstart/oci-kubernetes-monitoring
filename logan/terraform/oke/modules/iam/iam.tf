@@ -22,7 +22,7 @@ locals {
 
 # Logging Analytics Compartment
 data "oci_identity_compartment" "oci_la_compartment" {
-  id = var.oci_la_compartment_ocid
+  id = var.oci_la_logGroup_compartment_ocid
 }
 
 # OKE Compartment
@@ -43,7 +43,7 @@ resource "oci_identity_dynamic_group" "oke_dynamic_group" {
 resource "oci_identity_policy" "oke_monitoring_policy" {
   name           = local.policy_name
   description    = local.policy_desc
-  compartment_id = var.oci_la_compartment_ocid
+  compartment_id = var.oci_la_logGroup_compartment_ocid
   statements     = local.policy_statements
   #provider       = oci.home_region
 
