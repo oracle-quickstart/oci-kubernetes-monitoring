@@ -226,4 +226,4 @@ variables:
     required: true    
     title: Dashboards Compartment
     description: "Note: Compartment for creating dashboards and saved-searches"
-    default: compartment_ocid
+    default: oci_la_logGroup_compartment_ocid
