@@ -74,8 +74,7 @@ variableGroups:
       - oci_la_dashboard_compartment_ocid
     visible: 
       and:
-        - container_image_url
-        - enable_helm_release
+        - enable_dashboard_import
 
 variables:
 
