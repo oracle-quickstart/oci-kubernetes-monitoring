@@ -1,9 +1,10 @@
+# tenancy ocid
 variable "root_compartment_ocid" {
   type = string
 }
 
 # Compartment for creating dashboards and saved-searches
-variable "oci_la_compartment_ocid" {
+variable "oci_la_compartment_ocid" { # oci_la_logGroup_compartment_ocid
   type = string
 }
 

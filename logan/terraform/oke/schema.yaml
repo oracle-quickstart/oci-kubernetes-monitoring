@@ -31,8 +31,9 @@ variableGroups:
 
   - title: "Setup Options"
     variables:
+      - enable_helm_release    
       - enable_dashboard_import
-      - enable_helm_release
+
 
   - title: "Pre-requisites"
     variables:
@@ -45,7 +46,6 @@ variableGroups:
     variables:
       - oke_compartment_ocid
       - oke_cluster_ocid
-      - container_image_url
       - kubernetes_namespace
       - opt_create_kubernetes_namespace
     visible: 
@@ -63,7 +63,8 @@ variableGroups:
     variables:
       - fluentd_baseDir_path
     visible: 
-      and: 
+      and:
+        - container_image_url
         - enable_helm_release
 
 variables:
@@ -72,17 +73,18 @@ variables:
   ##  Deployment Options
   ####
 
-  # Option to Import Dashbords
-  enable_dashboard_import:
-    type: boolean
-    title: Build Logging Analytics Dashboards for Kubenetes Monitoring
-    default: true
-    required: true
-
   # Option to install helm chart
   enable_helm_release:
     type: boolean
-    title: Deploy Kubenetes Monitoring Solution (helm-chart)
+    title: Deploy Kubernetes Monitoring Solution
+    description: "Ref: https://github.com/oracle-quickstart/oci-kubernetes-monitoring"
+    default: true
+    required: true
+
+  # Option to Import Dashbords
+  enable_dashboard_import:
+    type: boolean
+    title: Create Logging Analytics Dashboards for Kubernetes Monitoring
     default: true
     required: true
 
@@ -93,8 +95,9 @@ variables:
   # Option to create Dynamic Group and Policies
   opt_create_dynamicGroup_and_policies:
     type: boolean
-    title: Create required Dynamic Group and Policies (Un-check if created manually.)
-    description: "Ref: https://github.com/oracle-quickstart/oci-kubernetes-monitoring#pre-requisites"
+    title: Create Dynamic Group and Policies required for Kubernetes Monitoring Solution (Un-check if created manually.)
+    #description: "Ref: https://github.com/oracle-quickstart/oci-kubernetes-monitoring#pre-requisites"
+    description: "Note: The auto-created dynamic group may need changes, if node pool(s) compartment is different than cluster compartment."
     default: true
     required: true
 
@@ -116,17 +119,6 @@ variables:
       compartmentId: ${oke_compartment_ocid}
     title: OKE Cluster
     required: true
-
-  # OCI LA Fluentd Container Image
-  container_image_url:
-    type: string
-    minLength: 1
-    maxLength: 255
-    title: OCI LA Fluentd Container Image
-    description: Image URL of OCI LA Fluentd Container
-    pattern: '^[\S]+$'
-    required: true
-    default: ""
 
   # Kubernetes Namespace
   kubernetes_namespace:
@@ -155,8 +147,7 @@ variables:
   oci_la_compartment_ocid:
     type: oci:identity:compartment:id
     required: true    
-    title: OCI Logging Analytics Compartment
-    description: Compartment for creating dashboards, saved-searches and logGroup
+    title: LogGroup Compartment
     default: compartment_ocid
     visible: 
       or: 
@@ -164,10 +155,9 @@ variables:
         - enable_dashboard_import
 
   # Option to create Logging Analytics
-  opt_use_existing_la_logGroup:
+  opt_use_existing_la_logGroup: # change this to create new log group
     type: boolean
-    title: Select an existing LogGroup
-    description: "Un-check to create a new LogGroup"
+    title: Create a new LogGroup
     default: true
     required: true
     visible: 
@@ -193,8 +183,8 @@ variables:
     maxLength: 255
     minLength: 1
     required: true    
-    title: "*New* OCI Logging Analytics LogGroup Name"
-    description: Note - LogGroup name must be unique in a tenant
+    title: "OCI Logging Analytics LogGroup Name"
+    description: "Note: LogGroup name must be unique in a tenant"
     visible:
       and:
         - not: 
@@ -206,6 +196,17 @@ variables:
   ####
   ##  Fluentd Configuration
   ####
+
+  # OCI LA Fluentd Container Image
+  container_image_url:
+    type: string
+    minLength: 1
+    maxLength: 255
+    title: OCI Logging Analytics fluentd container image
+    description: URL of OCI Logging Analytics fluentd container image
+    pattern: '^[\S]+$'
+    required: true
+    default: ""
 
   # Fluentd Base Directory
   fluentd_baseDir_path:

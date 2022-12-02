@@ -3,7 +3,7 @@ variable "tenancy_ocid" {
 }
 
 # Option to create Logging Analytics
-variable "use_existing_logGroup" {
+variable "use_existing_logGroup" { # opt_create_new_logGroup
   type = bool
   default = true
 }

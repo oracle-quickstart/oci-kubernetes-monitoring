@@ -1,7 +1,7 @@
 // Import Kubernetes Dashboards
 module "import_kubernetes_dashbords"    {
     source = "./modules/dashboards"
-    oci_dashboard_compartment_ocid = var.oci_la_compartment_ocid
+    oci_management_dashboard_compartment_ocid = var.oci_la_compartment_ocid
 
     count = var.enable_dashboard_import ? 1 : 0
 }
