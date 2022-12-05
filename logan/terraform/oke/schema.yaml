@@ -139,6 +139,7 @@ variables:
     type: oci:identity:compartment:id
     required: true    
     title: Logging Analytics Compartment
+    description: Compartment to store Logging Analytics dashboards and logGroup
     default: compartment_ocid
 
   # Option to create Logging Analytics
