@@ -183,7 +183,6 @@ variables:
     minLength: 1
     maxLength: 255
     title: OCI Logging Analytics fluentd container image
-    description: URL of OCI Logging Analytics fluentd container image
     default: iad.ocir.io/ax1wgjs6b2vc/oci_la_fluentd:ol8-1.1
     pattern: '^[\S]+$'
     required: true
