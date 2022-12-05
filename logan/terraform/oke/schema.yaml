@@ -22,8 +22,8 @@ variableGroups:
       - user_ocid
       - private_key_path
       - fingerprint
-      - enable_la_resources
       - enable_helm_debugging
+      - enable_dashboard_import
       - enable_helm_release
       - boat_auth
       - boat_tenancy_ocid
@@ -151,7 +151,7 @@ variables:
   oci_la_logGroup_id:
     type: oci:logan:loggroup:id
     dependsOn:
-      compartmentId: ${oci_la_logGroup_compartment_ocid}
+      compartmentId: ${compartment_ocid}
     title: OCI Logging Analytics LogGroup
     description: LogGroup to store collected logs
     required: true
