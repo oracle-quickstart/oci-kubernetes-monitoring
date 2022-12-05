@@ -138,7 +138,7 @@ variables:
   oci_la_compartment_ocid:
     type: oci:identity:compartment:id
     required: true    
-    title: Logging Analytics Compartment
+    title: OCI Logging Analytics Compartment
     description: Compartment to store Logging Analytics dashboards and logGroup
     default: compartment_ocid
 
@@ -153,7 +153,7 @@ variables:
     type: oci:logan:loggroup:id
     dependsOn:
       compartmentId: ${oci_la_compartment_ocid}
-    title: Logging Analytics LogGroup
+    title: OCI Logging Analytics LogGroup
     description: LogGroup to store collected logs
     required: true
     visible: 
