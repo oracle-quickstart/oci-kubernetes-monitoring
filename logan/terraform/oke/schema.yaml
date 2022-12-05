@@ -184,9 +184,10 @@ variables:
     maxLength: 255
     title: OCI Logging Analytics fluentd container image
     description: URL of OCI Logging Analytics fluentd container image
+    default: iad.ocir.io/ax1wgjs6b2vc/oci_la_fluentd:ol8-1.1
     pattern: '^[\S]+$'
     required: true
-    default: ""
+    description: "Note: Default value is not recommended for production usage. You may need to build your own image using https://github.com/oracle-quickstart/oci-kubernetes-monitoring#docker-image"
 
   # Fluentd Base Directory
   fluentd_baseDir_path:
