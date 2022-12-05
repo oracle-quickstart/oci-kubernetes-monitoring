@@ -126,7 +126,7 @@ variables:
   opt_create_kubernetes_namespace:
     type: boolean
     title: Create namespace, if doesn't exist
-    description: Note- Un-checking this option can lead to failure when namespace doesn't exist in cluster
+    description: "Note: Un-checking this option can lead to failure when namespace doesn't exist in cluster"
     default: true
     required: true
 
