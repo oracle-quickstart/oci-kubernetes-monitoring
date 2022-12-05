@@ -151,7 +151,7 @@ variables:
   oci_la_logGroup_id:
     type: oci:logan:loggroup:id
     dependsOn:
-      compartmentId: ${compartment_ocid}
+      compartmentId: ${oci_la_compartment_ocid}
     title: Logging Analytics LogGroup
     description: LogGroup to store collected logs
     required: true
