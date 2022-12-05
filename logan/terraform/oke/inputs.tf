@@ -92,19 +92,17 @@ variable "opt_create_dynamicGroup_and_policies" {
 # OKE Cluster Compartment
 variable "oke_compartment_ocid" {
   type = string
-  default = "place-holder"
+  default = ""
 }
 
 # OKE Cluster OCID
 variable "oke_cluster_ocid" {
   type = string
-  default = "place-holder"
 }
 
 # Kubernetes Namespace
 variable "kubernetes_namespace" {
   type = string
-  default = "place-holder"
 }
 
 # Option to create Kubernetes Namespace
@@ -120,7 +118,7 @@ variable "opt_create_kubernetes_namespace" {
 # Compartment for creating logging analytics LogGroup and Dashboards
 variable "oci_la_compartment_ocid" {
   type = string
-  default = "place-holder"
+  default = ""
 }
 
 # Option to create Logging Analytics
@@ -132,13 +130,12 @@ variable "opt_create_new_la_logGroup" {
 # OCI Logging Analytics LogGroup OCID
 variable "oci_la_logGroup_id" {
   type    = string
-  default = "place-holder"
 }
 
 # New Log Group to collect Kubernetes data
 variable "oci_la_logGroup_name" {
-  default = ""
   type    = string
+  default = ""
 }
 
 ####
@@ -148,7 +145,6 @@ variable "oci_la_logGroup_name" {
 # OCI LA Fluentd Container Image
 variable "container_image_url" {
   type = string
-  default = "place-holder"
 }
 
 # Fluentd Base Directory
