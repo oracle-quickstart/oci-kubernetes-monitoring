@@ -5,7 +5,7 @@ variable "tenancy_ocid" {
 
 # Option to create Logging Analytics
 variable "create_new_logGroup" { # opt_create_new_logGroup
-  type = bool
+  type    = bool
   default = false
 }
 

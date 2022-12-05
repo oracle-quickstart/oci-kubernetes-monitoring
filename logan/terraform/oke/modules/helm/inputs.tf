@@ -39,7 +39,7 @@ variable "kubernetes_namespace" {
 
 # Option to create Kubernetes Namespace
 variable "opt_create_kubernetes_namespace" {
-  type = bool
+  type    = bool
   default = true
 }
 
@@ -55,7 +55,7 @@ variable "oci_la_logGroup_id" {
 
 # Log Analytics Namespace
 variable "oci_la_namespace" {
-  type    = string
+  type = string
 }
 
 ####
@@ -64,6 +64,6 @@ variable "oci_la_namespace" {
 
 # Fluentd Base Directory
 variable "fluentd_baseDir_path" {
-  type = string
+  type    = string
   default = "/var/log"
 }

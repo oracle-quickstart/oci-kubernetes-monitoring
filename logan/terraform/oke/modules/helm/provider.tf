@@ -10,8 +10,8 @@ terraform {
 }
 
 data "oci_containerengine_cluster_kube_config" "oke" {
-  cluster_id =  var.oke_cluster_ocid
-  count = var.enable_helm_release ? 1 : 0
+  cluster_id = var.oke_cluster_ocid
+  count      = var.enable_helm_release ? 1 : 0
 }
 
 locals {

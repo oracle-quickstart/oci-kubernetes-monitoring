@@ -6,8 +6,8 @@ data "oci_log_analytics_namespace" "la_namespace" {
   namespace = data.oci_objectstorage_namespace.tenant_namespace.namespace
 }
 
-locals  {
-  oci_la_namespace = data.oci_log_analytics_namespace.la_namespace.namespace
+locals {
+  oci_la_namespace         = data.oci_log_analytics_namespace.la_namespace.namespace
   final_oci_la_logGroup_id = var.create_new_logGroup ? oci_log_analytics_log_analytics_log_group.new_log_group[0].id : var.existing_logGroup_id
 }
 

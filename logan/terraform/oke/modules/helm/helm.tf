@@ -5,7 +5,7 @@ data "oci_containerengine_clusters" "oke_clusters_list" {
 
 locals {
   oke_clusters_list = data.oci_containerengine_clusters.oke_clusters_list.clusters
-  oke_cluster_name      = var.enable_helm_release ? [for c in local.oke_clusters_list : c.name if c.id == var.oke_cluster_ocid][0] : "place-holder"
+  oke_cluster_name  = var.enable_helm_release ? [for c in local.oke_clusters_list : c.name if c.id == var.oke_cluster_ocid][0] : "place-holder"
 }
 
 resource "helm_release" "oci-kubernetes-monitoring" {
