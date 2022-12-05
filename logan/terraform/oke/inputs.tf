@@ -117,8 +117,8 @@ variable "opt_create_kubernetes_namespace" {
 ##  OCI Logging Analytics Information
 ####
 
-# Compartment for creating logging analytics LogGroup
-variable "oci_la_logGroup_compartment_ocid" {
+# Compartment for creating logging analytics LogGroup and Dashboards
+variable "oci_la_compartment_ocid" {
   type = string
   default = "place-holder"
 }
@@ -139,12 +139,6 @@ variable "oci_la_logGroup_id" {
 variable "oci_la_logGroup_name" {
   default = ""
   type    = string
-}
-
-# Compartment for creating logging analytics dashboards and saved-searches
-variable "oci_la_dashboard_compartment_ocid" {
-  type = string
-  default = "place-holder"
 }
 
 ####

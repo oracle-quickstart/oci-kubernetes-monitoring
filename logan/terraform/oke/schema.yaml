@@ -24,15 +24,11 @@ variableGroups:
       - fingerprint
       - enable_la_resources
       - enable_helm_debugging
+      - enable_helm_release
       - boat_auth
       - boat_tenancy_ocid
       - compartment_ocid
     visible: false
-
-  - title: "Setup Options"
-    variables:
-      - enable_helm_release    
-      - enable_dashboard_import
 
   - title: "Pre-requisites"
     variables:
@@ -53,7 +49,7 @@ variableGroups:
 
   - title: "OCI Logging Analytics Information"
     variables:
-    - oci_la_logGroup_compartment_ocid
+    - oci_la_compartment_ocid
     - opt_create_new_la_logGroup
     - oci_la_logGroup_id
     - oci_la_logGroup_name
@@ -69,13 +65,6 @@ variableGroups:
       and:
         - enable_helm_release
 
-  - title: "Dashboard Information"
-    variables:
-      - oci_la_dashboard_compartment_ocid
-    visible: 
-      and:
-        - enable_dashboard_import
-
 variables:
 
   ####
@@ -87,13 +76,6 @@ variables:
     type: boolean
     title: Deploy Kubernetes Monitoring Solution
     description: "Ref: https://github.com/oracle-quickstart/oci-kubernetes-monitoring"
-    default: true
-    required: true
-
-  # Option to Import Dashbords
-  enable_dashboard_import:
-    type: boolean
-    title: Create Logging Analytics Dashboards for Kubernetes Monitoring
     default: true
     required: true
 
@@ -152,11 +134,11 @@ variables:
   ##  OCI Logging Analytics Information
   ####
 
-  # Compartment for creating dashboards and saved-searches
-  oci_la_logGroup_compartment_ocid:
+  # Compartment for creating dashboards and logGroup
+  oci_la_compartment_ocid:
     type: oci:identity:compartment:id
     required: true    
-    title: LogGroup Compartment
+    title: Logging Analytics Compartment
     default: compartment_ocid
 
   # Option to create Logging Analytics
@@ -215,15 +197,3 @@ variables:
     default: /var/log
     required: true
     pattern: '^/[\w- /]*$'
-
-  ####
-  ##  Dashboards Information
-  ####    
-
-  # Compartment for creating dashboards and saved-searches
-  oci_la_dashboard_compartment_ocid:
-    type: oci:identity:compartment:id
-    required: true    
-    title: Dashboards Compartment
-    description: "Note: Compartment for creating dashboards and saved-searches"
-    default: oci_la_logGroup_compartment_ocid

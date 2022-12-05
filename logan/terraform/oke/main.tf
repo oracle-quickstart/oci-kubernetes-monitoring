@@ -1,9 +1,7 @@
 // Import Kubernetes Dashboards
 module "import_kubernetes_dashbords"    {
     source = "./modules/dashboards"
-    compartment_ocid = var.oci_la_dashboard_compartment_ocid
-
-    count = var.enable_dashboard_import ? 1 : 0
+    compartment_ocid = var.oci_la_compartment_ocid
 }
 
 // Create Required Polcies and Dynamic Group
@@ -11,7 +9,7 @@ module "import_kubernetes_dashbords"    {
 module "policy_and_dynamic-group"   {
     source = "./modules/iam"
     root_compartment_ocid = var.tenancy_ocid
-    oci_la_logGroup_compartment_ocid = var.oci_la_logGroup_compartment_ocid
+    oci_la_logGroup_compartment_ocid = var.oci_la_compartment_ocid
     oke_compartment_ocid = var.oke_compartment_ocid
     oke_cluster_ocid = var.oke_cluster_ocid
 
@@ -28,7 +26,7 @@ module "loggingAnalytics" {
     tenancy_ocid = var.tenancy_ocid
     create_new_logGroup = var.opt_create_new_la_logGroup
     new_logGroup_name = var.oci_la_logGroup_name
-    compartment_ocid = var.oci_la_logGroup_compartment_ocid
+    compartment_ocid = var.oci_la_compartment_ocid
     existing_logGroup_id = var.oci_la_logGroup_id
 }
 
