@@ -256,7 +256,7 @@
                                     "values": [
                                         {
                                             "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                            "label": "emdemo (root)/LogAnalytics",
+                                            "label": "###### (root)/LogAnalytics",
                                             "pos": 0
                                         }
                                     ]
@@ -311,7 +311,7 @@
                                 "values": [
                                     {
                                         "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                        "label": "emdemo (root)/LogAnalytics",
+                                        "label": "###### (root)/LogAnalytics",
                                         "pos": 0
                                     }
                                 ]
@@ -406,7 +406,7 @@
                                     "values": [
                                         {
                                             "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                            "label": "emdemo (root)/LogAnalytics"
+                                            "label": "###### (root)/LogAnalytics"
                                         }
                                     ]
                                 }
@@ -420,7 +420,7 @@
                                 "values": [
                                     {
                                         "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                        "label": "emdemo (root)/LogAnalytics"
+                                        "label": "###### (root)/LogAnalytics"
                                     }
                                 ]
                             }
@@ -547,7 +547,7 @@
                                     "values": [
                                         {
                                             "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                            "label": "emdemo (root)/LogAnalytics"
+                                            "label": "###### (root)/LogAnalytics"
                                         }
                                     ]
                                 },
@@ -569,7 +569,7 @@
                                 "values": [
                                     {
                                         "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                        "label": "emdemo (root)/LogAnalytics"
+                                        "label": "###### (root)/LogAnalytics"
                                     }
                                 ]
                             },
@@ -627,7 +627,7 @@
                                     "values": [
                                         {
                                             "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                            "label": "emdemo (root)/LogAnalytics",
+                                            "label": "###### (root)/LogAnalytics",
                                             "pos": 0
                                         }
                                     ]
@@ -682,7 +682,7 @@
                                 "values": [
                                     {
                                         "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                        "label": "emdemo (root)/LogAnalytics",
+                                        "label": "###### (root)/LogAnalytics",
                                         "pos": 0
                                     }
                                 ]
@@ -775,7 +775,7 @@
                                     "values": [
                                         {
                                             "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                            "label": "emdemo (root)/LogAnalytics"
+                                            "label": "###### (root)/LogAnalytics"
                                         }
                                     ]
                                 },
@@ -805,7 +805,7 @@
                                     "values": [
                                         {
                                             "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                            "label": "emdemo (root)/LogAnalytics"
+                                            "label": "###### (root)/LogAnalytics"
                                         }
                                     ]
                                 },
@@ -824,7 +824,7 @@
                                 "values": [
                                     {
                                         "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                        "label": "emdemo (root)/LogAnalytics"
+                                        "label": "###### (root)/LogAnalytics"
                                     }
                                 ]
                             },
@@ -854,7 +854,7 @@
                                 "values": [
                                     {
                                         "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                        "label": "emdemo (root)/LogAnalytics"
+                                        "label": "###### (root)/LogAnalytics"
                                     }
                                 ]
                             },
@@ -998,7 +998,7 @@
                                     "values": [
                                         {
                                             "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                            "label": "emdemo (root)/LogAnalytics"
+                                            "label": "###### (root)/LogAnalytics"
                                         }
                                     ]
                                 },
@@ -1047,7 +1047,7 @@
                                 "values": [
                                     {
                                         "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                        "label": "emdemo (root)/LogAnalytics"
+                                        "label": "###### (root)/LogAnalytics"
                                     }
                                 ]
                             },
@@ -1231,7 +1231,7 @@
                                     "values": [
                                         {
                                             "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                            "label": "emdemo (root)/LogAnalytics"
+                                            "label": "###### (root)/LogAnalytics"
                                         }
                                     ]
                                 },
@@ -1253,7 +1253,7 @@
                                 "values": [
                                     {
                                         "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                        "label": "emdemo (root)/LogAnalytics"
+                                        "label": "###### (root)/LogAnalytics"
                                     }
                                 ]
                             },
@@ -1388,7 +1388,7 @@
                                     "values": [
                                         {
                                             "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                            "label": "emdemo (root)/LogAnalytics"
+                                            "label": "###### (root)/LogAnalytics"
                                         }
                                     ]
                                 },
@@ -1418,7 +1418,7 @@
                                     "values": [
                                         {
                                             "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                            "label": "emdemo (root)/LogAnalytics"
+                                            "label": "###### (root)/LogAnalytics"
                                         }
                                     ]
                                 },
@@ -1437,7 +1437,7 @@
                                 "values": [
                                     {
                                         "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                        "label": "emdemo (root)/LogAnalytics"
+                                        "label": "###### (root)/LogAnalytics"
                                     }
                                 ]
                             },
@@ -1467,7 +1467,7 @@
                                 "values": [
                                     {
                                         "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                        "label": "emdemo (root)/LogAnalytics"
+                                        "label": "###### (root)/LogAnalytics"
                                     }
                                 ]
                             },
@@ -1627,7 +1627,7 @@
                                     "values": [
                                         {
                                             "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                            "label": "emdemo (root)/LogAnalytics"
+                                            "label": "###### (root)/LogAnalytics"
                                         }
                                     ]
                                 },
@@ -1676,7 +1676,7 @@
                                 "values": [
                                     {
                                         "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                        "label": "emdemo (root)/LogAnalytics"
+                                        "label": "###### (root)/LogAnalytics"
                                     }
                                 ]
                             },

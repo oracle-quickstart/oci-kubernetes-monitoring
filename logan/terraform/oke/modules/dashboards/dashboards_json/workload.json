@@ -805,7 +805,7 @@
                                     "values": [
                                         {
                                             "value": "ocid1.tenancy.oc1..aaaaaaaanua5mvmgcova3ryrjeek2oywffq2boddcqdx6gh7hiakiegshqfq",
-                                            "label": "emdemo (root)/LogAnalytics"
+                                            "label": "###### (root)/LogAnalytics"
                                         }
                                     ]
                                 },
@@ -827,7 +827,7 @@
                                 "values": [
                                     {
                                         "value": "ocid1.tenancy.oc1..aaaaaaaanua5mvmgcova3ryrjeek2oywffq2boddcqdx6gh7hiakiegshqfq",
-                                        "label": "emdemo (root)/LogAnalytics"
+                                        "label": "###### (root)/LogAnalytics"
                                     }
                                 ]
                             },
@@ -1298,7 +1298,7 @@
                                     "values": [
                                         {
                                             "value": "ocid1.tenancy.oc1..aaaaaaaanua5mvmgcova3ryrjeek2oywffq2boddcqdx6gh7hiakiegshqfq",
-                                            "label": "emdemo (root)/LogAnalytics"
+                                            "label": "###### (root)/LogAnalytics"
                                         }
                                     ]
                                 },
@@ -1347,7 +1347,7 @@
                                 "values": [
                                     {
                                         "value": "ocid1.tenancy.oc1..aaaaaaaanua5mvmgcova3ryrjeek2oywffq2boddcqdx6gh7hiakiegshqfq",
-                                        "label": "emdemo (root)/LogAnalytics"
+                                        "label": "###### (root)/LogAnalytics"
                                     }
                                 ]
                             },
@@ -1549,7 +1549,7 @@
                                     "values": [
                                         {
                                             "value": "ocid1.tenancy.oc1..aaaaaaaanua5mvmgcova3ryrjeek2oywffq2boddcqdx6gh7hiakiegshqfq",
-                                            "label": "emdemo (root)/LogAnalytics"
+                                            "label": "###### (root)/LogAnalytics"
                                         }
                                     ]
                                 },
@@ -1598,7 +1598,7 @@
                                 "values": [
                                     {
                                         "value": "ocid1.tenancy.oc1..aaaaaaaanua5mvmgcova3ryrjeek2oywffq2boddcqdx6gh7hiakiegshqfq",
-                                        "label": "emdemo (root)/LogAnalytics"
+                                        "label": "###### (root)/LogAnalytics"
                                     }
                                 ]
                             },
@@ -1738,7 +1738,7 @@
                                     "values": [
                                         {
                                             "value": "ocid1.tenancy.oc1..aaaaaaaanua5mvmgcova3ryrjeek2oywffq2boddcqdx6gh7hiakiegshqfq",
-                                            "label": "emdemo (root)/LogAnalytics"
+                                            "label": "###### (root)/LogAnalytics"
                                         }
                                     ]
                                 },
@@ -1787,7 +1787,7 @@
                                 "values": [
                                     {
                                         "value": "ocid1.tenancy.oc1..aaaaaaaanua5mvmgcova3ryrjeek2oywffq2boddcqdx6gh7hiakiegshqfq",
-                                        "label": "emdemo (root)/LogAnalytics"
+                                        "label": "###### (root)/LogAnalytics"
                                     }
                                 ]
                             },
@@ -1922,7 +1922,7 @@
                                     "values": [
                                         {
                                             "value": "ocid1.tenancy.oc1..aaaaaaaanua5mvmgcova3ryrjeek2oywffq2boddcqdx6gh7hiakiegshqfq",
-                                            "label": "emdemo (root)/LogAnalytics"
+                                            "label": "###### (root)/LogAnalytics"
                                         }
                                     ]
                                 },
@@ -1971,7 +1971,7 @@
                                 "values": [
                                     {
                                         "value": "ocid1.tenancy.oc1..aaaaaaaanua5mvmgcova3ryrjeek2oywffq2boddcqdx6gh7hiakiegshqfq",
-                                        "label": "emdemo (root)/LogAnalytics"
+                                        "label": "###### (root)/LogAnalytics"
                                     }
                                 ]
                             },
@@ -2244,7 +2244,7 @@
                                     "values": [
                                         {
                                             "value": "ocid1.tenancy.oc1..aaaaaaaanua5mvmgcova3ryrjeek2oywffq2boddcqdx6gh7hiakiegshqfq",
-                                            "label": "emdemo (root)/LogAnalytics"
+                                            "label": "###### (root)/LogAnalytics"
                                         }
                                     ]
                                 },
@@ -2293,7 +2293,7 @@
                                 "values": [
                                     {
                                         "value": "ocid1.tenancy.oc1..aaaaaaaanua5mvmgcova3ryrjeek2oywffq2boddcqdx6gh7hiakiegshqfq",
-                                        "label": "emdemo (root)/LogAnalytics"
+                                        "label": "###### (root)/LogAnalytics"
                                     }
                                 ]
                             },
@@ -2819,7 +2819,7 @@
                                     "values": [
                                         {
                                             "value": "ocid1.tenancy.oc1..aaaaaaaanua5mvmgcova3ryrjeek2oywffq2boddcqdx6gh7hiakiegshqfq",
-                                            "label": "emdemo (root)/LogAnalytics"
+                                            "label": "###### (root)/LogAnalytics"
                                         }
                                     ]
                                 },
@@ -2868,7 +2868,7 @@
                                 "values": [
                                     {
                                         "value": "ocid1.tenancy.oc1..aaaaaaaanua5mvmgcova3ryrjeek2oywffq2boddcqdx6gh7hiakiegshqfq",
-                                        "label": "emdemo (root)/LogAnalytics"
+                                        "label": "###### (root)/LogAnalytics"
                                     }
                                 ]
                             },
