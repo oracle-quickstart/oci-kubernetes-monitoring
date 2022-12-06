@@ -2,6 +2,8 @@
 module "import_kubernetes_dashbords"    {
     source = "./modules/dashboards"
     compartment_ocid = var.oci_la_compartment_ocid
+    
+    count = var.enable_dashboard_import ? 1 : 0
 }
 
 // Create Required Polcies and Dynamic Group
