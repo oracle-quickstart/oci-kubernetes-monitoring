@@ -130,6 +130,7 @@ variable "opt_create_new_la_logGroup" {
 # OCI Logging Analytics LogGroup OCID
 variable "oci_la_logGroup_id" {
   type    = string
+  default = ""
 }
 
 # New Log Group to collect Kubernetes data
@@ -144,7 +145,7 @@ variable "oci_la_logGroup_name" {
 
 # OCI LA Fluentd Container Image
 variable "container_image_url" {
-  type = string
+    type = string
 }
 
 # Fluentd Base Directory
@@ -152,3 +153,4 @@ variable "fluentd_baseDir_path" {
   type = string
   default = "/var/log"
 }
+
