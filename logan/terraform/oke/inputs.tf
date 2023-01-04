@@ -5,6 +5,9 @@
 #
 # Ref - https://docs.oracle.com/en-us/iaas/Content/ResourceManager/Concepts/terraformconfigresourcemanager_topic-schema.htm#console-howto__prepop
 
+####
+##  Provider Variables
+####
 
 variable "tenancy_ocid" {
   type = string
@@ -14,27 +17,86 @@ variable "region" {
   type = string
 }
 
+variable "user_ocid" {
+  type    = string
+  default = ""
+}
+
+variable "private_key_path" {
+  type    = string
+  default = ""
+}
+
+variable "fingerprint" {
+  type    = string
+  default = ""
+}
+
 ####
-##  Inputs for deploying helm-chart
+## Stack Variable
+####
+
+// Auto-pupulated while running RM Stack
+variable "compartment_ocid" {
+  type = string
+  default = ""
+}
+
+####
+## Boat configuration
+####
+
+variable "boat_auth" {
+  type    = bool
+  default = false
+}
+
+variable "boat_tenancy_ocid" {
+  type    = string
+  default = ""
+}
+
+####
+## Switches
+####
+
+variable "enable_helm_release" {
+  type    = bool
+  default = true
+}
+
+variable "enable_helm_debugging" {
+  type    = bool
+  default = false
+}
+
+variable "enable_dashboard_import" {
+  type    = bool
+  default = true
+}
+
+####
+##  Dynamic Group and Policies
+####
+
+# Option to create Dynamic Group and Policies
+variable "opt_create_dynamicGroup_and_policies" {
+  type    = bool
+  default = false
+}
+
+####
+##  OKE Cluster Information
 ####
 
 # OKE Cluster Compartment
-variable "oke_cluster_compartment" {
+variable "oke_compartment_ocid" {
   type = string
+  default = ""
 }
 
 # OKE Cluster OCID
 variable "oke_cluster_ocid" {
-  type = string
-}
-
-# OKE Cluster Name
-variable "oke_cluster_name" {
-  type = string
-}
-
-# OCI LA Fluentd Container Image
-variable "container_image_url" {
   type = string
 }
 
@@ -43,17 +105,52 @@ variable "kubernetes_namespace" {
   type = string
 }
 
-# Fluentd Base Directory
-variable "fluentd_baseDir_path" {
-  type = string
+# Option to create Kubernetes Namespace
+variable "opt_create_kubernetes_namespace" {
+  type = bool
+  default = true
 }
 
-# OCI Logging Analytics Namespace
-variable "oci_la_namespace" {
+####
+##  OCI Logging Analytics Information
+####
+
+# Compartment for creating logging analytics LogGroup and Dashboards
+variable "oci_la_compartment_ocid" {
   type = string
+  default = ""
+}
+
+# Option to create Logging Analytics
+variable "opt_create_new_la_logGroup" {
+  type = bool
+  default = false
 }
 
 # OCI Logging Analytics LogGroup OCID
 variable "oci_la_logGroup_id" {
-  type = string
+  type    = string
+  default = ""
 }
+
+# New Log Group to collect Kubernetes data
+variable "oci_la_logGroup_name" {
+  type    = string
+  default = ""
+}
+
+####
+##  Fluentd Configuration
+####
+
+# OCI LA Fluentd Container Image
+variable "container_image_url" {
+    type = string
+}
+
+# Fluentd Base Directory
+variable "fluentd_baseDir_path" {
+  type = string
+  default = "/var/log"
+}
+
