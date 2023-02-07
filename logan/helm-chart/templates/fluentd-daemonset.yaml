@@ -67,15 +67,23 @@ spec:
         resources: {{- toYaml .Values.resources | nindent 10 }}
         {{- end }}
         volumeMounts:
+        # Mount all relevant locations depending on where the actual logs presents.
         - name: varlog
           mountPath: /var/log
-        # Mount all relevant locations depending on where the actual logs presents.
+          {{- if ne .Values.fluentd.baseDir "/var/log" }}
+          readOnly: true
+          {{- end }}
         - name: dockercontainerlogdirectory
           mountPath: {{ .Values.volumes.podsHostPath }}
           readOnly: true
         - name: dockercontainerdatadirectory
           mountPath: {{ .Values.volumes.containerdataHostPath }}
-          readOnly: true  
+          readOnly: true
+        # RW mount to store pos files, buffer and output plugin logs (if baseDir is not /var/log)
+        {{- if ne .Values.fluentd.baseDir "/var/log" }}
+        - name: basedir
+          mountPath: {{ .Values.fluentd.baseDir }}
+        {{- end }}
         {{- if eq $authtype "config" }}
         # Mount directory where oci config exists
         - name: ociconfigdir
@@ -94,16 +102,22 @@ spec:
       {{- if .Values.extraVolumes }}
       {{- toYaml .Values.extraVolumes | nindent 6 }}
       {{- end }}
+      # Mount all relevant locations depending on where the actual logs presents.
       - name: varlog
         hostPath:
           path: /var/log
-      # Mount all relevant locations depending on where the actual logs presents.
       - name: dockercontainerlogdirectory
         hostPath:
           path: {{ .Values.volumes.podsHostPath }}
       - name: dockercontainerdatadirectory
         hostPath:
-          path: {{ .Values.volumes.containerdataHostPath }}		  
+          path: {{ .Values.volumes.containerdataHostPath }}
+      # RW mount to store tail plugin pos files, output plugin buffer and logs (if baseDir is not /var/log)
+      {{- if ne .Values.fluentd.baseDir "/var/log" }}
+      - name: basedir
+        hostPath:
+          path: {{ .Values.fluentd.baseDir }}
+      {{- end }}   		  
       {{- if eq $authtype "config" }}
       # Mount directory where oci config exists
       - name: ociconfigdir

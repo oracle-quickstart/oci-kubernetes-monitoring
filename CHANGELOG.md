@@ -1,5 +1,16 @@
 # Change Log
 
+## 2022-02-07
+### Added
+- Create a new mount (rw) using the value provided for baseDir.
+- Expose "encoding" parameter of Fluentd's tail plugin as part of values.yaml, which allows users to override default encoding (ASCII-8BIT) for applicable logs/log types. 
+- Partial CRI logs handling.
+- Oracle Resource Manager / Terraform support for deploying the solution. 
+### Changed
+- Modified /var/log to mount as readonly by default, except when /var/log is set as baseDir (to store Fluentd state, buffer etc.,).
+### Breaking Changes
+- Logging Analytics Fluentd Output plugin log location will be derived using baseDir instead using value of fluentd:ociLoggingAnalyticsOutputPlugin:plugin_log_location. The default value still remains unchanged and is a non breaking change except if it was modified to a different value.
+
 ## 2022-08-30
 ### Added
 - Helm chart templatisation/parameterisation to provide granular level control on the chart and its values. 

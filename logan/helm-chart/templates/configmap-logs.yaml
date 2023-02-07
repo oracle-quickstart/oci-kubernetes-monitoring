@@ -46,7 +46,7 @@ data:
           config_file_location      {{ .Values.oci.path }}/{{ .Values.oci.file }}
           profile_name              "{{ .Values.fluentd.ociLoggingAnalyticsOutputPlugin.profile_name }}"
           {{- end }}
-          plugin_log_location       "{{ .Values.fluentd.ociLoggingAnalyticsOutputPlugin.plugin_log_location }}"
+          plugin_log_location       "{{ .Values.fluentd.baseDir }}"
           plugin_log_level          "{{ .Values.fluentd.ociLoggingAnalyticsOutputPlugin.plugin_log_level }}"
           plugin_log_file_size      "{{ .Values.fluentd.ociLoggingAnalyticsOutputPlugin.plugin_log_file_size }}"
           plugin_log_file_count     "{{ .Values.fluentd.ociLoggingAnalyticsOutputPlugin.plugin_log_file_count }}"
@@ -90,6 +90,13 @@ data:
        pos_file {{ $.Values.fluentd.baseDir }}/oci_la_fluentd_outplugin/pos/{{ $name }}.logs.pos
        tag oci.oke.{{ $name }}.*
        read_from_head "{{ $.Values.fluentd.tailPlugin.readFromHead }}" 
+       {{- if $logDefinition.encoding }}
+       encoding {{ $logDefinition.encoding }}
+       {{- else if $.Values.fluentd.kubernetesSystem.encoding }}
+       encoding {{ $.Values.fluentd.kubernetesSystem.encoding }}
+       {{- else if $.Values.fluentd.tailPlugin.encoding }}
+       encoding {{ $.Values.fluentd.tailPlugin.encoding }}
+       {{- end }}
        <parse>
        {{- if eq $runtime "docker" }}
        @type json
@@ -134,6 +141,20 @@ data:
        tag ${tag}
        </record>
     </filter>
+    # Concat filter to handle partial logs in CRI/ContainerD
+    # Docker can also have partial logs but handling is different for different docker versions. Considering Kubernetes/OKE moved to ContainerD/CRI since last 4-5 releases, ignoring docker handling.
+    # This filter can not be clubbed with concat filter for multiline as both are mutually exclusive.
+    {{- if eq $runtime "cri" }}
+    <filter oci.oke.{{ $name }}.**>
+      @type concat
+      key message
+      use_partial_cri_logtag true
+      partial_cri_logtag_key logtag
+      partial_cri_stream_key stream
+      # timeout scenario should not occur in general for partial logs handling
+      timeout_label "@NORMAL"
+    </filter>
+    {{- end }}
     {{- if $logDefinition.multilineStartRegExp }}
     # Concat filter to handle multi-line log records.
     <filter oci.oke.{{ $name }}.**>
@@ -159,6 +180,13 @@ data:
        pos_file {{ $.Values.fluentd.baseDir }}/oci_la_fluentd_outplugin/pos/{{ $name }}.logs.pos
        tag oci.oke.{{ $name }}.*
        read_from_head "{{ $.Values.fluentd.tailPlugin.readFromHead }}"
+       {{- if $logDefinition.encoding }}
+       encoding {{ $logDefinition.encoding }}
+       {{- else if $.Values.fluentd.linuxSystem.encoding }}
+       encoding {{ $.Values.fluentd.linuxSystem.encoding }}
+       {{- else if $.Values.fluentd.tailPlugin.encoding }}
+       encoding {{ $.Values.fluentd.tailPlugin.encoding }}
+       {{- end }}
        <parse>
        {{- if $logDefinition.multilineStartRegExp }}
        @type multiline
@@ -217,6 +245,13 @@ data:
        pos_file {{ .Values.fluentd.baseDir }}/oci_la_fluentd_outplugin/pos/syslog.logs.pos
        tag oci.oke.syslog.messages.**
        read_from_head "{{ .Values.fluentd.tailPlugin.readFromHead }}" 
+       {{- if .Values.fluentd.linuxSystem.logs.syslog.encoding }}
+       encoding {{ .Values.fluentd.linuxSystem.logs.syslog.encoding }}
+       {{- else if .Values.fluentd.linuxSystem.encoding }}
+       encoding {{ .Values.fluentd.linuxSystem.encoding }}
+       {{- else if .Values.fluentd.tailPlugin.encoding }}
+       encoding {{ .Values.fluentd.tailPlugin.encoding }}
+       {{- end }}
        <parse>
        @type multiline
        format_firstline {{ .Values.fluentd.linuxSystem.logs.syslog.multilineStartRegExp }}
@@ -325,6 +360,11 @@ data:
        pos_file {{ $.Values.fluentd.baseDir }}/oci_la_fluentd_outplugin/pos/{{ $name }}.logs.pos
        tag oci.oke.{{ $name }}.*
        read_from_head "{{ $.Values.fluentd.tailPlugin.readFromHead }}"
+       {{- if $logDefinition.encoding }}
+       encoding {{ $logDefinition.encoding }}
+       {{- else if $.Values.fluentd.tailPlugin.encoding }}
+       encoding {{ $.Values.fluentd.tailPlugin.encoding }}
+       {{- end }}
        <parse>
        {{- if eq "false" ($logDefinition.isContainerLog | toString) }}
        {{- if $logDefinition.multilineStartRegExp }}
@@ -368,7 +408,20 @@ data:
        tag ${tag}
        </record>
     </filter>
-    
+    # Concat filter to handle partial logs in CRI/ContainerD
+    # Docker can also have partial logs but handling is different for different docker versions. Considering Kubernetes/OKE moved to ContainerD/CRI since last 4-5 releases, ignoring docker handling.
+    # This filter can not be clubbed with concat filter for multiline as both are mutually exclusive.
+    {{- if and (ne "false" ($logDefinition.isContainerLog | toString)) (eq $runtime "cri") }}
+    <filter oci.oke.{{ $name }}.**>
+      @type concat
+      key message
+      use_partial_cri_logtag true
+      partial_cri_logtag_key logtag
+      partial_cri_stream_key stream
+      # timeout scenario should not occur in general for partial logs handling
+      timeout_label "@NORMAL"
+    </filter>
+    {{- end }}
     {{- if and (ne "false" ($logDefinition.isContainerLog | toString)) ($logDefinition.multilineStartRegExp) }}
     # Concat filter to handle multi-line log records.
     <filter oci.oke.{{ $name }}.**>
@@ -397,6 +450,11 @@ data:
        read_from_head "{{ .Values.fluentd.tailPlugin.readFromHead }}"
        # Modify the exclude path once a specific container log config is explictly defined to avoid duplicate collection.
        exclude_path [{{ $excludePath }}]
+       {{- if .Values.fluentd.genericContainerLogs.encoding }}
+       encoding {{ .Values.fluentd.genericContainerLogs.encoding }}
+       {{- else if .Values.fluentd.tailPlugin.encoding }}
+       encoding {{ .Values.fluentd.tailPlugin.encoding }}
+       {{- end }}
        <parse>
        {{- if eq $runtime "docker" }}
        @type json
@@ -446,6 +504,21 @@ data:
        {{- end }}
        tag ${tag}
        </record>
+    </filter>
+    {{- end }}
+    
+    # Concat filter to handle partial logs in CRI/ContainerD
+    # Docker can also have partial logs but handling is different for different docker versions. Considering Kubernetes/OKE moved to ContainerD/CRI since last 4-5 releases, ignoring docker handling.
+    # This filter can not be clubbed with concat filter for multiline as both are mutually exclusive.
+    {{- if eq $runtime "cri" }}
+    <filter oci.oke.containerlogs.**>
+      @type concat
+      key message
+      use_partial_cri_logtag true
+      partial_cri_logtag_key logtag
+      partial_cri_stream_key stream
+      # timeout scenario should not occur in general for partial logs handling
+      timeout_label "@NORMAL"
     </filter>
     {{- end }}
     

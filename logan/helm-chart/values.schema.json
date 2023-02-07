@@ -41,6 +41,17 @@
     },
     "ociLALogGroupID": {
       "type": "string"	
+    },
+    "fluentd": {
+      "type": "object",
+      "required": [
+        "baseDir"
+      ],
+      "properties": {
+        "baseDir": {
+          "type": "string"
+        }
+      }
     }
   }
 }

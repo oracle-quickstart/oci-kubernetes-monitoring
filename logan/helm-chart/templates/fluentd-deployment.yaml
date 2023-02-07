@@ -64,8 +64,9 @@ spec:
         resources: {{- toYaml .Values.resources | nindent 10 }}
         {{- end }}
         volumeMounts:
-        - name: varlog
-          mountPath: /var/log
+        # RW mount to store tail plugin output plugin buffer and logs
+        - name: basedir
+          mountPath: {{ .Values.fluentd.baseDir }}
         {{- if eq $authtype "config" }}
         # Mount directory where oci config exists
         - name: ociconfigdir
@@ -84,9 +85,10 @@ spec:
       {{- if .Values.extraVolumes }}
       {{- toYaml .Values.extraVolumes | nindent 6 }}
       {{- end }}
-      - name: varlog
+      # RW mount to store tail plugin output plugin buffer and logs
+      - name: basedir
         hostPath:
-          path: /var/log
+          path: {{ .Values.fluentd.baseDir }}
       {{- if eq $authtype "config" }}
       # Mount directory where oci config exists
       - name: ociconfigdir

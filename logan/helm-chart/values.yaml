@@ -95,14 +95,11 @@ fluentd:
    path: /var/opt/conf
    # fluentd config file name
    file: fluent.conf
-   # Base directory on the node (with read write permission) to store fluentd plugin related data.
-   # If this path is modified, then the corresponding volume and mount has to be created using extraVolumes and extraVolumeMounts sections.
+   # Base directory on the node (with read write permission) to store fluentd plugins related data.
    baseDir: /var/log
    # Configuration for oci-logging-analytics output plugin
    ociLoggingAnalyticsOutputPlugin:
       profile_name: 'DEFAULT'
-      # File path for Output plugin to write its logs. Make sure that the path exists and is accessible
-      plugin_log_location: '/var/log/'
       # Output plugin logging level: DEBUG < INFO < WARN < ERROR < FATAL < UNKNOWN
       plugin_log_level: 'info'
       # The maximum log file size at which point the log file to be rotated, for example, 1KB, 1MB, etc.
@@ -153,6 +150,9 @@ fluentd:
       readFromHead: true
       # Frequency of flushing the chunks to output plugin.
       flushInterval: 60 # seconds
+      # Specifies the encoding of logs. By default, in_tail emits string value as ASCII-8BIT encoding. If encoding is specified, in_tail changes string to given encoding.
+      # When encoding is set at this level, it gets applied to all the logs being collected. Instead, it can also be set at individual logs under sections like kubernetesSystem, genericContainerLogs, customLogs etc.
+      # encoding: 
    # Configuration for Kubernetes System specific logs like Kube Flannel, Kube Proxy etc.
    kubernetesSystem:
       # Setting the following properties will override the default/generic configuration and applies to all Kubernetes system logs
@@ -162,6 +162,7 @@ fluentd:
          #"Environment": "Production"
          #"Third Key": "Third Value"
       #ociLAEntityID:
+      #encoding:
       logs:
          # Configuration specific to Kube Proxy logs
          kube-proxy:
@@ -177,6 +178,7 @@ fluentd:
                #"Third Key": "Third Value"
             #ociLAEntityID:
             #ociLALogGroupID:
+            #encoding:
 
          # Configuration specific to Kube Flannel logs
          kube-flannel:

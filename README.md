@@ -4,10 +4,13 @@
 
 This provides an end-to-end monitoring solution for Oracle Container Engine for Kubernetes (OKE) and other forms of Kubernetes Clusters using Logging Analytics, Monitoring and other Oracle Cloud Infrastructure (OCI) Services.
 
-![Sample Services Dashboard](https://user-images.githubusercontent.com/80283985/153080889-62b30482-5a9c-4244-92e3-e7a4df5ba33e.png)
+![Kubernetes Cluster Summary Dashboard](logan/images/kubernetes-cluster-summary-dashboard.png)
 
+![Kubernetes Nodes Dashboard](logan/images/kubernetes-nodes-dashboard.png)
 
-![Topology Based Exploration](https://user-images.githubusercontent.com/80283985/153081174-f22dcf71-d994-4dc5-ad42-9f424c3f1573.png)
+![Kubernetes Workloads Dashboard](logan/images/kubernetes-workloads-dashboard.png)
+
+![Kubernetes Pods Dashboard](logan/images/kubernetes-pods-dashboard.png)
 
 ## Logs
 
@@ -74,6 +77,26 @@ The following are the list of objects supported at present:
 - Events 
 
 ## Installation Instructions
+
+### Deploy using Oracle Resource Manager
+
+> **_NOTE:_** If you aren't already signed in, when prompted, enter the tenancy and user credentials. Review and accept the terms and conditions. If you aren't on-boarded to OCI Logging Analytics, refer to [Pre-requisites](#pre-requisites) section to enable Logging Analytics in the region where you want to deploy the stack. The default container image available through the deployment is only for demo/non-production use-cases, we recommend you to refer [Docker Image](#docker-image) section to build your own image.  
+
+- Click to deploy the stack
+
+    [![Deploy to Oracle Cloud][orm_button]][oci_kubernetes_monitoring_stack]
+
+- Select the region and compartment where you want to deploy the stack.
+
+- Follow the on-screen prompts and instructions to create the stack.
+
+- After creating the stack, click Terraform Actions, and select Plan.
+
+- Wait for the job to be completed, and review the plan.
+
+- To make any changes, return to the Stack Details page, click Edit Stack, and make the required changes. Then, run the Plan action again.
+
+- If no further changes are necessary, return to the Stack Details page, click Terraform Actions, and select Apply.
 
 ### Pre-requisites
 
@@ -393,3 +416,105 @@ subjects:
     name: <serviceaccount>
     namespace: <namespace>
 ```
+
+### How to set encoding for logs ?
+
+**Note**: This is supported only through the helm chart based deployment. 
+
+By default Fluentd tail plugin that is being used to collect various logs has default encoding set to ASCII-8BIT. To overrided the default encoding, use one of the following approaches. 
+
+#### Global level
+
+Set value for encoding under fluentd:tailPlugin section of values.yaml, which applies to all the logs being collected from the cluster. 
+
+```
+fluentd:
+  ...
+  ...
+  tailPlugin:
+    ...
+    ...
+    encoding: <ENCODING-VALUE>
+```     
+
+#### Specific log type level
+
+The encoding can be set at invidivual log types like kubernetesSystem, linuxSystem, genericContainerLogs, which applies to all the logs under the specific log type.
+
+```
+fluentd:
+  ...
+  ...
+  kubernetesSystem:
+    ...
+    ...
+    encoding: <ENCODING-VALUE>
+```  
+
+```
+fluentd:
+  ...
+  ...
+  genericContainerLogs:
+    ...
+    ...
+    encoding: <ENCODING-VALUE>
+```
+
+#### Specific log level
+
+The encoding can be set at individual log level too, which takes precedence over all others. 
+
+```
+fluentd:
+  ...
+  ...
+  kubernetesSystem:
+    ...
+    ...
+    logs:
+      kube-proxy:
+        encoding: <ENCODING-VALUE>
+```  
+
+```
+fluentd:
+  ...
+  ...
+  customLogs:
+      custom-log1:
+        ...
+        ...
+        encoding: <ENCODING-VALUE>
+      ...
+      ...        
+```
+
+## Importing Logging Analytics Kubernetes Dashboards
+
+The Dashboards are imported as part of deploying the Kubernetes solution using [Oracle Resource Manager stack](#deploy-using-oracle-resource-manager). The following steps can be used to import the Dashboards manually to your tenancy.
+
+1. Download and configure [OCI CLI](https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/cliinstall.htm) or open cloud-shell where OCI CLI is pre-installed. Alternative methods like REST API, SDK, Terraform etc can also be used.
+1. Find the **OCID** of compartment, where the dashboards need to be imported.
+1. Download the dashboard JSONs from [here](logan/terraform/oke/modules/dashboards/dashboards_json/).
+1. **Replace** all the instances of the keyword - "`${compartment_ocid}`" in the JSONs with the **Compartment OCID** identified in STEP 2.
+    - Following are the set of commands for quick reference that can be used in a linux/cloud-shell envirnment :
+
+        ```
+        sed -i "s/\${compartment_ocid}/<Replace-with-Compartment-OCID>/g" file://cluster.json
+        sed -i "s/\${compartment_ocid}/<Replace-with-Compartment-OCID>/g" file://node.json
+        sed -i "s/\${compartment_ocid}/<Replace-with-Compartment-OCID>/g" file://workload.json
+        sed -i "s/\${compartment_ocid}/<Replace-with-Compartment-OCID>/g" file://pod.json
+        ```
+1. Run the following commands to import the dashboards.
+
+    ```
+    oci management-dashboard dashboard import --from-json file://cluster.json
+    oci management-dashboard dashboard import --from-json file://node.json
+    oci management-dashboard dashboard import --from-json file://workload.json
+    oci management-dashboard dashboard import --from-json file://pod.json
+    ```
+
+[orm_button]: https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg
+
+[oci_kubernetes_monitoring_stack]: https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/oracle-quickstart/oci-kubernetes-monitoring/releases/latest/download/oci-kubernetes-monitoring-stack.zip
