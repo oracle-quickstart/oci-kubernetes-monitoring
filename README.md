@@ -4,13 +4,13 @@
 
 This provides an end-to-end monitoring solution for Oracle Container Engine for Kubernetes (OKE) and other forms of Kubernetes Clusters using Logging Analytics, Monitoring and other Oracle Cloud Infrastructure (OCI) Services.
 
-[Kubernetes Cluster Summary Dashboard](logan/images/kubernetes-cluster-summary-dashboard.png)
+![Kubernetes Cluster Summary Dashboard](logan/images/kubernetes-cluster-summary-dashboard.png)
 
-[Kubernetes Nodes Dashboard](logan/images/kubernetes-nodes-dashboard.png)
+![Kubernetes Nodes Dashboard](logan/images/kubernetes-nodes-dashboard.png)
 
-[Kubernetes Workloads Dashboard](logan/images/kubernetes-workloads-dashboard.png)
+![Kubernetes Workloads Dashboard](logan/images/kubernetes-workloads-dashboard.png)
 
-[Kubernetes Pods Dashboard](logan/images/kubernetes-pods-dashboard.png)
+![Kubernetes Pods Dashboard](logan/images/kubernetes-pods-dashboard.png)
 
 ## Logs
 
