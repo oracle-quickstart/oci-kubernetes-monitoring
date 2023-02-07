@@ -96,7 +96,19 @@ data:
        tag ${tag}
        </record>
     </filter>
-   
+    
+    # Concat filter to handle partial logs in CRI/ContainerD
+    # This filter can not be clubbed with concat filter for multiline as both are mutually exclusive.
+    <filter oci.oke.kube-proxy.**>
+      @type concat
+      key message
+      use_partial_cri_logtag true
+      partial_cri_logtag_key logtag
+      partial_cri_stream_key stream
+      # timeout scenario should not occur in general for partial logs handling
+      timeout_label "@NORMAL"
+    </filter>
+
     # Concat filter to handle multi-line log records.
     <filter oci.oke.kube-proxy.**>
        @type concat
@@ -135,6 +147,18 @@ data:
        </record>
     </filter>
 
+    # Concat filter to handle partial logs in CRI/ContainerD
+    # This filter can not be clubbed with concat filter for multiline as both are mutually exclusive.
+    <filter oci.oke.kube-flannel.**>
+      @type concat
+      key message
+      use_partial_cri_logtag true
+      partial_cri_logtag_key logtag
+      partial_cri_stream_key stream
+      # timeout scenario should not occur in general for partial logs handling
+      timeout_label "@NORMAL"
+    </filter>
+ 
     # Concat filter to handle multi-line log records.
     <filter oci.oke.kube-flannel.**>
        @type concat
@@ -171,6 +195,18 @@ data:
        oci_la_log_source_name "Kubernetes DNS Autoscaler Logs"
        tag ${tag}
        </record>
+    </filter>
+
+    # Concat filter to handle partial logs in CRI/ContainerD
+    # This filter can not be clubbed with concat filter for multiline as both are mutually exclusive.
+    <filter oci.oke.kube-dns-autoscaler.**>
+      @type concat
+      key message
+      use_partial_cri_logtag true
+      partial_cri_logtag_key logtag
+      partial_cri_stream_key stream
+      # timeout scenario should not occur in general for partial logs handling
+      timeout_label "@NORMAL"
     </filter>
 
     # Concat filter to handle multi-line log records.
@@ -211,6 +247,18 @@ data:
        </record>
     </filter>
 
+    # Concat filter to handle partial logs in CRI/ContainerD
+    # This filter can not be clubbed with concat filter for multiline as both are mutually exclusive.
+    <filter oci.oke.kube.coredns.**>
+      @type concat
+      key message
+      use_partial_cri_logtag true
+      partial_cri_logtag_key logtag
+      partial_cri_stream_key stream
+      # timeout scenario should not occur in general for partial logs handling
+      timeout_label "@NORMAL"
+    </filter>
+
     # Concat filter to handle multi-line log records.
     <filter oci.oke.kube.coredns.**>
        @type concat
@@ -248,6 +296,18 @@ data:
        tag ${tag}
        </record>
     </filter>
+   
+    # Concat filter to handle partial logs in CRI/ContainerD
+    # This filter can not be clubbed with concat filter for multiline as both are mutually exclusive.
+    <filter oci.oke.csinode.**>
+      @type concat
+      key message
+      use_partial_cri_logtag true
+      partial_cri_logtag_key logtag
+      partial_cri_stream_key stream
+      # timeout scenario should not occur in general for partial logs handling
+      timeout_label "@NORMAL"
+    </filter>
     
     # Config for Proxymux Logs Collection
     # Source config section to collect Proxymux logs from /var/log/containers/proxymux-client-*.log using Fluentd tail plugin.
@@ -276,6 +336,18 @@ data:
        tag ${tag}
        </record>
     </filter>
+
+    # Concat filter to handle partial logs in CRI/ContainerD
+    # This filter can not be clubbed with concat filter for multiline as both are mutually exclusive.
+    <filter oci.oke.proxymux-client.**>
+      @type concat
+      key message
+      use_partial_cri_logtag true
+      partial_cri_logtag_key logtag
+      partial_cri_stream_key stream
+      # timeout scenario should not occur in general for partial logs handling
+      timeout_label "@NORMAL"
+    </filter>
     
     # Config for Cluster Autoscalar Logs Collection
     # Source config section to collect Cluster Autoscalar logs from /var/log/containers/cluster-autoscaler-*.log using Fluentd tail plugin.
@@ -303,6 +375,18 @@ data:
        oci_la_log_source_name "Kubernetes Autoscaler Logs"
        tag ${tag}
        </record>
+    </filter>
+
+    # Concat filter to handle partial logs in CRI/ContainerD
+    # This filter can not be clubbed with concat filter for multiline as both are mutually exclusive.
+    <filter oci.oke.cluster-autoscaler.**>
+      @type concat
+      key message
+      use_partial_cri_logtag true
+      partial_cri_logtag_key logtag
+      partial_cri_stream_key stream
+      # timeout scenario should not occur in general for partial logs handling
+      timeout_label "@NORMAL"
     </filter>
 
     # Concat filter to handle multi-line log records.
@@ -596,3 +680,16 @@ data:
        tag ${tag}
        </record>
     </filter>
+
+    # Concat filter to handle partial logs in CRI/ContainerD
+    # This filter can not be clubbed with concat filter for multiline as both are mutually exclusive.
+    <filter oci.oke.containerlogs.**>
+      @type concat
+      key message
+      use_partial_cri_logtag true
+      partial_cri_logtag_key logtag
+      partial_cri_stream_key stream
+      # timeout scenario should not occur in general for partial logs handling
+      timeout_label "@NORMAL"
+    </filter>
+
