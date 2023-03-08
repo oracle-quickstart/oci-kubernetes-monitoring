@@ -1,0 +1,445 @@
+{
+    "dashboards": [
+        {
+            "dashboardId": "<LOGGING_ANALYTICS_DASHBOARD_OCID>",
+            "displayName": "Kubernetes Monitoring Sample Dashboard",
+            "description": "Sample Dashboard",
+            "compartmentId": "<LOGGING_ANALYTICS_DASHBOARD_COMPARTMENT_OCID>",
+            "providerId": "log-analytics",
+            "providerName": "Logging Analytics",
+            "providerVersion": "3.0.0",
+            "tiles": [
+                {
+                    "displayName": "Node Count",
+                    "savedSearchId": "OOBSS-management-dashboard-123",
+                    "row": 0,
+                    "column": 0,
+                    "height": 3,
+                    "width": 3,
+                    "nls": {},
+                    "uiConfig": {
+                        "defaultDataSource": "mgmtagent_kubernetes_metrics/nodeCount",
+                        "internalKey": "OOBSS-management-dashboard-123",
+                        "singleValueInfo": {
+                            "default": "0",
+                            "maxFontSize": 60,
+                            "val": "aggregatedDatapoints.value"
+                        },
+                        "vizType": "singleValue"
+                    },
+                    "dataConfig": [
+                        {
+                            "name": "mgmtagent_kubernetes_metrics/nodeCount",
+                            "parameters": {
+                                "compartmentId": "$(params.compartmentIdParam)",
+                                "endTime": "$(params.time.end)",
+                                "mql": "nodeCount[auto].grouping().sum()",
+                                "namespace": "mgmtagent_kubernetes_metrics",
+                                "startTime": "$(params.time.start)"
+                            },
+                            "type": "monitoringDataSource"
+                        }
+                    ],
+                    "state": "DEFAULT",
+                    "drilldownConfig": [],
+                    "parametersMap": {
+                        "compartmentIdParam": "$(dashboard.params.compartmentId)",
+                        "time": "$(dashboard.params.time)"
+                    }
+                },
+                {
+                    "displayName": "Pod Count",
+                    "savedSearchId": "OOBSS-management-dashboard-123",
+                    "row": 0,
+                    "column": 3,
+                    "height": 3,
+                    "width": 3,
+                    "nls": {},
+                    "uiConfig": {
+                        "defaultDataSource": "mgmtagent_kubernetes_metrics/podCount",
+                        "internalKey": "OOBSS-management-dashboard-123",
+                        "singleValueInfo": {
+                            "default": "0",
+                            "maxFontSize": 60,
+                            "val": "aggregatedDatapoints.value"
+                        },
+                        "vizType": "singleValue"
+                    },
+                    "dataConfig": [
+                        {
+                            "name": "mgmtagent_kubernetes_metrics/podCount",
+                            "parameters": {
+                                "compartmentId": "$(params.compartmentIdParam)",
+                                "endTime": "$(params.time.end)",
+                                "mql": "podCount[auto]{nodeName=$(dashboard.params.k8sNodeFilter)}.grouping().sum()",
+                                "namespace": "mgmtagent_kubernetes_metrics",
+                                "startTime": "$(params.time.start)"
+                            },
+                            "type": "monitoringDataSource"
+                        }
+                    ],
+                    "state": "DEFAULT",
+                    "drilldownConfig": [],
+                    "parametersMap": {
+                        "compartmentIdParam": "$(dashboard.params.compartmentId)",
+                        "time": "$(dashboard.params.time)"
+                    }
+                },
+                {
+                    "displayName": "Pod Distribution",
+                    "savedSearchId": "OOBSS-management-dashboard-123",
+                    "row": 0,
+                    "column": 6,
+                    "height": 3,
+                    "width": 6,
+                    "nls": {
+                        "NODE": {
+                            "key": "Node: "
+                        },
+                        "PODS": {
+                            "key": "Pods: "
+                        }
+                    },
+                    "uiConfig": {
+                        "internalKey": "OOBSS-management-dashboard-123",
+                        "defaultDataSource": "mgmtagent_kubernetes_metrics/podCount2",
+                        "chartInfo": {
+                            "colorBy": "dimensions.nodeName",
+                            "value": "aggregatedDatapoints.value",
+                            "group": "",
+                            "series": "dimensions.nodeName"
+                        },
+                        "jetConfig": {
+                            "type": "pie",
+                            "timeAxisType": "auto",
+                            "styleDefaults": {
+                                "pieInnerRadius": 0.7,
+                                "dataLabelPosition": "auto",
+                                "dataLabelCollision": "fitInBounds"
+                            },
+                            "selectionMode": "none",
+                            "orientation": "vertical",
+                            "coordinateSystem": "cartesian",
+                            "sorting": "off",
+                            "stack": "off",
+                            "stackLabel": "off",
+                            "dataCursor": "off",
+                            "legend": {
+                                "rendered": true,
+                                "position": "end"
+                            },
+                            "valueFormats": {
+                                "value": {
+                                    "converterName": "numberConverter",
+                                    "converterOptions": {
+                                        "style": "decimal",
+                                        "decimalFormat": "short",
+                                        "maximumFractionDigits": 2
+                                    },
+                                    "tooltipLabel": "Pods",
+                                    "tooltipDisplay": "auto"
+                                },
+                                "series": {
+                                    "tooltipLabel": "Node",
+                                    "tooltipDisplay": "auto"
+                                },
+                                "group": {
+                                    "tooltipLabel": "",
+                                    "tooltipDisplay": "off"
+                                }
+                            }
+                        }
+                    },
+                    "dataConfig": [
+                        {
+                            "name": "mgmtagent_kubernetes_metrics/podCount2",
+                            "parameters": {
+                                "compartmentId": "$(params.compartmentIdParam)",
+                                "endTime": "$(params.time.end)",
+                                "mql": "podCount[auto].groupBy(nodeName).sum()",
+                                "namespace": "mgmtagent_kubernetes_metrics",
+                                "startTime": "$(params.time.start)"
+                            },
+                            "type": "monitoringDataSource"
+                        }
+                    ],
+                    "state": "DEFAULT",
+                    "drilldownConfig": [],
+                    "parametersMap": {
+                        "compartmentIdParam": "$(dashboard.params.compartmentId)",
+                        "time": "$(dashboard.params.time)"
+                    }
+                },
+                {
+                    "displayName": "Node CPU Usage",
+                    "savedSearchId": "OOBSS-management-dashboard-123",
+                    "row": 3,
+                    "column": 0,
+                    "height": 3,
+                    "width": 6,
+                    "nls": {},
+                    "uiConfig": {
+                        "chartInfo": {
+                            "colorBy": "dimensions.nodeName",
+                            "enableCorrelation": true,
+                            "group": "aggregatedDatapoints.timestamp",
+                            "series": "dimensions.nodeName",
+                            "value": "aggregatedDatapoints.value"
+                        },
+                        "defaultDataSource": "mgmtagent_kubernetes_metrics/nodeCpuPercentUsage",
+                        "internalKey": "OOBSS-management-dashboard-123",
+                        "jetConfig": {
+                            "dataCursor": "on",
+                            "legend": {
+                                "position": "top",
+                                "rendered": true
+                            },
+                            "stack": "off",
+                            "styleDefaults": {
+                                "lineWidth": 2
+                            },
+                            "timeAxisType": "enabled",
+                            "type": "lineWithArea",
+                            "xAxis": {
+                                "viewportMax": "$(context.time.end)",
+                                "viewportMin": "$(context.time.start)"
+                            },
+                            "yAxis": {
+                                "title": "Utilization (%)"
+                            }
+                        }
+                    },
+                    "dataConfig": [
+                        {
+                            "name": "mgmtagent_kubernetes_metrics/nodeCpuPercentUsage",
+                            "parameters": {
+                                "compartmentId": "$(params.compartmentIdParam)",
+                                "endTime": "$(params.time.end)",
+                                "mql": "nodeCpuUsage[auto].groupBy(nodeName).mean()",
+                                "namespace": "mgmtagent_kubernetes_metrics",
+                                "startTime": "$(params.time.start)"
+                            },
+                            "type": "monitoringDataSource"
+                        }
+                    ],
+                    "state": "DEFAULT",
+                    "drilldownConfig": [],
+                    "parametersMap": {
+                        "compartmentIdParam": "$(dashboard.params.compartmentId)",
+                        "time": "$(dashboard.params.time)"
+                    }
+                },
+                {
+                    "displayName": "Node Memory Usage",
+                    "savedSearchId": "OOBSS-management-dashboard-123",
+                    "row": 3,
+                    "column": 6,
+                    "height": 3,
+                    "width": 6,
+                    "nls": {},
+                    "uiConfig": {
+                        "chartInfo": {
+                            "colorBy": "dimensions.nodeName",
+                            "enableCorrelation": true,
+                            "group": "aggregatedDatapoints.timestamp",
+                            "series": "dimensions.nodeName",
+                            "value": "aggregatedDatapoints.value"
+                        },
+                        "defaultDataSource": "mgmtagent_kubernetes_metrics/nodeMemoryPercentUsage",
+                        "internalKey": "OOBSS-management-dashboard-123",
+                        "jetConfig": {
+                            "dataCursor": "on",
+                            "legend": {
+                                "position": "top",
+                                "rendered": true
+                            },
+                            "stack": "off",
+                            "styleDefaults": {
+                                "lineWidth": 2
+                            },
+                            "timeAxisType": "enabled",
+                            "type": "lineWithArea",
+                            "xAxis": {
+                                "viewportMax": "$(context.time.end)",
+                                "viewportMin": "$(context.time.start)"
+                            },
+                            "yAxis": {}
+                        }
+                    },
+                    "dataConfig": [
+                        {
+                            "name": "mgmtagent_kubernetes_metrics/nodeMemoryPercentUsage",
+                            "parameters": {
+                                "compartmentId": "$(params.compartmentIdParam)",
+                                "endTime": "$(params.time.end)",
+                                "mql": "nodeMemoryUsage[auto].groupBy(nodeName).mean()",
+                                "namespace": "mgmtagent_kubernetes_metrics",
+                                "startTime": "$(params.time.start)"
+                            },
+                            "type": "monitoringDataSource"
+                        }
+                    ],
+                    "state": "DEFAULT",
+                    "drilldownConfig": [],
+                    "parametersMap": {
+                        "compartmentIdParam": "$(dashboard.params.compartmentId)",
+                        "time": "$(dashboard.params.time)"
+                    }
+                },
+                {
+                    "displayName": "Pod CPU Usage",
+                    "savedSearchId": "OOBSS-management-dashboard-123",
+                    "row": 6,
+                    "column": 0,
+                    "height": 3,
+                    "width": 6,
+                    "nls": {},
+                    "uiConfig": {
+                        "chartInfo": {
+                            "colorBy": "dimensions.containerName",
+                            "enableCorrelation": true,
+                            "group": "aggregatedDatapoints.timestamp",
+                            "series": "dimensions.containerName",
+                            "value": "aggregatedDatapoints.value"
+                        },
+                        "defaultDataSource": "mgmtagent_kubernetes_metrics/podCpuUsage",
+                        "internalKey": "OOBSS-management-dashboard-123",
+                        "jetConfig": {
+                            "dataCursor": "on",
+                            "legend": {
+                                "position": "top",
+                                "rendered": true
+                            },
+                            "stack": "off",
+                            "styleDefaults": {
+                                "lineWidth": 2
+                            },
+                            "timeAxisType": "enabled",
+                            "type": "lineWithArea",
+                            "xAxis": {
+                                "viewportMax": "$(context.time.end)",
+                                "viewportMin": "$(context.time.start)"
+                            },
+                            "yAxis": {
+                                "title": "nanocores"
+                            }
+                        }
+                    },
+                    "dataConfig": [
+                        {
+                            "name": "mgmtagent_kubernetes_metrics/podCpuUsage",
+                            "parameters": {
+                                "compartmentId": "$(params.compartmentIdParam)",
+                                "endTime": "$(context.time.end)",
+                                "mql": "podCpuUsage[auto].groupBy(containerName).mean()",
+                                "namespace": "mgmtagent_kubernetes_metrics",
+                                "startTime": "$(context.time.start)"
+                            },
+                            "type": "monitoringDataSource"
+                        }
+                    ],
+                    "state": "DEFAULT",
+                    "drilldownConfig": [],
+                    "parametersMap": {
+                        "compartmentIdParam": "$(dashboard.params.compartmentId)",
+                        "time": "$(dashboard.params.time)"
+                    }
+                },
+                {
+                    "displayName": "Pod Memory Usage",
+                    "savedSearchId": "OOBSS-management-dashboard-123",
+                    "row": 6,
+                    "column": 6,
+                    "height": 3,
+                    "width": 6,
+                    "nls": {},
+                    "uiConfig": {
+                        "chartInfo": {
+                            "colorBy": "dimensions.containerName",
+                            "enableCorrelation": true,
+                            "group": "aggregatedDatapoints.timestamp",
+                            "series": "dimensions.containerName",
+                            "value": "aggregatedDatapoints.value"
+                        },
+                        "defaultDataSource": "mgmtagent_kubernetes_metrics/podMemoryUsage",
+                        "internalKey": "OOBSS-management-dashboard-123",
+                        "jetConfig": {
+                            "dataCursor": "on",
+                            "legend": {
+                                "position": "top",
+                                "rendered": true
+                            },
+                            "stack": "off",
+                            "styleDefaults": {
+                                "lineWidth": 2
+                            },
+                            "timeAxisType": "enabled",
+                            "type": "lineWithArea",
+                            "xAxis": {
+                                "viewportMax": "$(context.time.end)",
+                                "viewportMin": "$(context.time.start)"
+                            },
+                            "yAxis": {
+                                "title": "KibiBytes"
+                            }
+                        }
+                    },
+                    "dataConfig": [
+                        {
+                            "name": "mgmtagent_kubernetes_metrics/podMemoryUsage",
+                            "parameters": {
+                                "compartmentId": "$(params.compartmentIdParam)",
+                                "endTime": "$(params.time.end)",
+                                "mql": "podMemoryUsage[auto].groupBy(containerName).mean()",
+                                "namespace": "mgmtagent_kubernetes_metrics",
+                                "startTime": "$(params.time.start)"
+                            },
+                            "type": "monitoringDataSource"
+                        }
+                    ],
+                    "state": "DEFAULT",
+                    "drilldownConfig": [],
+                    "parametersMap": {
+                        "compartmentIdParam": "$(dashboard.params.compartmentId)",
+                        "time": "$(dashboard.params.time)"
+                    }
+                }
+            ],
+            "isOobDashboard": false,
+            "isShowInHome": false,
+            "metadataVersion": "2.0",
+            "isShowDescription": true,
+            "screenImage": "todo: provide value[mandatory]",
+            "nls": {},
+            "uiConfig": {
+                "isFilteringEnabled": false,
+                "isRefreshEnabled": true,
+                "isTimeRangeEnabled": true
+            },
+            "dataConfig": [],
+            "type": "normal",
+            "isFavorite": false,
+            "savedSearches": [],
+            "parametersConfig": [
+                {
+                    "displayName": "Compartment",
+                    "localStorageKey": "compartmentId",
+                    "name": "compartmentId",
+                    "parametersMap": {
+                        "isActiveCompartment": "true",
+                        "isStoreInLocalStorage": false
+                    },
+                    "savedSearchId": "OOBSS-management-dashboard-compartment-filter",
+                    "state": "DEFAULT"
+                },
+                {
+                    "name": "time",
+                    "src": "$(context.time)"
+                }
+            ],
+            "drilldownConfig": [],
+            "freeformTags": {},
+            "definedTags": {}
+        }
+    ]
+}

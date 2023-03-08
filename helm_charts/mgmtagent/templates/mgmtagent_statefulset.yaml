@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mgmtagent
+  namespace: {{ default "mgmtagent" .Values.namespace }}
+  labels:
+    app: mgmtagent
+spec:
+  serviceName: mgmtagent
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mgmtagent
+  template:
+    metadata:
+      labels:
+        app: mgmtagent
+    spec:
+      serviceAccountName: mgmtagent-serviceaccount
+      imagePullSecrets:
+        - name: mgmtagent-container-registry-key
+      restartPolicy: Always
+      containers:
+        - name: mgmtagent
+          image: {{ .Values.mgmtagent.image.url }}
+          volumeMounts:
+            - name: mgmtagent-secret
+              mountPath: /opt/oracle/mgmtagent_secret
+              readOnly: true
+            - name: mgmtagent-pvc
+              mountPath: /opt/oracle
+            - name: mgmtagent-config
+              mountPath: /opt/oracle/mgmtagent_config
+      volumes:
+        - name: mgmtagent-secret
+          secret:
+            secretName: mgmtagent-input-rsp
+        - name: mgmtagent-config
+          configMap:
+            name: mgmtagent-monitoring-config
+  volumeClaimTemplates:
+    - metadata:
+        name: mgmtagent-pvc
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "oci-bv"
+        resources:
+          requests:
+            storage: 2Gi

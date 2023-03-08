@@ -1,0 +1,7 @@
+{{- if .Values.createNamespace }}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ default "mgmtagent" .Values.namespace }}
+{{- end }}
