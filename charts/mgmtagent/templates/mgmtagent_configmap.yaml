@@ -2,12 +2,12 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: mgmtagent-monitoring-config
-  namespace: {{ default "mgmtagent" .Values.namespace }}
+  namespace: {{ include "agent.namespace" . }}
 data:
   monitoring.properties: |
     # compartmentId to push Monitoring metrics
     compartmentId={{ .Values.kubernetesCluster.compartmentId }}
     # Kubernetes cluster name
-    clusterName={{ .Values.kubernetesCluster.name }}
+    clusterName={{ include "agent.kubernetesClusterName" . }}
     # Kubernetes Namespace to monitor
-    kubernetesNamespace={{ .Values.kubernetesCluster.namespace }}
+    kubernetesNamespace={{ include "agent.namespace" . }}

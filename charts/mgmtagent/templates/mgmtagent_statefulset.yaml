@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: mgmtagent
-  namespace: {{ default "mgmtagent" .Values.namespace }}
+  namespace: {{ include "agent.namespace" . }}
   labels:
     app: mgmtagent
 spec:
@@ -16,7 +16,7 @@ spec:
       labels:
         app: mgmtagent
     spec:
-      serviceAccountName: mgmtagent-serviceaccount
+      serviceAccountName: {{ include "agent.serviceAccount" . }}
       imagePullSecrets:
         - name: mgmtagent-container-registry-key
       restartPolicy: Always

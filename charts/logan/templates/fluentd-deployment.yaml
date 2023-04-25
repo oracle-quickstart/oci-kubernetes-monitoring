@@ -1,18 +1,19 @@
 ---
 {{- $authtype := .Values.authtype | lower }}
 {{- $imagePullSecrets := .Values.image.imagePullSecrets }}
+{{- $resourceNamePrefix := (include "logan.resourceNamePrefix" .) }}
 apiVersion: apps/v1
-kind: DaemonSet
+kind: Deployment
 metadata:
-  name: {{ include "oci-la-fluentd.name" . }}-daemonset
-  namespace: {{ default "kube-system" .Values.namespace }}
+  name: {{ $resourceNamePrefix }}-deployment
+  namespace: {{ include "logan.namespace" . }}
   labels:
-    app: {{ include "oci-la-fluentd.name" . }}-logs
+    app: {{ $resourceNamePrefix }}-objects
     version: v1
 spec:
   selector:
     matchLabels:
-      app: {{ include "oci-la-fluentd.name" . }}-logs
+      app: {{ $resourceNamePrefix }}-objects
       version: v1
   template:
     metadata:
@@ -20,25 +21,18 @@ spec:
         {{- if eq $authtype "config" }}
         checksum/secrets: {{ include (print $.Template.BasePath "/oci-config-secrets.yaml") . | sha256sum }}
         {{- end}}
-        checksum/configmap: {{ include (print $.Template.BasePath "/configmap-logs.yaml") . | sha256sum }}
+        checksum/configmap: {{ include (print $.Template.BasePath "/configmap-objects.yaml") . | sha256sum }}
       labels:
-        app: {{ include "oci-la-fluentd.name" . }}-logs
+        app: {{ $resourceNamePrefix }}-objects
         version: v1
     spec:
-      {{- if .Values.createServiceAccount }}
-      serviceAccountName: {{ include "oci-la-fluentd.name" . }}-serviceaccount
-      {{- else }}
-      serviceAccountName: "{{ .Values.serviceAccount | required (printf "serviceAccount is required when createServiceAccount is false") }}"
-      {{- end }}
-      tolerations:
-      - key: node-role.kubernetes.io/master
-        effect: NoSchedule
-	  {{- if $imagePullSecrets }}	
+      serviceAccountName: {{ include "logan.serviceAccount" . }}
+      {{- if $imagePullSecrets }}	
       imagePullSecrets:		  
       - name: {{ .Values.image.imagePullSecrets }}
       {{- end}}
       containers:
-      - name: {{ include "oci-la-fluentd.name" . }}-logs
+      - name: {{ $resourceNamePrefix }}-objects
         image: {{ .Values.image.url }}
         imagePullPolicy: {{ default "IfNotPresent" .Values.image.imagePullPolicy }}
         env:
@@ -53,9 +47,9 @@ spec:
           - name: FLUENT_OCI_NAMESPACE
             value: {{ .Values.ociLANamespace }}
           - name: FLUENT_OCI_KUBERNETES_CLUSTER_ID
-            value: {{ .Values.kubernetesClusterID }}
+            value: {{ include "logan.kubernetesClusterId" . }}
           - name: FLUENT_OCI_KUBERNETES_CLUSTER_NAME
-            value: {{ .Values.kubernetesClusterName }}
+            value: {{ include "logan.kubernetesClusterName" . }}		  		
           {{- if eq $authtype "config" }}
           - name: FLUENT_OCI_CONFIG_LOCATION
             value: {{ .Values.oci.path }}/{{ .Values.oci.file }}
@@ -67,23 +61,9 @@ spec:
         resources: {{- toYaml .Values.resources | nindent 10 }}
         {{- end }}
         volumeMounts:
-        # Mount all relevant locations depending on where the actual logs presents.
-        - name: varlog
-          mountPath: /var/log
-          {{- if ne .Values.fluentd.baseDir "/var/log" }}
-          readOnly: true
-          {{- end }}
-        - name: dockercontainerlogdirectory
-          mountPath: {{ .Values.volumes.podsHostPath }}
-          readOnly: true
-        - name: dockercontainerdatadirectory
-          mountPath: {{ .Values.volumes.containerdataHostPath }}
-          readOnly: true
-        # RW mount to store pos files, buffer and output plugin logs (if baseDir is not /var/log)
-        {{- if ne .Values.fluentd.baseDir "/var/log" }}
+        # RW mount to store tail plugin output plugin buffer and logs
         - name: basedir
           mountPath: {{ .Values.fluentd.baseDir }}
-        {{- end }}
         {{- if eq $authtype "config" }}
         # Mount directory where oci config exists
         - name: ociconfigdir
@@ -102,32 +82,20 @@ spec:
       {{- if .Values.extraVolumes }}
       {{- toYaml .Values.extraVolumes | nindent 6 }}
       {{- end }}
-      # Mount all relevant locations depending on where the actual logs presents.
-      - name: varlog
-        hostPath:
-          path: /var/log
-      - name: dockercontainerlogdirectory
-        hostPath:
-          path: {{ .Values.volumes.podsHostPath }}
-      - name: dockercontainerdatadirectory
-        hostPath:
-          path: {{ .Values.volumes.containerdataHostPath }}
-      # RW mount to store tail plugin pos files, output plugin buffer and logs (if baseDir is not /var/log)
-      {{- if ne .Values.fluentd.baseDir "/var/log" }}
+      # RW mount to store tail plugin output plugin buffer and logs
       - name: basedir
         hostPath:
           path: {{ .Values.fluentd.baseDir }}
-      {{- end }}   		  
       {{- if eq $authtype "config" }}
       # Mount directory where oci config exists
       - name: ociconfigdir
         projected:
           sources:
               - secret:
-                  name: {{ include "oci-la-fluentd.name" . }}-credentials-secret
+                  name: {{ $resourceNamePrefix }}-credentials-secret
       {{- end }}
       # Mount directory where fluentd config exists
       - name: fluentdconfigdir
         configMap:
           # Provide the name of the ConfigMap to mount.
-          name: {{ include "oci-la-fluentd.name" . }}-logs-configmap
+          name: {{ $resourceNamePrefix }}-objects-configmap

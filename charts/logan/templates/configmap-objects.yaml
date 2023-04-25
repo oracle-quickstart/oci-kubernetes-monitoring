@@ -1,8 +1,10 @@
+{{- $kubernetesClusterName := (include "logan.kubernetesClusterName" .) }}
+{{- $kubernetesClusterId := (include "logan.kubernetesClusterId" .) }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "oci-la-fluentd.name" . }}-objects-configmap
-  namespace: {{ default "kube-system" .Values.namespace }}
+  name: {{ include "logan.resourceNamePrefix" . }}-objects-configmap
+  namespace: {{ include "logan.namespace" . }}
 data:
   # fluentd config file data.
   fluent.conf: |
@@ -90,9 +92,9 @@ data:
       enable_ruby true
       <record>
         {{- if .Values.fluentd.kubernetesObjects.metadata }}
-        oci_la_metadata ${{"{{"}}"Kubernetes Cluster Name":"{{ .Values.kubernetesClusterName | default "UNDEFINED" }}", "Kubernetes Cluster ID": "{{ .Values.kubernetesClusterID | default "UNDEFINED" }}" {{- range $k, $v := .Values.fluentd.kubernetesObjects.metadata }},{{ $k | quote }}: {{ $v | quote -}} {{- end }}{{"}}"}}
+        oci_la_metadata ${{"{{"}}"Kubernetes Cluster Name":"{{ $kubernetesClusterName }}", "Kubernetes Cluster ID": "{{ $kubernetesClusterId }}" {{- range $k, $v := .Values.fluentd.kubernetesObjects.metadata }},{{ $k | quote }}: {{ $v | quote -}} {{- end }}{{"}}"}}
         {{- else }}
-        oci_la_metadata ${{"{{"}}"Kubernetes Cluster Name":"{{ .Values.kubernetesClusterName | default "UNDEFINED" }}", "Kubernetes Cluster ID": "{{ .Values.kubernetesClusterID | default "UNDEFINED" }}" {{- range $k, $v := .Values.metadata }},{{ $k | quote }}: {{ $v | quote -}} {{- end }}{{"}}"}}
+        oci_la_metadata ${{"{{"}}"Kubernetes Cluster Name":"{{ $kubernetesClusterName }}", "Kubernetes Cluster ID": "{{ $kubernetesClusterId }}" {{- range $k, $v := .Values.metadata }},{{ $k | quote }}: {{ $v | quote -}} {{- end }}{{"}}"}}
         {{- end }}
         oci_la_log_group_id "{{ .Values.fluentd.kubernetesObjects.ociLALogGroupID | default .Values.ociLALogGroupID }}"
         oci_la_entity_id "{{ .Values.fluentd.kubernetesObjects.ociLAEntityID | default .Values.ociLAEntityID }}"
