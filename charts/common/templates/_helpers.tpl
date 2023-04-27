@@ -13,7 +13,7 @@
   {{- if .Values.resourceNamePrefix -}}
     {{ include "common.tplvalues.render" ( dict "value" .Values.resourceNamePrefix "context" .) | trunc 63 | trimSuffix "-" }}
   {{- else -}}
-    {{- "oci-kubernetes-monitoring" -}}
+    {{- "oci-onm" -}}
   {{- end -}}
 {{- end -}}
 
@@ -27,7 +27,7 @@
   {{- if .Values.namespace -}}
     {{ include "common.tplvalues.render" ( dict "value" .Values.namespace "context" .) }}
   {{- else -}}
-    {{- "kube-system" -}}
+    {{- "oci-onm" -}}
   {{- end -}}
 {{- end -}}
 
@@ -41,6 +41,6 @@
   {{- if .Values.serviceAccount -}}
     {{ include "common.tplvalues.render" ( dict "value" .Values.serviceAccount "context" .) }}
   {{- else -}}
-    {{ include "common.resourceNamePrefix" . }}-serviceaccount
+    {{ include "common.resourceNamePrefix" . }}
   {{- end -}}
 {{- end -}}

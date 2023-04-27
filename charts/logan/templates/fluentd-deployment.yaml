@@ -5,25 +5,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ $resourceNamePrefix }}-deployment
+  name: {{ $resourceNamePrefix }}-logan
   namespace: {{ include "logan.namespace" . }}
   labels:
-    app: {{ $resourceNamePrefix }}-objects
+    app: {{ $resourceNamePrefix }}-logan
     version: v1
 spec:
   selector:
     matchLabels:
-      app: {{ $resourceNamePrefix }}-objects
+      app: {{ $resourceNamePrefix }}-logan
       version: v1
   template:
     metadata:
       annotations:
         {{- if eq $authtype "config" }}
-        checksum/secrets: {{ include (print $.Template.BasePath "/oci-config-secrets.yaml") . | sha256sum }}
+        checksum/secrets: {{ include (print $.Template.BasePath "/oci-config-secret.yaml") . | sha256sum }}
         {{- end}}
-        checksum/configmap: {{ include (print $.Template.BasePath "/configmap-objects.yaml") . | sha256sum }}
+        checksum/configmap: {{ include (print $.Template.BasePath "/objects-configmap.yaml") . | sha256sum }}
       labels:
-        app: {{ $resourceNamePrefix }}-objects
+        app: {{ $resourceNamePrefix }}-logan
         version: v1
     spec:
       serviceAccountName: {{ include "logan.serviceAccount" . }}
@@ -32,7 +32,7 @@ spec:
       - name: {{ .Values.image.imagePullSecrets }}
       {{- end}}
       containers:
-      - name: {{ $resourceNamePrefix }}-objects
+      - name: {{ $resourceNamePrefix }}-fluentd
         image: {{ .Values.image.url }}
         imagePullPolicy: {{ default "IfNotPresent" .Values.image.imagePullPolicy }}
         env:
@@ -92,10 +92,10 @@ spec:
         projected:
           sources:
               - secret:
-                  name: {{ $resourceNamePrefix }}-credentials-secret
+                  name: {{ $resourceNamePrefix }}-oci-config
       {{- end }}
       # Mount directory where fluentd config exists
       - name: fluentdconfigdir
         configMap:
           # Provide the name of the ConfigMap to mount.
-          name: {{ $resourceNamePrefix }}-objects-configmap
+          name: {{ $resourceNamePrefix }}-objects

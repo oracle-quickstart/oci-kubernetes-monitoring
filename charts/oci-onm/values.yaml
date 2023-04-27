@@ -1,13 +1,14 @@
 global:
   # Kubernetes Namespace in which the resources to be created. Set oci-kubernetes-monitoring-common:createNamespace set to true, if the namespace doesn't exist.
-  namespace: test-namespace
+  namespace: oci-onm
   # Prefix to be attached to resources created through this chart. Not all resources may have this prefix.
-  resourceNamePrefix: oci-kubernetes-monitoring
+  resourceNamePrefix: oci-onm
   # OKE OCID for an OKE cluster or an unique ID for other Kubernetes clusters.
   kubernetesClusterID: "testID"
   # Provide a unique name for the cluster. This would help uniquely identifying the logs and metrics data at OCI Logging Analytics and OCI Monitoring respectivelt, when moitoring multiple clustersa
   kubernetesClusterName: "testName"
-oci-kubernetes-monitoring-common:
+
+oci-onm-common:
   # By default, a cluster role, cluster role binding and serviceaccount will be created for the monitoring pods to be able to (readonly) access various objects within the cluster, to support collection of various telemetry data. You may set this to false and provide your own serviceaccount which has the necessary cluster role(s) binded to it. Refer, README for the cluster role definition and other details.
   createServiceAccount: true
   # If createNamespace is set to true, it tries to create the namespace defined in 'namespace' variable.
@@ -17,12 +18,13 @@ oci-kubernetes-monitoring-common:
   # Prefix to be attached to resources created through this chart. Not all resources may have this prefix.
   resourceNamePrefix: "{{ .Values.global.resourceNamePrefix }}"
   # Name of the Kubernetes ServiceAccount
-  serviceAccount: "{{ .Values.global.resourceNamePrefix }}-serviceaccount"
-oci-la-fluentd:
-  common:
+  serviceAccount: "{{ .Values.global.resourceNamePrefix }}"
+
+oci-onm-logan:
+  oci-onm-common:
     enabled: false
   namespace: "{{ .Values.global.namespace }}"
-  serviceAccount: "{{ .Values.global.resourceNamePrefix }}-serviceaccount"
+  serviceAccount: "{{ .Values.global.resourceNamePrefix }}"
   kubernetesClusterID: "{{ .Values.global.kubernetesClusterID }}"
   kubernetesClusterName: "{{ .Values.global.kubernetesClusterName }}"
   image:
@@ -31,11 +33,12 @@ oci-la-fluentd:
   ociLANamespace: test
   # OCI Logging Analytics Default Log Group OCID
   ociLALogGroupID: test
-mgmtagent_helm:
-  common:
+
+oci-onm-mgmt-agent:
+  oci-onm-common:
     enabled: false
   namespace: "{{ .Values.global.namespace }}"
-  serviceAccount: "{{ .Values.global.resourceNamePrefix }}-serviceaccount"
+  serviceAccount: "{{ .Values.global.resourceNamePrefix }}"
   kubernetesCluster:
     name: "{{ .Values.global.kubernetesClusterName }}"
   mgmtagent:

@@ -9,30 +9,30 @@
 {{- end -}}
 
 # Prefix for all resources created using this chart.
-{{- define "agent.resourceNamePrefix" -}}
+{{- define "mgmt-agent.resourceNamePrefix" -}}
   {{- if .Values.resourceNamePrefix -}}
     {{ include "common.tplvalues.render" ( dict "value" .Values.resourceNamePrefix "context" .) | trunc 63 | trimSuffix "-" }}
   {{- else -}}
-    {{- .Chart.Name -}}
+    {{- "oci-onm" -}}
   {{- end -}}
 {{- end -}}
 
 # namespace
-{{- define "agent.namespace" -}}
+{{- define "mgmt-agent.namespace" -}}
   {{- if .Values.namespace -}}
     {{ include "common.tplvalues.render" ( dict "value" .Values.namespace "context" .) }}
   {{- else -}}
-    {{- "kube-system" -}}
+    {{- "oci-onm" -}}
   {{- end -}}
 {{- end -}}
 
 #serviceAccount
-{{- define "agent.serviceAccount" -}}
+{{- define "mgmt-agent.serviceAccount" -}}
   {{ include "common.tplvalues.render" ( dict "value" .Values.serviceAccount "context" .) }}
 {{- end -}}
 
 #kubernetesClusterName
-{{- define "agent.kubernetesClusterName" -}}
+{{- define "mgmt-agent.kubernetesClusterName" -}}
   {{- if .Values.kubernetesCluster.name -}}
     {{ include "common.tplvalues.render" ( dict "value" .Values.kubernetesCluster.name "context" .) }}
   {{- else -}}

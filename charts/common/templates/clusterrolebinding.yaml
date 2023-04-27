@@ -3,13 +3,13 @@
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: {{ include "common.resourceNamePrefix" . }}-clusterrolebinding
+  name: {{ include "common.resourceNamePrefix" . }}
 roleRef:
   kind: ClusterRole
-  name: {{ include "common.resourceNamePrefix" . }}-clusterrole
+  name: {{ include "common.resourceNamePrefix" . }}
   apiGroup: rbac.authorization.k8s.io
 subjects:
 - kind: ServiceAccount
-  name: {{ include "common.resourceNamePrefix" . }}-serviceaccount
+  name: {{ include "common.resourceNamePrefix" . }}
   namespace: {{ include "common.namespace" . }}
 {{- end }}

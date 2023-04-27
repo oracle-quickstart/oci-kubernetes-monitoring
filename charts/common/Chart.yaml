@@ -1,5 +1,5 @@
 apiVersion: v2
-name: oci-kubernetes-monitoring-common
+name: oci-onm-common
 description: Helm chart containing common resources for oci kubernetes monitoring solution.
 
 # A chart can be either an 'application' or a 'library' chart.
