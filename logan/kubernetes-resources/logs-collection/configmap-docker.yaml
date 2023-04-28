@@ -402,6 +402,7 @@ data:
     # Match block to filter kubelet logs from syslogs
     <match oci.oke.syslog.messages.**>
        @type rewrite_tag_filter
+       hostname_command cat /etc/hostname
        <rule>
        key message
        pattern /kubelet:/
