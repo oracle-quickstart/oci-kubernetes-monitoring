@@ -4,9 +4,9 @@ global:
   # Prefix to be attached to resources created through this chart. Not all resources may have this prefix.
   resourceNamePrefix: oci-onm
   # OKE OCID for an OKE cluster or an unique ID for other Kubernetes clusters.
-  kubernetesClusterID: "testID"
+  kubernetesClusterID:
   # Provide a unique name for the cluster. This would help uniquely identifying the logs and metrics data at OCI Logging Analytics and OCI Monitoring respectivelt, when moitoring multiple clustersa
-  kubernetesClusterName: "testName"
+  kubernetesClusterName:
 
 oci-onm-common:
   # By default, a cluster role, cluster role binding and serviceaccount will be created for the monitoring pods to be able to (readonly) access various objects within the cluster, to support collection of various telemetry data. You may set this to false and provide your own serviceaccount which has the necessary cluster role(s) binded to it. Refer, README for the cluster role definition and other details.
@@ -30,9 +30,9 @@ oci-onm-logan:
   image:
     url: container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.0.0
   # Go to OCI Logging Analytics Administration, click Service Details, and note the namespace value.
-  ociLANamespace: test
+  ociLANamespace:
   # OCI Logging Analytics Default Log Group OCID
-  ociLALogGroupID: test
+  ociLALogGroupID:
 
 oci-onm-mgmt-agent:
   oci-onm-common:
