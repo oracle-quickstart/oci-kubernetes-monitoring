@@ -1,0 +1,49 @@
+global:
+  # Kubernetes Namespace in which the resources to be created. Set oci-kubernetes-monitoring-common:createNamespace set to true, if the namespace doesn't exist.
+  namespace: oci-onm
+  # Prefix to be attached to resources created through this chart. Not all resources may have this prefix.
+  resourceNamePrefix: oci-onm
+
+oci-onm-common:
+  # By default, a cluster role, cluster role binding and serviceaccount will be created for the monitoring pods to be able to (readonly) access various objects within the cluster, to support collection of various telemetry data. You may set this to false and provide your own serviceaccount (in the parent chart(s)) which has the necessary cluster role(s) binded to it. Refer, README for the cluster role definition and other details.
+  createServiceAccount: true
+  # If createNamespace is set to true, it tries to create the namespace defined in 'namespace' variable.
+  createNamespace: true
+  # Kubernetes Namespace in which the serviceaccount to be created.
+  namespace: "{{ .Values.global.namespace }}"
+  # Prefix to be attached to resources created through this chart. Not all resources may have this prefix.
+  resourceNamePrefix: "{{ .Values.global.resourceNamePrefix }}"
+  # Name of the Kubernetes ServiceAccount
+  serviceAccount: "{{ .Values.global.resourceNamePrefix }}"
+
+mgmtagent:
+   # Provide either installKeyFileContent or installKey as an install key. If both provided then installKeyFileContent will take higher precedence.
+   
+   # Provide the base64 encoded content of the Management Agent Install Key file
+   installKeyFileContent:
+   # Copy the downloaded Management Agent Install Key file under root helm directory as resources/input.rsp
+   installKey: resources/input.rsp
+   # Follow steps documented at https://github.com/oracle/docker-images/tree/main/OracleManagementAgent to build docker image.
+   image:
+      # Replace this value with actual docker image URL for Management Agent
+      url:
+      # Image secrets to use for pulling container image (base64 encoded content of ~/.docker/config.json file)
+      secret:
+
+# Kubernetes namespace to create and install this helm chart in
+namespace: "{{ .Values.global.namespace }}"
+
+# Name of the Kubernetes ServiceAccount
+serviceAccount: "{{ .Values.global.resourceNamePrefix }}"
+
+# By default, metric server will be deployed and used by Management Agent to collect metrics. You can set this to false if you already have metric server installed on your cluster
+deployMetricServer: true
+
+# Kubernetes Cluster details to monitor
+kubernetesCluster:
+   # OCI Compartment Id to push Kubernetes Monitoring metrics. If not specified default is same as Agent compartment
+   compartmentId:
+   # Kubernetes cluster name
+   name: 
+   # Kubernetes cluster namespace(s) to monitor. This can be a comma-separated list of namespaces or '*' to monitor all the namespaces
+   namespace: '*'

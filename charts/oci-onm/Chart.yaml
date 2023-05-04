@@ -1,6 +1,6 @@
 apiVersion: v2
-name: oci-la-fluentd
-description: Helm chart for collecting Kubernetes logs and objects using Fluentd into OCI Logging Analytics.
+name: oci-onm
+description: Helm chart for collecting Kubernetes logs & objects and metrics using Fluentd and ManagementAgent into OCI Logging Analytics and OCI Monitoring respectively.
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -15,11 +15,24 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 2.0.1
+version: 3.0.0
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-# appVersion here reflects OCI Logging Analytics Fluentd Output Plugin version
-appVersion: "2.0.3"
+appVersion: "3.0.0"
+
+dependencies:
+- name: oci-onm-common
+  version: "3.0.0"
+  repository: "file://../common"
+  condition: oci-onm-common.enabled 
+- name: oci-onm-logan
+  version: "3.0.0"
+  repository: "file://../logan"
+  condition: oci-onm-logan.enabled
+- name: oci-onm-mgmt-agent
+  version: "3.0.0"
+  repository: "file://../mgmt-agent"
+  condition: oci-onm-mgmt-agent.enabled

@@ -1,27 +1,27 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: mgmtagent
-  namespace: {{ default "mgmtagent" .Values.namespace }}
+  name: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent
+  namespace: {{ include "mgmt-agent.namespace" . }}
   labels:
-    app: mgmtagent
+    app: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent
 spec:
-  serviceName: mgmtagent
+  serviceName: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent
   replicas: 1
   selector:
     matchLabels:
-      app: mgmtagent
+      app: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent
   template:
     metadata:
       labels:
-        app: mgmtagent
+        app: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent
     spec:
-      serviceAccountName: mgmtagent-serviceaccount
+      serviceAccountName: {{ include "mgmt-agent.serviceAccount" . }}
       imagePullSecrets:
-        - name: mgmtagent-container-registry-key
+        - name: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent-container-registry-key
       restartPolicy: Always
       containers:
-        - name: mgmtagent
+        - name: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent
           image: {{ .Values.mgmtagent.image.url }}
           volumeMounts:
             - name: mgmtagent-secret
@@ -34,10 +34,10 @@ spec:
       volumes:
         - name: mgmtagent-secret
           secret:
-            secretName: mgmtagent-input-rsp
+            secretName: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent-rsp
         - name: mgmtagent-config
           configMap:
-            name: mgmtagent-monitoring-config
+            name: {{ include "mgmt-agent.resourceNamePrefix" . }}-metrics
   volumeClaimTemplates:
     - metadata:
         name: mgmtagent-pvc

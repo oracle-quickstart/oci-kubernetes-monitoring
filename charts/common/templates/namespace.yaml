@@ -1,0 +1,7 @@
+{{- if eq (include "common.createNamespace" .) "true" }}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ include "common.namespace" . }}
+{{- end }}

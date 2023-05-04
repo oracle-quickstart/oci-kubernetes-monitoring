@@ -1,10 +1,9 @@
-{{- if .Values.createServiceAccount }}
+{{- if eq (include "common.createServiceAccount" .) "true" }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: {{ include "oci-la-fluentd.name" . }}-objects-clusterrole
-  namespace: {{ default "kube-system" .Values.namespace }}
+  name: {{ include "common.resourceNamePrefix" . }}
 rules:
   - apiGroups:
       - ""
@@ -14,9 +13,12 @@ rules:
       - get
       - list
       - watch
+  - nonResourceURLs: ["/metrics"]
+    verbs: ["get"]
   - apiGroups:
       - apps
       - batch
+      - metrics.k8s.io
     resources:
       - '*'
     verbs:

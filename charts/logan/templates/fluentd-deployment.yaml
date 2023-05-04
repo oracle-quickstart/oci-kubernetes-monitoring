@@ -1,41 +1,38 @@
 ---
 {{- $authtype := .Values.authtype | lower }}
 {{- $imagePullSecrets := .Values.image.imagePullSecrets }}
+{{- $resourceNamePrefix := (include "logan.resourceNamePrefix" .) }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "oci-la-fluentd.name" . }}-deployment
-  namespace: {{ default "kube-system" .Values.namespace }}
+  name: {{ $resourceNamePrefix }}-logan
+  namespace: {{ include "logan.namespace" . }}
   labels:
-    app: {{ include "oci-la-fluentd.name" . }}-objects
+    app: {{ $resourceNamePrefix }}-logan
     version: v1
 spec:
   selector:
     matchLabels:
-      app: {{ include "oci-la-fluentd.name" . }}-objects
+      app: {{ $resourceNamePrefix }}-logan
       version: v1
   template:
     metadata:
       annotations:
         {{- if eq $authtype "config" }}
-        checksum/secrets: {{ include (print $.Template.BasePath "/oci-config-secrets.yaml") . | sha256sum }}
+        checksum/secrets: {{ include (print $.Template.BasePath "/oci-config-secret.yaml") . | sha256sum }}
         {{- end}}
-        checksum/configmap: {{ include (print $.Template.BasePath "/configmap-objects.yaml") . | sha256sum }}
+        checksum/configmap: {{ include (print $.Template.BasePath "/objects-configmap.yaml") . | sha256sum }}
       labels:
-        app: {{ include "oci-la-fluentd.name" . }}-objects
+        app: {{ $resourceNamePrefix }}-logan
         version: v1
     spec:
-      {{- if .Values.createServiceAccount }}
-      serviceAccountName: {{ include "oci-la-fluentd.name" . }}-serviceaccount
-      {{- else }}
-      serviceAccountName: "{{ .Values.serviceAccount | required (printf "serviceAccount is required when createServiceAccount is false") }}"
-      {{- end }}
+      serviceAccountName: {{ include "logan.serviceAccount" . }}
       {{- if $imagePullSecrets }}	
       imagePullSecrets:		  
       - name: {{ .Values.image.imagePullSecrets }}
       {{- end}}
       containers:
-      - name: {{ include "oci-la-fluentd.name" . }}-objects
+      - name: {{ $resourceNamePrefix }}-fluentd
         image: {{ .Values.image.url }}
         imagePullPolicy: {{ default "IfNotPresent" .Values.image.imagePullPolicy }}
         env:
@@ -50,9 +47,9 @@ spec:
           - name: FLUENT_OCI_NAMESPACE
             value: {{ .Values.ociLANamespace }}
           - name: FLUENT_OCI_KUBERNETES_CLUSTER_ID
-            value: {{ .Values.kubernetesClusterID }}
+            value: {{ include "logan.kubernetesClusterId" . }}
           - name: FLUENT_OCI_KUBERNETES_CLUSTER_NAME
-            value: {{ .Values.kubernetesClusterName }}		  		
+            value: {{ include "logan.kubernetesClusterName" . }}		  		
           {{- if eq $authtype "config" }}
           - name: FLUENT_OCI_CONFIG_LOCATION
             value: {{ .Values.oci.path }}/{{ .Values.oci.file }}
@@ -95,10 +92,10 @@ spec:
         projected:
           sources:
               - secret:
-                  name: {{ include "oci-la-fluentd.name" . }}-credentials-secret
+                  name: {{ $resourceNamePrefix }}-oci-config
       {{- end }}
       # Mount directory where fluentd config exists
       - name: fluentdconfigdir
         configMap:
           # Provide the name of the ConfigMap to mount.
-          name: {{ include "oci-la-fluentd.name" . }}-objects-configmap
+          name: {{ $resourceNamePrefix }}-objects
