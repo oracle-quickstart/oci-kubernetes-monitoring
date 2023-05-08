@@ -47,9 +47,3 @@ oci-onm-mgmt-agent:
     installKeyFileContent:
     # Copy the downloaded Management Agent Install Key file under root helm directory as resources/input.rsp
     installKey: resources/input.rsp
-    # Follow steps documented at https://github.com/oracle/docker-images/tree/main/OracleManagementAgent to build docker image.
-    image:
-      # Replace this value with actual docker image URL for Management Agent
-      url:
-      # Image secrets to use for pulling container image (base64 encoded content of ~/.docker/config.json file)
-      secret:
