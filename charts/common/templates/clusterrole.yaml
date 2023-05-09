@@ -18,6 +18,7 @@ rules:
   - apiGroups:
       - apps
       - batch
+      - discovery.k8s.io
       - metrics.k8s.io
     resources:
       - '*'
