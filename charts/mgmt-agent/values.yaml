@@ -62,7 +62,7 @@ deployment:
       # Provide the minimum required resources
       request:
          # specify the cpu cores
-         cpuCore: 100m
+         cpuCore: 200m
          # specify the memory
          memory: 500Mi
          # specify the storage capacity for StatefulSet's PVC
