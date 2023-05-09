@@ -2,8 +2,8 @@
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 title: OCI Kubernetes Monitoring Solution
-description: Monitoring Solution for Kubernetes offered by OCI Logging Analytics
-informationalText: Monitoring Solution for Kubernetes offered by OCI Logging Analytics
+description: Comprehensive Kubernetes Monitoring Solution based on Oracle Observability and Management Services
+informationalText: Monitoring Kubernetes environments using Logs, Metrics, and K8S Object states
 schemaVersion: 1.1.0
 version: "20221004"
 
@@ -33,14 +33,7 @@ variableGroups:
       - compartment_ocid
     visible: false
 
-  - title: "Pre-requisites"
-    variables:
-      - opt_create_dynamicGroup_and_policies
-    visible:
-      and:
-        - enable_helm_release
-
-  - title: "OKE Cluster Information"
+  - title: "Which OKE Cluster do you want to monitor?"
     variables:
       - oke_compartment_ocid
       - oke_cluster_ocid
@@ -50,7 +43,7 @@ variableGroups:
       and:
         - enable_helm_release
 
-  - title: "OCI Logging Analytics Information"
+  - title: "Which compartment to use for monitoring resources?"
     variables:
     - oci_la_compartment_ocid
     - opt_create_new_la_logGroup
@@ -59,14 +52,21 @@ variableGroups:
     visible:
       and:
         - enable_helm_release
-
-  - title: "Fluentd Configuration"
+        
+   - title: "OCI Policies and Dynamic Groups"
     variables:
-      - container_image_url
-      - fluentd_baseDir_path
+      - opt_create_dynamicGroup_and_policies
     visible:
       and:
         - enable_helm_release
+
+#  - title: "Fluentd Configuration"
+#    variables:
+#      - container_image_url
+#      - fluentd_baseDir_path
+#    visible:
+#      and:
+#        - enable_helm_release
 
 variables:
 
