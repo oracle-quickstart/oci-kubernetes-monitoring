@@ -42,8 +42,5 @@ oci-onm-mgmt-agent:
   kubernetesCluster:
     name: "{{ .Values.global.kubernetesClusterName }}"
   mgmtagent:
-    # Provide either installKeyFileContent or installKey as an install key. If both provided then installKeyFileContent will take higher precedence.
     # Provide the base64 encoded content of the Management Agent Install Key file
     installKeyFileContent:
-    # Copy the downloaded Management Agent Install Key file under root helm directory as resources/input.rsp
-    installKey: resources/input.rsp
