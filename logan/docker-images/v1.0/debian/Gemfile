@@ -1,9 +1,30 @@
+# # # Copyright (c) 2023, Oracle and/or its affiliates.
+# # # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+# #
+# # Copyright (c) 2023, Oracle and/or its affiliates.
+# # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+#
+# # Copyright (c) 2023, Oracle and/or its affiliates.
+# # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+#
+# Copyright (c) 2023, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+
+# # Copyright (c) 2023, Oracle and/or its affiliates.
+# # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+#
+# Copyright (c) 2023, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+
+# Copyright (c) 2023, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+
 source "https://rubygems.org"
 
 gem "fluentd", "1.14.3"
 gem "fluent-plugin-oci-logging-analytics", "2.0.3"
 gem "fluent-plugin-concat", "~> 2.5.0"
-gem "fluent-plugin-rewrite-tag-filter", "~> 2.4.0" 
+gem "fluent-plugin-rewrite-tag-filter", "~> 2.4.0"
 gem "fluent-plugin-parser-cri", "~> 0.1.1"
 gem "fluent-plugin-kubernetes_metadata_filter", "2.9.5"
 gem "fluent-plugin-kubernetes-objects", "1.1.12"

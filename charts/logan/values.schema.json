@@ -1,3 +1,24 @@
+# # # Copyright (c) 2023, Oracle and/or its affiliates.
+# # # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+# #
+# # Copyright (c) 2023, Oracle and/or its affiliates.
+# # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+#
+# # Copyright (c) 2023, Oracle and/or its affiliates.
+# # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+#
+# Copyright (c) 2023, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+
+# # Copyright (c) 2023, Oracle and/or its affiliates.
+# # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+#
+# Copyright (c) 2023, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+
+# Copyright (c) 2023, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+
 {
   "$schema": "http://json-schema.org/schema#",
   "required": [
@@ -18,7 +39,7 @@
       "properties": {
         "url": {
           "type": "string"
-        },	  
+        },
         "pullPolicy": {
           "type": "string",
           "pattern": "^(Always|Never|IfNotPresent)$"
@@ -37,10 +58,10 @@
       "type": "string"
     },
     "ociLANamespace": {
-      "type": "string"	
+      "type": "string"
     },
     "ociLALogGroupID": {
-      "type": "string"	
+      "type": "string"
     },
     "fluentd": {
       "type": "object",

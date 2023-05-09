@@ -1,3 +1,12 @@
+# # Copyright (c) 2023, Oracle and/or its affiliates.
+# # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+#
+# Copyright (c) 2023, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+
+# Copyright (c) 2023, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+
 FROM container-registry.oracle.com/os/oraclelinux:8
 
 USER root
@@ -15,7 +24,7 @@ COPY Gemfile /fluentd/
 
 # Install ruby 2.7 along with rubygems and bundler.
 RUN dnf -y module enable ruby:2.7 \
- && dnf -y install --nodocs ruby ruby-libs \ 
+ && dnf -y install --nodocs ruby ruby-libs \
  && dnf -y install --nodocs rubygems rubygem-openssl rubygem-psych \
  && dnf -y install --nodocs rubygem-bundler rubygem-io-console \
 # Install development dependent packages for gems native installation
@@ -35,7 +44,7 @@ RUN dnf -y module enable ruby:2.7 \
  && curl -L -o /tmp/jemalloc-4.5.0.tar.bz2 https://github.com/jemalloc/jemalloc/releases/download/4.5.0/jemalloc-4.5.0.tar.bz2 \
  && cd /tmp && tar -xjf jemalloc-4.5.0.tar.bz2 && cd jemalloc-4.5.0/ \
  && ./configure && make \
- && mv lib/libjemalloc.so.2 /usr/lib \      
+ && mv lib/libjemalloc.so.2 /usr/lib \
 # Install hostname, required by fluent-plugin-rewrite-tag-filter
  && dnf -y install hostname \
 # Remove all the development dependent packages

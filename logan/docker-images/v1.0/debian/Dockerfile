@@ -1,6 +1,27 @@
+# # # Copyright (c) 2023, Oracle and/or its affiliates.
+# # # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+# #
+# # Copyright (c) 2023, Oracle and/or its affiliates.
+# # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+#
+# # Copyright (c) 2023, Oracle and/or its affiliates.
+# # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+#
+# Copyright (c) 2023, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+
+# # Copyright (c) 2023, Oracle and/or its affiliates.
+# # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+#
+# Copyright (c) 2023, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+
+# Copyright (c) 2023, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+
 ### Referred version from fluentd-kubernetes-daemonset gitgub repo ###
 
-FROM fluent/fluentd:v1.14.3-debian-1.0 
+FROM fluent/fluentd:v1.14.3-debian-1.0
 
 USER root
 WORKDIR /home/fluent

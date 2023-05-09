@@ -1,3 +1,12 @@
+# # Copyright (c) 2023, Oracle and/or its affiliates.
+# # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+#
+# Copyright (c) 2023, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+
+# Copyright (c) 2023, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -81,7 +90,7 @@ spec:
               value: "/var/opt/conf/fluent.conf"  # change as required
             - name: FLUENT_OCI_DEFAULT_LOGGROUP_ID
               # Replace this value with actual logging analytics log group
-              value: <OCI_LOGGING_ANALYTICS_LOG_GROUP_ID>  
+              value: <OCI_LOGGING_ANALYTICS_LOG_GROUP_ID>
             - name: FLUENT_OCI_NAMESPACE
               # Replace this value with actual namespace of logging analytics
               value: <OCI_TENANCY_NAMESPACE>
