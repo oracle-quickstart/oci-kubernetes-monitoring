@@ -427,6 +427,8 @@ fluentd:
             api_endpoint: ""
          namespaces:
             api_endpoint: ""
+         services:
+            api_endpoint: ""
          events:
             api_endpoint: ""
          daemon_sets:
@@ -441,3 +443,5 @@ fluentd:
             api_endpoint: apis/batch
          cron_jobs:
             api_endpoint: apis/batch
+         endpoint_slices:
+            api_endpoint: apis/discovery.k8s.io
