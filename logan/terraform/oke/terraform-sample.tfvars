@@ -1,3 +1,5 @@
+# Copyright (c) 2023, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 ### Configure Boat Authentication for OCI; leave unchaged if not using boat authentication
 boat_auth         = false # set true to use BOAT Authentication

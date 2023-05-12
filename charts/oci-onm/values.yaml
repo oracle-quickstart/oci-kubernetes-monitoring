@@ -1,23 +1,26 @@
+# Copyright (c) 2023, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+
 global:
-  # Kubernetes Namespace in which the resources to be created. Set oci-kubernetes-monitoring-common:createNamespace set to true, if the namespace doesn't exist.
+  # -- Kubernetes Namespace in which the resources to be created. Set oci-kubernetes-monitoring-common:createNamespace set to true, if the namespace doesn't exist.
   namespace: oci-onm
-  # Prefix to be attached to resources created through this chart. Not all resources may have this prefix.
+  # -- Prefix to be attached to resources created through this chart. Not all resources may have this prefix.
   resourceNamePrefix: oci-onm
-  # OKE OCID for an OKE cluster or an unique ID for other Kubernetes clusters.
+  # -- OKE OCID for an OKE cluster or an unique ID for other Kubernetes clusters.
   kubernetesClusterID:
-  # Provide a unique name for the cluster. This would help uniquely identifying the logs and metrics data at OCI Logging Analytics and OCI Monitoring respectivelt, when moitoring multiple clustersa
+  # -- Provide a unique name for the cluster. This would help uniquely identifying the logs and metrics data at OCI Logging Analytics and OCI Monitoring respectivelt, when moitoring multiple clustersa
   kubernetesClusterName:
 
 oci-onm-common:
-  # By default, a cluster role, cluster role binding and serviceaccount will be created for the monitoring pods to be able to (readonly) access various objects within the cluster, to support collection of various telemetry data. You may set this to false and provide your own serviceaccount which has the necessary cluster role(s) binded to it. Refer, README for the cluster role definition and other details.
+  # -- By default, a cluster role, cluster role binding and serviceaccount will be created for the monitoring pods to be able to (readonly) access various objects within the cluster, to support collection of various telemetry data. You may set this to false and provide your own serviceaccount which has the necessary cluster role(s) binded to it. Refer, README for the cluster role definition and other details.
   createServiceAccount: true
-  # If createNamespace is set to true, it tries to create the namespace defined in 'namespace' variable.
+  # -- If createNamespace is set to true, it tries to create the namespace defined in 'namespace' variable.
   createNamespace: true
-  # Kubernetes Namespace in which the serviceaccount to be created.
+  # -- Kubernetes Namespace in which the serviceaccount to be created.
   namespace: "{{ .Values.global.namespace }}"
-  # Prefix to be attached to resources created through this chart. Not all resources may have this prefix.
+  # -- Prefix to be attached to resources created through this chart. Not all resources may have this prefix.
   resourceNamePrefix: "{{ .Values.global.resourceNamePrefix }}"
-  # Name of the Kubernetes ServiceAccount
+  # -- Name of the Kubernetes ServiceAccount
   serviceAccount: "{{ .Values.global.resourceNamePrefix }}"
 
 oci-onm-logan:

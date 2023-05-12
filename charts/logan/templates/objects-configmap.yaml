@@ -1,3 +1,6 @@
+# Copyright (c) 2023, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+
 {{- $kubernetesClusterName := (include "logan.kubernetesClusterName" .) }}
 {{- $kubernetesClusterId := (include "logan.kubernetesClusterId" .) }}
 apiVersion: v1
@@ -19,8 +22,8 @@ data:
        {{- if eq $authtype "config" }}
        config_file_location      {{ .Values.oci.path }}/{{ .Values.oci.file }}
        profile_name              "{{ .Values.fluentd.ociLoggingAnalyticsOutputPlugin.profile_name }}"
-       {{- end }} 
-       plugin_log_location       "{{ .Values.fluentd.baseDir }}" 
+       {{- end }}
+       plugin_log_location       "{{ .Values.fluentd.baseDir }}"
        plugin_log_level          "{{ .Values.fluentd.ociLoggingAnalyticsOutputPlugin.plugin_log_level }}"
        plugin_log_file_size      "{{ .Values.fluentd.ociLoggingAnalyticsOutputPlugin.plugin_log_file_size }}"
        plugin_log_file_count     "{{ .Values.fluentd.ociLoggingAnalyticsOutputPlugin.plugin_log_file_count }}"
@@ -83,7 +86,7 @@ data:
       <pull>
         resource_name cron_jobs
         interval {{ $.Values.objectsPollingFrequency }}
-      </pull> 
+      </pull>
     </source>
     {{- end }}
     {{- end }}

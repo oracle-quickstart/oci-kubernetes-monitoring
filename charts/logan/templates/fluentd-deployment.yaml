@@ -1,3 +1,6 @@
+# Copyright (c) 2023, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+
 ---
 {{- $authtype := .Values.authtype | lower }}
 {{- $imagePullSecrets := .Values.image.imagePullSecrets }}
@@ -27,8 +30,8 @@ spec:
         version: v1
     spec:
       serviceAccountName: {{ include "logan.serviceAccount" . }}
-      {{- if $imagePullSecrets }}	
-      imagePullSecrets:		  
+      {{- if $imagePullSecrets }}
+      imagePullSecrets:
       - name: {{ .Values.image.imagePullSecrets }}
       {{- end}}
       containers:
@@ -49,11 +52,11 @@ spec:
           - name: FLUENT_OCI_KUBERNETES_CLUSTER_ID
             value: {{ include "logan.kubernetesClusterId" . }}
           - name: FLUENT_OCI_KUBERNETES_CLUSTER_NAME
-            value: {{ include "logan.kubernetesClusterName" . }}		  		
+            value: {{ include "logan.kubernetesClusterName" . }}
           {{- if eq $authtype "config" }}
           - name: FLUENT_OCI_CONFIG_LOCATION
             value: {{ .Values.oci.path }}/{{ .Values.oci.file }}
-          {{- end }} 
+          {{- end }}
           {{- if .Values.extraEnv }}
           {{- toYaml .Values.extraEnv | nindent 10 }}
           {{- end }}

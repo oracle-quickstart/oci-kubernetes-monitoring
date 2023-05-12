@@ -1,4 +1,7 @@
-# When defined in the Terraform configuration, the following variables automatically prepopulate with values on the Console pages used to create and edit the stack. 
+# Copyright (c) 2023, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+
+# When defined in the Terraform configuration, the following variables automatically prepopulate with values on the Console pages used to create and edit the stack.
 # The stack's values are used when you select the Terraform actions Plan, Apply, and Destroy.
 # - tenancy_ocid (tenancy OCID)
 # - region (region)
@@ -153,4 +156,3 @@ variable "fluentd_baseDir_path" {
   type    = string
   default = "/var/log"
 }
-

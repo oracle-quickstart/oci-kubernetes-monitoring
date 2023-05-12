@@ -1,3 +1,6 @@
+# Copyright (c) 2023, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+
 apiVersion: v2
 name: oci-onm
 description: Helm chart for collecting Kubernetes logs & objects and metrics using Fluentd and ManagementAgent into OCI Logging Analytics and OCI Monitoring respectively.
@@ -27,7 +30,7 @@ dependencies:
 - name: oci-onm-common
   version: "3.0.0"
   repository: "file://../common"
-  condition: oci-onm-common.enabled 
+  condition: oci-onm-common.enabled
 - name: oci-onm-logan
   version: "3.0.0"
   repository: "file://../logan"

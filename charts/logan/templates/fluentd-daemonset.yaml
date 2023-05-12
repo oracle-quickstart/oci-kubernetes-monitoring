@@ -1,3 +1,6 @@
+# Copyright (c) 2023, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+
 ---
 {{- $authtype := .Values.authtype | lower }}
 {{- $imagePullSecrets := .Values.image.imagePullSecrets }}
@@ -30,8 +33,8 @@ spec:
       tolerations:
       - key: node-role.kubernetes.io/master
         effect: NoSchedule
-      {{- if $imagePullSecrets }}	
-      imagePullSecrets:		  
+      {{- if $imagePullSecrets }}
+      imagePullSecrets:
       - name: {{ .Values.image.imagePullSecrets }}
       {{- end}}
       containers:
@@ -56,7 +59,7 @@ spec:
           {{- if eq $authtype "config" }}
           - name: FLUENT_OCI_CONFIG_LOCATION
             value: {{ .Values.oci.path }}/{{ .Values.oci.file }}
-          {{- end }} 
+          {{- end }}
           {{- if .Values.extraEnv }}
           {{- toYaml .Values.extraEnv | nindent 10 }}
           {{- end }}
@@ -114,7 +117,7 @@ spec:
       - name: basedir
         hostPath:
           path: {{ .Values.fluentd.baseDir }}
-      {{- end }}   		  
+      {{- end }}
       {{- if eq $authtype "config" }}
       # Mount directory where oci config exists
       - name: ociconfigdir

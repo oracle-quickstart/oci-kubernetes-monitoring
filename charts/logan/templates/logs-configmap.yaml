@@ -1,3 +1,6 @@
+# Copyright (c) 2023, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+
 {{- $kubernetesClusterName := (include "logan.kubernetesClusterName" .) }}
 {{- $kubernetesClusterId := (include "logan.kubernetesClusterId" .) }}
 apiVersion: v1
@@ -10,7 +13,7 @@ data:
   fluent.conf: |
     {{- $authtype := .Values.authtype | lower }}
     @include kubernetes.conf
-    
+
     # Filter to add kubernetes metadata
     <filter oci.**>
        @type kubernetes_metadata
@@ -30,13 +33,13 @@ data:
        de_dot false
        annotation_match [ ".*" ]
     </filter>
-    
+
     # Match block to ensure all the logs including concat plugin timeout logs will have same label
     <match oci.**>
        @type relabel
        @label @NORMAL
     </match>
-    
+
     # Match block to set info required for oci-logging-analytics fluentd output plugin
     <label @NORMAL>
        <match oci.**>
@@ -91,7 +94,7 @@ data:
        path {{ $logDefinition.path | required (printf "fluentd.kubernetesSystem.logs.%s.path is required" $name) }}
        pos_file {{ $.Values.fluentd.baseDir }}/oci_la_fluentd_outplugin/pos/{{ $name }}.logs.pos
        tag oci.oke.{{ $name }}.*
-       read_from_head "{{ $.Values.fluentd.tailPlugin.readFromHead }}" 
+       read_from_head "{{ $.Values.fluentd.tailPlugin.readFromHead }}"
        {{- if $logDefinition.encoding }}
        encoding {{ $logDefinition.encoding }}
        {{- else if $.Values.fluentd.kubernetesSystem.encoding }}
@@ -125,7 +128,7 @@ data:
        {{- else }}
        oci_la_log_group_id "{{ required "ociLALogGroupID is required" $.Values.ociLALogGroupID }}"
        {{- end }}
-       oci_la_log_path "${record['tailed_path']}" 
+       oci_la_log_path "${record['tailed_path']}"
        oci_la_log_source_name "{{ $logDefinition.ociLALogSourceName | required (printf "fluentd.kubernetesSystem.logs.%s.ociLALogSourceName is required" $name) }}"
        {{- if $logDefinition.ociLAEntityID }}
        oci_la_entity_id "{{ $logDefinition.ociLAEntityID }}"
@@ -138,7 +141,7 @@ data:
        oci_la_log_set "{{ $.Values.fluentd.kubernetesSystem.ociLALogSet | default $.Values.ociLALogSet }}"
        {{- end }}
        {{- if eq $runtime "docker" }}
-       message "${record['log']}" 
+       message "${record['log']}"
        {{- end }}
        tag ${tag}
        </record>
@@ -170,7 +173,7 @@ data:
     {{- end }}
     {{- end }}
     {{- end }}
-    
+
     {{- if .Values.fluentd.linuxSystem }}
     {{- range $name, $logDefinition := .Values.fluentd.linuxSystem.logs }}
     {{- if and (ne $name "syslog") (ne $name "kubeletlog") }}
@@ -217,7 +220,7 @@ data:
        {{- else }}
        oci_la_log_group_id "{{ required "ociLALogGroupID is required" $.Values.ociLALogGroupID }}"
        {{- end }}
-       oci_la_log_path "${record['tailed_path']}" 
+       oci_la_log_path "${record['tailed_path']}"
        oci_la_log_source_name "{{ $logDefinition.ociLALogSourceName | required (printf "fluentd.linuxSystem.logs.%s.ociLALogSourceName is required" $name) }}"
        {{- if $logDefinition.ociLAEntityID }}
        oci_la_entity_id "{{ $logDefinition.ociLAEntityID }}"
@@ -246,7 +249,7 @@ data:
        path {{ required "fluentd.linuxSystem.logs.syslog.path is required" .Values.fluentd.linuxSystem.logs.syslog.path }}
        pos_file {{ .Values.fluentd.baseDir }}/oci_la_fluentd_outplugin/pos/syslog.logs.pos
        tag oci.oke.syslog.messages.**
-       read_from_head "{{ .Values.fluentd.tailPlugin.readFromHead }}" 
+       read_from_head "{{ .Values.fluentd.tailPlugin.readFromHead }}"
        {{- if .Values.fluentd.linuxSystem.logs.syslog.encoding }}
        encoding {{ .Values.fluentd.linuxSystem.logs.syslog.encoding }}
        {{- else if .Values.fluentd.linuxSystem.encoding }}
@@ -260,10 +263,11 @@ data:
        format1 /^(?<message>.*)/
        </parse>
     </source>
-    
+
     # Match block to filter kubelet logs from syslogs
     <match oci.oke.syslog.messages.**>
        @type rewrite_tag_filter
+       hostname_command {{ ((.Values.fluentd).rewriteTagPlugin).hostname_command | default "cat /etc/hostname" }}
        <rule>
        key message
        pattern /kubelet:/
@@ -275,7 +279,7 @@ data:
        tag oci.oke.syslog.syslog.*
        </rule>
     </match>
-    
+
     # Record transformer filter to apply Logging Analytics configuration to each record.
     <filter oci.oke.syslog.kubelet.**>
        @type record_transformer
@@ -295,7 +299,7 @@ data:
        {{- else }}
        oci_la_log_group_id "{{ required "ociLALogGroupID is required" .Values.ociLALogGroupID }}"
        {{- end }}
-       oci_la_log_path "${record['tailed_path']}" 
+       oci_la_log_path "${record['tailed_path']}"
        oci_la_log_source_name "{{ required "fluentd.linuxSystem.logs.kubeletlog.ociLALogSourceName is required" .Values.fluentd.linuxSystem.logs.kubeletlog.ociLALogSourceName }}"
        {{- if .Values.fluentd.linuxSystem.logs.kubeletlog.ociLAEntityID }}
        oci_la_entity_id "{{ .Values.fluentd.linuxSystem.logs.kubeletlog.ociLAEntityID }}"
@@ -310,7 +314,7 @@ data:
        tag ${tag}
        </record>
     </filter>
-    
+
     # Record transformer filter to apply Logging Analytics configuration to each record.
     <filter oci.oke.syslog.syslog.**>
        @type record_transformer
@@ -330,7 +334,7 @@ data:
        {{- else }}
        oci_la_log_group_id "{{ required "ociLALogGroupID is required" .Values.ociLALogGroupID }}"
        {{- end }}
-       oci_la_log_path "${record['tailed_path']}" 
+       oci_la_log_path "${record['tailed_path']}"
        oci_la_log_source_name "{{ required "fluentd.linuxSystem.logs.syslog.ociLALogSourceName is required" .Values.fluentd.linuxSystem.logs.syslog.ociLALogSourceName }}"
        {{- if .Values.fluentd.linuxSystem.logs.syslog.ociLAEntityID }}
        oci_la_entity_id "{{ .Values.fluentd.linuxSystem.logs.syslog.ociLAEntityID }}"
@@ -462,10 +466,10 @@ data:
        @type json
        {{- else}}
        @type cri
-       {{- end }} 
+       {{- end }}
        </parse>
     </source>
-    
+
     # Filter to add kubernetes metadata
     <filter oci.oke.containerlogs.**>
        @type kubernetes_metadata
@@ -485,7 +489,7 @@ data:
        de_dot false
        annotation_match [ ".*" ]
     </filter>
-    
+
     # Record transformer filter to apply Logging Analytics configuration to each record.
     <filter oci.oke.containerlogs.**>
        @type record_transformer
@@ -500,7 +504,7 @@ data:
        oci_la_log_path "${record['tailed_path']}"
        oci_la_log_source_name ${record.dig("kubernetes", "annotations", "oracle.com/oci_la_log_source_name") ? record.dig("kubernetes", "annotations", "oracle.com/oci_la_log_source_name") : "{{ .Values.fluentd.genericContainerLogs.ociLALogSourceName | default "Kubernetes Container Generic Logs" }}"}
        oci_la_entity_id ${record.dig("kubernetes", "annotations", "oracle.com/oci_la_entity_id") ? record.dig("kubernetes", "annotations", "oracle.com/oci_la_entity_id") : "{{ .Values.fluentd.genericContainerLogs.ociLAEntityID | default .Values.ociLAEntityID }}"}
-       oci_la_log_set ${record.dig("kubernetes", "annotations", "oracle.com/oci_la_log_set") ? record.dig("kubernetes", "annotations", "oracle.com/oci_la_log_set") : "{{ .Values.fluentd.genericContainerLogs.ociLALogSet | default .Values.ociLALogSet }}"} 
+       oci_la_log_set ${record.dig("kubernetes", "annotations", "oracle.com/oci_la_log_set") ? record.dig("kubernetes", "annotations", "oracle.com/oci_la_log_set") : "{{ .Values.fluentd.genericContainerLogs.ociLALogSet | default .Values.ociLALogSet }}"}
        {{- if eq $runtime "docker" }}
        message "${record['log']}"
        {{- end }}
@@ -508,7 +512,7 @@ data:
        </record>
     </filter>
     {{- end }}
-    
+
     # Concat filter to handle partial logs in CRI/ContainerD
     # Docker can also have partial logs but handling is different for different docker versions. Considering Kubernetes/OKE moved to ContainerD/CRI since last 4-5 releases, ignoring docker handling.
     # This filter can not be clubbed with concat filter for multiline as both are mutually exclusive.
@@ -523,9 +527,8 @@ data:
       timeout_label "@NORMAL"
     </filter>
     {{- end }}
-    
+
     #customFluentd config
-    {{- if .Values.fluentd.customFluentdConf }} 
+    {{- if .Values.fluentd.customFluentdConf }}
     {{- include "common.tplvalues.render" (dict "value" .Values.fluentd.customFluentdConf "context" $) | nindent 4 }}
     {{- end }}
-    

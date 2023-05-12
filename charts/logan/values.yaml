@@ -1,51 +1,73 @@
+# Copyright (c) 2023, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+
 global:
-  # Kubernetes Namespace in which the resources to be created. Set oci-kubernetes-monitoring-common:createNamespace set to true, if the namespace doesn't exist.
+  # -- Kubernetes Namespace for creating monitoring resources.
+  # Ignored if oci-kubernetes-monitoring-common.createNamespace set to false.
   namespace: oci-onm
-  # Prefix to be attached to resources created through this chart. Not all resources may have this prefix.
+  # -- Resource names prefix used, where allowed.
   resourceNamePrefix: oci-onm
 
 oci-onm-common:
-  # By default, a cluster role, cluster role binding and serviceaccount will be created for the monitoring pods to be able to (readonly) access various objects within the cluster, to support collection of various telemetry data. You may set this to false and provide your own serviceaccount (in the parent chart(s)) which has the necessary cluster role(s) binded to it. Refer, README for the cluster role definition and other details.
+# -- Automatically create, a readonly cluster role, cluster role binding and
+# serviceaccount is required # to read various cluster objects for monitoring.
+# If set to false serviceaccount value must be provided in the parent chart.
+# Refer, README for the cluster role definition and other details.
   createServiceAccount: true
-  # If createNamespace is set to true, it tries to create the namespace defined in 'namespace' variable.
+
+  # -- Automatically create namespace for all resources (namespaced) used by OCI Kubernetes Monitoring Solution.
   createNamespace: true
-  # Kubernetes Namespace in which the serviceaccount to be created.
+
+  # -- Kubernetes Namespace for creating serviceaccount. Default: oci-onm
   namespace: "{{ .Values.global.namespace }}"
-  # Prefix to be attached to resources created through this chart. Not all resources may have this prefix.
+
+  # -- Resoure Name Prefix: Wherever allowed, this prefix will be used with all resources used by this chart
   resourceNamePrefix: "{{ .Values.global.resourceNamePrefix }}"
-  # Name of the Kubernetes ServiceAccount
+
+  # -- Kubernetes ServiceAccount name
   serviceAccount: "{{ .Values.global.resourceNamePrefix }}"
 
-# This value is to determine the runtime of k8s and change the configuration of fluentd accordingly
-# Possible values are docker and cri(for OKE 1.20 and above)
+# -- Container runtime for Kubernetes Cluster. Requires fluentd configuration changes accordingly
+# Allowed values: docker, cri(for OKE 1.20 and above)
 runtime: cri
-# Auth type to be used by oci fluentd output plugin to upload logs into logging analytics
-# Possible values are InstancePrincipal and config
+
+# -- Authentication type for authenticating with OCI Logging Analytics service
+# -- Allowed values: InstancePrincipal, config
 authtype: InstancePrincipal
-# Kubernetes Namespace in which the resources defiend in this chart to be deployed.
+
+# -- Kubernetes Namespace for deploying monitoring resources deployed by this chart.
 namespace: "{{ .Values.global.namespace }}"
-# Prefix to be attached to resources created through this chart. Not all resources may have this prefix.
+
+
+# -- Resoure Name Prefix: Wherever allowed, this prefix will be used with all resources used by this chart
 resourceNamePrefix: "{{ .Values.global.resourceNamePrefix }}"
-# Name of the Kubernetes ServiceAccount
+
+# --  Kubernetes ServiceAccount
 serviceAccount: "{{ .Values.global.resourceNamePrefix }}"
 image:
-   # Replace this value with actual image pull secrets.
-   # Make sure the secret is in the same namespace as specified above.
+   # Image pull secrets for. Secret must be in the namespace defined by namespace
    imagePullSecrets:
-   # Replace this value with actual docker image url
+   # -- Replace this value with actual docker image url
    url: container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.0.0
-   # Replace this value with desired value for image pull policy
+   # -- Image pull policy
    imagePullPolicy: Always
-# Go to Logging Analytics Administration, click Service Details, and note the namespace value.
+
+# -- Logging Analytics namespace. Can be found in OCI console --> Logging Analytics --> Administration --> Service
 ociLANamespace:
-# Logging Analytics Default Log Group OCID
+# -- OCID of Logging Analytics Log Group to send logs to.
+# Can be overridden for individual log types.
+# e.g. ocid1.loganalyticsloggroup.oc1.phx.amaaaaasdfaskriauucc55rlwlxe4ahe2vfmtuoqa6qsgu7mb6jugxacsk6a
 ociLALogGroupID:
-# Kubernetes Cluster OCID
+
+# -- OKE Cluster OCID
+# e.g. ocid1.cluster.oc1.phx.aaaaaaaahhbadf3rxa62faaeixanvr7vftmkg6hupycbf4qszctf2wbmqqxq
 kubernetesClusterID:
-# Kubernetes Cluster NAME
+
+# -- Kubernetes Cluster name. Need not be the OKE Cluster display name.
+# e.g. production-cluster
 kubernetesClusterName:
 
-# Logging Analytics Default Entity OCID
+# -- Logging Analytics OCID for OKE Cluster
 #ociLAEntityID:
 
 # Logging Analytics additional metadata. Use this to tag all the collected logs with one or more key:value pairs.
@@ -55,42 +77,55 @@ kubernetesClusterName:
    #"Environment": "Production"
    #"Third key": "Third Value"
 
-## @param extraEnv extra env variables. Below is an example env variable
-##   - name: ENV_VARIABLE_NAME
-##     value: ENV_VARIABLE_VALUE
+# @param extra environment variables. Example
+#   name: ENV_VARIABLE_NAME
+#   value: ENV_VARIABLE_VALUE
 extraEnv: []
-## parameters to set requests and limits for memory and cpu
+
+# Requests and limits for Memory and CPU
 resources:
+   # -- Limits
    limits:
       memory: 500Mi
+   # -- Resource requests
    requests:
       cpu: 100m
       memory: 250Mi
-## @param extraVolumes Extra volumes. Below is an example extra volume
-##   - name: tmpDir
-##     hostPath:
-##         path: /tmp log
+
+# -- @param extraVolumes Extra volumes.
+# Example:
+#   - name: tmpDir
+#     hostPath:
+#         path: /tmp log
 extraVolumes: []
-## @param extraVolumeMounts Mount extra volume(s). Below is an example extra volume mount
-##   - name: tmpDir
-##     mountPath: /tmp
-##
+
+# -- @param extraVolumeMounts Mount extra volume(s). Example:
+#   - name: tmpDir
+#     mountPath: /tmp
 extraVolumeMounts: []
+
+# -- Log logvolumes for pod logs and container logs
 volumes:
-   # This value is path to the pod logs in the host machine.
-   # Replace this value with the actual path in your environment.
+   # -- Path to the pod logs on Kubernetes Nodes
    podsHostPath: /var/log/pods
-   # This value is path to the container data logs in the host machine.
-   # Replace this value with the actual path in your environment.
+   # -- Path to the container data logs on Kubernetes Nodes
    containerdataHostPath: /u01/data/docker/containers
-## oci section is only required when config file based auth is used.
+
+## -- OCI API Key Based authentication details. Required when authtype set to config
 oci:
-   # path to the config file
+   # -- Path to the OCI API config file
    path: /var/opt/.oci
-   # config file name
+   # -- Config file name
    file: config
    configFiles:
-      # config file data (https://docs.oracle.com/en-us/iaas/Content/API/Concepts/sdkconfig.htm)
+      # -- config file [data](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/sdkconfig.htm)
+      # Replace each of the below fields with actual values.
+      #   [DEFAULT]
+      #   user=<user ocid>
+      #   fingerprint=<fingerprint>
+      #   key_file=<key file path>
+      #   tenancy=<tenancy ocid>
+      #   region=<region>
       config: |-
          # Replace each of the below fields with actual values.
          [DEFAULT]
@@ -99,78 +134,91 @@ oci:
          key_file=<key file path>
          tenancy=<tenancy ocid>
          region=<region>
-      # private key file data
+      # -- Private key file data
+      #   -----BEGIN RSA PRIVATE KEY-----
+      #   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+      #   -----END RSA PRIVATE KEY-----
       private.pem: |-
-         # Replace this private key with actual value.
-         -----BEGIN RSA PRIVATE KEY-----
-         XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-         -----END RSA PRIVATE KEY-----
-# The collection frequency (in minutes) for Kubernetes Objects
+
+# -- Collection frequency (in minutes) for Kubernetes Objects
 objectsPollingFrequency: 5m
-# The following section represents the Fluentd configuration.
+
+# Fluentd configuration.
 fluentd:
-   # path to the fluentd config file
+   # -- Path to the fluentd config file
    path: /var/opt/conf
-   # fluentd config file name
+   # -- Fluentd config file name
    file: fluent.conf
-   # Base directory on the node (with read write permission) to store fluentd plugins related data.
+   # -- Base directory on the node (with read write permission) for storing fluentd plugins related data.
    baseDir: /var/log
-   # Configuration for oci-logging-analytics output plugin
+   # Configuration for oci-logging-analytics fluentd output plugin
    ociLoggingAnalyticsOutputPlugin:
+      # -- OCI API Key profile to use, if multiple profiles are found in the OCI API config file.
       profile_name: 'DEFAULT'
-      # Output plugin logging level: DEBUG < INFO < WARN < ERROR < FATAL < UNKNOWN
+      # -- Output plugin logging level: DEBUG < INFO < WARN < ERROR < FATAL < UNKNOWN
       plugin_log_level: 'info'
-      # The maximum log file size at which point the log file to be rotated, for example, 1KB, 1MB, etc.
+      # -- The maximum log file size at which point the log file to be rotated, for example, 1KB, 1MB, etc.
       plugin_log_file_size: '10MB'
-      # The number of archived or rotated log files to keep, must be non-zero.
+      # -- The number of archived or rotated log files to keep, must be non-zero.
       plugin_log_file_count: 10
-      # Fluentd Buffer Configuration
+      # -- Fluentd Buffer Configuration
       buffer:
-         # The number of threads to flush or write chunks in parallel.
+         # Max number of threads to flush or write chunks in parallel.
          flush_thread_count: 1
-         # Once the total size of the stored buffer reaches this threshold, all the append operations will fail with error, and data will be lost.
+         # Max stored buffer size.
+         # all append operations will fail with error, and data will be lost after total size of the stored buffer reaches this limit.
          total_limit_size: '5368709120' # 5GB
-         # The frequency of flushing the chunks to output plugin.
+         # Frequency of flushing the chunks to output plugin.
          flush_interval: 30 # seconds
+         # Flush thread interval
          flush_thread_interval: 0.5 # seconds
+         # Flush thread burst interval
          flush_thread_burst_interval: 0.05 # seconds
          # Wait in seconds before the next retry to flush.
          retry_wait: 2 # seconds
-         # This is mandatory only when retry_forever field is false.
+         # Max number of time to retry. Mandatory when retry_forever set to false.
          retry_max_times: 17
          # Wait in seconds before the next constant factor of exponential backoff.
          retry_exponential_backoff_base: 2
          # If true, plugin will ignore retry_max_times option and retry flushing forever.
          retry_forever: true
+         # Disable chunk backup
          disable_chunk_backup: true
 
-   # Configuration for kubernetes_metadata filter plugin (https://github.com/fabric8io/fluent-plugin-kubernetes_metadata_filter)
+   # Configuration for kubernetes_metadata filter [plugin](https://github.com/fabric8io/fluent-plugin-kubernetes_metadata_filter)
    kubernetesMetadataFilter:
-      # URL to the API server. Set this to retrieve further kubernetes metadata for logs from kubernetes API server. If not specified, environment variables KUBERNETES_SERVICE_HOST and KUBERNETES_SERVICE_PORT will be used if both are present which is typically true when running fluentd in a pod.
+      # -- Kubernetes API server URL.
+      # Alternatively, environment variables KUBERNETES_SERVICE_HOST and KUBERNETES_SERVICE_PORT can be used
+      # Environment variable are given preference.
       kubernetes_url:
-      # Validate SSL certificates (default: true)
+      # -- Validate SSL certificates
       verify_ssl: true
-      # Path to CA file for Kubernetes server certificate validation
+      # -- Path to CA file for Kubernetes server certificate validation
       ca_file:
-      # Skip all label fields from the metadata.
+      # -- Skip all label fields from the metadata.
       skip_labels: false
-      # Skip the container fields container_image and container_image_id in the metadata.
+      # -- Skip the container fields container_image and container_image_id in the metadata.
       skip_container_metadata: false
-      # Skip the master_url field from the metadata.
+      # -- Skip the master_url field from the metadata.
       skip_master_url: false
-      # Skip the namespace_id field from the metadata. The fetch_namespace_metadata function will be skipped. The plugin will be faster and cpu consumption will be less.
+      # -- Skip the namespace_id field from the metadata. The fetch_namespace_metadata function will be skipped. The plugin will be faster and cpu consumption will be less.
       skip_namespace_metadata: false
-      # Set up a watch on the pods on the API server for updates to metadata. By default, true.
+      # -- Set up a watch on the pods on the API server for updates to metadata. By default, true.
       watch: true
-   # Config for Logs Collection using tail plugin
+   # -- Config for Logs Collection using fluentd tail plugin
    tailPlugin:
       # If true, starts to read the logs from the head of the file or the last read position recorded in pos_file
       readFromHead: true
-      # Frequency of flushing the chunks to output plugin.
+      # frequency of flushing the chunks to output plugin.
       flushInterval: 60 # seconds
       # Specifies the encoding of logs. By default, in_tail emits string value as ASCII-8BIT encoding. If encoding is specified, in_tail changes string to given encoding.
       # When encoding is set at this level, it gets applied to all the logs being collected. Instead, it can also be set at individual logs under sections like kubernetesSystem, genericContainerLogs, customLogs etc.
-      # encoding: 
+      # encoding:
+
+   # Configuration for rewrite_tag plugin
+   rewriteTagPlugin:
+      hostname_command: "cat /etc/hostname"
+
    # Configuration for Kubernetes System specific logs like Kube Flannel, Kube Proxy etc.
    kubernetesSystem:
       # Setting the following properties will override the default/generic configuration and applies to all Kubernetes system logs
@@ -182,13 +230,13 @@ fluentd:
       #ociLAEntityID:
       #encoding:
       logs:
-         # Configuration specific to Kube Proxy logs
+         # -- Kube Proxy logs collection configuration
          kube-proxy:
-            # Log file location.
+            # kube-proxy Log file location.
             path: /var/log/containers/kube-proxy-*.log
-            # Logging Analytics log source to use for parsing and processing the logs: Kubernetes Proxy Logs.
+            # Logging Analytics log source to use for parsing and processing Kubernetes Proxy Logs.
             ociLALogSourceName: "Kubernetes Proxy Logs"
-            # The regular expression pattern for the starting line in case of multi-line logs.
+            # Regular expression pattern for the starting line in case of multi-line logs.
             multilineStartRegExp: /^\S\d{2}\d{2}\s+[^\:]+:[^\:]+:[^\.]+\.\d{0,3}/
             #metadata:
                #"Client Host Region": "America"
@@ -198,119 +246,126 @@ fluentd:
             #ociLALogGroupID:
             #encoding:
 
-         # Configuration specific to Kube Flannel logs
+         # -- Kube Flannel logs collection configuration
          kube-flannel:
-            # The path to the source files.
+            # kube-flannel log files location.
             path: /var/log/containers/kube-flannel-*.log
-            # Logging Analytics log source to use for parsing and processing the logs: Kubernetes Flannel Logs.
+            # Logging Analytics log source to use for parsing and processing Kubernetes Flannel Logs.
             ociLALogSourceName: "Kubernetes Flannel Logs"
             # The regular expression pattern for the starting line in case of multi-line logs.
             multilineStartRegExp: /^\S\d{2}\d{2}\s+[^\:]+:[^\:]+:[^\.]+\.\d{0,3}/
 
-         # Configuration specific to Kubernetes DNS Autoscaler Logs
+         # -- Kubernetes DNS Autoscaler Logs collection configuration
          kube-dns-autoscaler:
             path: /var/log/containers/kube-dns-autoscaler-*.log
-            # Logging Analytics log source to use for parsing and processing the logs: Kubernetes DNS Autoscaler Logs.
+            # Logging Analytics log source to use for parsing and processing  Kubernetes DNS Autoscaler Logs.
             ociLALogSourceName: "Kubernetes DNS Autoscaler Logs"
             # The regular expression pattern for the starting line in case of multi-line logs.
             multilineStartRegExp: /^\S\d{2}\d{2}\s+[^\:]+:[^\:]+:[^\.]+\.\d{0,3}/
 
-         # Configuration specific to Kubernetes Core DNS Logs
+         # -- Kubernetes Core DNS Logs collection configuration
          coredns:
-            # The path to the source files.
+            # coredns log files location.
             path: /var/log/containers/coredns-*.log
-            # Logging Analytics log source to use for parsing and processing the logs: Kubernetes Core DNS Logs.
+            # Logging Analytics log source to use for parsing and processing Kubernetes Core DNS Logs.
             ociLALogSourceName: "Kubernetes Core DNS Logs"
-            # The regular expression pattern for the starting line in case of multi-line logs.
+            # Regular expression pattern for the starting line in case of multi-line logs.
             multilineStartRegExp: /^\[[^\]]+\]\s+/
 
-         # Configuration specific to Kubernetes CSI Node Driver Logs
+         # -- Kubernetes CSI Node Driver Logs collection configuration
          csinode:
-            # The path to the source files.
+            # csinode log files location.
             path: /var/log/containers/csi-oci-node-*.log
-            # Logging Analytics log source to use for parsing and processing the logs: Kubernetes CSI Node Driver Logs.
+            # Logging Analytics log source to use for parsing and processing Kubernetes CSI Node Driver Logs.
             ociLALogSourceName: "Kubernetes CSI Node Driver Logs"
 
-         # Configuration specific to Proxymux Client Logs
+         # -- Proxymux Client Logs collection configuration
          proxymux:
-            # The path to the source files.
+            # proxymux log files location..
             path: /var/log/containers/proxymux-client-*.log
-            # Logging Analytics log source to use for parsing and processing the logs: OKE Proxymux Client Logs.
+            # Logging Analytics log source to use for parsing and processing OKE Proxymux Client Logs.
             ociLALogSourceName: "OKE Proxymux Client Logs"
 
-         # Configuration specific to Kubernetes Autoscaler Logs
+         # -- Kubernetes Autoscaler Logs collection configuration
          cluster-autoscaler:
-            # The path to the source files.
+            # cluster autoscalar log files location.
             path: /var/log/containers/cluster-autoscaler-*.log
-            # Logging Analytics log source to use for parsing and processing the logs: Kubernetes Autoscaler Logs.
+            # Logging Analytics log source to use for parsing and processing Kubernetes Autoscaler Logs.
             ociLALogSourceName: "Kubernetes Autoscaler Logs"
-            # The regular expression pattern for the starting line in case of multi-line logs.
+            #  The regular expression pattern for the starting line in case of multi-line logs.
             multilineStartRegExp: /^\S\d{2}\d{2}\s+[^\:]+:[^\:]+:[^\.]+\.\d{0,3}/
    # Configuration for Linux System specific logs like CronLogs and SecureLogs
    linuxSystem:
       logs:
+         # -- Linux CRON logs collection configuration
          cronlog:
-            # The path to the source files.
+            #  cron log file path
             path: /var/log/cron*
-            # Logging Analytics log source to use for parsing and processing the logs: Linux Cron Logs.
+            #  Logging Analytics log source to use for parsing and processing Linux Cron Logs.
             ociLALogSourceName: "Linux Cron Logs"
-            # The regular expression pattern for the starting line in case of multi-line logs.
+            #  The regular expression pattern for the starting line in case of multi-line logs.
             multilineStartRegExp: /^(?:(?:\d+\s+)?<([^>]*)>(?:\d+\s+)?)?\S+\s+\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2}\s+/
 
+         # -- Linux CRON logs collection configuration
          securelog:
-            # The path to the source files.
+            # linux secure logs file path
             path: /var/log/secure*
-            # Logging Analytics log source to use for parsing and processing the logs: Linux Secure Logs.
+            # Logging Analytics log source to use for parsing and processing Linux Secure Logs.
             ociLALogSourceName: "Linux Secure Logs"
-            # The regular expression pattern for the starting line in case of multi-line logs.
+            #  The regular expression pattern for the starting line in case of multi-line logs.
             multilineStartRegExp: /^(?:(?:\d+\s+)?<([^>]*)>(?:\d+\s+)?)?\S+\s+\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2}\s+/
 
+         # -- kubelet logs collection configuration
          kubeletlog:
-            # Logging Analytics log source to use for parsing and processing the logs: Kubernetes Kubelet Logs.
+            # Logging Analytics log source to use for parsing and processing Kubernetes Kubelet Logs.
             ociLALogSourceName: "Kubernetes Kubelet Logs"
 
+         # -- Linux syslog  collection configuration
          syslog:
-            # The path to the source files.
+            # syslog file path
             path: /var/log/messages*
-            # Logging Analytics log source to use for parsing and processing the logs: Linux Syslog Logs.
+            # Logging Analytics log source to use for parsing and processing Linux Syslog Logs.
             ociLALogSourceName: "Linux Syslog Logs"
-            # The regular expression pattern for the starting line in case of multi-line logs.
+            #  The regular expression pattern for the starting line in case of multi-line logs.
             multilineStartRegExp: /^(?:(?:\d+\s+)?<([^>]*)>(?:\d+\s+)?)?\S+\s+\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2}\s+/
-
+         # -- Linux maillog collection configuration
          maillog:
-            # The path to the source files.
+            #  maillog file path
             path: /var/log/maillog*
-            # Logging Analytics log source to use for parsing and processing the logs: Linux Mail Delivery Logs.
+            #  Logging Analytics log source to use for parsing and processing Linux Mail Delivery Logs.
             ociLALogSourceName: "Linux Mail Delivery Logs"
-            # The regular expression pattern for the starting line in case of multi-line logs.
+            #  The regular expression pattern for the starting line in case of multi-line logs.
             multilineStartRegExp: /^(?:(?:\d+\s+)?<([^>]*)>(?:\d+\s+)?)?\S+\s+\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2}\s+/
 
+         # -- Linux audit logs collection configuration
          linuxauditlog:
-            # The path to the source files.
+            #  audit log file path
             path: /var/log/audit/audit*
-            # Logging Analytics log source to use for parsing and processing the logs: Linux Audit Logs.
+            #  Logging Analytics log source to use for parsing and processing Linux Audit Logs.
             ociLALogSourceName: "Linux Audit Logs"
 
+         # -- Linux uptrack logs collection configuration
          uptracklog:
-            # The path to the source files.
+            #  uptrack log files path.
             path: /var/log/uptrack*
-            # Logging Analytics log source to use for parsing and processing the logs: ksplice Logs.
+            #  Logging Analytics log source to use for parsing and processing ksplice Logs.
             ociLALogSourceName: "Ksplice Logs"
-            # The regular expression pattern for the starting line in case of multi-line logs.
+            #  The regular expression pattern for the starting line in case of multi-line logs.
             multilineStartRegExp: /^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}/
 
+         # -- Linux yum logs collection configuration
          yum:
-            # The path to the source files.
+            # yum log files path
             path: /var/log/yum.log*
-            # Logging Analytics log source to use for parsing and processing the logs: Linux YUM Logs.
+            # Logging Analytics log source to use for parsing and processing Linux YUM Logs.
             ociLALogSourceName: "Linux YUM Logs"
 
    # Generic configuration for all container/pod logs
    genericContainerLogs:
-      # Logging Analytics log source to use for parsing and processing the logs: Kubernetes Container Generic Logs.
+      # -- Default Logging Analytics log source to use for parsing and processing the logs: Kubernetes Container Generic Logs.
       ociLALogSourceName: "Kubernetes Container Generic Logs"
       path: /var/log/containers/*.log
-      # List of log paths to exclude that are already part of other specific configurations defined (like Kube Proxy, Kube Flannel)
+      # -- List of log paths to exclude that are already part of other specific configurations defined (like Kube Proxy, Kube Flannel)
       # If you want to create a custom configuration for any of the container logs using the customLogs section, then exclude the corresponding log path here.
       exclude_path:
          - '"/var/log/containers/kube-proxy-*.log"'
@@ -321,12 +376,20 @@ fluentd:
          - '"/var/log/containers/proxymux-client-*.log"'
          - '"/var/log/containers/cluster-autoscaler-*.log"'
 
-   # Configuration for any custom logs which are not part of the default configuration defined in this file.
-   # All the pod/container logs will be collected using "genericContainerLogs" section.
+   # -- Configuration for any custom logs which are not part of the default configuration defined in this file.
+   # All the pod/container logs will be collected as per "genericContainerLogs" section.
    # Use this section to create a custom configuration for any of the container logs.
    # Also, you can use this section to define configuration for any other log path existing on a Kubernetes worker node
+   #custom-id1:
+         #path: /var/log/containers/custom*.log
+         # Logging Analytics log source to use for parsing and processing the logs:
+         #ociLALogSourceName: "Custom1 Logs"
+         # The regular expression pattern for the starting line in case of multi-line logs.
+         #multilineStartRegExp:
+         # Set isContainerLog to false if the log is not a container log (/var/log/containers/*.log). Default value is true.
+         #isContainerLog: true
    customLogs:
-      # A unique identifier to represent the configuration for a single log path
+      #  A unique identifier to represent the configuration for a single log path
       #custom-id1:
          #path: /var/log/containers/custom*.log
          # Logging Analytics log source to use for parsing and processing the logs:
@@ -344,7 +407,7 @@ fluentd:
          # Set isContainerLog to false if the log is not a container log (/var/log/containers/*.log). Default value is true.
          #isContainerLog: false
 
-   # Alternative approach to define the configuration for any custom logs which are not part of the default configuration defined in this file.
+   #  -- Alternative approach to define the configuration for any custom logs which are not part of the default configuration defined in this file.
    # Provide the Fluentd configuration with the source and filter sections for your custom logs in this section. Exclude the match section. It would be used without any modification.
    # Notes:
       # Ensure that @id in the source section is unique and does not collide with any default configuration defined in this file
@@ -352,7 +415,7 @@ fluentd:
       # In case of container log (/var/log/containers/*.log), exclude the corresponding log path in "genericContainerLogs" section.
    customFluentdConf: |
 
-   # Configuration for collecting Kubernetes Object information.
+   # -- Configuration for collecting Kubernetes Object information.
    # Supported objects are Node, Pod, Namespace, Event, DaemonSet, ReplicaSet, Deployment, StatefulSet, Job, CronJob
    kubernetesObjects:
       #metadata:
@@ -361,13 +424,15 @@ fluentd:
          #"Third Key": "Third Value"
       #ociLAEntityID:
       #ociLALogGroupID:
-      objectsList: 
+      objectsList:
          nodes:
             #api_version: v1
             api_endpoint: ""
          pods:
             api_endpoint: ""
          namespaces:
+            api_endpoint: ""
+         services:
             api_endpoint: ""
          events:
             api_endpoint: ""
@@ -383,3 +448,5 @@ fluentd:
             api_endpoint: apis/batch
          cron_jobs:
             api_endpoint: apis/batch
+         endpoint_slices:
+            api_endpoint: apis/discovery.k8s.io
