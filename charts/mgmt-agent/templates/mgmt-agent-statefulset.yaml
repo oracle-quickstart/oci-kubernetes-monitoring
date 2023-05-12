@@ -19,6 +19,10 @@ spec:
       labels:
         app: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent
     spec:
+      securityContext:
+        runAsUser: {{ default 0 .Values.deployment.security.runAsUser }}
+        runAsGroup: {{ default 0 .Values.deployment.security.runAsGroup }}
+        fsGroup: {{ default 0 .Values.deployment.security.fsGroup }}
       serviceAccountName: {{ include "mgmt-agent.serviceAccount" . }}
       imagePullSecrets:
         - name: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent-container-registry-key
@@ -26,6 +30,13 @@ spec:
       containers:
         - name: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent
           image: {{ .Values.mgmtagent.image.url }}
+          resources:
+            requests:
+              cpu: {{ .Values.deployment.resource.request.cpuCore }}
+              memory: {{ .Values.deployment.resource.request.memory }}
+            limits:
+              cpu: {{ .Values.deployment.resource.limit.cpuCore }}
+              memory: {{ .Values.deployment.resource.limit.memory }}
           volumeMounts:
             - name: mgmtagent-secret
               mountPath: /opt/oracle/mgmtagent_secret
@@ -34,6 +45,11 @@ spec:
               mountPath: /opt/oracle
             - name: mgmtagent-config
               mountPath: /opt/oracle/mgmtagent_config
+            - mountPath: /tmp
+              name: tmp
+          securityContext:
+           allowPrivilegeEscalation: false
+           readOnlyRootFilesystem: true
       volumes:
         - name: mgmtagent-secret
           secret:
@@ -41,12 +57,16 @@ spec:
         - name: mgmtagent-config
           configMap:
             name: {{ include "mgmt-agent.resourceNamePrefix" . }}-metrics
+        - emptyDir: {}
+          name: tmp
   volumeClaimTemplates:
     - metadata:
         name: mgmtagent-pvc
       spec:
         accessModes: [ "ReadWriteOnce" ]
-        storageClassName: "oci-bv"
+        {{- if .Values.deployment.storageClass }}
+        storageClassName: {{ .Values.deployment.storageClass }}
+        {{- end }}
         resources:
           requests:
-            storage: 2Gi
+            storage: {{ .Values.deployment.resource.request.storage }}

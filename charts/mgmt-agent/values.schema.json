@@ -1,0 +1,217 @@
+{
+    "$schema": "https://json-schema.org/draft-07/schema#",
+    "properties":
+    {
+        "global":
+        {
+            "properties":
+            {
+                "namespace":
+                {
+                    "type": "string"
+                },
+                "resourceNamePrefix":
+                {
+                    "type": "string"
+                }
+            },
+            "required":
+            [
+                "namespace",
+                "resourceNamePrefix"
+            ]
+        },
+        "mgmtagent":
+        {
+            "properties":
+            {
+                "installKeyFileContent":
+                {
+                    "type":
+                    [
+                        "string",
+                        "null"
+                    ]
+                },
+                "installKey":
+                {
+                    "type":
+                    [
+                        "string",
+                        "null"
+                    ]
+                },
+                "image":
+                {
+                    "properties":
+                    {
+                        "url":
+                        {
+                            "type": "string"
+                        },
+                        "secret":
+                        {
+                            "type":
+                            [
+                                "string",
+                                "null"
+                            ]
+                        }
+                    },
+                    "required":
+                    [
+                        "url"
+                    ]
+                }
+            },
+            "anyOf":
+            [
+                {
+                    "properties":
+                    {
+                        "installKeyFileContent":
+                        {
+                            "minLength": 0
+                        }
+                    },
+                    "required":
+                    [
+                        "installKey"
+                    ]
+                },
+                {
+                    "properties":
+                    {
+                        "installKey":
+                        {
+                            "minLength": 0
+                        }
+                    },
+                    "required":
+                    [
+                        "installKeyFileContent"
+                    ]
+                }
+            ],
+            "type": "object"
+        },
+        "namespace":
+        {
+            "type": "string"
+        },
+        "deployMetricServer":
+        {
+            "type": "boolean"
+        },
+        "kubernetesCluster":
+        {
+            "properties":
+            {
+                "name":
+                {
+                    "type": "string"
+                },
+                "namespace":
+                {
+                    "type": "string"
+                }
+            },
+            "required":
+            [
+                "name",
+                "namespace"
+            ]
+        },
+        "deployment":
+        {
+            "properties":
+            {
+                "security":
+                {
+                    "properties":
+                    {
+                        "runAsUser":
+                        {
+                            "type":
+                            [
+                                "integer",
+                                "null"
+                            ]
+                        },
+                        "runAsGroup":
+                        {
+                            "type":
+                            [
+                                "integer",
+                                "null"
+                            ]
+                        },
+                        "fsGroup":
+                        {
+                            "type":
+                            [
+                                "integer",
+                                "null"
+                            ]
+                        }
+                    }
+                },
+                "resource":
+                {
+                    "properties":
+                    {
+                        "request":
+                        {
+                            "properties":
+                            {
+                                "cpuCore":
+                                {
+                                    "type": "string"
+                                },
+                                "memory":
+                                {
+                                    "type": "string"
+                                },
+                                "storage":
+                                {
+                                    "type": "string"
+                                }
+                            },
+                            "required":
+                            [
+                                "cpuCore",
+                                "memory",
+                                "storage"
+                            ]
+                        },
+                        "limit":
+                        {
+                            "properties":
+                            {
+                                "cpuCore":
+                                {
+                                    "type": "string"
+                                },
+                                "memory":
+                                {
+                                    "type": "string"
+                                }
+                            },
+                            "required":
+                            [
+                                "cpuCore",
+                                "memory"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "required":
+    [
+        "namespace"
+    ],
+    "title": "Values",
+    "type": "object"
+}
