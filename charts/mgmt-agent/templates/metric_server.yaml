@@ -144,26 +144,11 @@ spec:
         - --metric-resolution=15s
         image: registry.k8s.io/metrics-server/metrics-server:v0.6.3
         imagePullPolicy: IfNotPresent
-        livenessProbe:
-          failureThreshold: 3
-          httpGet:
-            path: /livez
-            port: https
-            scheme: HTTPS
-          periodSeconds: 10
         name: metrics-server
         ports:
         - containerPort: 4443
           name: https
           protocol: TCP
-        readinessProbe:
-          failureThreshold: 3
-          httpGet:
-            path: /readyz
-            port: https
-            scheme: HTTPS
-          initialDelaySeconds: 20
-          periodSeconds: 10
         resources:
           requests:
             cpu: 100m
