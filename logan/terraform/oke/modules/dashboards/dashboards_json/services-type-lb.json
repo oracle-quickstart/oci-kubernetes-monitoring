@@ -1,0 +1,3199 @@
+{
+  "dashboards": [
+    {
+      "compartmentId": "${compartment_ocid}",
+      "createdBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
+      "dashboardId": "ocid1.managementdashboard.oc1..aaaaaaaa7tmp6wlxgpkjavvyeuvdn3eevm32pmski2z4m22w3jxhtq32h6rq",
+      "dataConfig": [],
+      "definedTags": {
+        "Oracle-Recommended-Tags": {
+          "ResourceType": "demo"
+        },
+        "Oracle-Tags": {
+          "CreatedBy": "oracle/kumar.varun@oracle.com",
+          "CreatedOn": "2023-05-15T20:52:06.134Z"
+        }
+      },
+      "description": "Kubernetes Monitoring Dashboard",
+      "displayName": "Kubernetes Services (Type: Load Balancer)_copy",
+      "drilldownConfig": [],
+      "featuresConfig": {
+        "crossService": {
+          "shared": false
+        }
+      },
+      "freeformTags": {},
+      "id": "ocid1.managementdashboard.oc1..aaaaaaaa7tmp6wlxgpkjavvyeuvdn3eevm32pmski2z4m22w3jxhtq32h6rq",
+      "isFavorite": false,
+      "isOobDashboard": false,
+      "isShowDescription": true,
+      "isShowInHome": false,
+      "lifecycleState": "ACTIVE",
+      "metadataVersion": "2.0",
+      "nls": {},
+      "parametersConfig": [
+        {
+          "displayName": "Log Group Compartment",
+          "localStorageKey": "log-analytics-loggroup-filter",
+          "name": "log-analytics-loggroup-filter",
+          "parametersMap": {
+            "isStoreInLocalStorage": true
+          },
+          "savedSearchId": "OOBSS-management-dashboard-filter-4a",
+          "state": "DEFAULT",
+          "uiConfig": {
+            "defaultWidth": 3,
+            "filterName": "log-analytics-loggroup-filter",
+            "internalKey": "OOBSS-management-dashboard-filter-4a",
+            "minWidth": 3,
+            "vizFilterType": "lxLogGroupDashFilterType"
+          }
+        },
+        {
+          "displayName": "Cluster Name",
+          "localStorageKey": "logField_Kubernetes Cluster Name",
+          "name": "log-analytics-log-field-filter2",
+          "parametersMap": {
+            "isStoreInLocalStorage": true,
+            "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "logFieldName": "Kubernetes Cluster Name"
+          },
+          "savedSearchId": "OOBSS-management-dashboard-filter-xlog",
+          "state": "DEFAULT"
+        },
+        {
+          "displayName": "Service (Type: LB)",
+          "localStorageKey": "logField_Service",
+          "name": "log-analytics-log-field-filter1",
+          "parametersMap": {
+            "flex": {
+              "Kubernetes Cluster Name": "$(dashboard.params.log-analytics-log-field-filter2)",
+              "Log Source": "Kubernetes Service Object Logs",
+              "Type": "loadbalancer"
+            },
+            "isStoreInLocalStorage": true,
+            "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "logFieldName": "Service"
+          },
+          "savedSearchId": "OOBSS-management-dashboard-filter-xlog",
+          "state": "DEFAULT"
+        },
+        {
+          "displayName": "LBaaS IP",
+          "localStorageKey": "logField_Load Balancer IP",
+          "name": "log-analytics-log-field-filter3",
+          "parametersMap": {
+            "flex": {
+              "Service": "$(dashboard.params.log-analytics-log-field-filter1)"
+            },
+            "isStoreInLocalStorage": true,
+            "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "logFieldName": "Load Balancer IP"
+          },
+          "savedSearchId": "OOBSS-management-dashboard-filter-xlog",
+          "state": "DEFAULT"
+        },
+        {
+          "displayName": "Load Balancer",
+          "localStorageKey": "logField_OCI Resource Name",
+          "name": "log-analytics-log-field-filter",
+          "parametersMap": {
+            "flex": {
+              "Load Balancer IP": "$(dashboard.params.log-analytics-log-field-filter3)",
+              "Type": "com.oraclecloud.loadbalancer.access"
+            },
+            "isStoreInLocalStorage": true,
+            "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "logFieldName": "OCI Resource Name"
+          },
+          "savedSearchId": "OOBSS-management-dashboard-filter-xlog",
+          "state": "DEFAULT"
+        },
+        {
+          "displayName": "Kubernetes Node",
+          "localStorageKey": "k8sNodeFilter",
+          "name": "k8sNodeFilter",
+          "parametersMap": {
+            "compartmentId": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "isStoreInLocalStorage": true
+          },
+          "savedSearchId": "ocid1.managementsavedsearch.oc1..aaaaaaaaijqkcnwvt4fpevll6y5aa5xkhz27suolsc35t5m7ri4a2sth6cqq",
+          "state": "DEFAULT"
+        },
+        {
+          "displayName": "Entity",
+          "localStorageKey": "log-analytics-entity-filter",
+          "name": "log-analytics-entity-filter",
+          "parametersMap": {
+            "isStoreInLocalStorage": true
+          },
+          "savedSearchId": "OOBSS-management-dashboard-filter-2a",
+          "state": "DEFAULT",
+          "uiConfig": {
+            "defaultWidth": 6,
+            "filterName": "log-analytics-entity-filter",
+            "internalKey": "OOBSS-management-dashboard-filter-2a",
+            "minWidth": 6,
+            "vizFilterType": "lxEntityDashFilterType"
+          },
+          "width": 6
+        },
+        {
+          "displayName": "Log Set",
+          "localStorageKey": "log-analytics-logset-filter",
+          "name": "log-analytics-logset-filter1",
+          "parametersMap": {},
+          "savedSearchId": "OOBSS-management-dashboard-filter-3a",
+          "state": "DEFAULT",
+          "width": 6
+        },
+        {
+          "name": "time",
+          "src": "$(context.time)"
+        }
+      ],
+      "providerId": "log-analytics",
+      "providerName": "Logging Analytics",
+      "providerVersion": "3.0.0",
+      "savedSearches": [
+        {
+          "compartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
+          "createdBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
+          "dataConfig": [],
+          "definedTags": {
+            "Oracle-Recommended-Tags": {
+              "ResourceType": "demo"
+            },
+            "Oracle-Tags": {
+              "CreatedBy": "oracle/kumar.varun@oracle.com",
+              "CreatedOn": "2023-05-11T21:06:02.414Z"
+            }
+          },
+          "description": "Count of load balancers being monitored",
+          "displayName": "Load Balancers Count",
+          "drilldownConfig": [],
+          "featuresConfig": {
+            "crossService": {
+              "shared": false
+            }
+          },
+          "freeformTags": {},
+          "id": "ocid1.managementsavedsearch.oc1..aaaaaaaa76smhssp5m56wt4eehroipemhm2tzhwtg7znrsjt43vhqrbwsaia",
+          "isOobSavedSearch": false,
+          "lifecycleState": "ACTIVE",
+          "metadataVersion": "2.0",
+          "nls": {},
+          "parametersConfig": [
+            {
+              "defaultFilterIds": [
+                "OOBSS-management-dashboard-filter-4a"
+              ],
+              "displayName": "Log Group Compartment",
+              "editUi": {
+                "inputType": "none"
+              },
+              "name": "log-analytics-log-group-compartment",
+              "required": true,
+              "valueFormat": {
+                "type": "object"
+              }
+            },
+            {
+              "defaultFilterIds": [
+                "OOBSS-management-dashboard-filter-2a"
+              ],
+              "displayName": "Entity",
+              "editUi": {
+                "inputType": "none"
+              },
+              "name": "log-analytics-entity",
+              "required": true,
+              "valueFormat": {
+                "type": "object"
+              }
+            },
+            {
+              "defaultFilterIds": [
+                "OOBSS-management-dashboard-filter-3a"
+              ],
+              "displayName": "Log Set",
+              "editUi": {
+                "inputType": "none"
+              },
+              "hidden": "$(window.logSetNotEnabled)",
+              "name": "log-analytics-log-set",
+              "required": true,
+              "valueFormat": {
+                "type": "object"
+              }
+            },
+            {
+              "displayName": "$(bundle.globalSavedSearch.TIME)",
+              "hidden": true,
+              "name": "time",
+              "required": true
+            },
+            {
+              "name": "flex"
+            }
+          ],
+          "providerId": "log-analytics",
+          "providerName": "Logging Analytics",
+          "providerVersion": "3.0.0",
+          "screenImage": " ",
+          "timeCreated": "2023-05-11T21:06:02.108Z",
+          "timeUpdated": "2023-05-11T21:06:02.108Z",
+          "type": "WIDGET_SHOW_IN_DASHBOARD",
+          "uiConfig": {
+            "enableWidgetInApp": true,
+            "queryString": "'Log Source' in ('OCI Load Balancer Access Logs', 'OCI Load Balancer Error Logs') | stats distinctcount('OCI Resource Name'), trend(distinctcount('OCI Resource Name'))",
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaauiq74grhbq2n7pcjuvrkad5alaaj63dsrtcudefa7uvdwoo3kqpa"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogFields": {
+                "flags": {},
+                "type": "LogFields",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "ops-development",
+                    "value": "ocid1.compartment.oc1..aaaaaaaauiq74grhbq2n7pcjuvrkad5alaaj63dsrtcudefa7uvdwoo3kqpa"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": [
+                  {
+                    "label": "*",
+                    "value": "*"
+                  }
+                ]
+              },
+              "MetricCompartment": {
+                "flags": {},
+                "type": "MetricCompartment",
+                "values": []
+              },
+              "ResourceCompartment": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "ResourceCompartment",
+                "values": [
+                  {
+                    "label": "ops-development",
+                    "value": "ocid1.compartment.oc1..aaaaaaaauiq74grhbq2n7pcjuvrkad5alaaj63dsrtcudefa7uvdwoo3kqpa"
+                  }
+                ]
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "IncludeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "ops-development",
+                      "value": "ocid1.compartment.oc1..aaaaaaaauiq74grhbq2n7pcjuvrkad5alaaj63dsrtcudefa7uvdwoo3kqpa"
+                    }
+                  ]
+                },
+                {
+                  "flags": {},
+                  "type": "MetricCompartment",
+                  "values": []
+                },
+                {
+                  "flags": {
+                    "IncludeDependents": true,
+                    "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaauiq74grhbq2n7pcjuvrkad5alaaj63dsrtcudefa7uvdwoo3kqpa"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": [
+                    {
+                      "label": "*",
+                      "value": "*"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "IncludeSubCompartments": true
+                  },
+                  "type": "ResourceCompartment",
+                  "values": [
+                    {
+                      "label": "ops-development",
+                      "value": "ocid1.compartment.oc1..aaaaaaaauiq74grhbq2n7pcjuvrkad5alaaj63dsrtcudefa7uvdwoo3kqpa"
+                    }
+                  ]
+                },
+                {
+                  "flags": {},
+                  "type": "LogFields",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
+            "showTitle": true,
+            "timeSelection": {
+              "timePeriod": "l60min"
+            },
+            "visualizationOptions": {
+              "changeLabel": "",
+              "formatNumber": false,
+              "hideLabel": true,
+              "showTrend": true
+            },
+            "visualizationType": "tile",
+            "vizType": "lxSavedSearchWidgetType"
+          },
+          "updatedBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
+        },
+        {
+          "compartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
+          "createdBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
+          "dataConfig": [],
+          "definedTags": {
+            "Oracle-Recommended-Tags": {
+              "ResourceType": "demo"
+            },
+            "Oracle-Tags": {
+              "CreatedBy": "oracle/kumar.varun@oracle.com",
+              "CreatedOn": "2023-05-11T21:06:02.548Z"
+            }
+          },
+          "description": "Service count",
+          "displayName": "Services",
+          "drilldownConfig": [],
+          "featuresConfig": {
+            "crossService": {
+              "shared": false
+            }
+          },
+          "freeformTags": {},
+          "id": "ocid1.managementsavedsearch.oc1..aaaaaaaa7zwdwtcluaapibq7pkw3d5mbrnvkulkz5ovgb2bs6ntxfqd7fj7a",
+          "isOobSavedSearch": false,
+          "lifecycleState": "ACTIVE",
+          "metadataVersion": "2.0",
+          "nls": {},
+          "parametersConfig": [
+            {
+              "defaultFilterIds": [
+                "OOBSS-management-dashboard-filter-4a"
+              ],
+              "displayName": "Log Group Compartment",
+              "editUi": {
+                "inputType": "none"
+              },
+              "name": "log-analytics-log-group-compartment",
+              "required": true,
+              "valueFormat": {
+                "type": "object"
+              }
+            },
+            {
+              "defaultFilterIds": [
+                "OOBSS-management-dashboard-filter-2a"
+              ],
+              "displayName": "Entity",
+              "editUi": {
+                "inputType": "none"
+              },
+              "name": "log-analytics-entity",
+              "required": true,
+              "valueFormat": {
+                "type": "object"
+              }
+            },
+            {
+              "defaultFilterIds": [
+                "OOBSS-management-dashboard-filter-3a"
+              ],
+              "displayName": "Log Set",
+              "editUi": {
+                "inputType": "none"
+              },
+              "hidden": "$(window.logSetNotEnabled)",
+              "name": "log-analytics-log-set",
+              "required": true,
+              "valueFormat": {
+                "type": "object"
+              }
+            },
+            {
+              "displayName": "$(bundle.globalSavedSearch.TIME)",
+              "hidden": true,
+              "name": "time",
+              "required": true
+            },
+            {
+              "name": "flex"
+            }
+          ],
+          "providerId": "log-analytics",
+          "providerName": "Logging Analytics",
+          "providerVersion": "3.0.0",
+          "screenImage": " ",
+          "timeCreated": "2023-05-11T21:06:02.108Z",
+          "timeUpdated": "2023-05-15T19:36:44.924Z",
+          "type": "WIDGET_SHOW_IN_DASHBOARD",
+          "uiConfig": {
+            "enableWidgetInApp": true,
+            "internalKey": "ocid1.managementsavedsearch.oc1..aaaaaaaa7zwdwtcluaapibq7pkw3d5mbrnvkulkz5ovgb2bs6ntxfqd7fj7a",
+            "queryString": "'Log Source' = 'Kubernetes Service Object Logs' and Service != null and Type = loadbalancer | stats latest(Service) by Service",
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogFields": {
+                "flags": {},
+                "type": "LogFields",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "LogAnalytics",
+                    "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "MetricCompartment": {
+                "flags": {},
+                "type": "MetricCompartment",
+                "values": []
+              },
+              "Region": {
+                "flags": {},
+                "type": "Region",
+                "values": [
+                  {
+                    "label": "US West (Phoenix)",
+                    "value": "us-phoenix-1"
+                  }
+                ]
+              },
+              "ResourceCompartment": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "ResourceCompartment",
+                "values": [
+                  {
+                    "label": "emdemo (root)",
+                    "value": "ocid1.tenancy.oc1..aaaaaaaa5s2vdjjrydixjulorcwozffbpna37w5a35p3jhgpyshlkmio6oiq"
+                  }
+                ]
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "IncludeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "LogAnalytics",
+                      "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q"
+                    }
+                  ]
+                },
+                {
+                  "flags": {},
+                  "type": "MetricCompartment",
+                  "values": []
+                },
+                {
+                  "flags": {
+                    "IncludeDependents": true,
+                    "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                },
+                {
+                  "flags": {
+                    "IncludeSubCompartments": true
+                  },
+                  "type": "ResourceCompartment",
+                  "values": [
+                    {
+                      "label": "emdemo (root)",
+                      "value": "ocid1.tenancy.oc1..aaaaaaaa5s2vdjjrydixjulorcwozffbpna37w5a35p3jhgpyshlkmio6oiq"
+                    }
+                  ]
+                },
+                {
+                  "flags": {},
+                  "type": "LogFields",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "Region",
+                  "values": [
+                    {
+                      "label": "US West (Phoenix)",
+                      "value": "us-phoenix-1"
+                    }
+                  ]
+                }
+              ],
+              "isGlobal": false
+            },
+            "showTitle": true,
+            "timeSelection": {
+              "timePeriod": "l60min"
+            },
+            "visualizationOptions": {
+              "changeLabel": "",
+              "customVizOpt": {
+                "primaryFieldDname": "Original Log Content",
+                "primaryFieldIname": "mbody"
+              },
+              "formatNumber": false,
+              "hideLabel": true,
+              "inputTextEnabled": true
+            },
+            "visualizationType": "tile",
+            "vizType": "lxSavedSearchWidgetType"
+          },
+          "updatedBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
+        },
+        {
+          "compartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
+          "createdBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
+          "dataConfig": [],
+          "definedTags": {
+            "Oracle-Recommended-Tags": {
+              "ResourceType": "demo"
+            },
+            "Oracle-Tags": {
+              "CreatedBy": "oracle/kumar.varun@oracle.com",
+              "CreatedOn": "2023-05-11T21:06:02.645Z"
+            }
+          },
+          "description": "",
+          "displayName": "SD: Load Balancer to Node and Pods",
+          "drilldownConfig": [],
+          "featuresConfig": {
+            "crossService": {
+              "shared": false
+            }
+          },
+          "freeformTags": {},
+          "id": "ocid1.managementsavedsearch.oc1..aaaaaaaa3pqjk76dbx4sa2633flzikbg76bjuhaxrcmgy2ul6ayznkr7uxma",
+          "isOobSavedSearch": false,
+          "lifecycleState": "ACTIVE",
+          "metadataVersion": "2.0",
+          "nls": {},
+          "parametersConfig": [
+            {
+              "defaultFilterIds": [
+                "OOBSS-management-dashboard-filter-4a"
+              ],
+              "displayName": "Log Group Compartment",
+              "editUi": {
+                "inputType": "none"
+              },
+              "name": "log-analytics-log-group-compartment",
+              "required": true,
+              "valueFormat": {
+                "type": "object"
+              }
+            },
+            {
+              "defaultFilterIds": [
+                "OOBSS-management-dashboard-filter-2a"
+              ],
+              "displayName": "Entity",
+              "editUi": {
+                "inputType": "none"
+              },
+              "name": "log-analytics-entity",
+              "required": true,
+              "valueFormat": {
+                "type": "object"
+              }
+            },
+            {
+              "defaultFilterIds": [
+                "OOBSS-management-dashboard-filter-3a"
+              ],
+              "displayName": "Log Set",
+              "editUi": {
+                "inputType": "none"
+              },
+              "hidden": "$(window.logSetNotEnabled)",
+              "name": "log-analytics-log-set",
+              "required": true,
+              "valueFormat": {
+                "type": "object"
+              }
+            },
+            {
+              "displayName": "$(bundle.globalSavedSearch.TIME)",
+              "hidden": true,
+              "name": "time",
+              "required": true
+            },
+            {
+              "name": "flex"
+            }
+          ],
+          "providerId": "log-analytics",
+          "providerName": "Logging Analytics",
+          "providerVersion": "3.0.0",
+          "screenImage": " ",
+          "timeCreated": "2023-05-11T21:06:02.108Z",
+          "timeUpdated": "2023-05-11T21:06:02.108Z",
+          "type": "WIDGET_SHOW_IN_DASHBOARD",
+          "uiConfig": {
+            "enableWidgetInApp": true,
+            "internalKey": "ocid1.managementsavedsearch.oc1..aaaaaaaafzbpju6atzfofmtc2oge4t5774jium35cd5z36gkuaofm3npysfq",
+            "queryString": "'Log Source' = 'Kubernetes Endpoint Logs' or ('Log Source' in ('OCI Load Balancer Access Logs', 'Kubernetes Service Object Logs')) | link includenulls = true 'Load Balancer IP', Service, 'Destination IP', 'Destination Port' | stats unique('Log Source') as 'Log Source', unique('Kubernetes Cluster Name') as Cluster, unique(Node) as Node, unique(Pod) as Pod | createview [ * | where 'Log Source' = 'Kubernetes Service Object Logs' | rename 'Load Balancer IP' as LB, Service as S ] as 'KSS Logs' | map [ * | where 'Log Source' = 'Kubernetes Endpoint Logs' and Service = S | eval 'Load Balancer' = LB ] using 'KSS Logs' | where 'Load Balancer' != null | fields -'Load Balancer IP', -'Destination IP', -'Destination Port', -'Log Source'",
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaauiq74grhbq2n7pcjuvrkad5alaaj63dsrtcudefa7uvdwoo3kqpa"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "ops-development",
+                    "value": "ocid1.compartment.oc1..aaaaaaaauiq74grhbq2n7pcjuvrkad5alaaj63dsrtcudefa7uvdwoo3kqpa"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": [
+                  {
+                    "label": "*",
+                    "value": "*"
+                  }
+                ]
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "IncludeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "ops-development",
+                      "value": "ocid1.compartment.oc1..aaaaaaaauiq74grhbq2n7pcjuvrkad5alaaj63dsrtcudefa7uvdwoo3kqpa"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "IncludeDependents": true,
+                    "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaauiq74grhbq2n7pcjuvrkad5alaaj63dsrtcudefa7uvdwoo3kqpa"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": [
+                    {
+                      "label": "*",
+                      "value": "*"
+                    }
+                  ]
+                }
+              ],
+              "isGlobal": false
+            },
+            "showTitle": true,
+            "timeSelection": {
+              "timePeriod": "l14day"
+            },
+            "visualizationOptions": {
+              "customVizOpt": {
+                "LINK_SEARCH_SETTINGS": {
+                  "chartHeightVal": 200,
+                  "chartOptions": "bar",
+                  "chartType": "bar",
+                  "chartWidthVal": 60,
+                  "columnAliases": {},
+                  "dashboardOptions": {
+                    "showAnalyzeTab": [],
+                    "showChartsTab": [],
+                    "showSummary": [],
+                    "showTSCharts": [],
+                    "showTable": [
+                      "on"
+                    ],
+                    "showTabs": []
+                  },
+                  "groupAliasP": "Groups",
+                  "groupAliasS": "Group",
+                  "hiddenCharts": {
+                    "groupColumn": true
+                  },
+                  "hiddenClassifyCharts": {},
+                  "hiddenColumns": {
+                    "g_count": true,
+                    "g_duration": true,
+                    "g_endepoch": true,
+                    "g_startepoch": true,
+                    "query_end_time": true,
+                    "query_start_time": true,
+                    "trend_interval": true,
+                    "trend_interval_unit": true
+                  },
+                  "highlightColumnStatus": {},
+                  "linkSummaryInput": "",
+                  "logAliasP": "Log Records",
+                  "mergeHighlightColumns": [
+                    "off"
+                  ],
+                  "ms": [
+                    "on"
+                  ],
+                  "showAllRegions": [],
+                  "showCombinedCharts": [
+                    "off"
+                  ],
+                  "showNonUnitRawData": [
+                    "off"
+                  ],
+                  "showStack": [
+                    "off"
+                  ],
+                  "showToolTips": [
+                    "on"
+                  ],
+                  "showUnitRawData": [],
+                  "smartGroup": [
+                    "off"
+                  ],
+                  "styleDefaults": {
+                    "lineType": "curved",
+                    "markerDisplayed": "on"
+                  },
+                  "tableColumns": [
+                    "Load Balancer",
+                    "Service",
+                    "Cluster",
+                    "Node",
+                    "Pod",
+                    "Count",
+                    "Start Time (UTC-08:00)",
+                    "End Time (UTC-08:00)"
+                  ],
+                  "timeseries": {
+                    "timestats1": {
+                      "chartHeightVal": 200,
+                      "chartOptions": "lineWithMarker",
+                      "chartType": "line",
+                      "chartWidthVal": 60,
+                      "colorColumn": 0,
+                      "hiddenTSCharts": {},
+                      "showCombinedCharts": [
+                        "on"
+                      ],
+                      "showLegend": [
+                        "off"
+                      ],
+                      "showStack": [
+                        "off"
+                      ],
+                      "showToolTips": [
+                        "off"
+                      ],
+                      "smartGroup": [
+                        "on"
+                      ],
+                      "timeSeriesColorPalette": {
+                        "0": "udfs27",
+                        "1": "map4_evalVirtualField2"
+                      },
+                      "timeSeriesColorPaletteCustom": {
+                        "0": {},
+                        "1": {}
+                      },
+                      "tsFilters": {
+                        "selectAllFilters": [
+                          "off"
+                        ],
+                        "selectedTSFilters": [
+                          "udfs27",
+                          "map4_evalVirtualField2"
+                        ],
+                        "showTSFilters": [
+                          "on"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "visualizationType": "link",
+            "vizType": "lxSavedSearchWidgetType"
+          },
+          "updatedBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
+        },
+        {
+          "compartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
+          "createdBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
+          "dataConfig": [],
+          "definedTags": {
+            "Oracle-Recommended-Tags": {
+              "ResourceType": "demo"
+            },
+            "Oracle-Tags": {
+              "CreatedBy": "oracle/kumar.varun@oracle.com",
+              "CreatedOn": "2023-05-11T21:06:02.440Z"
+            }
+          },
+          "description": "Problem labels by lb name",
+          "displayName": "LB Problem Labels",
+          "drilldownConfig": [],
+          "featuresConfig": {
+            "crossService": {
+              "shared": false
+            }
+          },
+          "freeformTags": {},
+          "id": "ocid1.managementsavedsearch.oc1..aaaaaaaakhx6idmt4r6tkl4ev5fijc5ojr7mgpgc3cluggh7oarmennj63zq",
+          "isOobSavedSearch": false,
+          "lifecycleState": "ACTIVE",
+          "metadataVersion": "2.0",
+          "nls": {},
+          "parametersConfig": [
+            {
+              "defaultFilterIds": [
+                "OOBSS-management-dashboard-filter-4a"
+              ],
+              "displayName": "Log Group Compartment",
+              "editUi": {
+                "inputType": "none"
+              },
+              "name": "log-analytics-log-group-compartment",
+              "required": true,
+              "valueFormat": {
+                "type": "object"
+              }
+            },
+            {
+              "defaultFilterIds": [
+                "OOBSS-management-dashboard-filter-2a"
+              ],
+              "displayName": "Entity",
+              "editUi": {
+                "inputType": "none"
+              },
+              "name": "log-analytics-entity",
+              "required": true,
+              "valueFormat": {
+                "type": "object"
+              }
+            },
+            {
+              "defaultFilterIds": [
+                "OOBSS-management-dashboard-filter-3a"
+              ],
+              "displayName": "Log Set",
+              "editUi": {
+                "inputType": "none"
+              },
+              "hidden": "$(window.logSetNotEnabled)",
+              "name": "log-analytics-log-set",
+              "required": true,
+              "valueFormat": {
+                "type": "object"
+              }
+            },
+            {
+              "displayName": "$(bundle.globalSavedSearch.TIME)",
+              "hidden": true,
+              "name": "time",
+              "required": true
+            },
+            {
+              "name": "flex"
+            }
+          ],
+          "providerId": "log-analytics",
+          "providerName": "Logging Analytics",
+          "providerVersion": "3.0.0",
+          "screenImage": " ",
+          "timeCreated": "2023-05-11T21:06:02.108Z",
+          "timeUpdated": "2023-05-11T21:06:02.108Z",
+          "type": "WIDGET_SHOW_IN_DASHBOARD",
+          "uiConfig": {
+            "enableWidgetInApp": true,
+            "queryString": "'Log Source' in ('OCI Load Balancer Access Logs', 'OCI Load Balancer Error Logs') and Label != null | stats count by Label, 'OCI Resource Name'",
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaauiq74grhbq2n7pcjuvrkad5alaaj63dsrtcudefa7uvdwoo3kqpa"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogFields": {
+                "flags": {},
+                "type": "LogFields",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "ops-development",
+                    "value": "ocid1.compartment.oc1..aaaaaaaauiq74grhbq2n7pcjuvrkad5alaaj63dsrtcudefa7uvdwoo3kqpa"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": [
+                  {
+                    "label": "*",
+                    "value": "*"
+                  }
+                ]
+              },
+              "MetricCompartment": {
+                "flags": {},
+                "type": "MetricCompartment",
+                "values": []
+              },
+              "ResourceCompartment": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "ResourceCompartment",
+                "values": [
+                  {
+                    "label": "eightxeightmain (root)",
+                    "value": "ocid1.tenancy.oc1..aaaaaaaax7tm7jtfarexna447cmubjxwou6lug42jss2ddyis63wqo3lrpda"
+                  }
+                ]
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "IncludeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "ops-development",
+                      "value": "ocid1.compartment.oc1..aaaaaaaauiq74grhbq2n7pcjuvrkad5alaaj63dsrtcudefa7uvdwoo3kqpa"
+                    }
+                  ]
+                },
+                {
+                  "flags": {},
+                  "type": "MetricCompartment",
+                  "values": []
+                },
+                {
+                  "flags": {
+                    "IncludeDependents": true,
+                    "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaauiq74grhbq2n7pcjuvrkad5alaaj63dsrtcudefa7uvdwoo3kqpa"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": [
+                    {
+                      "label": "*",
+                      "value": "*"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "IncludeSubCompartments": true
+                  },
+                  "type": "ResourceCompartment",
+                  "values": [
+                    {
+                      "label": "eightxeightmain (root)",
+                      "value": "ocid1.tenancy.oc1..aaaaaaaax7tm7jtfarexna447cmubjxwou6lug42jss2ddyis63wqo3lrpda"
+                    }
+                  ]
+                },
+                {
+                  "flags": {},
+                  "type": "LogFields",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
+            "showTitle": true,
+            "timeSelection": {
+              "timePeriod": "l60min"
+            },
+            "visualizationOptions": {
+              "customVizOpt": {
+                "primaryFieldDname": "Original Log Content",
+                "primaryFieldIname": "mbody"
+              }
+            },
+            "visualizationType": "treemap",
+            "vizType": "lxSavedSearchWidgetType"
+          },
+          "updatedBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
+        },
+        {
+          "compartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
+          "createdBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
+          "dataConfig": [
+            {
+              "name": "mgmtagent_kubernetes_metrics/nodeMemoryUsage",
+              "parameters": {
+                "compartmentId": "$(params.compartmentId)",
+                "endTime": "$(params.time.end)",
+                "maxDataPoints": "useIntervalExact",
+                "mql": "nodeMemoryUsage[1m]{clusterName = \"onm3h-demo\"}.mean()",
+                "namespace": "mgmtagent_kubernetes_metrics",
+                "regionName": "$(params.regionName)",
+                "startTime": "$(params.time.start)"
+              },
+              "type": "monitoringDataSource"
+            }
+          ],
+          "definedTags": {
+            "Oracle-Recommended-Tags": {
+              "ResourceType": "demo"
+            },
+            "Oracle-Tags": {
+              "CreatedBy": "oracle/kumar.varun@oracle.com",
+              "CreatedOn": "2023-05-15T20:29:55.862Z"
+            }
+          },
+          "description": "Node Memory Usage",
+          "displayName": "Node Memory Usage",
+          "drilldownConfig": [],
+          "featuresConfig": {
+            "crossService": {
+              "shared": false
+            }
+          },
+          "freeformTags": {},
+          "id": "ocid1.managementsavedsearch.oc1..aaaaaaaa2ctxqgooubu2oqvz6p2u7tnrlbr6davpwt5fxdmqg3hafktdtk4a",
+          "isOobSavedSearch": false,
+          "lifecycleState": "ACTIVE",
+          "metadataVersion": "2.0",
+          "nls": {},
+          "parametersConfig": [
+            {
+              "defaultFilterIds": [
+                "OOBSS-management-dashboard-time-selector-filter"
+              ],
+              "displayName": "Time",
+              "editUi": {
+                "filterTile": {
+                  "filterId": "OOBSS-management-dashboard-time-selector-filter"
+                },
+                "inputType": "savedSearch"
+              },
+              "name": "time",
+              "required": true
+            },
+            {
+              "defaultFilterIds": [
+                "OOBSS-management-dashboard-compartment-filter"
+              ],
+              "displayName": "Compartment",
+              "editUi": {
+                "inputType": "compartmentSelect"
+              },
+              "name": "compartmentId",
+              "required": true
+            },
+            {
+              "defaultFilterIds": [
+                "OOBSS-management-dashboard-region-filter"
+              ],
+              "displayName": "Region",
+              "editUi": {
+                "filterTile": {
+                  "filterId": "OOBSS-management-dashboard-region-filter"
+                },
+                "inputType": "savedSearch"
+              },
+              "name": "regionName",
+              "required": false
+            }
+          ],
+          "providerId": "log-analytics",
+          "providerName": "Logging Analytics",
+          "providerVersion": "3.0.0",
+          "screenImage": "...",
+          "timeCreated": "2023-05-15T20:29:55.991Z",
+          "timeUpdated": "2023-05-15T20:31:56.808Z",
+          "type": "WIDGET_SHOW_IN_DASHBOARD",
+          "uiConfig": {
+            "chartInfo": {
+              "colorBy": "dimensions.nodeName",
+              "enableCorrelation": true,
+              "group": "aggregatedDatapoints.timestamp",
+              "jetConfig": {
+                "dataCursor": "on",
+                "legend": {
+                  "position": "end",
+                  "rendered": true
+                },
+                "timeAxisType": "enabled",
+                "type": "line",
+                "xAxis": {
+                  "viewportMax": "$(params.time.end)",
+                  "viewportMin": "$(params.time.start)"
+                }
+              },
+              "series": "dimensions.nodeName",
+              "value": "aggregatedDatapoints.value"
+            },
+            "defaultDataSource": "mgmtagent_kubernetes_metrics/nodeMemoryUsage",
+            "vizType": "chart"
+          },
+          "updatedBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "visualizations/chartWidget"
+        },
+        {
+          "compartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
+          "createdBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
+          "dataConfig": [
+            {
+              "name": "mgmtagent_kubernetes_metrics/podCpuUsage",
+              "parameters": {
+                "compartmentId": "$(params.compartmentId)",
+                "endTime": "$(params.time.end)",
+                "maxDataPoints": "useIntervalExact",
+                "mql": "podCpuUsage[1m].mean()",
+                "namespace": "mgmtagent_kubernetes_metrics",
+                "regionName": "$(params.regionName)",
+                "startTime": "$(params.time.start)"
+              },
+              "type": "monitoringDataSource"
+            }
+          ],
+          "definedTags": {
+            "Oracle-Recommended-Tags": {
+              "ResourceType": "demo"
+            },
+            "Oracle-Tags": {
+              "CreatedBy": "oracle/kumar.varun@oracle.com",
+              "CreatedOn": "2023-05-15T20:21:35.676Z"
+            }
+          },
+          "description": "Pods CPU Usage",
+          "displayName": "Pods CPU Usage",
+          "drilldownConfig": [],
+          "featuresConfig": {
+            "crossService": {
+              "shared": false
+            }
+          },
+          "freeformTags": {},
+          "id": "ocid1.managementsavedsearch.oc1..aaaaaaaao66kcpdxkzv7euzz2nolnheoztvhjj4ireqfkalgzvg27xtb3wqa",
+          "isOobSavedSearch": false,
+          "lifecycleState": "ACTIVE",
+          "metadataVersion": "2.0",
+          "nls": {},
+          "parametersConfig": [
+            {
+              "defaultFilterIds": [
+                "OOBSS-management-dashboard-time-selector-filter"
+              ],
+              "displayName": "Time",
+              "editUi": {
+                "filterTile": {
+                  "filterId": "OOBSS-management-dashboard-time-selector-filter"
+                },
+                "inputType": "savedSearch"
+              },
+              "name": "time",
+              "required": true
+            },
+            {
+              "defaultFilterIds": [
+                "OOBSS-management-dashboard-compartment-filter"
+              ],
+              "displayName": "Compartment",
+              "editUi": {
+                "inputType": "compartmentSelect"
+              },
+              "name": "compartmentId",
+              "required": true
+            },
+            {
+              "defaultFilterIds": [
+                "OOBSS-management-dashboard-region-filter"
+              ],
+              "displayName": "Region",
+              "editUi": {
+                "filterTile": {
+                  "filterId": "OOBSS-management-dashboard-region-filter"
+                },
+                "inputType": "savedSearch"
+              },
+              "name": "regionName",
+              "required": false
+            }
+          ],
+          "providerId": "log-analytics",
+          "providerName": "Logging Analytics",
+          "providerVersion": "3.0.0",
+          "screenImage": "...",
+          "timeCreated": "2023-05-15T20:21:35.816Z",
+          "timeUpdated": "2023-05-15T20:23:19.906Z",
+          "type": "WIDGET_SHOW_IN_DASHBOARD",
+          "uiConfig": {
+            "chartInfo": {
+              "colorBy": "dimensions.containerName",
+              "enableCorrelation": true,
+              "group": "aggregatedDatapoints.timestamp",
+              "jetConfig": {
+                "dataCursor": "on",
+                "legend": {
+                  "position": "end",
+                  "rendered": true
+                },
+                "timeAxisType": "enabled",
+                "type": "line",
+                "xAxis": {
+                  "viewportMax": "$(params.time.end)",
+                  "viewportMin": "$(params.time.start)"
+                }
+              },
+              "series": "dimensions.containerName",
+              "value": "aggregatedDatapoints.value"
+            },
+            "defaultDataSource": "mgmtagent_kubernetes_metrics/podCpuUsage",
+            "vizType": "chart"
+          },
+          "updatedBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "visualizations/chartWidget"
+        },
+        {
+          "compartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
+          "createdBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
+          "dataConfig": [],
+          "definedTags": {
+            "Oracle-Recommended-Tags": {
+              "ResourceType": "demo"
+            },
+            "Oracle-Tags": {
+              "CreatedBy": "oracle/kumar.varun@oracle.com",
+              "CreatedOn": "2023-05-11T21:06:02.469Z"
+            }
+          },
+          "description": "",
+          "displayName": "Backend Connect Times",
+          "drilldownConfig": [],
+          "featuresConfig": {
+            "crossService": {
+              "shared": true
+            }
+          },
+          "freeformTags": {},
+          "id": "ocid1.managementsavedsearch.oc1..aaaaaaaamzjz6demzwue2rr2whhgiml3wrf3oe5vlln6avfwdtjjjfwarjba",
+          "isOobSavedSearch": false,
+          "lifecycleState": "ACTIVE",
+          "metadataVersion": "2.0",
+          "nls": {},
+          "parametersConfig": [
+            {
+              "defaultFilterIds": [
+                "OOBSS-management-dashboard-filter-4a"
+              ],
+              "displayName": "Log Group Compartment",
+              "editUi": {
+                "inputType": "none"
+              },
+              "name": "log-analytics-log-group-compartment",
+              "required": true,
+              "valueFormat": {
+                "type": "object"
+              }
+            },
+            {
+              "defaultFilterIds": [
+                "OOBSS-management-dashboard-filter-2a"
+              ],
+              "displayName": "Entity",
+              "editUi": {
+                "inputType": "none"
+              },
+              "name": "log-analytics-entity",
+              "required": true,
+              "valueFormat": {
+                "type": "object"
+              }
+            },
+            {
+              "defaultFilterIds": [
+                "OOBSS-management-dashboard-filter-3a"
+              ],
+              "displayName": "Log Set",
+              "editUi": {
+                "inputType": "none"
+              },
+              "hidden": "$(window.logSetNotEnabled)",
+              "name": "log-analytics-log-set",
+              "required": true,
+              "valueFormat": {
+                "type": "object"
+              }
+            },
+            {
+              "displayName": "$(bundle.globalSavedSearch.TIME)",
+              "hidden": true,
+              "name": "time",
+              "required": true
+            },
+            {
+              "name": "flex"
+            }
+          ],
+          "providerId": "log-analytics",
+          "providerName": "Logging Analytics",
+          "providerVersion": "3.0.0",
+          "screenImage": " ",
+          "timeCreated": "2023-05-11T21:06:02.108Z",
+          "timeUpdated": "2023-05-15T21:05:04.920Z",
+          "type": "WIDGET_SHOW_IN_DASHBOARD",
+          "uiConfig": {
+            "enableWidgetInApp": true,
+            "internalKey": "ocid1.managementsavedsearch.oc1..aaaaaaaamzjz6demzwue2rr2whhgiml3wrf3oe5vlln6avfwdtjjjfwarjba",
+            "queryString": "'Log Source' in ('OCI Load Balancer Access Logs', 'OCI Load Balancer Error Logs') | rename 'Backend Connect Time' as tar | stats min(tar) as Min, avg(tar) as Mean, median(tar) as P50, pct(tar, 75) as P75, max(tar) as Max by 'OCI Resource Name' | sort -Max",
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogFields": {
+                "flags": {},
+                "type": "LogFields",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "LogAnalytics",
+                    "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "MetricCompartment": {
+                "flags": {},
+                "type": "MetricCompartment",
+                "values": []
+              },
+              "Region": {
+                "flags": {},
+                "type": "Region",
+                "values": [
+                  {
+                    "label": "US West (Phoenix)",
+                    "value": "us-phoenix-1"
+                  }
+                ]
+              },
+              "ResourceCompartment": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "ResourceCompartment",
+                "values": [
+                  {
+                    "label": "emdemo (root)",
+                    "value": "ocid1.tenancy.oc1..aaaaaaaa5s2vdjjrydixjulorcwozffbpna37w5a35p3jhgpyshlkmio6oiq"
+                  }
+                ]
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "IncludeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "LogAnalytics",
+                      "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q"
+                    }
+                  ]
+                },
+                {
+                  "flags": {},
+                  "type": "MetricCompartment",
+                  "values": []
+                },
+                {
+                  "flags": {
+                    "IncludeDependents": true,
+                    "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                },
+                {
+                  "flags": {
+                    "IncludeSubCompartments": true
+                  },
+                  "type": "ResourceCompartment",
+                  "values": [
+                    {
+                      "label": "emdemo (root)",
+                      "value": "ocid1.tenancy.oc1..aaaaaaaa5s2vdjjrydixjulorcwozffbpna37w5a35p3jhgpyshlkmio6oiq"
+                    }
+                  ]
+                },
+                {
+                  "flags": {},
+                  "type": "LogFields",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "Region",
+                  "values": [
+                    {
+                      "label": "US West (Phoenix)",
+                      "value": "us-phoenix-1"
+                    }
+                  ]
+                }
+              ],
+              "isGlobal": false
+            },
+            "showTitle": true,
+            "timeSelection": {
+              "numUnits": 60,
+              "timePeriod": "relative",
+              "units": "MINUTES"
+            },
+            "visualizationOptions": {
+              "customVizOpt": {
+                "GEOMAP_SETTINGS": {
+                  "basemap": "bi_world_map_light",
+                  "clusterColor": "rgb(192, 192, 192)",
+                  "filterOnZoom": false,
+                  "isShowLegend": true,
+                  "lat": 2273030.9269876885,
+                  "lon": 0,
+                  "mapZoom": 1,
+                  "pointColor": "rgb(0, 0, 255)",
+                  "srid": 3857,
+                  "toggleClusters": false
+                }
+              }
+            },
+            "visualizationType": "summary_table",
+            "vizType": "lxSavedSearchWidgetType"
+          },
+          "updatedBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
+        },
+        {
+          "compartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
+          "createdBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
+          "dataConfig": [],
+          "definedTags": {
+            "Oracle-Recommended-Tags": {
+              "ResourceType": "demo"
+            },
+            "Oracle-Tags": {
+              "CreatedBy": "oracle/kumar.varun@oracle.com",
+              "CreatedOn": "2023-05-11T21:06:02.529Z"
+            }
+          },
+          "description": "",
+          "displayName": "Response Time",
+          "drilldownConfig": [],
+          "featuresConfig": {
+            "crossService": {
+              "shared": false
+            }
+          },
+          "freeformTags": {},
+          "id": "ocid1.managementsavedsearch.oc1..aaaaaaaanonr7kl5v3cycwxl45h4n5ybz76meoudfgpc5gbsggtxf3djduqa",
+          "isOobSavedSearch": false,
+          "lifecycleState": "ACTIVE",
+          "metadataVersion": "2.0",
+          "nls": {},
+          "parametersConfig": [
+            {
+              "defaultFilterIds": [
+                "OOBSS-management-dashboard-filter-4a"
+              ],
+              "displayName": "Log Group Compartment",
+              "editUi": {
+                "inputType": "none"
+              },
+              "name": "log-analytics-log-group-compartment",
+              "required": true,
+              "valueFormat": {
+                "type": "object"
+              }
+            },
+            {
+              "defaultFilterIds": [
+                "OOBSS-management-dashboard-filter-2a"
+              ],
+              "displayName": "Entity",
+              "editUi": {
+                "inputType": "none"
+              },
+              "name": "log-analytics-entity",
+              "required": true,
+              "valueFormat": {
+                "type": "object"
+              }
+            },
+            {
+              "defaultFilterIds": [
+                "OOBSS-management-dashboard-filter-3a"
+              ],
+              "displayName": "Log Set",
+              "editUi": {
+                "inputType": "none"
+              },
+              "hidden": "$(window.logSetNotEnabled)",
+              "name": "log-analytics-log-set",
+              "required": true,
+              "valueFormat": {
+                "type": "object"
+              }
+            },
+            {
+              "displayName": "$(bundle.globalSavedSearch.TIME)",
+              "hidden": true,
+              "name": "time",
+              "required": true
+            },
+            {
+              "name": "flex"
+            }
+          ],
+          "providerId": "log-analytics",
+          "providerName": "Logging Analytics",
+          "providerVersion": "3.0.0",
+          "screenImage": " ",
+          "timeCreated": "2023-05-11T21:06:02.108Z",
+          "timeUpdated": "2023-05-11T21:06:02.108Z",
+          "type": "WIDGET_SHOW_IN_DASHBOARD",
+          "uiConfig": {
+            "enableWidgetInApp": true,
+            "internalKey": "ocid1.managementsavedsearch.oc1..aaaaaaaanyae67s4f3hpipt3gyzkugtry3hu35nlogflmgtgmuagil3ikyzq",
+            "queryString": "'Log Source' in ('OCI Load Balancer Access Logs', 'OCI Load Balancer Error Logs') | eval tar = unit('Response Time', second) | link 'OCI Resource Name' | stats min(tar) as Minimum, avg(tar) as Average, pct(tar, 75) as P75, max(tar) as Maximum | classify topcount = 300 correlate = -*, Average 'Start Time', 'OCI Resource Name', P75, Maximum as 'Content Size In'",
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaauiq74grhbq2n7pcjuvrkad5alaaj63dsrtcudefa7uvdwoo3kqpa"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "ops-development",
+                    "value": "ocid1.compartment.oc1..aaaaaaaauiq74grhbq2n7pcjuvrkad5alaaj63dsrtcudefa7uvdwoo3kqpa"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": [
+                  {
+                    "label": "%",
+                    "value": "%"
+                  }
+                ]
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "IncludeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "ops-development",
+                      "value": "ocid1.compartment.oc1..aaaaaaaauiq74grhbq2n7pcjuvrkad5alaaj63dsrtcudefa7uvdwoo3kqpa"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "IncludeDependents": true,
+                    "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaauiq74grhbq2n7pcjuvrkad5alaaj63dsrtcudefa7uvdwoo3kqpa"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": [
+                    {
+                      "label": "%",
+                      "value": "%"
+                    }
+                  ]
+                }
+              ],
+              "isGlobal": false
+            },
+            "showTitle": true,
+            "timeSelection": {
+              "timePeriod": "l24hr"
+            },
+            "visualizationOptions": {
+              "customVizOpt": {
+                "LINK_CLASSIFY_SETTINGS": {
+                  "Content Size In": {
+                    "chartHeight": 200,
+                    "chartType": "bubble",
+                    "classifyColorPalette": {
+                      "1": "default",
+                      "7": "ocirsrcname",
+                      "8": "default",
+                      "9": "default"
+                    },
+                    "classifyColorPaletteCustom": {
+                      "7": {}
+                    },
+                    "classifyFilters": {
+                      "classifyNarrowResults": [
+                        "on"
+                      ],
+                      "selectAllFilters": [
+                        "on"
+                      ],
+                      "selectedClassifyFilters": [
+                        6,
+                        7,
+                        8
+                      ],
+                      "showClassifyFilters": []
+                    },
+                    "colorColumn": 8,
+                    "descendingXAxis": [
+                      null
+                    ],
+                    "descendingYAxis": [
+                      null
+                    ],
+                    "drilldown": "on",
+                    "groupAlias": "Groups",
+                    "groupAliasS": "Group",
+                    "showAnomaly": [
+                      "on"
+                    ],
+                    "showBaseline": [
+                      "off"
+                    ],
+                    "showDimensions": [
+                      "on"
+                    ],
+                    "sizeColumn": 8,
+                    "swapXY": [
+                      "off"
+                    ],
+                    "zeroXAxis": [
+                      "on"
+                    ],
+                    "zeroYAxis": [
+                      "on"
+                    ]
+                  }
+                },
+                "LINK_SEARCH_SETTINGS": {
+                  "chartHeightVal": 140,
+                  "chartOptions": "lineWithArea",
+                  "chartType": "lineWithArea",
+                  "chartWidthVal": 20,
+                  "columnAliases": {},
+                  "dashboardOptions": {
+                    "showAnalyzeTab": [],
+                    "showChartsTab": [
+                      "on"
+                    ],
+                    "showSummary": [],
+                    "showTSCharts": [],
+                    "showTable": [],
+                    "showTabs": []
+                  },
+                  "groupAliasP": "Groups",
+                  "groupAliasS": "Group",
+                  "hiddenCharts": {
+                    "TREND_COLUMN": true,
+                    "groupColumn": true
+                  },
+                  "hiddenClassifyCharts": {},
+                  "hiddenColumns": {
+                    "g_duration": true,
+                    "query_end_time": true,
+                    "query_start_time": true,
+                    "trend_interval": true,
+                    "trend_interval_unit": true
+                  },
+                  "highlightColumnStatus": {},
+                  "linkSummaryInput": "",
+                  "logAliasP": "Log Records",
+                  "mergeHighlightColumns": [
+                    "off"
+                  ],
+                  "ms": [
+                    "on"
+                  ],
+                  "showAllRegions": [
+                    "on"
+                  ],
+                  "showCombinedCharts": [
+                    "off"
+                  ],
+                  "showNonUnitRawData": [],
+                  "showStack": [
+                    "off"
+                  ],
+                  "showToolTips": [
+                    "on"
+                  ],
+                  "showUnitRawData": [],
+                  "smartGroup": [
+                    "off"
+                  ],
+                  "styleDefaults": {
+                    "lineType": "curved",
+                    "markerDisplayed": "off"
+                  },
+                  "timeseries": {}
+                }
+              }
+            },
+            "visualizationType": "link",
+            "vizType": "lxSavedSearchWidgetType"
+          },
+          "updatedBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
+        },
+        {
+          "compartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
+          "createdBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
+          "dataConfig": [
+            {
+              "name": "k8sNodeNames",
+              "parameters": {
+                "compartmentId": "$(params.compartmentId)",
+                "dimension": "nodeName",
+                "dimensionFilters": {},
+                "metricName": "nodeStatus",
+                "namespace": "mgmtagent_kubernetes_metrics"
+              },
+              "type": "monitoringDimensionDataSource"
+            }
+          ],
+          "definedTags": {
+            "Oracle-Recommended-Tags": {
+              "ResourceType": "demo"
+            },
+            "Oracle-Tags": {
+              "CreatedBy": "oracle/kumar.varun@oracle.com",
+              "CreatedOn": "2023-05-11T21:06:02.700Z"
+            }
+          },
+          "description": "Kubernetes objects in a compartment",
+          "displayName": "Kubernetes Node",
+          "drilldownConfig": [],
+          "featuresConfig": {
+            "crossService": {
+              "shared": false
+            }
+          },
+          "freeformTags": {},
+          "id": "ocid1.managementsavedsearch.oc1..aaaaaaaaijqkcnwvt4fpevll6y5aa5xkhz27suolsc35t5m7ri4a2sth6cqq",
+          "isOobSavedSearch": false,
+          "lifecycleState": "ACTIVE",
+          "metadataVersion": "2.0",
+          "nls": {},
+          "parametersConfig": [
+            {
+              "defaultFilterIds": [
+                "OOBSS-management-dashboard-compartment-filter"
+              ],
+              "displayName": "Compartment",
+              "editUi": {
+                "inputType": "compartmentSelect"
+              },
+              "name": "compartmentId",
+              "required": true
+            }
+          ],
+          "providerId": "management-dashboard",
+          "providerName": "Management Dashboard",
+          "providerVersion": "3.0.0",
+          "screenImage": "...",
+          "timeCreated": "2023-05-11T21:06:02.108Z",
+          "timeUpdated": "2023-05-11T21:06:02.108Z",
+          "type": "FILTER_SHOW_IN_DASHBOARD",
+          "uiConfig": {
+            "defaultDataSource": "k8sNodeNames",
+            "filterName": "k8sNodeFilter",
+            "genericFilterInfo": {
+              "firstOption": {
+                "label": "All",
+                "value": ""
+              },
+              "noDataMsg": "All",
+              "placeholder": "All"
+            },
+            "vizFilterType": "genericFilter"
+          },
+          "updatedBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "visualizations/chartWidget"
+        },
+        {
+          "compartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
+          "createdBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
+          "dataConfig": [],
+          "definedTags": {
+            "Oracle-Recommended-Tags": {
+              "ResourceType": "demo"
+            },
+            "Oracle-Tags": {
+              "CreatedBy": "oracle/kumar.varun@oracle.com",
+              "CreatedOn": "2023-05-11T21:06:02.585Z"
+            }
+          },
+          "description": "OKE Nodes",
+          "displayName": "Nodes",
+          "drilldownConfig": [],
+          "featuresConfig": {
+            "crossService": {
+              "shared": false
+            }
+          },
+          "freeformTags": {},
+          "id": "ocid1.managementsavedsearch.oc1..aaaaaaaanuh7tdxvj52bx5th2iqnndjzfr3i6mejbqiziil24v7xmwuvwxmq",
+          "isOobSavedSearch": false,
+          "lifecycleState": "ACTIVE",
+          "metadataVersion": "2.0",
+          "nls": {},
+          "parametersConfig": [],
+          "providerId": "log-analytics",
+          "providerName": "Logging Analytics",
+          "providerVersion": "2.0",
+          "screenImage": " ",
+          "timeCreated": "2023-05-11T21:06:02.108Z",
+          "timeUpdated": "2023-05-11T21:06:02.108Z",
+          "type": "WIDGET_SHOW_IN_DASHBOARD",
+          "uiConfig": {
+            "enableWidgetInApp": true,
+            "internalKey": "ocid1.managementsavedsearch.oc1..aaaaaaaa3rw4ke22wnlelaqkguvxbj5fvykfp377fj722wo2xaubsg5bodsa",
+            "queryString": "'Log Source' = 'Kubernetes Node Object Logs' | stats latest('Ready Status') as Ready by Node",
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaauiq74grhbq2n7pcjuvrkad5alaaj63dsrtcudefa7uvdwoo3kqpa"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "ops-development",
+                    "value": "ocid1.compartment.oc1..aaaaaaaauiq74grhbq2n7pcjuvrkad5alaaj63dsrtcudefa7uvdwoo3kqpa"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": [
+                  {
+                    "label": "%",
+                    "value": "%"
+                  }
+                ]
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "IncludeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "ops-development",
+                      "value": "ocid1.compartment.oc1..aaaaaaaauiq74grhbq2n7pcjuvrkad5alaaj63dsrtcudefa7uvdwoo3kqpa"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "IncludeDependents": true,
+                    "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaauiq74grhbq2n7pcjuvrkad5alaaj63dsrtcudefa7uvdwoo3kqpa"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": [
+                    {
+                      "label": "%",
+                      "value": "%"
+                    }
+                  ]
+                }
+              ],
+              "isGlobal": false
+            },
+            "showTitle": true,
+            "timeSelection": {
+              "numUnits": 60,
+              "timePeriod": "relative",
+              "units": "MINUTES"
+            },
+            "visualizationOptions": {
+              "changeLabel": "Nodes",
+              "formatNumber": false,
+              "hideLabel": true,
+              "inputTextEnabled": true
+            },
+            "visualizationType": "tile",
+            "vizType": "lxSavedSearchWidgetType"
+          },
+          "updatedBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
+          "widgetTemplate": "jet-modules/dashboards/widgets/lxSavedSearchWidget.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
+        },
+        {
+          "compartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
+          "createdBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
+          "dataConfig": [],
+          "definedTags": {
+            "Oracle-Recommended-Tags": {
+              "ResourceType": "demo"
+            },
+            "Oracle-Tags": {
+              "CreatedBy": "oracle/kumar.varun@oracle.com",
+              "CreatedOn": "2023-05-11T21:06:02.615Z"
+            }
+          },
+          "description": "",
+          "displayName": "Load Balancer Errors and Services",
+          "drilldownConfig": [],
+          "featuresConfig": {
+            "crossService": {
+              "shared": false
+            }
+          },
+          "freeformTags": {},
+          "id": "ocid1.managementsavedsearch.oc1..aaaaaaaakzhn2cfwz2cz6btwvfk5b6vt4jcr2djfmrc5sz6pyxbjuuwgb22a",
+          "isOobSavedSearch": false,
+          "lifecycleState": "ACTIVE",
+          "metadataVersion": "2.0",
+          "nls": {},
+          "parametersConfig": [
+            {
+              "defaultFilterIds": [
+                "OOBSS-management-dashboard-filter-4a"
+              ],
+              "displayName": "Log Group Compartment",
+              "editUi": {
+                "inputType": "none"
+              },
+              "name": "log-analytics-log-group-compartment",
+              "required": true,
+              "valueFormat": {
+                "type": "object"
+              }
+            },
+            {
+              "defaultFilterIds": [
+                "OOBSS-management-dashboard-filter-2a"
+              ],
+              "displayName": "Entity",
+              "editUi": {
+                "inputType": "none"
+              },
+              "name": "log-analytics-entity",
+              "required": true,
+              "valueFormat": {
+                "type": "object"
+              }
+            },
+            {
+              "defaultFilterIds": [
+                "OOBSS-management-dashboard-filter-3a"
+              ],
+              "displayName": "Log Set",
+              "editUi": {
+                "inputType": "none"
+              },
+              "hidden": "$(window.logSetNotEnabled)",
+              "name": "log-analytics-log-set",
+              "required": true,
+              "valueFormat": {
+                "type": "object"
+              }
+            },
+            {
+              "displayName": "$(bundle.globalSavedSearch.TIME)",
+              "hidden": true,
+              "name": "time",
+              "required": true
+            },
+            {
+              "name": "flex"
+            }
+          ],
+          "providerId": "log-analytics",
+          "providerName": "Logging Analytics",
+          "providerVersion": "3.0.0",
+          "screenImage": " ",
+          "timeCreated": "2023-05-11T21:06:02.108Z",
+          "timeUpdated": "2023-05-11T21:06:02.108Z",
+          "type": "WIDGET_SHOW_IN_DASHBOARD",
+          "uiConfig": {
+            "enableWidgetInApp": true,
+            "internalKey": "ocid1.managementsavedsearch.oc1..aaaaaaaauob7etq3rt3natddhzqd56jvhvod4bpuqautcridsn55br5y2jea",
+            "queryString": "'Log Source' in ('OCI Load Balancer Error Logs', 'Kubernetes Service Object Logs') | link includenulls = true Time, 'Load Balancer IP', cluster() | stats latest(Service) as S, unique(Namespace) as N | createview [ * | where N != null | rename 'Load Balancer IP' as LB, N as N1, S as S1 ] as 'Service Records' | map [ * | where N = null and 'Load Balancer IP' = LB | eval Service = S1 | eval Namespace = N1 ] using 'Service Records' | where Service != null | fields -S, -N, -'Potential Issue' | timestats sum(Count) as 'Load Balancer Issues' by 'Load Balancer IP', Service",
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaauiq74grhbq2n7pcjuvrkad5alaaj63dsrtcudefa7uvdwoo3kqpa"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "ops-development",
+                    "value": "ocid1.compartment.oc1..aaaaaaaauiq74grhbq2n7pcjuvrkad5alaaj63dsrtcudefa7uvdwoo3kqpa"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": [
+                  {
+                    "label": "*",
+                    "value": "*"
+                  }
+                ]
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "IncludeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "ops-development",
+                      "value": "ocid1.compartment.oc1..aaaaaaaauiq74grhbq2n7pcjuvrkad5alaaj63dsrtcudefa7uvdwoo3kqpa"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "IncludeDependents": true,
+                    "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaauiq74grhbq2n7pcjuvrkad5alaaj63dsrtcudefa7uvdwoo3kqpa"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": [
+                    {
+                      "label": "*",
+                      "value": "*"
+                    }
+                  ]
+                }
+              ],
+              "isGlobal": false
+            },
+            "showTitle": true,
+            "timeSelection": {
+              "timePeriod": "l14day"
+            },
+            "visualizationOptions": {
+              "customVizOpt": {
+                "LINK_SEARCH_SETTINGS": {
+                  "chartHeightVal": 200,
+                  "chartOptions": "bar",
+                  "chartType": "bar",
+                  "chartWidthVal": 60,
+                  "columnAliases": {},
+                  "dashboardOptions": {
+                    "showAnalyzeTab": [
+                      "on"
+                    ],
+                    "showChartsTab": [],
+                    "showSummary": [
+                      "on"
+                    ],
+                    "showTSCharts": [],
+                    "showTable": [],
+                    "showTabs": [
+                      "on"
+                    ]
+                  },
+                  "groupAliasP": "Groups",
+                  "groupAliasS": "Group",
+                  "hiddenCharts": {
+                    "groupColumn": true
+                  },
+                  "hiddenClassifyCharts": {},
+                  "hiddenColumns": {
+                    "g_duration": true,
+                    "query_end_time": true,
+                    "query_start_time": true,
+                    "trend_interval": true,
+                    "trend_interval_unit": true
+                  },
+                  "highlightColumnStatus": {},
+                  "linkSummaryInput": "",
+                  "logAliasP": "Log Records",
+                  "mergeHighlightColumns": [
+                    "off"
+                  ],
+                  "ms": [
+                    "on"
+                  ],
+                  "showAllRegions": [],
+                  "showCombinedCharts": [
+                    "off"
+                  ],
+                  "showNonUnitRawData": [
+                    "off"
+                  ],
+                  "showStack": [
+                    "off"
+                  ],
+                  "showToolTips": [
+                    "on"
+                  ],
+                  "showUnitRawData": [],
+                  "smartGroup": [
+                    "off"
+                  ],
+                  "styleDefaults": {
+                    "lineType": "curved",
+                    "markerDisplayed": "on"
+                  },
+                  "timeseries": {
+                    "timestats1": {
+                      "chartHeightVal": 200,
+                      "chartOptions": "lineWithMarker",
+                      "chartType": "line",
+                      "chartWidthVal": 60,
+                      "colorColumn": 0,
+                      "hiddenTSCharts": {},
+                      "showCombinedCharts": [
+                        "on"
+                      ],
+                      "showLegend": [
+                        "off"
+                      ],
+                      "showStack": [
+                        "off"
+                      ],
+                      "showToolTips": [
+                        "off"
+                      ],
+                      "smartGroup": [
+                        "on"
+                      ],
+                      "timeSeriesColorPalette": {
+                        "0": "udfs27",
+                        "1": "map4_evalVirtualField2"
+                      },
+                      "timeSeriesColorPaletteCustom": {
+                        "0": {},
+                        "1": {}
+                      },
+                      "tsFilters": {
+                        "selectAllFilters": [
+                          "off"
+                        ],
+                        "selectedTSFilters": [
+                          "udfs27",
+                          "map4_evalVirtualField2"
+                        ],
+                        "showTSFilters": [
+                          "on"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "visualizationType": "link",
+            "vizType": "lxSavedSearchWidgetType"
+          },
+          "updatedBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
+        },
+        {
+          "compartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
+          "createdBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
+          "dataConfig": [],
+          "definedTags": {
+            "Oracle-Recommended-Tags": {
+              "ResourceType": "demo"
+            },
+            "Oracle-Tags": {
+              "CreatedBy": "oracle/kumar.varun@oracle.com",
+              "CreatedOn": "2023-05-11T21:06:02.496Z"
+            }
+          },
+          "description": "",
+          "displayName": "Backend Processing Times",
+          "drilldownConfig": [],
+          "featuresConfig": {
+            "crossService": {
+              "shared": true
+            }
+          },
+          "freeformTags": {},
+          "id": "ocid1.managementsavedsearch.oc1..aaaaaaaau76opbz75ozaotvdpne4g76z267pm6djgehamu2paiutwff5uwna",
+          "isOobSavedSearch": false,
+          "lifecycleState": "ACTIVE",
+          "metadataVersion": "2.0",
+          "nls": {},
+          "parametersConfig": [
+            {
+              "defaultFilterIds": [
+                "OOBSS-management-dashboard-filter-4a"
+              ],
+              "displayName": "Log Group Compartment",
+              "editUi": {
+                "inputType": "none"
+              },
+              "name": "log-analytics-log-group-compartment",
+              "required": true,
+              "valueFormat": {
+                "type": "object"
+              }
+            },
+            {
+              "defaultFilterIds": [
+                "OOBSS-management-dashboard-filter-2a"
+              ],
+              "displayName": "Entity",
+              "editUi": {
+                "inputType": "none"
+              },
+              "name": "log-analytics-entity",
+              "required": true,
+              "valueFormat": {
+                "type": "object"
+              }
+            },
+            {
+              "defaultFilterIds": [
+                "OOBSS-management-dashboard-filter-3a"
+              ],
+              "displayName": "Log Set",
+              "editUi": {
+                "inputType": "none"
+              },
+              "hidden": "$(window.logSetNotEnabled)",
+              "name": "log-analytics-log-set",
+              "required": true,
+              "valueFormat": {
+                "type": "object"
+              }
+            },
+            {
+              "displayName": "$(bundle.globalSavedSearch.TIME)",
+              "hidden": true,
+              "name": "time",
+              "required": true
+            },
+            {
+              "name": "flex"
+            }
+          ],
+          "providerId": "log-analytics",
+          "providerName": "Logging Analytics",
+          "providerVersion": "3.0.0",
+          "screenImage": " ",
+          "timeCreated": "2023-05-11T21:06:02.108Z",
+          "timeUpdated": "2023-05-15T21:06:31.289Z",
+          "type": "WIDGET_SHOW_IN_DASHBOARD",
+          "uiConfig": {
+            "enableWidgetInApp": true,
+            "internalKey": "ocid1.managementsavedsearch.oc1..aaaaaaaau76opbz75ozaotvdpne4g76z267pm6djgehamu2paiutwff5uwna",
+            "queryString": "'Log Source' in ('OCI Load Balancer Access Logs', 'OCI Load Balancer Error Logs') | rename 'Backend Processing Time' as tar | stats min(tar) as Min, avg(tar) as Mean, median(tar) as P50, pct(tar, 75) as P75, max(tar) as Max by 'OCI Resource Name' | sort -Max",
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "LogAnalytics",
+                    "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "Region": {
+                "flags": {},
+                "type": "Region",
+                "values": [
+                  {
+                    "label": "US West (Phoenix)",
+                    "value": "us-phoenix-1"
+                  }
+                ]
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "IncludeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "LogAnalytics",
+                      "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "IncludeDependents": true,
+                    "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "Region",
+                  "values": [
+                    {
+                      "label": "US West (Phoenix)",
+                      "value": "us-phoenix-1"
+                    }
+                  ]
+                }
+              ],
+              "isGlobal": false
+            },
+            "showTitle": true,
+            "timeSelection": {
+              "numUnits": 60,
+              "timePeriod": "relative",
+              "units": "MINUTES"
+            },
+            "visualizationOptions": {
+              "customVizOpt": {
+                "GEOMAP_SETTINGS": {
+                  "basemap": "bi_world_map_light",
+                  "clusterColor": "rgb(192, 192, 192)",
+                  "filterOnZoom": false,
+                  "isShowLegend": true,
+                  "lat": 2273030.9269876885,
+                  "lon": 0,
+                  "mapZoom": 1,
+                  "pointColor": "rgb(0, 0, 255)",
+                  "srid": 3857,
+                  "toggleClusters": false
+                }
+              }
+            },
+            "visualizationType": "summary_table",
+            "vizType": "lxSavedSearchWidgetType"
+          },
+          "updatedBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
+        }
+      ],
+      "screenImage": "todo: provide value[mandatory]",
+      "tiles": [
+        {
+          "column": 6,
+          "dataConfig": [
+            {
+              "name": "autoUnion",
+              "parameters": {
+                "dependents": [
+                  "oci_lbaas/UnHealthyBackendServers",
+                  "oci_lbaas/BackendServers"
+                ],
+                "orderByClause": [
+                  {
+                    "field": "aggregatedDatapoints.timestamp"
+                  }
+                ]
+              },
+              "type": "transformUnion"
+            },
+            {
+              "name": "oci_lbaas/UnHealthyBackendServers",
+              "parameters": {
+                "compartmentId": "$(params.compartmentId)",
+                "endTime": "$(params.time.end)",
+                "maxDataPoints": "useInterval",
+                "mql": "UnHealthyBackendServers[1m]{lbName=$(dashboard.params.log-analytics-log-field-filter)}.grouping().max()",
+                "namespace": "oci_lbaas",
+                "regionName": "$(params.regionName)",
+                "startTime": "$(params.time.start)"
+              },
+              "type": "monitoringDataSource"
+            },
+            {
+              "name": "oci_lbaas/BackendServers",
+              "parameters": {
+                "compartmentId": "$(params.compartmentId)",
+                "endTime": "$(params.time.end)",
+                "maxDataPoints": "useInterval",
+                "mql": "BackendServers[1m]{lbName=$(dashboard.params.log-analytics-log-field-filter)}.grouping().max()",
+                "namespace": "oci_lbaas",
+                "regionName": "$(params.regionName)",
+                "startTime": "$(params.time.start)"
+              },
+              "type": "monitoringDataSource"
+            }
+          ],
+          "displayName": "Backend Servers",
+          "drilldownConfig": [],
+          "height": 3,
+          "nls": {},
+          "parametersMap": {
+            "compartmentId": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "time": "$(dashboard.params.time)"
+          },
+          "row": 7,
+          "savedSearchId": "OOBSS-management-dashboard-123",
+          "state": "DEFAULT",
+          "uiConfig": {
+            "chartInfo": {
+              "colorBy": "name",
+              "enableCorrelation": true,
+              "group": "aggregatedDatapoints.timestamp",
+              "jetConfig": {
+                "dataCursor": "on",
+                "legend": {
+                  "position": "top",
+                  "rendered": true
+                },
+                "timeAxisType": "enabled",
+                "type": "line",
+                "xAxis": {
+                  "viewportMax": "$(params.time.end)",
+                  "viewportMin": "$(params.time.start)"
+                }
+              },
+              "series": "name",
+              "value": "aggregatedDatapoints.value"
+            },
+            "defaultDataSource": "autoUnion",
+            "internalKey": "OOBSS-management-dashboard-123"
+          },
+          "width": 6
+        },
+        {
+          "column": 6,
+          "dataConfig": [
+            {
+              "name": "autoUnion",
+              "parameters": {
+                "dependents": [
+                  "oci_lbaas/HttpResponses5xx",
+                  "oci_lbaas/BackendTimeouts",
+                  "oci_lbaas/HttpResponses4xx"
+                ],
+                "orderByClause": [
+                  {
+                    "field": "aggregatedDatapoints.timestamp"
+                  }
+                ]
+              },
+              "type": "transformUnion"
+            },
+            {
+              "name": "oci_lbaas/HttpResponses4xx",
+              "parameters": {
+                "compartmentId": "$(params.compartmentId)",
+                "endTime": "$(params.time.end)",
+                "mql": "HttpResponses4xx[auto]{lbName=$(dashboard.params.log-analytics-log-field-filter)}.grouping().max()",
+                "namespace": "oci_lbaas",
+                "regionName": "$(params.regionName)",
+                "startTime": "$(params.time.start)"
+              },
+              "type": "monitoringDataSource"
+            },
+            {
+              "name": "oci_lbaas/HttpResponses5xx",
+              "parameters": {
+                "compartmentId": "$(params.compartmentId)",
+                "endTime": "$(params.time.end)",
+                "mql": "HttpResponses5xx[auto]{lbName=$(dashboard.params.log-analytics-log-field-filter)}.grouping().max()",
+                "namespace": "oci_lbaas",
+                "regionName": "$(params.regionName)",
+                "startTime": "$(params.time.start)"
+              },
+              "type": "monitoringDataSource"
+            },
+            {
+              "name": "oci_lbaas/BackendTimeouts",
+              "parameters": {
+                "compartmentId": "$(params.compartmentId)",
+                "endTime": "$(params.time.end)",
+                "mql": "BackendTimeouts[auto]{lbName=$(dashboard.params.log-analytics-log-field-filter)}.grouping().max()",
+                "namespace": "oci_lbaas",
+                "regionName": "$(params.regionName)",
+                "startTime": "$(params.time.start)"
+              },
+              "type": "monitoringDataSource"
+            }
+          ],
+          "displayName": "Errors and Timeouts (Count)",
+          "drilldownConfig": [],
+          "height": 3,
+          "nls": {},
+          "parametersMap": {
+            "compartmentId": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "time": "$(dashboard.params.time)"
+          },
+          "row": 4,
+          "savedSearchId": "OOBSS-management-dashboard-123",
+          "state": "DEFAULT",
+          "uiConfig": {
+            "chartInfo": {
+              "colorBy": "name",
+              "enableCorrelation": true,
+              "group": "aggregatedDatapoints.timestamp",
+              "jetConfig": {
+                "dataCursor": "on",
+                "legend": {
+                  "position": "top",
+                  "rendered": true
+                },
+                "timeAxisType": "enabled",
+                "type": "line",
+                "xAxis": {
+                  "viewportMax": "$(params.time.end)",
+                  "viewportMin": "$(params.time.start)"
+                }
+              },
+              "series": "name",
+              "value": "aggregatedDatapoints.value"
+            },
+            "defaultDataSource": "autoUnion",
+            "internalKey": "OOBSS-management-dashboard-123"
+          },
+          "width": 6
+        },
+        {
+          "column": 6,
+          "dataConfig": [
+            {
+              "name": "autoUnion",
+              "parameters": {
+                "dependents": [
+                  "oci_lbaas/HttpRequests",
+                  "oci_lbaas/HttpResponses"
+                ],
+                "orderByClause": [
+                  {
+                    "field": "aggregatedDatapoints.timestamp"
+                  }
+                ]
+              },
+              "type": "transformUnion"
+            },
+            {
+              "name": "oci_lbaas/HttpRequests",
+              "parameters": {
+                "compartmentId": "$(params.compartmentId)",
+                "endTime": "$(params.time.end)",
+                "mql": "HttpRequests[auto]{lbName=$(dashboard.params.log-analytics-log-field-filter)}.grouping().sum()",
+                "namespace": "oci_lbaas",
+                "regionName": "$(params.regionName)",
+                "startTime": "$(params.time.start)"
+              },
+              "type": "monitoringDataSource"
+            },
+            {
+              "name": "oci_lbaas/HttpResponses",
+              "parameters": {
+                "compartmentId": "$(params.compartmentId)",
+                "endTime": "$(params.time.end)",
+                "mql": "HttpResponses[auto]{lbName=$(dashboard.params.log-analytics-log-field-filter)}.grouping().sum()",
+                "namespace": "oci_lbaas",
+                "regionName": "$(params.regionName)",
+                "startTime": "$(params.time.start)"
+              },
+              "type": "monitoringDataSource"
+            }
+          ],
+          "displayName": "Requests/Response",
+          "drilldownConfig": [],
+          "height": 2,
+          "nls": {},
+          "parametersMap": {
+            "compartmentId": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "time": "$(dashboard.params.time)"
+          },
+          "row": 2,
+          "savedSearchId": "OOBSS-management-dashboard-123",
+          "state": "DEFAULT",
+          "uiConfig": {
+            "chartInfo": {
+              "colorBy": "name",
+              "enableCorrelation": true,
+              "group": "aggregatedDatapoints.timestamp",
+              "jetConfig": {
+                "dataCursor": "on",
+                "legend": {
+                  "position": "top",
+                  "rendered": true
+                },
+                "styleDefaults": {
+                  "lineWidth": 2
+                },
+                "timeAxisType": "enabled",
+                "type": "line",
+                "xAxis": {
+                  "viewportMax": "$(params.time.end)",
+                  "viewportMin": "$(params.time.start)"
+                }
+              },
+              "series": "name",
+              "value": "aggregatedDatapoints.value"
+            },
+            "defaultDataSource": "autoUnion",
+            "internalKey": "OOBSS-management-dashboard-123"
+          },
+          "width": 6
+        },
+        {
+          "column": 4,
+          "dataConfig": [],
+          "displayName": "Load Balancers Count",
+          "drilldownConfig": [],
+          "height": 2,
+          "nls": {},
+          "parametersMap": {
+            "log-analytics-entity": "$(dashboard.params.log-analytics-entity-filter)",
+            "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "log-analytics-log-set": "$(dashboard.params.log-analytics-logset-filter1)",
+            "time": "$(dashboard.params.time)"
+          },
+          "row": 0,
+          "savedSearchId": "ocid1.managementsavedsearch.oc1..aaaaaaaa76smhssp5m56wt4eehroipemhm2tzhwtg7znrsjt43vhqrbwsaia",
+          "state": "DEFAULT",
+          "uiConfig": {},
+          "width": 2
+        },
+        {
+          "column": 6,
+          "dataConfig": [],
+          "displayName": "LB Problem Labels",
+          "drilldownConfig": [],
+          "height": 2,
+          "nls": {},
+          "parametersMap": {
+            "log-analytics-entity": "$(dashboard.params.log-analytics-entity-filter)",
+            "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "log-analytics-log-set": "$(dashboard.params.log-analytics-logset-filter1)",
+            "time": "$(dashboard.params.time)"
+          },
+          "row": 0,
+          "savedSearchId": "ocid1.managementsavedsearch.oc1..aaaaaaaakhx6idmt4r6tkl4ev5fijc5ojr7mgpgc3cluggh7oarmennj63zq",
+          "state": "DEFAULT",
+          "uiConfig": {},
+          "width": 3
+        },
+        {
+          "column": 0,
+          "dataConfig": [],
+          "displayName": "Backend Connect Times",
+          "drilldownConfig": [],
+          "height": 4,
+          "nls": {},
+          "parametersMap": {
+            "flex": {
+              "Load Balancer IP": "$(dashboard.params.log-analytics-log-field-filter3)"
+            },
+            "log-analytics-entity": "$(dashboard.params.log-analytics-entity-filter)",
+            "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "log-analytics-log-set": "$(dashboard.params.log-analytics-logset-filter1)",
+            "time": "$(dashboard.params.time)"
+          },
+          "row": 13,
+          "savedSearchId": "ocid1.managementsavedsearch.oc1..aaaaaaaamzjz6demzwue2rr2whhgiml3wrf3oe5vlln6avfwdtjjjfwarjba",
+          "state": "DEFAULT",
+          "uiConfig": {},
+          "width": 6
+        },
+        {
+          "column": 6,
+          "dataConfig": [],
+          "displayName": "Backend Processing Times",
+          "drilldownConfig": [],
+          "height": 4,
+          "nls": {},
+          "parametersMap": {
+            "flex": {
+              "OCI Resource Name": "$(dashboard.params.log-analytics-log-field-filter)"
+            },
+            "log-analytics-entity": "$(dashboard.params.log-analytics-entity-filter)",
+            "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "log-analytics-log-set": "$(dashboard.params.log-analytics-logset-filter1)",
+            "time": "$(dashboard.params.time)"
+          },
+          "row": 13,
+          "savedSearchId": "ocid1.managementsavedsearch.oc1..aaaaaaaau76opbz75ozaotvdpne4g76z267pm6djgehamu2paiutwff5uwna",
+          "state": "DEFAULT",
+          "uiConfig": {},
+          "width": 6
+        },
+        {
+          "column": 0,
+          "dataConfig": [],
+          "displayName": "Load Balancers Response Time",
+          "drilldownConfig": [],
+          "height": 3,
+          "nls": {},
+          "parametersMap": {
+            "flex": {
+              "Load Balancer IP": "$(dashboard.params.log-analytics-log-field-filter3)"
+            },
+            "log-analytics-entity": "$(dashboard.params.log-analytics-entity-filter)",
+            "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "log-analytics-log-set": "$(dashboard.params.log-analytics-logset-filter1)",
+            "time": "$(dashboard.params.time)"
+          },
+          "row": 10,
+          "savedSearchId": "ocid1.managementsavedsearch.oc1..aaaaaaaanonr7kl5v3cycwxl45h4n5ybz76meoudfgpc5gbsggtxf3djduqa",
+          "state": "DEFAULT",
+          "uiConfig": {},
+          "width": 6
+        },
+        {
+          "column": 0,
+          "dataConfig": [],
+          "displayName": "Services",
+          "drilldownConfig": [],
+          "height": 2,
+          "nls": {},
+          "parametersMap": {
+            "flex": {
+              "Kubernetes Cluster Name": "$(dashboard.params.log-analytics-log-field-filter2)",
+              "Service": "$(dashboard.params.log-analytics-log-field-filter1)"
+            },
+            "log-analytics-entity": "$(dashboard.params.log-analytics-entity-filter)",
+            "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "log-analytics-log-set": "$(dashboard.params.log-analytics-logset-filter1)",
+            "time": "$(dashboard.params.time)"
+          },
+          "row": 0,
+          "savedSearchId": "ocid1.managementsavedsearch.oc1..aaaaaaaa7zwdwtcluaapibq7pkw3d5mbrnvkulkz5ovgb2bs6ntxfqd7fj7a",
+          "state": "DEFAULT",
+          "uiConfig": {},
+          "width": 2
+        },
+        {
+          "column": 2,
+          "dataConfig": [],
+          "displayName": "Nodes",
+          "drilldownConfig": [],
+          "height": 2,
+          "nls": {},
+          "parametersMap": {
+            "flex": {
+              "Kubernetes Cluster Name": "$(dashboard.params.log-analytics-log-field-filter2)"
+            },
+            "log-analytics-entity": "$(dashboard.params.log-analytics-entity-filter)",
+            "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "log-analytics-log-set": "$(dashboard.params.log-analytics-logset-filter1)",
+            "time": "$(dashboard.params.time)"
+          },
+          "row": 0,
+          "savedSearchId": "ocid1.managementsavedsearch.oc1..aaaaaaaanuh7tdxvj52bx5th2iqnndjzfr3i6mejbqiziil24v7xmwuvwxmq",
+          "state": "DEFAULT",
+          "uiConfig": {},
+          "width": 2
+        },
+        {
+          "column": 0,
+          "dataConfig": [],
+          "displayName": "Load Balancer Errors and Services",
+          "drilldownConfig": [],
+          "height": 5,
+          "nls": {},
+          "parametersMap": {
+            "flex": {
+              "Load Balancer IP": "$(dashboard.params.log-analytics-log-field-filter3)"
+            },
+            "log-analytics-entity": "$(dashboard.params.log-analytics-entity-filter)",
+            "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "log-analytics-log-set": "$(dashboard.params.log-analytics-logset-filter1)",
+            "time": "$(dashboard.params.time)"
+          },
+          "row": 2,
+          "savedSearchId": "ocid1.managementsavedsearch.oc1..aaaaaaaakzhn2cfwz2cz6btwvfk5b6vt4jcr2djfmrc5sz6pyxbjuuwgb22a",
+          "state": "DEFAULT",
+          "uiConfig": {},
+          "width": 6
+        },
+        {
+          "column": 9,
+          "dataConfig": [
+            {
+              "name": "oci_lbaas/BackendServers",
+              "parameters": {
+                "compartmentId": "$(params.compartmentId)",
+                "endTime": "$(params.time.end)",
+                "mql": "BackendServers[auto]{lbName=$(dashboard.params.log-analytics-log-field-filter)}.grouping().max()",
+                "namespace": "oci_lbaas",
+                "regionName": "$(params.regionName)",
+                "startTime": "$(params.time.start)"
+              },
+              "type": "monitoringDataSource"
+            }
+          ],
+          "displayName": "Backend Servers",
+          "drilldownConfig": [],
+          "height": 2,
+          "nls": {},
+          "parametersMap": {
+            "compartmentId": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "time": "$(dashboard.params.time)"
+          },
+          "row": 0,
+          "savedSearchId": "OOBSS-management-dashboard-123",
+          "state": "DEFAULT",
+          "uiConfig": {
+            "chartInfo": {
+              "colorBy": "name",
+              "enableCorrelation": true,
+              "group": "aggregatedDatapoints.timestamp",
+              "jetConfig": {
+                "dataCursor": "on",
+                "legend": {
+                  "position": "top",
+                  "rendered": true
+                },
+                "timeAxisType": "enabled",
+                "type": "line",
+                "xAxis": {
+                  "viewportMax": "$(params.time.end)",
+                  "viewportMin": "$(params.time.start)"
+                },
+                "yAxis": {
+                  "title": "Backend Server Count"
+                }
+              },
+              "series": "name",
+              "value": "aggregatedDatapoints.value"
+            },
+            "defaultDataSource": "oci_lbaas/BackendServers",
+            "internalKey": "OOBSS-management-dashboard-123",
+            "sharedCrossService": [
+              "ALL"
+            ]
+          },
+          "width": 3
+        },
+        {
+          "column": 0,
+          "dataConfig": [],
+          "displayName": "Load Balancer to Nodes and Pods",
+          "drilldownConfig": [],
+          "height": 3,
+          "nls": {},
+          "parametersMap": {
+            "flex": {
+              "Load Balancer IP": "$(dashboard.params.log-analytics-log-field-filter3)"
+            },
+            "log-analytics-entity": "$(dashboard.params.log-analytics-entity-filter)",
+            "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "log-analytics-log-set": "$(dashboard.params.log-analytics-logset-filter1)",
+            "time": "$(dashboard.params.time)"
+          },
+          "row": 7,
+          "savedSearchId": "ocid1.managementsavedsearch.oc1..aaaaaaaa3pqjk76dbx4sa2633flzikbg76bjuhaxrcmgy2ul6ayznkr7uxma",
+          "state": "DEFAULT",
+          "uiConfig": {},
+          "width": 6
+        },
+        {
+          "column": 6,
+          "dataConfig": [
+            {
+              "name": "mgmtagent_kubernetes_metrics/nodeCpuUsage",
+              "parameters": {
+                "compartmentId": "$(params.compartmentId)",
+                "endTime": "$(params.time.end)",
+                "mql": "nodeCpuUsage[auto]{clusterName=$(dashboard.params.log-analytics-log-field-filter2),nodeName=$(dashboard.params.k8sNodeFilter)}.grouping().mean()",
+                "namespace": "mgmtagent_kubernetes_metrics",
+                "regionName": "$(params.regionName)",
+                "startTime": "$(params.time.start)"
+              },
+              "type": "monitoringDataSource"
+            },
+            {
+              "name": "autoUnion",
+              "parameters": {
+                "dependents": [
+                  "mgmtagent_kubernetes_metrics/nodeCpuUsage",
+                  "mgmtagent_kubernetes_metrics/nodeMemoryUsage"
+                ],
+                "orderByClause": [
+                  {
+                    "field": "aggregatedDatapoints.timestamp"
+                  }
+                ]
+              },
+              "type": "transformUnion"
+            },
+            {
+              "name": "mgmtagent_kubernetes_metrics/nodeMemoryUsage",
+              "parameters": {
+                "compartmentId": "$(params.compartmentId)",
+                "endTime": "$(params.time.end)",
+                "mql": "nodeMemoryUsage[auto]{nodeName=$(dashboard.params.k8sNodeFilter),clusterName=$(dashboard.params.log-analytics-log-field-filter2)}.grouping().mean()",
+                "namespace": "mgmtagent_kubernetes_metrics",
+                "regionName": "$(params.regionName)",
+                "startTime": "$(params.time.start)"
+              },
+              "type": "monitoringDataSource"
+            }
+          ],
+          "displayName": "Nodes CPU & Memory Usage",
+          "drilldownConfig": [],
+          "height": 3,
+          "nls": {},
+          "parametersMap": {
+            "compartmentId": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "regionName": "$(context.regionName)",
+            "time": "$(dashboard.params.time)"
+          },
+          "row": 10,
+          "savedSearchId": "OOBSS-management-dashboard-123",
+          "state": "DEFAULT",
+          "uiConfig": {
+            "chartInfo": {
+              "colorBy": "name",
+              "enableCorrelation": true,
+              "group": "aggregatedDatapoints.timestamp",
+              "jetConfig": {
+                "dataCursor": "on",
+                "legend": {
+                  "position": "top",
+                  "rendered": true
+                },
+                "timeAxisType": "enabled",
+                "type": "line",
+                "xAxis": {
+                  "viewportMax": "$(params.time.end)",
+                  "viewportMin": "$(params.time.start)"
+                }
+              },
+              "series": "name",
+              "value": "aggregatedDatapoints.value"
+            },
+            "defaultDataSource": "autoUnion",
+            "internalKey": "OOBSS-management-dashboard-123"
+          },
+          "width": 6
+        },
+        {
+          "column": 0,
+          "dataConfig": [],
+          "displayName": "Pods CPU Usage",
+          "drilldownConfig": [],
+          "height": 4,
+          "nls": {},
+          "parametersMap": {
+            "compartmentId": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "regionName": "$(context.regionName)",
+            "time": "$(dashboard.params.time)"
+          },
+          "row": 17,
+          "savedSearchId": "ocid1.managementsavedsearch.oc1..aaaaaaaao66kcpdxkzv7euzz2nolnheoztvhjj4ireqfkalgzvg27xtb3wqa",
+          "state": "DEFAULT",
+          "uiConfig": {},
+          "width": 6
+        },
+        {
+          "column": 6,
+          "dataConfig": [],
+          "displayName": "Node Memory Usage",
+          "drilldownConfig": [],
+          "height": 4,
+          "nls": {},
+          "parametersMap": {
+            "compartmentId": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "regionName": "$(context.regionName)",
+            "time": "$(dashboard.params.time)"
+          },
+          "row": 17,
+          "savedSearchId": "ocid1.managementsavedsearch.oc1..aaaaaaaa2ctxqgooubu2oqvz6p2u7tnrlbr6davpwt5fxdmqg3hafktdtk4a",
+          "state": "DEFAULT",
+          "uiConfig": {},
+          "width": 6
+        }
+      ],
+      "timeCreated": "2023-05-15T20:52:06.226Z",
+      "timeUpdated": "2023-05-15T20:52:07.342Z",
+      "type": "normal",
+      "uiConfig": {
+        "isFilteringEnabled": false,
+        "isRefreshEnabled": true,
+        "isTimeRangeEnabled": true
+      },
+      "updatedBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM"
+    }
+  ]
+}
