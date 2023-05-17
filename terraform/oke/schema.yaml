@@ -121,7 +121,7 @@ variables:
     maxLength: 63
     title: Kubernetes Namespace
     description: Kubernetes Namespace in which the monitoring solution to be deployed
-    default: kube-system
+    default: oci-onm
     pattern: '^([a-z0-9]|[a-z][a-z\-0-9]*[a-z0-9])$' #Ref - https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#dns-label-names
     required: true
 
@@ -186,7 +186,7 @@ variables:
     minLength: 1
     maxLength: 255
     title: OCI Logging Analytics fluentd container image
-    default: iad.ocir.io/ax1wgjs6b2vc/oci_la_fluentd:ol8-1.1
+    default: container-registry.oracle.com/oci_observability_management/oci-management-agent:1.0.0
     pattern: '^[\S]+$'
     required: true
     description: "Note: Default value is not recommended for production usage. You may need to build your own image using https://github.com/oracle-quickstart/oci-kubernetes-monitoring#docker-image"
