@@ -14,6 +14,9 @@ locals {
     "global.namespace" = var.kubernetes_namespace
     "global.kubernetesClusterID" = var.oke_cluster_ocid
 
+    # oci-onm-common
+    "oci-onm-common.createNamespace" = var.opt_create_kubernetes_namespace
+
     # oci-onm-logan
     "oci-onm-logan.ociLANamespace" = var.oci_la_namespace
     "oci-onm-logan.ociLALogGroupID" = var.oci_la_logGroup_id
@@ -27,7 +30,6 @@ resource "helm_release" "oci-kubernetes-monitoring" {
   name             = "oci-kubernetes-monitoring"
   chart            = "${path.root}/../../charts/oci-onm"
   namespace        = var.kubernetes_namespace
-  create_namespace = var.opt_create_kubernetes_namespace
   wait             = true
   dependency_update = true
 
@@ -46,7 +48,6 @@ data "helm_template" "oci-kubernetes-monitoring" {
   name             = "oci-kubernetes-monitoring"
   chart            = "${path.root}/../../charts/oci-onm"
   namespace        = var.kubernetes_namespace
-  create_namespace = var.opt_create_kubernetes_namespace
   dependency_update = true
 
   count = var.enable_helm_debugging ? 1 : 0
