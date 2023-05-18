@@ -150,9 +150,3 @@ variable "oci_la_logGroup_name" {
 variable "container_image_url" {
   type = string
 }
-
-# Fluentd Base Directory
-variable "fluentd_baseDir_path" {
-  type    = string
-  default = "/var/log"
-}

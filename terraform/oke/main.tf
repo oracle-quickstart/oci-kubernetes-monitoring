@@ -54,7 +54,4 @@ module "helm_release" {
 
   oci_la_logGroup_id = module.loggingAnalytics.oci_la_logGroup_ocid
   oci_la_namespace   = module.loggingAnalytics.oci_la_namespace
-
-  fluentd_baseDir_path = var.fluentd_baseDir_path
-
 }

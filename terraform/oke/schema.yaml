@@ -63,7 +63,6 @@ variableGroups:
   - title: "Fluentd Configuration"
     variables:
       - container_image_url
-      - fluentd_baseDir_path
     visible:
       and:
         - enable_helm_release
@@ -190,14 +189,3 @@ variables:
     pattern: '^[\S]+$'
     required: true
     description: "Note: Default value is not recommended for production usage. You may need to build your own image using https://github.com/oracle-quickstart/oci-kubernetes-monitoring#docker-image"
-
-  # Fluentd Base Directory
-  fluentd_baseDir_path:
-    type: string
-    maxLength: 255
-    minLength: 1
-    title: Fluentd Base Directory
-    description: Base directory on the node (with read & write permission) to store fluentd plugin's related data
-    default: /var/log
-    required: true
-    pattern: '^/[\w- /]*$'

@@ -23,7 +23,6 @@ locals {
     "oci-onm-logan.image.url" = var.container_image_url
     "oci-onm-logan.kubernetesClusterName" = local.oke_cluster_name
   }
-
 }
 
 resource "helm_release" "oci-kubernetes-monitoring" {

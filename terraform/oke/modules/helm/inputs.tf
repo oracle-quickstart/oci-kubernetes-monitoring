@@ -30,11 +30,6 @@ variable "oke_cluster_ocid" {
   type = string
 }
 
-# OCI LA Fluentd Container Image
-variable "container_image_url" {
-  type = string
-}
-
 # Kubernetes Namespace
 variable "kubernetes_namespace" {
   type = string
@@ -65,8 +60,7 @@ variable "oci_la_namespace" {
 ##  Fluentd Configuration
 ####
 
-# Fluentd Base Directory
-variable "fluentd_baseDir_path" {
-  type    = string
-  default = "/var/log"
+# OCI LA Fluentd Container Image
+variable "container_image_url" {
+  type = string
 }
