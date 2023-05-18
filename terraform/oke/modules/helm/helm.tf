@@ -31,6 +31,7 @@ resource "helm_release" "oci-kubernetes-monitoring" {
   chart            = "${path.root}/../../charts/oci-onm"
   wait             = true
   dependency_update = true
+  atomic = true
 
   count = var.enable_helm_release ? 1 : 0
 

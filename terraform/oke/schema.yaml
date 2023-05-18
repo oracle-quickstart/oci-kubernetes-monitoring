@@ -186,7 +186,7 @@ variables:
     minLength: 1
     maxLength: 255
     title: OCI Logging Analytics fluentd container image
-    default: container-registry.oracle.com/oci_observability_management/oci-management-agent:1.0.0
+    default: container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.0.0
     pattern: '^[\S]+$'
     required: true
     description: "Note: Default value is not recommended for production usage. You may need to build your own image using https://github.com/oracle-quickstart/oci-kubernetes-monitoring#docker-image"
