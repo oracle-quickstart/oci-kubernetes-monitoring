@@ -5,7 +5,6 @@
 module "import_kubernetes_dashbords" {
   source           = "./modules/dashboards"
   compartment_ocid = var.oci_la_compartment_ocid
-
   count = var.enable_dashboard_import ? 1 : 0
 }
 
@@ -23,6 +22,12 @@ module "policy_and_dynamic-group" {
   providers = {
     oci = oci.home_region
   }
+}
+
+module "management_agent" {
+    source                           = "./modules/macs"
+    uniquifier = md5(var.oke_cluster_ocid)
+    compartment_ocid = var.oke_compartment_ocid # needs update
 }
 
 // Create Logging Analytics Resorces
@@ -54,4 +59,6 @@ module "helm_release" {
 
   oci_la_logGroup_id = module.loggingAnalytics.oci_la_logGroup_ocid
   oci_la_namespace   = module.loggingAnalytics.oci_la_namespace
+
+  installKeyFileContent = module.management_agent.Mgmtagent_Install_Key
 }

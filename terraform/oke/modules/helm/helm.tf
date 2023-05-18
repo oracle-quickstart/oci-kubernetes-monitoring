@@ -22,7 +22,11 @@ locals {
     "oci-onm-logan.ociLALogGroupID" = var.oci_la_logGroup_id
     "oci-onm-logan.image.url" = var.container_image_url
     "oci-onm-logan.kubernetesClusterName" = local.oke_cluster_name
+
+    #oci-onm-mgmt-agent
+    "oci-onm-mgmt-agent.mgmtagent.installKeyFileContent" = var.installKeyFileContent
   }
+
 }
 
 resource "helm_release" "oci-kubernetes-monitoring" {

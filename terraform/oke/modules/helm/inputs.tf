@@ -15,7 +15,6 @@ variable "enable_helm_debugging" {
   default = false
 }
 
-
 ####
 ##  OKE Cluster Information
 ####
@@ -63,4 +62,12 @@ variable "oci_la_namespace" {
 # OCI LA Fluentd Container Image
 variable "container_image_url" {
   type = string
+}
+
+####
+##  MACS Configuration
+####
+
+variable "installKeyFileContent" {
+  type    = string
 }
