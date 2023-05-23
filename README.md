@@ -1,8 +1,4 @@
-# OCI Kubernetes Monitoring Solution v3.x
-
-:stop_sign: Upgrading from previous versions? See upgrade section below.
-
-## About
+# OCI Kubernetes Monitoring Solution v3.x :tada:
 
 OCI Kubernetes Monitoring Solution is a turn-key Kubernetes monitoring and management package based on OCI Logging Analytics cloud service, OCI Monitoring, OCI Management Agent.
 
@@ -21,9 +17,12 @@ across their entire environment - using Logs, Metrics, and Object metadata - fro
 
 It does extensive enrichment of logs, metrics and object information to enable cross correlation across entities from different tiers in OCI Logging Analytics. A collection of dashboards is provided to get users started quickly.
 
+### Monitoring Dashboards
+
+![Kubernetes Cluster Summary Dashboard](logan/images/kubernetes-cluster-summary-dashboard.png)
 
 <details>
-  <summary>Kubernetes Monitoring Dashboards</summary>
+  <summary>Expand for more dasshboard screenshots</summary>
 
 ![Kubernetes Cluster Summary Dashboard](logan/images/kubernetes-cluster-summary-dashboard.png)
 
@@ -36,7 +35,11 @@ It does extensive enrichment of logs, metrics and object information to enable c
 ![Kubernetes Pods Dashboard](logan/images/kubernetes-pods-dashboard.png)
 
 </details>
-# Getting Started
+
+
+# Get Started :rocket:
+
+:stop_sign: Upgrading from previous versions? See upgrade section below. :warning:
 
 ### Pre-reqs
 
@@ -53,7 +56,7 @@ Multiple methods of installation are avialble, with following differences:
 | Helm Release | :heavy_check_mark:  | Manual| Full Control (Recommended for multiple enironments)
 | kubectl | Manual | Manual | Full Control (Not recommended)
 
-### Option 1: OCI Resource Manager
+### Option :one: OCI Resource Manager
 
 Launch this OCI Resource Manager stack in OCI Tenancy Region of the OKE Cluster that you want to monitor
 
@@ -61,7 +64,7 @@ Launch this OCI Resource Manager stack in OCI Tenancy Region of the OKE Cluster 
 
 [oci_kubernetes_monitoring_stack]: https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/oracle-quickstart/oci-kubernetes-monitoring/releases/latest/download/oci-kubernetes-monitoring-stack.zip
 
-### Option 2: Command Line for OKE Monitoring
+### Option :two: Command Line for OKE Monitoring
 
 #### 0 Pre-requisites
 
@@ -126,11 +129,11 @@ Dashboards must be imported manually. Below is an example of importing Dashboard
 
 ## Resources
 
-### [Frequently Asked Questions](./FAQ.md)
+### :question: [Frequently Asked Questions](./docs/FAQ.md)
 
-### [Custom Logs Configuration](./Custom-logs.md)
+### [Custom Logs Configuration](./docs/Custom-logs.md)
 
-### [Building Custom Container Images](./customimages.md)
+### [Building Custom Container Images](./docs/customimages.md)
 
 ## License
 
