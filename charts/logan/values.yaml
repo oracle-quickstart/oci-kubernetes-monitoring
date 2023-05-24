@@ -67,6 +67,12 @@ kubernetesClusterID:
 # e.g. production-cluster
 kubernetesClusterName:
 
+# -- Kubernetes Security Context priviliged flag
+# By default, this is false and not required to be set in OKE cluster
+# In some special Kubernetes environments like OCNE, we require this flag to be set to ture
+# to allow pods to access log files.
+securityContextPriviliged: false
+
 # -- Logging Analytics OCID for OKE Cluster
 #ociLAEntityID:
 
@@ -294,6 +300,47 @@ fluentd:
             ociLALogSourceName: "Kubernetes Autoscaler Logs"
             #  The regular expression pattern for the starting line in case of multi-line logs.
             multilineStartRegExp: /^\S\d{2}\d{2}\s+[^\:]+:[^\:]+:[^\.]+\.\d{0,3}/
+
+         # Config specific to API Server Logs Collection
+         kube-apiserver:
+            # The path to the source files.
+            path: /var/log/containers/kube-apiserver-*.log
+            # Logging Analytics log source to use for parsing and processing the logs: Kubernetes API Server Logs.
+            ociLALogSourceName: "Kubernetes API Server Logs"
+            # The regular expression pattern for the starting line in case of multi-line logs.
+            multilineStartRegExp: /^\S\d{2}\d{2}\s+[^\:]+:[^\:]+:[^\.]+\.\d{0,3}/
+
+         # Config specific to etcd Logs Collection
+         etcd:
+            # The path to the source files.
+            path: /var/log/containers/etcd-*.log
+            # Logging Analytics log source to use for parsing and processing the logs: Kubernetes etcd Logs.
+            ociLALogSourceName: "Kubernetes etcd Logs"
+
+         # Config specific to kube-controller-manager Logs Collection
+         kube-controller-manager:
+            # The path to the source files.
+            path: /var/log/containers/kube-controller-manager-*.log
+            # Logging Analytics log source to use for parsing and processing the logs: Kubernetes Controller Manager Logs.
+            ociLALogSourceName: "Kubernetes Controller Manager Logs"
+            # The regular expression pattern for the starting line in case of multi-line logs.
+            multilineStartRegExp: /^\S\d{2}\d{2}\s+[^\:]+:[^\:]+:[^\.]+\.\d{0,3}/
+
+         # Config specific to kube-scheduler Logs Collection
+         kube-scheduler:
+            # The path to the source files.
+            path: /var/log/containers/kube-scheduler-*.log
+            # Logging Analytics log source to use for parsing and processing the logs: Kubernetes Scheduler Logs.
+            ociLALogSourceName: "Kubernetes Scheduler Logs"
+            # The regular expression pattern for the starting line in case of multi-line logs.
+            multilineStartRegExp: /^\S\d{2}\d{2}\s+[^\:]+:[^\:]+:[^\.]+\.\d{0,3}/
+
+         # Config specific to Kubernetes Audit Logs Collection
+         kube-audit:
+            # The path to the source files.
+            path: /var/log/kubernetes/audit/audit*
+            # Logging Analytics log source to use for parsing and processing the logs: Kubernetes Audit Logs.
+            ociLALogSourceName: "Kubernetes Audit Logs"
    # Configuration for Linux System specific logs like CronLogs and SecureLogs
    linuxSystem:
       logs:
@@ -375,6 +422,10 @@ fluentd:
          - '"/var/log/containers/csi-oci-node-*.log"'
          - '"/var/log/containers/proxymux-client-*.log"'
          - '"/var/log/containers/cluster-autoscaler-*.log"'
+         - '"/var/log/containers/kube-apiserver-*.log"'
+         - '"/var/log/containers/etcd-*.log"'
+         - '"/var/log/containers/kube-controller-manager-*.log"'
+         - '"/var/log/containers/kube-scheduler-*.log"'
 
    # -- Configuration for any custom logs which are not part of the default configuration defined in this file.
    # All the pod/container logs will be collected as per "genericContainerLogs" section.
