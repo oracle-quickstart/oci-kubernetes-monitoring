@@ -35,11 +35,41 @@ It does extensive enrichment of logs, metrics and object information to enable c
 
 ### Pre-requisites
 
-* OCI Logging Analytics service must be onboarded in the OCI region where you want to monitor.
-  * [Logging Analytics Quick Start](https://docs.oracle.com/en-us/iaas/logging-analytics/doc/quick-start.html)
-* OCI Dynamic Groups, Policies  (Details [here](TBD))
+* OCI Logging Analytics service must be onboarded with the minumum required policies, in the OCI region where you want to monitor. Refer [Logging Analytics Quick Start](https://docs.oracle.com/en-us/iaas/logging-analytics/doc/quick-start.html) for details.
+* Create OCI Logging Analytics LogGroup(s) if not done already. Refer [Create Log Group](https://docs.oracle.com/en-us/iaas/logging-analytics/doc/create-logging-analytics-resources.html#GUID-D1758CFB-861F-420D-B12F-34D1CC5E3E0E) for details.
+* OCI Dynamic Groups, User Group and Policies.
+  <details>
+    <summary>Details</summary>
+  
+  * Create a dynamic group with the following sample rule for OCI Management Agent. Refer [Managing Dynamic Groups](https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/managingdynamicgroups.htm) for details.
+    ```
+    ALL {resource.type='managementagent', resource.compartment.id='OCI Management Agent Compartment OCID'}
+    ```
+  * Create a dynamic group with following sample rule for OKE Instances. 
+    ```
+    ALL {instance.compartment.id='OCI Management Agent Compartment OCID'}
+    ```
+    - **Note**: _This dynamic group is not required for non OKE or when you choose to use Config file based AuthZ for monitoring the logs._
+  * Create a user and user group using which the logs to be published to OCI Logging Analytics. Refer [Managing Users](https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/managingusers.htm) and [Managing User Groups](https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/managinggroups.htm) for details.
+    - **Note**: _This is not required for OKE when you choose to use the default (Instance princiapal) AuthZ mechanism._
+  * Create a policy with following statements.
+    * Policy Statement for providing necessary access to upload the metrics.
+      ```
+      Allow dynamic-group <OCI Management Agent Dynamic Group> to use metrics in compartment <Compartment Name> WHERE target.metrics.namespace = 'mgmtagent_kubernetes_metrics'
+      ```
+    * Policy Statement for providing necessary access to upload the logs and objects data.
+      ```
+      Allow dynamic-group <OKE Instances Dynamic Group> to {LOG_ANALYTICS_LOG_GROUP_UPLOAD_LOGS} in compartment <Compartment Name>
+      ```
+      OR
+      ```
+      Allow group <User Group> to {LOG_ANALYTICS_LOG_GROUP_UPLOAD_LOGS} in compartment <Compartment Name>
+      ```
+  </details>
 
-Multiple methods of installation are avialble, with following differences:
+### Installation instructions 
+
+#### Multiple methods of installation are avialble, with following differences:
 
 | Deployment Method | Supported Environments | Collection Automation | Dashboards | Customzations |
 | ----| :----:| :----:| :---: | ---|
@@ -50,19 +80,19 @@ Multiple methods of installation are avialble, with following differences:
 
 \* For some environments, modification of the configuration may be required.
 
-### Helm
+#### Helm
 
-#### 0 Pre-requisites
+##### 0 Pre-requisites
 
 * Workstation or OCI Cloud Shell with access configured to the target k8s cluster.
 * Helm ([Installation instructions](https://helm.sh/docs/intro/install/)).
 
-#### 1 Download helm chart
+##### 1 Download helm chart
 
 * [latest](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/releases/latest/download/helm-chart.tgz)
 * Go to [releases](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/releases) for a specific version.
 
-#### 2 Update values.yaml
+##### 2 Update values.yaml
 
 * Create override_values.yaml, to override the minimum required variables in values.yaml.
   - override_values.yaml
@@ -81,7 +111,7 @@ Multiple methods of installation are avialble, with following differences:
     ```
 * Refer to the oci-onm chart and sub-charts values.yaml for customising or modifying any other configuration. It is recommended to not modify the values.yaml provided with the charts, instead use override_values.yaml to achieve the same.    
   
-#### 3.a Install helm release
+##### 3.a Install helm release
 
 Use the following `helm install` command to the install the chart. Provide a desired release name, path to override_values.yaml and path to helm chart.
 ```
@@ -89,7 +119,7 @@ helm install <release-name> --values <path-to-override-values.yaml> <path-to-hel
 ```
 Refer [this](https://helm.sh/docs/helm/helm_install/) for further details on `helm install`.
 
-#### 3.b Upgrade helm release
+##### 3.b Upgrade helm release
 
 Use the following `helm upgrade` command if any further changes to override_values.yaml needs to be applied or a new chart version needs to be deployed. 
 ```
@@ -97,7 +127,7 @@ helm upgrade <release-name> --values <path-to-override-values.yaml> <path-to-hel
 ```
 Refer [this](https://helm.sh/docs/helm/helm_upgrade/) for further details on `helm upgrade`.
 
-#### 3.c Import Dashboards
+##### 3.c Import Dashboards
 
 Dashboards needs to be imported manually. Below is an example for importing Dashboards using OCI CLI.
 
@@ -120,7 +150,7 @@ Dashboards needs to be imported manually. Below is an example for importing Dash
     oci management-dashboard dashboard import --from-json file://pod.json
     ```
 
-#### 4 Uninstall
+##### 4 Uninstall
 
 Use the following `helm uninstall` command to uninstall the chart. Provide the release name used when creating the chart.
 ```
@@ -128,13 +158,23 @@ helm upgrade <release-name> --values <path-to-override-values.yaml> <path-to-hel
 ```
 Refer [this](https://helm.sh/docs/helm/helm_uninstall/) for further details on `helm uninstall`.
 
-### Option :one: OCI Resource Manager
+#### OCI Resource Manager
 
-Launch this OCI Resource Manager stack in OCI Tenancy Region of the OKE Cluster that you want to monitor
+Launch OCI Resource Manager Stack in OCI Tenancy and Region of the OKE Cluster, which you want to monitor.
 
-[![Deploy to Oracle Cloud][orm_button]][oci_kubernetes_monitoring_stack]
+[![Launch OCI Resource Manager Stack][orm_button]][oci_kubernetes_monitoring_stack]
 
-[oci_kubernetes_monitoring_stack]: https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/oracle-quickstart/oci-kubernetes-monitoring/releases/latest/download/oci-kubernetes-monitoring-stack.zip
+<details>
+  <summary>Instructions</summary>
+  
+  * Select the region and compartment where you want to deploy the stack.
+  * Follow the on-screen prompts and instructions to create the stack.
+  * After creating the stack, click Terraform Actions, and select Plan.
+  * Wait for the job to be completed, and review the plan.
+  * To make any changes, return to the Stack Details page, click Edit Stack, and make the required changes. Then, run the Plan action again.
+  * If no further changes are necessary, return to the Stack Details page, click Terraform Actions, and select Apply.
+  
+</details>  
 
 #### Upgrading fom 1.x or 2.x versions
 
@@ -160,3 +200,4 @@ Licensed under the Universal Permissive License v1.0 as shown at <https://oss.or
 [def]: https://github.com/oracle-quickstart/oci-kubernetes-monitoring/graphs/contributors
 
 [orm_button]: https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg
+[oci_kubernetes_monitoring_stack]: https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/oracle-quickstart/oci-kubernetes-monitoring/releases/latest/download/oci-kubernetes-monitoring-stack.zip
