@@ -34,12 +34,6 @@ variable "kubernetes_namespace" {
   type = string
 }
 
-# Option to create Kubernetes Namespace
-variable "opt_create_kubernetes_namespace" {
-  type    = bool
-  default = true
-}
-
 ####
 ##  OCI Logging Analytics Information
 ####
@@ -64,10 +58,21 @@ variable "container_image_url" {
   type = string
 }
 
+# Fluentd Base Directory
+variable "fluentd_baseDir_path" {
+  type    = string
+  default = "/var/log"
+}
+
 ####
 ##  MACS Configuration
 ####
 
 variable "installKeyFileContent" {
   type    = string
+}
+
+# OCI Management Agent Container Image
+variable "macs_agent_image_url" {
+  type = string
 }

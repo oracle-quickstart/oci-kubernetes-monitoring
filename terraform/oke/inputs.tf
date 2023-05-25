@@ -108,12 +108,6 @@ variable "kubernetes_namespace" {
   type = string
 }
 
-# Option to create Kubernetes Namespace
-variable "opt_create_kubernetes_namespace" {
-  type    = bool
-  default = true
-}
-
 ####
 ##  OCI Logging Analytics Information
 ####
@@ -149,4 +143,21 @@ variable "oci_la_logGroup_name" {
 # OCI LA Fluentd Container Image
 variable "container_image_url" {
   type = string
+  default = "container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.0.0"
+}
+
+# Fluentd Base Directory
+variable "fluentd_baseDir_path" {
+  type    = string
+  default = "/var/log"
+}
+
+####
+##  Management Agent Configuration
+####
+
+# OCI Management Agent Container Image
+variable "macs_agent_image_url" {
+  type = string
+  default = "container-registry.oracle.com/oci_observability_management/oci-management-agent:1.0.0"
 }

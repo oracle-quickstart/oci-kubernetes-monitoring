@@ -48,10 +48,6 @@ oci_la_logGroup_id = ""
 # leave it unchanged, if opt_use_existing_la_logGroup=false
 oci_la_logGroup_name = "NewLogGroupName" 
 
-# Image URL of OCI LA Fluentd Container
-# Reference - https://github.com/oracle-quickstart/oci-kubernetes-monitoring#docker-image
-container_image_url = "container-registry.oracle.com/oci_observability_management/oci-management-agent:1.0.0"
-
 #### 
 ## Optional  Stack inputs
 ####
@@ -59,8 +55,7 @@ container_image_url = "container-registry.oracle.com/oci_observability_managemen
 # Option to create Dynamic Group and Policies
 opt_create_dynamicGroup_and_policies = true
 
-# If true, kubernetes_namespace will be created if does not exist already
-opt_create_kubernetes_namespace = true 
+fluentd_baseDir_path = "/var/log"
 
 #### 
 ## Optional Switches

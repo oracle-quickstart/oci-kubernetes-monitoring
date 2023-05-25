@@ -14,17 +14,17 @@ locals {
     "global.namespace" = var.kubernetes_namespace
     "global.kubernetesClusterID" = var.oke_cluster_ocid
 
-    # oci-onm-common
-    "oci-onm-common.createNamespace" = var.opt_create_kubernetes_namespace
-
     # oci-onm-logan
     "oci-onm-logan.ociLANamespace" = var.oci_la_namespace
     "oci-onm-logan.ociLALogGroupID" = var.oci_la_logGroup_id
     "oci-onm-logan.image.url" = var.container_image_url
     "oci-onm-logan.kubernetesClusterName" = local.oke_cluster_name
+    "oci-onm-logan.image.url" = var.container_image_url
+    "oci-onm-logan.fluentd.baseDir" = var.fluentd_baseDir_path
 
     #oci-onm-mgmt-agent
     "oci-onm-mgmt-agent.mgmtagent.installKeyFileContent" = var.installKeyFileContent
+    "oci-onm-mgmt-agent.mgmtagent.image.url" = var.macs_agent_image_url
   }
 
 }

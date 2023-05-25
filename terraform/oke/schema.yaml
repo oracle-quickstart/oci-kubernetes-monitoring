@@ -28,21 +28,15 @@ variableGroups:
       - boat_auth
       - boat_tenancy_ocid
       - compartment_ocid
+      - container_image_url
+      - macs_agent_image_url
     visible: false
-
-  - title: "Pre-requisites"
-    variables:
-      - opt_create_dynamicGroup_and_policies
-    visible: 
-      and: 
-        - enable_helm_release
 
   - title: "OKE Cluster Information"
     variables:
       - oke_compartment_ocid
       - oke_cluster_ocid
       - kubernetes_namespace
-      - opt_create_kubernetes_namespace
     visible: 
       and: 
         - enable_helm_release
@@ -63,6 +57,13 @@ variableGroups:
       - fluentd_baseDir_path
     visible: 
       and:
+        - enable_helm_release
+
+  - title: "Pre-requisites"
+    variables:
+      - opt_create_dynamicGroup_and_policies
+    visible: 
+      and: 
         - enable_helm_release
 
 variables:
@@ -122,14 +123,6 @@ variables:
     pattern: '^([a-z0-9]|[a-z][a-z\-0-9]*[a-z0-9])$' #Ref - https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#dns-label-names
     required: true
 
-  # Option to create Kubernetes Namespace
-  opt_create_kubernetes_namespace:
-    type: boolean
-    title: Create namespace, if doesn't exist
-    description: "Note: Un-checking this option can lead to failure when namespace doesn't exist in cluster"
-    default: true
-    required: true
-
   ####
   ##  OCI Logging Analytics Information
   ####
@@ -176,17 +169,6 @@ variables:
   ####
   ##  Fluentd Configuration
   ####
-
-  # OCI LA Fluentd Container Image
-  container_image_url:
-    type: string
-    minLength: 1
-    maxLength: 255
-    title: OCI Logging Analytics fluentd container image
-    default: iad.ocir.io/ax1wgjs6b2vc/oci_la_fluentd:ol8-1.1
-    pattern: '^[\S]+$'
-    required: true
-    description: "Note: Default value is not recommended for production usage. You may need to build your own image using https://github.com/oracle-quickstart/oci-kubernetes-monitoring#docker-image"
 
   # Fluentd Base Directory
   fluentd_baseDir_path:

@@ -27,7 +27,7 @@ module "policy_and_dynamic-group" {
 module "management_agent" {
     source                           = "./modules/macs"
     uniquifier = md5(var.oke_cluster_ocid)
-    compartment_ocid = var.oke_compartment_ocid # needs update
+    compartment_ocid = var.oke_compartment_ocid
 }
 
 // Create Logging Analytics Resorces
@@ -51,7 +51,6 @@ module "helm_release" {
   enable_helm_release   = var.enable_helm_release
   enable_helm_debugging = var.enable_helm_debugging
 
-  opt_create_kubernetes_namespace = var.opt_create_kubernetes_namespace
   oke_compartment_ocid            = var.oke_compartment_ocid
   oke_cluster_ocid                = var.oke_cluster_ocid
   container_image_url             = var.container_image_url
@@ -59,6 +58,9 @@ module "helm_release" {
 
   oci_la_logGroup_id = module.loggingAnalytics.oci_la_logGroup_ocid
   oci_la_namespace   = module.loggingAnalytics.oci_la_namespace
+  fluentd_baseDir_path = var.fluentd_baseDir_path
+
 
   installKeyFileContent = module.management_agent.Mgmtagent_Install_Key
+  macs_agent_image_url = var.macs_agent_image_url
 }
