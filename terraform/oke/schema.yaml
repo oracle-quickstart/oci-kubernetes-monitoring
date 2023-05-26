@@ -1,3 +1,6 @@
+# Copyright (c) 2023, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+
 title: OCI Kubernetes Monitoring Solution
 description: Monitoring Solution for Kubernetes offered by OCI Logging Analytics
 informationalText: Monitoring Solution for Kubernetes offered by OCI Logging Analytics
