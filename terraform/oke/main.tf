@@ -28,7 +28,7 @@ module "policy_and_dynamic-group" {
 module "management_agent" {
   source           = "./modules/macs"
   uniquifier       = md5(var.oke_cluster_ocid)
-  compartment_ocid = var.oke_compartment_ocid
+  compartment_ocid = var.oci_la_compartment_ocid
 
   count = var.enable_macs ? 1 : 0
 }
