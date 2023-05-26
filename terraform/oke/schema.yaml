@@ -121,7 +121,7 @@ variables:
     maxLength: 63
     title: Kubernetes Namespace
     description: Kubernetes Namespace in which the monitoring solution to be deployed
-    default: kube-system
+    default: oci-onm
     pattern: '^([a-z0-9]|[a-z][a-z\-0-9]*[a-z0-9])$' #Ref - https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#dns-label-names
     required: true
 
