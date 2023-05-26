@@ -2,8 +2,8 @@
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 title: OCI Kubernetes Monitoring Solution
-description: Monitoring Solution for Kubernetes offered by OCI Logging Analytics
-informationalText: Monitoring Solution for Kubernetes offered by OCI Logging Analytics
+description: OCI Kubernetes Monitoring Solution is a turn-key Kubernetes monitoring and management package based on OCI Logging Analytics cloud service, OCI Monitoring, OCI Management Agent.
+informationalText: OCI Kubernetes Monitoring Solution is a turn-key Kubernetes monitoring and management package based on OCI Logging Analytics cloud service, OCI Monitoring, OCI Management Agent.
 schemaVersion: 1.1.0
 version: "20221004"
 
@@ -19,6 +19,7 @@ locale: "en"
 variableGroups:
   - title: "configuration inputs"
     variables:
+      - auth_tenancy_ocid
       - tenancy_ocid
       - region
       - user_ocid
@@ -27,46 +28,39 @@ variableGroups:
       - enable_helm_debugging
       - enable_dashboard_import
       - enable_helm_release
-      - enable_macs
       - boat_auth
       - boat_tenancy_ocid
       - compartment_ocid
-      - container_image_url
-      - macs_agent_image_url
     visible: false
 
-  - title: "OKE Cluster Information"
+  - title: "Select an OKE Cluster deployed in this region to start monitoring"
+    description: "Use CLI (Helm) if your cluster does not have public API Endpoint or restricted from accessing container-registry.oracle.com. See: https://github.com/oracle-quickstart/oci-kubernetes-monitoring"
     variables:
       - oke_compartment_ocid
       - oke_cluster_ocid
-      - kubernetes_namespace
-    visible: 
-      and: 
+    visible:
+      and:
         - enable_helm_release
 
-  - title: "OCI Logging Analytics Information"
+  - title: "OCI Observability & Management Services Configuration"
+    description: "See: https://github.com/oracle-quickstart/oci-kubernetes-monitoring for list of resources created"
     variables:
     - oci_la_compartment_ocid
     - opt_create_new_la_logGroup
     - oci_la_logGroup_id
     - oci_la_logGroup_name
-    visible: 
-      and: 
-        - enable_helm_release
-
-  - title: "Fluentd Configuration"
-    variables:
-      - fluentd_baseDir_path
-    visible: 
+    - fluentd_baseDir_path
+    visible:
       and:
         - enable_helm_release
 
-  - title: "Pre-requisites"
+  - title: "OCI IAM Policies and Dynaimic Groups (Optional)"
     variables:
       - opt_create_dynamicGroup_and_policies
-    visible: 
-      and: 
+    visible:
+      and:
         - enable_helm_release
+
 
 variables:
 
@@ -89,10 +83,10 @@ variables:
   # Option to create Dynamic Group and Policies
   opt_create_dynamicGroup_and_policies:
     type: boolean
-    title: Create Dynamic Group and Policies required for Kubernetes Monitoring Solution (Un-check if created manually)
+    title: Check to create Dynamic Group and Policies required for deploying monitoring solution
     #description: "Ref: https://github.com/oracle-quickstart/oci-kubernetes-monitoring#pre-requisites"
-    description: "Note: The auto-created dynamic group may need changes, if node pool(s) compartment is different than cluster compartment."
-    default: true
+    description: "Note: The dynamic group definition must be updated, if node pool(s) and OKE Cluster are in different compartments."
+    default: false
     required: true
 
   ####
@@ -102,8 +96,8 @@ variables:
   # OKE Cluster Compartment
   oke_compartment_ocid:
     type: oci:identity:compartment:id
-    required: true    
-    title: OKE Cluster Compartment
+    required: true
+    title: "Select OKE Cluster Compartment"
     default: compartment_ocid
 
   # OKE Cluster OCID
@@ -111,7 +105,7 @@ variables:
     type: oci:container:cluster:id
     dependsOn:
       compartmentId: ${oke_compartment_ocid}
-    title: OKE Cluster
+    title: Select OKE Cluster
     required: true
 
   # Kubernetes Namespace
@@ -121,8 +115,16 @@ variables:
     maxLength: 63
     title: Kubernetes Namespace
     description: Kubernetes Namespace in which the monitoring solution to be deployed
-    default: oci-onm
+    default: kube-system
     pattern: '^([a-z0-9]|[a-z][a-z\-0-9]*[a-z0-9])$' #Ref - https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#dns-label-names
+    required: true
+
+  # Option to create Kubernetes Namespace
+  opt_create_kubernetes_namespace:
+    type: boolean
+    title: Create namespace, if doesn't exist
+    description: "Note: Un-checking this option can lead to failure when namespace doesn't exist in cluster"
+    default: true
     required: true
 
   ####
@@ -132,15 +134,15 @@ variables:
   # Compartment for creating dashboards and logGroup
   oci_la_compartment_ocid:
     type: oci:identity:compartment:id
-    required: true    
-    title: OCI Logging Analytics Compartment
-    description: Compartment to store Logging Analytics dashboards and logGroup
+    required: true
+    title: Select compartment for Logging Analytics, Management Agent, and Monitoring service resources
+    description: This compartment will be used for creating Dashboards, Log Groups, Entities, Management Agent Keys, Metrics Namespace etc. See https://github.com/oracle-quickstart/oci-kubernetes-monitoring for full list of resources.
     default: compartment_ocid
 
   # Option to create Logging Analytics
   opt_create_new_la_logGroup: # change this to create new log group
     type: boolean
-    title: Create a new LogGroup
+    title: Check if you want to create a new Log Group
     default: false
 
   # OCI Logging Analytics LogGroup OCID of existing LogGroup
@@ -148,11 +150,11 @@ variables:
     type: oci:logan:loggroup:id
     dependsOn:
       compartmentId: ${oci_la_compartment_ocid}
-    title: OCI Logging Analytics LogGroup
-    description: LogGroup to store collected logs
+    title: OCI Logging Analytics Log Group
+    description: Log Groups are logical containers for log data, and provide access control for your data using IAM Policies
     required: true
-    visible: 
-      not: 
+    visible:
+      not:
         - opt_create_new_la_logGroup
 
   # New Log Group to collect Kubernetes data
@@ -160,11 +162,11 @@ variables:
     type: string
     maxLength: 255
     minLength: 1
-    required: true    
-    title: "OCI Logging Analytics LogGroup Name"
-    description: "Note: LogGroup name must be unique in a tenant"
+    required: true
+    title: "OCI Logging Analytics Log Group Name"
+    description: "Tip: Give a unique name which can be identified with your cluster name to make it easy to find in Dashboards and Logs Explorer"
     visible:
-      and: 
+      and:
         - opt_create_new_la_logGroup
     pattern: '^([a-zA-Z0-9]|[a-zA-Z0-9][\\ a-zA-Z0-9_\-]*[\\a-zA-Z\-0-9_])$'
 
@@ -172,13 +174,24 @@ variables:
   ##  Fluentd Configuration
   ####
 
+  # OCI LA Fluentd Container Image
+  container_image_url:
+    type: string
+    minLength: 1
+    maxLength: 255
+    title: OCI Logging Analytics fluentd container image
+    default: iad.ocir.io/ax1wgjs6b2vc/oci_la_fluentd:ol8-1.1
+    pattern: '^[\S]+$'
+    required: true
+    description: "Note: Default value is not recommended for production usage. You may need to build your own image using https://github.com/oracle-quickstart/oci-kubernetes-monitoring#docker-image"
+
   # Fluentd Base Directory
   fluentd_baseDir_path:
     type: string
     maxLength: 255
     minLength: 1
-    title: Fluentd Base Directory
-    description: Base directory on the node (with read & write permission) to store fluentd plugin's related data
+    title: FluentD Working Directory
+    description: A directory on the node (with read & write permission) to use for storing Fluentd related data
     default: /var/log
     required: true
     pattern: '^/[\w- /]*$'
