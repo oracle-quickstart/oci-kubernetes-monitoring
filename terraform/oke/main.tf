@@ -16,7 +16,6 @@ module "policy_and_dynamic-group" {
   root_compartment_ocid            = var.tenancy_ocid
   oci_la_logGroup_compartment_ocid = var.oci_la_compartment_ocid
   oke_compartment_ocid             = var.oke_compartment_ocid
-  macs_agent_compartment_ocid      = var.oke_compartment_ocid
   oke_cluster_ocid                 = var.oke_cluster_ocid
 
   count = var.opt_create_dynamicGroup_and_policies ? 1 : 0

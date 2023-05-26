@@ -16,11 +16,6 @@ variable "oke_compartment_ocid" {
   type = string
 }
 
-# Management Agent Compartment
-variable "macs_agent_compartment_ocid" {
-  type = string
-}
-
 # OKE Cluster OCID
 variable "oke_cluster_ocid" {
   type = string
