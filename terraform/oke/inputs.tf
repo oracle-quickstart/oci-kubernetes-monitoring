@@ -111,6 +111,7 @@ variable "oke_cluster_ocid" {
 # Kubernetes Namespace
 variable "kubernetes_namespace" {
   type = string
+  default = "oci-onm"
 }
 
 ####
@@ -141,6 +142,12 @@ variable "oci_la_logGroup_name" {
   default = ""
 }
 
+# Fluentd Base Directory
+variable "fluentd_baseDir_path" {
+  type    = string
+  default = "/var/log"
+}
+
 ####
 ##  Fluentd Configuration
 ####
@@ -151,11 +158,6 @@ variable "container_image_url" {
   default = "container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.0.0"
 }
 
-# Fluentd Base Directory
-variable "fluentd_baseDir_path" {
-  type    = string
-  default = "/var/log"
-}
 
 ####
 ##  Management Agent Configuration
