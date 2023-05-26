@@ -21,8 +21,8 @@ terraform {
 
 # https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/terraformproviderconfiguration.htm
 provider "oci" {
-  tenancy_ocid = var.boat_auth ? var.boat_tenancy_ocid : var.tenancy_ocid
-  region       = var.region
+  tenancy_ocid     = var.boat_auth ? var.boat_tenancy_ocid : var.tenancy_ocid
+  region           = var.region
   private_key_path = var.private_key_path
   fingerprint      = var.fingerprint
   user_ocid        = var.user_ocid

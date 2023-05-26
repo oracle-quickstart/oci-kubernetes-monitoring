@@ -10,17 +10,17 @@ boat_tenancy_ocid = ""
 ####
 ##  OCI Provider inputs
 ####
-tenancy_ocid     = "" 
-region           = ""
+tenancy_ocid = ""
+region       = ""
 
 # Note - Leave following empty when running terraform from OCI cloud-shell
 
 # OCI user OCID
-user_ocid        = ""
+user_ocid = ""
 # Path to OCI user's API key
 private_key_path = ""
 # Fingerprint of the API key
-fingerprint      = ""
+fingerprint = ""
 
 ####
 ##  Mandatory Stack inputs
@@ -39,14 +39,14 @@ kubernetes_namespace = "oci-onm"
 oci_la_compartment_ocid = ""
 
 # if ture, oci_la_logGroup_name must be set
-opt_create_new_la_logGroup = false 
+opt_create_new_la_logGroup = false
 
 # OCI Logging Analytics LogGroup
 # Add OCID of logGroup if opt_use_existing_la_logGroup=true, leave it empty otherwise
-oci_la_logGroup_id = "" 
+oci_la_logGroup_id = ""
 
 # leave it unchanged, if opt_use_existing_la_logGroup=false
-oci_la_logGroup_name = "NewLogGroupName" 
+oci_la_logGroup_name = "NewLogGroupName"
 
 #### 
 ## Optional  Stack inputs

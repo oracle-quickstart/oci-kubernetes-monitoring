@@ -2,8 +2,8 @@
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 locals {
-  installKey           = oci_management_agent_management_agent_install_key.Kubernetes_AgentInstallKey.key
-  inputRspFileContent  = base64encode(join("\n", ["ManagementAgentInstallKey = ${local.installKey}", "AgentDisplayName = k8_macs_agent-${var.uniquifier}"]))
+  installKey          = oci_management_agent_management_agent_install_key.Kubernetes_AgentInstallKey.key
+  inputRspFileContent = base64encode(join("\n", ["ManagementAgentInstallKey = ${local.installKey}", "AgentDisplayName = k8_macs_agent-${var.uniquifier}"]))
 }
 
 resource "oci_management_agent_management_agent_install_key" "Kubernetes_AgentInstallKey" {

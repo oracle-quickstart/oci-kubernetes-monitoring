@@ -11,53 +11,53 @@ locals {
 
   helm_inputs = {
     # global
-    "global.namespace" = var.kubernetes_namespace
+    "global.namespace"           = var.kubernetes_namespace
     "global.kubernetesClusterID" = var.oke_cluster_ocid
 
     # oci-onm-logan
-    "oci-onm-logan.ociLANamespace" = var.oci_la_namespace
-    "oci-onm-logan.ociLALogGroupID" = var.oci_la_logGroup_id
-    "oci-onm-logan.image.url" = var.container_image_url
+    "oci-onm-logan.ociLANamespace"        = var.oci_la_namespace
+    "oci-onm-logan.ociLALogGroupID"       = var.oci_la_logGroup_id
+    "oci-onm-logan.image.url"             = var.container_image_url
     "oci-onm-logan.kubernetesClusterName" = local.oke_cluster_name
-    "oci-onm-logan.image.url" = var.container_image_url
-    "oci-onm-logan.fluentd.baseDir" = var.fluentd_baseDir_path
+    "oci-onm-logan.image.url"             = var.container_image_url
+    "oci-onm-logan.fluentd.baseDir"       = var.fluentd_baseDir_path
 
     #oci-onm-mgmt-agent
     "oci-onm-mgmt-agent.mgmtagent.installKeyFileContent" = var.installKeyFileContent
-    "oci-onm-mgmt-agent.mgmtagent.image.url" = var.macs_agent_image_url
+    "oci-onm-mgmt-agent.mgmtagent.image.url"             = var.macs_agent_image_url
   }
 
 }
 
 resource "helm_release" "oci-kubernetes-monitoring" {
-  name             = "oci-kubernetes-monitoring"
-  chart            = "${path.root}/../../charts/oci-onm"
-  wait             = true
+  name              = "oci-kubernetes-monitoring"
+  chart             = "${path.root}/../../charts/oci-onm"
+  wait              = true
   dependency_update = true
-  atomic = true
+  atomic            = true
 
   count = var.enable_helm_debugging ? 0 : 1
 
-  dynamic set {
+  dynamic "set" {
     for_each = local.helm_inputs
     content {
-      name = set.key
+      name  = set.key
       value = set.value
     }
   }
 }
 
 data "helm_template" "oci-kubernetes-monitoring" {
-  name             = "oci-kubernetes-monitoring"
-  chart            = "${path.root}/../../charts/oci-onm"
+  name              = "oci-kubernetes-monitoring"
+  chart             = "${path.root}/../../charts/oci-onm"
   dependency_update = true
 
   count = var.enable_helm_debugging ? 1 : 0
 
-  dynamic set {
+  dynamic "set" {
     for_each = local.helm_inputs
     content {
-      name = set.key
+      name  = set.key
       value = set.value
     }
   }
@@ -67,5 +67,5 @@ data "helm_template" "oci-kubernetes-monitoring" {
 resource "local_file" "helm_release" {
   content  = tostring(data.helm_template.oci-kubernetes-monitoring[0].manifest)
   filename = "${path.module}/local/helmrelease.yaml"
-  count    =  var.enable_helm_debugging ? 1 : 0
+  count    = var.enable_helm_debugging ? 1 : 0
 }

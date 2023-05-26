@@ -2,7 +2,7 @@
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 variable "uniquifier" {
-  type = string
+  type        = string
   description = "A unique key to be associated with a single OKE cluster"
 }
 

@@ -3,5 +3,5 @@
 
 # Management Agent Install Key
 output "Mgmtagent_Install_Key" {
-   value = local.inputRspFileContent
+  value = local.inputRspFileContent
 }

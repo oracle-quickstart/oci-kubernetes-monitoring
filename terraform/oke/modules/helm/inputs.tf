@@ -50,7 +50,7 @@ variable "oci_la_namespace" {
 
 # OCI LA Fluentd Container Image
 variable "container_image_url" {
-  type = string
+  type    = string
   default = "container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.0.0"
 }
 
@@ -65,11 +65,11 @@ variable "fluentd_baseDir_path" {
 ####
 
 variable "installKeyFileContent" {
-  type    = string
+  type = string
 }
 
 # OCI Management Agent Container Image
 variable "macs_agent_image_url" {
-  type = string
+  type    = string
   default = "container-registry.oracle.com/oci_observability_management/oci-management-agent:1.0.0"
 }

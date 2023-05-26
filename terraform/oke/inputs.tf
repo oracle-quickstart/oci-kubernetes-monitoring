@@ -147,7 +147,7 @@ variable "oci_la_logGroup_name" {
 
 # OCI LA Fluentd Container Image
 variable "container_image_url" {
-  type = string
+  type    = string
   default = "container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.0.0"
 }
 
@@ -163,6 +163,6 @@ variable "fluentd_baseDir_path" {
 
 # OCI Management Agent Container Image
 variable "macs_agent_image_url" {
-  type = string
+  type    = string
   default = "container-registry.oracle.com/oci_observability_management/oci-management-agent:1.0.0"
 }
