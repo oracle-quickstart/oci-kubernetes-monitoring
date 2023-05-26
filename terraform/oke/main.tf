@@ -5,6 +5,7 @@
 module "import_kubernetes_dashbords" {
   source           = "./modules/dashboards"
   compartment_ocid = var.oci_la_compartment_ocid
+
   count = var.enable_dashboard_import ? 1 : 0
 }
 
@@ -15,6 +16,7 @@ module "policy_and_dynamic-group" {
   root_compartment_ocid            = var.tenancy_ocid
   oci_la_logGroup_compartment_ocid = var.oci_la_compartment_ocid
   oke_compartment_ocid             = var.oke_compartment_ocid
+  macs_agent_compartment_ocid      = var.oke_compartment_ocid
   oke_cluster_ocid                 = var.oke_cluster_ocid
 
   count = var.opt_create_dynamicGroup_and_policies ? 1 : 0
@@ -28,6 +30,8 @@ module "management_agent" {
     source                           = "./modules/macs"
     uniquifier = md5(var.oke_cluster_ocid)
     compartment_ocid = var.oke_compartment_ocid
+
+    count = var.enable_macs ? 1 : 0
 }
 
 // Create Logging Analytics Resorces
@@ -42,13 +46,8 @@ module "loggingAnalytics" {
 
 
 // deploy oke-monitoring solution (helm release)
-// always call this module
-//  - if enable_helm_release is set to false, helm release won't be deployed
-//  - We still need to call this, for the stack to avoid errors when enable_helm_release is set as false
 module "helm_release" {
   source = "./modules/helm"
-
-  enable_helm_release   = var.enable_helm_release
   enable_helm_debugging = var.enable_helm_debugging
 
   oke_compartment_ocid            = var.oke_compartment_ocid
@@ -60,7 +59,8 @@ module "helm_release" {
   oci_la_namespace   = module.loggingAnalytics.oci_la_namespace
   fluentd_baseDir_path = var.fluentd_baseDir_path
 
-
-  installKeyFileContent = module.management_agent.Mgmtagent_Install_Key
+  installKeyFileContent = module.management_agent[0].Mgmtagent_Install_Key
   macs_agent_image_url = var.macs_agent_image_url
+
+  count =  var.enable_helm_release && var.enable_helm_release ? 1 : 0
 }

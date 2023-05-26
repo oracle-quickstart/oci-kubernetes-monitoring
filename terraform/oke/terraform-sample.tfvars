@@ -55,14 +55,17 @@ oci_la_logGroup_name = "NewLogGroupName"
 # Option to create Dynamic Group and Policies
 opt_create_dynamicGroup_and_policies = true
 
+# Fluentd installation path
 fluentd_baseDir_path = "/var/log"
 
 #### 
 ## Optional Switches
 ####
 
-enable_dashboard_import = true
-enable_helm_release     = true
+enable_dashboard_import = false
+enable_helm_release     = false
+enable_helm_debugging   = false
+enable_macs             = false
 
 
 

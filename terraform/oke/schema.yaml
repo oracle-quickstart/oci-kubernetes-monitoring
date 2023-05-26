@@ -16,7 +16,6 @@ locale: "en"
 variableGroups:
   - title: "configuration inputs"
     variables:
-      - auth_tenancy_ocid
       - tenancy_ocid
       - region
       - user_ocid
@@ -25,6 +24,7 @@ variableGroups:
       - enable_helm_debugging
       - enable_dashboard_import
       - enable_helm_release
+      - enable_macs
       - boat_auth
       - boat_tenancy_ocid
       - compartment_ocid

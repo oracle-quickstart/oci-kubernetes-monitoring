@@ -5,11 +5,6 @@
 ## Switches
 ####
 
-variable "enable_helm_release" {
-  type    = bool
-  default = true
-}
-
 variable "enable_helm_debugging" {
   type    = bool
   default = false
@@ -56,6 +51,7 @@ variable "oci_la_namespace" {
 # OCI LA Fluentd Container Image
 variable "container_image_url" {
   type = string
+  default = "container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.0.0"
 }
 
 # Fluentd Base Directory
@@ -75,4 +71,5 @@ variable "installKeyFileContent" {
 # OCI Management Agent Container Image
 variable "macs_agent_image_url" {
   type = string
+  default = "container-registry.oracle.com/oci_observability_management/oci-management-agent:1.0.0"
 }

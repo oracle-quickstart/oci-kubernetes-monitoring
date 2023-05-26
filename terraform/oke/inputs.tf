@@ -78,6 +78,11 @@ variable "enable_dashboard_import" {
   default = true
 }
 
+variable "enable_macs" {
+  type    = bool
+  default = true
+}
+
 ####
 ##  Dynamic Group and Policies
 ####

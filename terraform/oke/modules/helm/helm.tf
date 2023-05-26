@@ -36,7 +36,7 @@ resource "helm_release" "oci-kubernetes-monitoring" {
   dependency_update = true
   atomic = true
 
-  count = var.enable_helm_release ? 1 : 0
+  count = var.enable_helm_debugging ? 0 : 1
 
   dynamic set {
     for_each = local.helm_inputs
