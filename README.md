@@ -109,7 +109,7 @@ It does extensive enrichment of logs, metrics and object information to enable c
       # OCI Logging Analytics Log Group OCID
       ociLALogGroupID:
     ```
-* Refer to the oci-onm chart and sub-charts values.yaml for customising or modifying any other configuration. It is recommended to not modify the values.yaml provided with the charts, instead use override_values.yaml to achieve the same.    
+* **Refer to the oci-onm chart and sub-charts values.yaml for customising or modifying any other configuration.** It is recommended to not modify the values.yaml provided with the charts, instead use override_values.yaml to achieve the same.    
   
 ##### 3.a Install helm release
 
@@ -157,6 +157,64 @@ Use the following `helm uninstall` command to uninstall the chart. Provide the r
 helm upgrade <release-name> --values <path-to-override-values.yaml> <path-to-helm-chart>
 ```
 Refer [this](https://helm.sh/docs/helm/helm_uninstall/) for further details on `helm uninstall`.
+  
+#### Kubectl
+
+While the recommended approach for installation is through helm, if you intend to use `kubectl` based installation, then the resource yaml files can still be generated through `helm` using the instructions provided below.
+  
+##### 0 Pre-requisites
+
+* Workstation or OCI Cloud Shell with access configured to the target k8s cluster.
+* Helm ([Installation instructions](https://helm.sh/docs/intro/install/)).
+* Kubectl ([Installation instructions](https://kubernetes.io/docs/tasks/tools/#kubectl)). 
+
+##### 1 Download helm chart
+
+Refer [here](#1-download-helm-chart).
+
+##### 2 Update values.yaml
+
+Refer [here](#2-update-valuesyaml).
+  
+##### 3.a Generate yamls 
+
+Use the following `helm template` command to generate the resource yaml files. Provide path to override_values.yaml, path to helm chart and path to a dir where the yaml files to be generated.
+```
+helm template --values <path-to-override-values.yaml> <path-to-helm-chart> --output-dir <path-to-dir-to-store-the-yamls>
+```
+Refer [this](https://helm.sh/docs/helm/helm_template/) for further details on `helm template`.
+  
+##### 3.b Install
+
+Use `kubectl` tool to apply the yaml files generated in the previous step in the following order. 
+
+* oci-onm-common
+  ```
+  kubectl apply -f namespace.yaml
+  kubectl apply -f clusterrole.yaml
+  kubectl apply -f clusterrolebinding.yaml
+  kubectl apply -f serviceAccount.yaml
+  ```
+* oci-onm-logan
+  ```
+  kubectl apply -f logs-configmap.yaml
+  kubectl apply -f objects-configmap.yaml
+  kubectl apply -f fluentd-daemonset.yaml
+  kubectl apply -f fluentd-deployment.yaml
+  ```
+  _For non OKE or when you choose to use Config file based AuthZ for monitoring the logs, you may need to apply oci-config-secret.yaml before applying fluentd-daemonset.yaml & fluentd-deployment.yaml. Refer [here](TBD) for how to configure Config based AuthZ._ 
+* oci-onm-mgmt-agent
+  ```
+  kubectl apply -f mgmt-agent-secrets.yaml
+  kubectl apply -f metrics-configmap.yaml
+  kubectl apply -f mgmt-agent-statefulset.yaml
+  kubectl apply -f mgmt-agent-headless-service.yaml
+  kubectl apply -f metric_server.yaml
+  ```
+
+##### 3.c Import Dashboards
+
+Refer [here](#3c-import-dashboards).
 
 #### OCI Resource Manager
 
