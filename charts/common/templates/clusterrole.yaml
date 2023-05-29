@@ -23,6 +23,7 @@ rules:
       - batch
       - discovery.k8s.io
       - metrics.k8s.io
+      - storage.k8s.io
     resources:
       - '*'
     verbs:
