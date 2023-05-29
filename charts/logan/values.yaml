@@ -436,6 +436,10 @@ fluentd:
             api_endpoint: ""
          events:
             api_endpoint: ""
+         persistent_volumes:
+            api_endpoint: ""
+         persistent_volume_claims:
+            api_endpoint: ""
          daemon_sets:
             api_endpoint: apis/apps
          replica_sets:
