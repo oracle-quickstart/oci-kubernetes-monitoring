@@ -11,6 +11,15 @@ variable "enable_helm_debugging" {
 }
 
 ####
+##  Helm chart
+####
+
+variable "helm_abs_path"  {
+  type = string
+  description = "Absoulte path of helm chart"
+}
+
+####
 ##  OKE Cluster Information
 ####
 

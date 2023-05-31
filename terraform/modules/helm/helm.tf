@@ -31,7 +31,7 @@ locals {
 
 resource "helm_release" "oci-kubernetes-monitoring" {
   name              = "oci-kubernetes-monitoring"
-  chart             = "${path.root}/../../charts/oci-onm"
+  chart             = var.helm_abs_path
   wait              = true
   dependency_update = true
   atomic            = true
@@ -49,7 +49,7 @@ resource "helm_release" "oci-kubernetes-monitoring" {
 
 data "helm_template" "oci-kubernetes-monitoring" {
   name              = "oci-kubernetes-monitoring"
-  chart             = "${path.root}/../../charts/oci-onm"
+  chart             = var.helm_abs_path
   dependency_update = true
 
   count = var.enable_helm_debugging ? 1 : 0

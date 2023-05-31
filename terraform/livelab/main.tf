@@ -47,7 +47,6 @@ module "loggingAnalytics" {
 // deploy oke-monitoring solution (helm release)
 module "helm_release" {
   source                = "./modules/helm"
-  helm_abs_path = abspath("./helm-chart")
   enable_helm_debugging = var.enable_helm_debugging
 
   oke_compartment_ocid = var.oke_compartment_ocid
