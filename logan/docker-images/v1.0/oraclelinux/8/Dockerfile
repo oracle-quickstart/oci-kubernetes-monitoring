@@ -1,4 +1,4 @@
-FROM container-registry.oracle.com/os/oraclelinux:8
+FROM --platform=linux/amd64 container-registry.oracle.com/os/oraclelinux:8
 
 USER root
 WORKDIR /fluentd
