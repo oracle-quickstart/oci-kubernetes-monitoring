@@ -33,8 +33,6 @@ spec:
       tolerations:
       - key: node-role.kubernetes.io/master
         effect: NoSchedule
-      - key: node-role.kubernetes.io/control-plane
-        effect: NoSchedule
       {{- if $imagePullSecrets }}
       imagePullSecrets:
       - name: {{ .Values.image.imagePullSecrets }}
@@ -43,10 +41,6 @@ spec:
       - name: {{ $resourceNamePrefix }}-fluentd
         image: {{ .Values.image.url }}
         imagePullPolicy: {{ default "IfNotPresent" .Values.image.imagePullPolicy }}
-        {{- if .Values.securityContextPriviliged }}
-        securityContext:
-          privileged: {{ .Values.securityContextPriviliged }}
-        {{- end}}
         env:
           - name: FLUENTD_CONF
             value: {{ .Values.fluentd.path }}/{{ .Values.fluentd.file }}
