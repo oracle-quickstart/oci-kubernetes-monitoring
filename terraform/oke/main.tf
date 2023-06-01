@@ -1,6 +1,22 @@
 # Copyright (c) 2023, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
+data "oci_identity_user" "livelab_user" {
+  user_id = var.current_user_ocid
+}
+
+locals {
+
+  ## livelab
+  oci_username            = data.oci_identity_user.livelab_user.name
+  livelab_service_account = local.oci_username
+
+
+  ## Helm release
+  fluentd_baseDir_path = var.livelab_switch ? "/var/log/${local.oci_username}" : var.fluentd_baseDir_path
+
+}
+
 // Import Kubernetes Dashboards
 module "import_kubernetes_dashbords" {
   source           = "./modules/dashboards"
@@ -18,7 +34,7 @@ module "policy_and_dynamic-group" {
   oke_compartment_ocid             = var.oke_compartment_ocid
   oke_cluster_ocid                 = var.oke_cluster_ocid
 
-  count = var.opt_create_dynamicGroup_and_policies ? 1 : 0
+  count = var.opt_create_dynamicGroup_and_policies && !var.livelab_switch ? 1 : 0
 
   providers = {
     oci = oci.home_region
@@ -46,9 +62,9 @@ module "loggingAnalytics" {
 
 // deploy oke-monitoring solution (helm release)
 module "helm_release" {
-  source                = "./modules/helm"
-  helm_abs_path = abspath("./charts/oci-onm")
-  enable_helm_debugging = var.enable_helm_debugging
+  source          = "./modules/helm"
+  helm_abs_path   = abspath("./charts/oci-onm")
+  skip_helm_apply = var.skip_helm_apply
 
   oke_compartment_ocid = var.oke_compartment_ocid
   oke_cluster_ocid     = var.oke_cluster_ocid
@@ -57,10 +73,13 @@ module "helm_release" {
 
   oci_la_logGroup_id   = module.loggingAnalytics.oci_la_logGroup_ocid
   oci_la_namespace     = module.loggingAnalytics.oci_la_namespace
-  fluentd_baseDir_path = var.fluentd_baseDir_path
+  fluentd_baseDir_path = local.fluentd_baseDir_path
 
   installKeyFileContent = module.management_agent[0].Mgmtagent_Install_Key
   macs_agent_image_url  = var.macs_agent_image_url
+
+  deploy_mushop_config    = var.livelab_switch
+  livelab_service_account = local.livelab_service_account
 
   count = var.enable_helm_release && var.enable_helm_release ? 1 : 0
 }

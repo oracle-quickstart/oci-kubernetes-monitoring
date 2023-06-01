@@ -24,7 +24,7 @@ variableGroups:
       - user_ocid
       - private_key_path
       - fingerprint
-      - enable_helm_debugging
+      - skip_helm_apply
       - enable_dashboard_import
       - enable_helm_release
       - enable_macs
@@ -34,6 +34,7 @@ variableGroups:
       - container_image_url
       - macs_agent_image_url
       - kubernetes_namespace
+      - current_user_ocid
       - livelab_switch
     visible: false
 

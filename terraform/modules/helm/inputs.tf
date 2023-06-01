@@ -5,7 +5,7 @@
 ## Switches
 ####
 
-variable "enable_helm_debugging" {
+variable "skip_helm_apply" {
   type    = bool
   default = false
 }
@@ -14,8 +14,8 @@ variable "enable_helm_debugging" {
 ##  Helm chart
 ####
 
-variable "helm_abs_path"  {
-  type = string
+variable "helm_abs_path" {
+  type        = string
   description = "Absoulte path of helm chart"
 }
 
@@ -81,4 +81,18 @@ variable "installKeyFileContent" {
 variable "macs_agent_image_url" {
   type    = string
   default = "container-registry.oracle.com/oci_observability_management/oci-management-agent:1.0.0"
+}
+
+####
+##  livelab
+####
+
+variable "deploy_mushop_config" {
+  type    = bool
+  default = false
+}
+
+variable "livelab_service_account" {
+  type    = string
+  default = ""
 }

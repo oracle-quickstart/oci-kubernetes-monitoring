@@ -11,7 +11,7 @@ locals {
 
   helm_inputs = {
     # global
-    "global.namespace"           = var.kubernetes_namespace
+    "global.namespace"           = var.deploy_mushop_config ? "livelab-test" : var.kubernetes_namespace
     "global.kubernetesClusterID" = var.oke_cluster_ocid
 
     # oci-onm-logan
@@ -27,6 +27,12 @@ locals {
     "oci-onm-mgmt-agent.mgmtagent.image.url"             = var.macs_agent_image_url
   }
 
+  mushop_helm_inputs = {
+    # oci-onm-logan
+    "createServiceAccount" = false
+    "serviceAccount"       = var.livelab_service_account
+  }
+
 }
 
 resource "helm_release" "oci-kubernetes-monitoring" {
@@ -36,7 +42,7 @@ resource "helm_release" "oci-kubernetes-monitoring" {
   dependency_update = true
   atomic            = true
 
-  count = var.enable_helm_debugging ? 0 : 1
+  values = var.deploy_mushop_config ? ["${file("${path.module}/mushop_values.yaml")}"] : null
 
   dynamic "set" {
     for_each = local.helm_inputs
@@ -45,6 +51,16 @@ resource "helm_release" "oci-kubernetes-monitoring" {
       value = set.value
     }
   }
+
+  dynamic "set" {
+    for_each = var.deploy_mushop_config ? local.mushop_helm_inputs : {}
+    content {
+      name  = set.key
+      value = set.value
+    }
+  }
+
+  count = var.skip_helm_apply ? 0 : 1
 }
 
 data "helm_template" "oci-kubernetes-monitoring" {
@@ -52,7 +68,7 @@ data "helm_template" "oci-kubernetes-monitoring" {
   chart             = var.helm_abs_path
   dependency_update = true
 
-  count = var.enable_helm_debugging ? 1 : 0
+  values = var.deploy_mushop_config ? ["${file("${path.module}/mushop_values.yaml")}"] : null
 
   dynamic "set" {
     for_each = local.helm_inputs
@@ -61,11 +77,21 @@ data "helm_template" "oci-kubernetes-monitoring" {
       value = set.value
     }
   }
+
+  dynamic "set" {
+    for_each = var.deploy_mushop_config ? local.mushop_helm_inputs : {}
+    content {
+      name  = set.key
+      value = set.value
+    }
+  }
+
+  count = var.skip_helm_apply ? 1 : 0
 }
 
 # Helm release artifacts for local testing and validation. Not used by helm resource.
 resource "local_file" "helm_release" {
   content  = tostring(data.helm_template.oci-kubernetes-monitoring[0].manifest)
   filename = "${path.module}/local/helmrelease.yaml"
-  count    = var.enable_helm_debugging ? 1 : 0
+  count    = var.skip_helm_apply ? 1 : 0
 }

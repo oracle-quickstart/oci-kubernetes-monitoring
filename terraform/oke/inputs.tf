@@ -36,13 +36,17 @@ variable "fingerprint" {
 }
 
 ####
-## Stack Variable
+## Stack Variable - Auto-pupulated while running RM Stack
 ####
 
-// Auto-pupulated while running RM Stack
+// Stack compartment
 variable "compartment_ocid" {
   type    = string
   default = ""
+}
+
+variable "current_user_ocid" {
+  type = string
 }
 
 ####
@@ -68,7 +72,7 @@ variable "enable_helm_release" {
   default = true
 }
 
-variable "enable_helm_debugging" {
+variable "skip_helm_apply" {
   type    = bool
   default = false
 }
@@ -81,15 +85,6 @@ variable "enable_dashboard_import" {
 variable "enable_macs" {
   type    = bool
   default = true
-}
-
-####
-## livelab
-####
-
-variable "livelab_switch" {
-  type = bool
-  default = false
 }
 
 ####
@@ -119,7 +114,7 @@ variable "oke_cluster_ocid" {
 
 # Kubernetes Namespace
 variable "kubernetes_namespace" {
-  type = string
+  type    = string
   default = "oci-onm"
 }
 
