@@ -1,86 +1,17 @@
-# Copyright (c) 2023, Oracle and/or its affiliates.
-# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
-
 {
     "dashboards": [
         {
-            "dashboardId": "ocid1.managementdashboard.oc1..aaaaaaaan2ahtswhhusn6uv7az4cbhod6dsct5gxdhmcb6dj7gikcuqpfdba",
+            "dashboardId": "ocid1.managementdashboard.oc1..aaaaaaaarg6x4wzkt5inspww4chzolmcwxcz3wkzqh6t27wqzahj2g2dpyqa",
             "providerId": "log-analytics",
             "providerName": "Logging Analytics",
             "providerVersion": "3.0.0",
             "tiles": [
                 {
-                    "displayName": "Node Status",
-                    "savedSearchId": "ocid1.managementsavedsearch.oc1..aaaaaaaacssfzpcndlua7r55j5oxy7b2an27n5l73mnxn727rgbc2ayi6bzq",
+                    "displayName": "Pods Status",
+                    "savedSearchId": "ocid1.managementsavedsearch.oc1..aaaaaaaaxu4cv4lwovlaghidg6pnd4lokcbwzmre7t322stvb6z6y4j4hnua",
                     "row": 0,
-                    "column": 2,
-                    "height": 3,
-                    "width": 10,
-                    "nls": {},
-                    "uiConfig": {},
-                    "dataConfig": [],
-                    "state": "DEFAULT",
-                    "drilldownConfig": [],
-                    "parametersMap": {
-                        "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
-                        "log-analytics-entity": "$(dashboard.params.log-analytics-entity-filter)",
-                        "time": "$(dashboard.params.time)",
-                        "flex": {
-                            "Kubernetes Cluster Name": "$(dashboard.params.log-analytics-log-field-filter)",
-                            "Node": "$(dashboard.params.log-analytics-log-field-filter1)"
-                        }
-                    }
-                },
-                {
-                    "displayName": "Node Info",
-                    "savedSearchId": "ocid1.managementsavedsearch.oc1..aaaaaaaaikzelasbh22yodsk2lap6ppu5rfix5ngyogflfximvlwoygu4vnq",
-                    "row": 3,
-                    "column": 0,
+                    "column": 4,
                     "height": 4,
-                    "width": 7,
-                    "nls": {},
-                    "uiConfig": {},
-                    "dataConfig": [],
-                    "state": "DEFAULT",
-                    "drilldownConfig": [],
-                    "parametersMap": {
-                        "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
-                        "log-analytics-entity": "$(dashboard.params.log-analytics-entity-filter)",
-                        "time": "$(dashboard.params.time)",
-                        "flex": {
-                            "Kubernetes Cluster Name": "$(dashboard.params.log-analytics-log-field-filter)",
-                            "Node": "$(dashboard.params.log-analytics-log-field-filter1)"
-                        }
-                    }
-                },
-                {
-                    "displayName": "Logs",
-                    "savedSearchId": "ocid1.managementsavedsearch.oc1..aaaaaaaa3d7t5vgw3ldws56oi7smqfq3boxdtvfxnz7du67rixxo4q6v3mnq",
-                    "row": 3,
-                    "column": 7,
-                    "height": 4,
-                    "width": 5,
-                    "nls": {},
-                    "uiConfig": {},
-                    "dataConfig": [],
-                    "state": "DEFAULT",
-                    "drilldownConfig": [],
-                    "parametersMap": {
-                        "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
-                        "log-analytics-entity": "$(dashboard.params.log-analytics-entity-filter)",
-                        "time": "$(dashboard.params.time)",
-                        "flex": {
-                            "Kubernetes Cluster Name": "$(dashboard.params.log-analytics-log-field-filter)",
-                            "Node": "$(dashboard.params.log-analytics-log-field-filter1)"
-                        }
-                    }
-                },
-                {
-                    "displayName": "Pods running on a Node",
-                    "savedSearchId": "ocid1.managementsavedsearch.oc1..aaaaaaaa6vyyh6wc3v7kevjri7gsi2vf7hmczodf3ykhwivcntt2xhkyavca",
-                    "row": 7,
-                    "column": 0,
-                    "height": 3,
                     "width": 8,
                     "nls": {},
                     "uiConfig": {},
@@ -88,65 +19,109 @@
                     "state": "DEFAULT",
                     "drilldownConfig": [],
                     "parametersMap": {
+                        "time": "$(dashboard.params.time)",
                         "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
                         "log-analytics-entity": "$(dashboard.params.log-analytics-entity-filter)",
-                        "time": "$(dashboard.params.time)",
                         "flex": {
                             "Kubernetes Cluster Name": "$(dashboard.params.log-analytics-log-field-filter)",
-                            "Node": "$(dashboard.params.log-analytics-log-field-filter1)"
+                            "Namespace": "$(dashboard.params.log-analytics-log-field-filter1)"
                         }
                     }
                 },
                 {
-                    "displayName": "Node Capacity",
-                    "savedSearchId": "ocid1.managementsavedsearch.oc1..aaaaaaaa6qerumqq6hxye3w5sg6zb4w2mcesa35kgwqnqr5n7br4ayyxy7ya",
-                    "row": 10,
-                    "column": 0,
+                    "displayName": "Pods with Warning Events",
+                    "savedSearchId": "ocid1.managementsavedsearch.oc1..aaaaaaaaq4wjwgz2jp4mb5gy3drtxdrpbx26grikh6s7tl6i5owrxzv7l3na",
+                    "row": 4,
+                    "column": 7,
                     "height": 3,
-                    "width": 6,
+                    "width": 5,
                     "nls": {},
                     "uiConfig": {},
                     "dataConfig": [],
                     "state": "DEFAULT",
                     "drilldownConfig": [],
                     "parametersMap": {
+                        "time": "$(dashboard.params.time)",
                         "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
                         "log-analytics-entity": "$(dashboard.params.log-analytics-entity-filter)",
-                        "time": "$(dashboard.params.time)",
                         "flex": {
                             "Kubernetes Cluster Name": "$(dashboard.params.log-analytics-log-field-filter)",
-                            "Node": "$(dashboard.params.log-analytics-log-field-filter1)"
+                            "Namespace": "$(dashboard.params.log-analytics-log-field-filter1)"
                         }
                     }
                 },
                 {
-                    "displayName": "Node Allocatable",
-                    "savedSearchId": "ocid1.managementsavedsearch.oc1..aaaaaaaaibkjhz6mejrjhu2fn5efazcwyekb54kb4dcscobuv7lxxpe52bhq",
-                    "row": 10,
-                    "column": 6,
+                    "displayName": "Pod Info",
+                    "savedSearchId": "ocid1.managementsavedsearch.oc1..aaaaaaaa4utj6jb4ir2svktabxxntuxiaibacptiqclaiui4hfk4zz663xbq",
+                    "row": 7,
+                    "column": 0,
                     "height": 3,
-                    "width": 6,
+                    "width": 7,
                     "nls": {},
                     "uiConfig": {},
                     "dataConfig": [],
                     "state": "DEFAULT",
                     "drilldownConfig": [],
                     "parametersMap": {
+                        "time": "$(dashboard.params.time)",
                         "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
                         "log-analytics-entity": "$(dashboard.params.log-analytics-entity-filter)",
-                        "time": "$(dashboard.params.time)",
                         "flex": {
                             "Kubernetes Cluster Name": "$(dashboard.params.log-analytics-log-field-filter)",
-                            "Node": "$(dashboard.params.log-analytics-log-field-filter1)"
+                            "Namespace": "$(dashboard.params.log-analytics-log-field-filter1)"
                         }
                     }
                 },
                 {
-                    "displayName": "Nodes",
-                    "savedSearchId": "ocid1.managementsavedsearch.oc1..aaaaaaaa4j4ts5oplk2fxcvv7qp26krpmnysk7amh2chgh335ctf26oiuyfq",
-                    "row": 0,
+                    "displayName": "Pod Logs",
+                    "savedSearchId": "ocid1.managementsavedsearch.oc1..aaaaaaaaofypq2boxixixywlau7iclzylo662ojgq3fqcir6q5fezxyinkya",
+                    "row": 7,
+                    "column": 7,
+                    "height": 3,
+                    "width": 5,
+                    "nls": {},
+                    "uiConfig": {},
+                    "dataConfig": [],
+                    "state": "DEFAULT",
+                    "drilldownConfig": [],
+                    "parametersMap": {
+                        "time": "$(dashboard.params.time)",
+                        "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+                        "log-analytics-entity": "$(dashboard.params.log-analytics-entity-filter)",
+                        "flex": {
+                            "Kubernetes Cluster Name": "$(dashboard.params.log-analytics-log-field-filter)",
+                            "Namespace": "$(dashboard.params.log-analytics-log-field-filter1)"
+                        }
+                    }
+                },
+                {
+                    "displayName": "Pod Events Trend",
+                    "savedSearchId": "ocid1.managementsavedsearch.oc1..aaaaaaaak5fsu24kjljgsiutwgw4emq6geeyryzjr4vozslfb3iyii7w45ma",
+                    "row": 4,
                     "column": 0,
                     "height": 3,
+                    "width": 7,
+                    "nls": {},
+                    "uiConfig": {},
+                    "dataConfig": [],
+                    "state": "DEFAULT",
+                    "drilldownConfig": [],
+                    "parametersMap": {
+                        "time": "$(dashboard.params.time)",
+                        "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+                        "log-analytics-entity": "$(dashboard.params.log-analytics-entity-filter)",
+                        "flex": {
+                            "Kubernetes Cluster Name": "$(dashboard.params.log-analytics-log-field-filter)",
+                            "Namespace": "$(dashboard.params.log-analytics-log-field-filter1)"
+                        }
+                    }
+                },
+                {
+                    "displayName": "Pods Running",
+                    "savedSearchId": "ocid1.managementsavedsearch.oc1..aaaaaaaa22wdx45h3jee2s3bolb2odlozncgwobe3hvsz4euxkon3ulrrupq",
+                    "row": 2,
+                    "column": 0,
+                    "height": 2,
                     "width": 2,
                     "nls": {},
                     "uiConfig": {},
@@ -159,17 +134,17 @@
                         "log-analytics-entity": "$(dashboard.params.log-analytics-entity-filter)",
                         "flex": {
                             "Kubernetes Cluster Name": "$(dashboard.params.log-analytics-log-field-filter)",
-                            "Node": "$(dashboard.params.log-analytics-log-field-filter1)"
+                            "Namespace": "$(dashboard.params.log-analytics-log-field-filter1)"
                         }
                     }
                 },
                 {
-                    "displayName": "Failed/Pending Pods per Node",
-                    "savedSearchId": "ocid1.managementsavedsearch.oc1..aaaaaaaamaaktdzvahebkwy6ljzrvdftycauaihk57ytvmts654w74k5hzeq",
-                    "row": 7,
-                    "column": 8,
-                    "height": 3,
-                    "width": 4,
+                    "displayName": "Clusters",
+                    "savedSearchId": "ocid1.managementsavedsearch.oc1..aaaaaaaah2ucotridihloxymwasfoljtqpq7y6eezuoxqgrwqzegwncyqleq",
+                    "row": 0,
+                    "column": 0,
+                    "height": 2,
+                    "width": 2,
                     "nls": {},
                     "uiConfig": {},
                     "dataConfig": [],
@@ -181,13 +156,57 @@
                         "log-analytics-entity": "$(dashboard.params.log-analytics-entity-filter)",
                         "flex": {
                             "Kubernetes Cluster Name": "$(dashboard.params.log-analytics-log-field-filter)",
-                            "Node": "$(dashboard.params.log-analytics-log-field-filter1)"
+                            "Namespace": "$(dashboard.params.log-analytics-log-field-filter1)"
+                        }
+                    }
+                },
+                {
+                    "displayName": "Namespaces",
+                    "savedSearchId": "ocid1.managementsavedsearch.oc1..aaaaaaaaz2t6olofn3gtksbhrreiudcf2fycyuxh4h3jhjjwnriyaf3dboia",
+                    "row": 0,
+                    "column": 2,
+                    "height": 2,
+                    "width": 2,
+                    "nls": {},
+                    "uiConfig": {},
+                    "dataConfig": [],
+                    "state": "DEFAULT",
+                    "drilldownConfig": [],
+                    "parametersMap": {
+                        "time": "$(dashboard.params.time)",
+                        "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+                        "log-analytics-entity": "$(dashboard.params.log-analytics-entity-filter)",
+                        "flex": {
+                            "Kubernetes Cluster Name": "$(dashboard.params.log-analytics-log-field-filter)",
+                            "Namespace": "$(dashboard.params.log-analytics-log-field-filter1)"
+                        }
+                    }
+                },
+                {
+                    "displayName": "Pods Pending",
+                    "savedSearchId": "ocid1.managementsavedsearch.oc1..aaaaaaaajulieq4xym4c7ygnxsd5x2t35x7tfb24h4nin6p6qeslv3mdj4hq",
+                    "row": 2,
+                    "column": 2,
+                    "height": 2,
+                    "width": 2,
+                    "nls": {},
+                    "uiConfig": {},
+                    "dataConfig": [],
+                    "state": "DEFAULT",
+                    "drilldownConfig": [],
+                    "parametersMap": {
+                        "time": "$(dashboard.params.time)",
+                        "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+                        "log-analytics-entity": "$(dashboard.params.log-analytics-entity-filter)",
+                        "flex": {
+                            "Kubernetes Cluster Name": "$(dashboard.params.log-analytics-log-field-filter)",
+                            "Namespace": "$(dashboard.params.log-analytics-log-field-filter1)"
                         }
                     }
                 }
             ],
-            "displayName": "Kubernetes Nodes",
-            "description": "Kubernetes Nodes",
+            "displayName": "Kubernetes Pods",
+            "description": "Kubernetes Pods",
             "compartmentId": "${compartment_ocid}",
             "isOobDashboard": false,
             "isShowInHome": false,
@@ -197,114 +216,36 @@
             "nls": {},
             "uiConfig": {
                 "isFilteringEnabled": false,
-                "isRefreshEnabled": true,
-                "isTimeRangeEnabled": true
+                "isTimeRangeEnabled": true,
+                "isRefreshEnabled": true
             },
             "dataConfig": [],
             "type": "normal",
             "isFavorite": false,
             "savedSearches": [
                 {
-                    "id": "ocid1.managementsavedsearch.oc1..aaaaaaaaikzelasbh22yodsk2lap6ppu5rfix5ngyogflfximvlwoygu4vnq",
-                    "displayName": "Node Info",
+                    "id": "ocid1.managementsavedsearch.oc1..aaaaaaaaofypq2boxixixywlau7iclzylo662ojgq3fqcir6q5fezxyinkya",
+                    "displayName": "Pod Logs",
                     "providerId": "log-analytics",
                     "providerVersion": "2.0",
                     "providerName": "Logging Analytics",
                     "compartmentId": "${compartment_ocid}",
                     "isOobSavedSearch": false,
-                    "description": "OKE Node Info",
+                    "description": "Pod Logs",
                     "nls": {},
                     "type": "WIDGET_SHOW_IN_DASHBOARD",
                     "uiConfig": {
                         "timeSelection": {
-                            "numUnits": 60,
-                            "units": "MINUTES",
-                            "timePeriod": "relative"
+                            "timePeriod": "l14day"
                         },
                         "showTitle": true,
-                        "visualizationType": "summary_table",
-                        "visualizationOptions": {},
-                        "queryString": "'Log Source' = 'Kubernetes Node Object Logs' | stats latest(Architecture) as Arch, latest('Operating System Image') as 'OS Image', latest('Kernel Version') as Kernel, latest('Container Runtime Version') as 'Container Runtime', latest('Kubelet Version') as Kubelet, latest('KubeProxy Version') as KubeProxy by Node",
-                        "scopeFilters": {
-                            "filters": [
-                                {
-                                    "type": "LogGroup",
-                                    "flags": {
-                                        "IncludeSubCompartments": true
-                                    },
-                                    "values": [
-                                        {
-                                            "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                            "label": "###### (root)/LogAnalytics"
-                                        }
-                                    ]
-                                },
-                                {
-                                    "type": "Entity",
-                                    "flags": {
-                                        "IncludeDependents": true,
-                                        "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q"
-                                    },
-                                    "values": []
-                                }
-                            ],
-                            "isGlobal": false,
-                            "LogGroup": {
-                                "type": "LogGroup",
-                                "flags": {
-                                    "IncludeSubCompartments": true
-                                },
-                                "values": [
-                                    {
-                                        "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                        "label": "###### (root)/LogAnalytics"
-                                    }
-                                ]
-                            },
-                            "Entity": {
-                                "type": "Entity",
-                                "flags": {
-                                    "IncludeDependents": true,
-                                    "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q"
-                                },
-                                "values": []
+                        "visualizationType": "pie",
+                        "visualizationOptions": {
+                            "customVizOpt": {
+                                "primaryFieldIname": "mbody"
                             }
                         },
-                        "internalKey": "ocid1.managementsavedsearch.oc1..aaaaaaaaikzelasbh22yodsk2lap6ppu5rfix5ngyogflfximvlwoygu4vnq",
-                        "vizType": "lxSavedSearchWidgetType",
-                        "enableWidgetInApp": true
-                    },
-                    "dataConfig": [],
-                    "screenImage": " ",
-                    "metadataVersion": "2.0",
-                    "widgetTemplate": "jet-modules/dashboards/widgets/lxSavedSearchWidget.html",
-                    "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget",
-                    "freeformTags": {},
-                    "definedTags": {},
-                    "parametersConfig": [],
-                    "drilldownConfig": []
-                },
-                {
-                    "id": "ocid1.managementsavedsearch.oc1..aaaaaaaa6qerumqq6hxye3w5sg6zb4w2mcesa35kgwqnqr5n7br4ayyxy7ya",
-                    "displayName": "Node Capacity",
-                    "providerId": "log-analytics",
-                    "providerVersion": "2.0",
-                    "providerName": "Logging Analytics",
-                    "compartmentId": "${compartment_ocid}",
-                    "isOobSavedSearch": false,
-                    "description": "OKE Node Capacity",
-                    "nls": {},
-                    "type": "WIDGET_SHOW_IN_DASHBOARD",
-                    "uiConfig": {
-                        "timeSelection": {
-                            "numUnits": 60,
-                            "units": "MINUTES",
-                            "timePeriod": "relative"
-                        },
-                        "showTitle": true,
-                        "visualizationType": "summary_table",
-                        "visualizationOptions": {},
-                        "queryString": "'Log Source' = 'Kubernetes Node Object Logs' | stats latest('CPU Capacity') as CPU, latest('Memory Capacity') as 'Memory (Ki)', latest('Storage Capacity') as 'Storage (Ki)', latest('Pods Capacity') as Pods by Node",
+                        "queryString": "Pod != null and 'Log Source' not like '%object%' and 'Log Source' != 'Kubernetes Container Status Logs' | stats count as logrecords by Pod",
                         "scopeFilters": {
                             "filters": [
                                 {
@@ -416,7 +357,7 @@
                                 "values": []
                             }
                         },
-                        "internalKey": "ocid1.managementsavedsearch.oc1..aaaaaaaa6qerumqq6hxye3w5sg6zb4w2mcesa35kgwqnqr5n7br4ayyxy7ya",
+                        "internalKey": "ocid1.managementsavedsearch.oc1..aaaaaaaaofypq2boxixixywlau7iclzylo662ojgq3fqcir6q5fezxyinkya",
                         "vizType": "lxSavedSearchWidgetType",
                         "enableWidgetInApp": true
                     },
@@ -431,94 +372,121 @@
                     "drilldownConfig": []
                 },
                 {
-                    "id": "ocid1.managementsavedsearch.oc1..aaaaaaaamaaktdzvahebkwy6ljzrvdftycauaihk57ytvmts654w74k5hzeq",
-                    "displayName": "Failed/Pending Pods per Node",
+                    "id": "ocid1.managementsavedsearch.oc1..aaaaaaaak5fsu24kjljgsiutwgw4emq6geeyryzjr4vozslfb3iyii7w45ma",
+                    "displayName": "Pod Events Trend",
                     "providerId": "log-analytics",
-                    "providerVersion": "3.0.0",
+                    "providerVersion": "2.0",
                     "providerName": "Logging Analytics",
                     "compartmentId": "${compartment_ocid}",
                     "isOobSavedSearch": false,
-                    "description": "Running Pods per Node",
+                    "description": "Pod Events Trend",
                     "nls": {},
                     "type": "WIDGET_SHOW_IN_DASHBOARD",
                     "uiConfig": {
                         "timeSelection": {
-                            "timePeriod": "l24hr"
+                            "timePeriod": "l14day"
                         },
                         "showTitle": true,
-                        "visualizationType": "treemap",
+                        "visualizationType": "line",
                         "visualizationOptions": {
+                            "showLogScale": false,
+                            "hideLines": false,
+                            "customVizOpt": {
+                                "primaryFieldIname": "mbody"
+                            }
+                        },
+                        "queryString": "'Log Source' = 'Kubernetes Event Object Logs' and 'Involved Object Kind' = pod | timestats count as logrecords by 'Involved Object Name'",
+                        "scopeFilters": {
+                            "filters": [
+                                {
+                                    "type": "LogGroup",
+                                    "flags": {
+                                        "IncludeSubCompartments": true
+                                    },
+                                    "values": [
+                                        {
+                                            "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
+                                            "label": "###### (root)/LogAnalytics"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "isGlobal": false,
+                            "LogGroup": {
+                                "type": "LogGroup",
+                                "flags": {
+                                    "IncludeSubCompartments": true
+                                },
+                                "values": [
+                                    {
+                                        "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
+                                        "label": "###### (root)/LogAnalytics"
+                                    }
+                                ]
+                            }
+                        },
+                        "internalKey": "ocid1.managementsavedsearch.oc1..aaaaaaaak5fsu24kjljgsiutwgw4emq6geeyryzjr4vozslfb3iyii7w45ma",
+                        "vizType": "lxSavedSearchWidgetType",
+                        "enableWidgetInApp": true
+                    },
+                    "dataConfig": [],
+                    "screenImage": " ",
+                    "metadataVersion": "2.0",
+                    "widgetTemplate": "jet-modules/dashboards/widgets/lxSavedSearchWidget.html",
+                    "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget",
+                    "freeformTags": {},
+                    "definedTags": {},
+                    "parametersConfig": [],
+                    "drilldownConfig": []
+                },
+                {
+                    "id": "ocid1.managementsavedsearch.oc1..aaaaaaaa22wdx45h3jee2s3bolb2odlozncgwobe3hvsz4euxkon3ulrrupq",
+                    "displayName": "Pods Running",
+                    "providerId": "log-analytics",
+                    "providerVersion": "2.0",
+                    "providerName": "Logging Analytics",
+                    "compartmentId": "${compartment_ocid}",
+                    "isOobSavedSearch": false,
+                    "description": "Pods Running in last 15 mins",
+                    "nls": {},
+                    "type": "WIDGET_SHOW_IN_DASHBOARD",
+                    "uiConfig": {
+                        "timeSelection": {
+                            "numUnits": 60,
+                            "units": "MINUTES",
+                            "timePeriod": "relative"
+                        },
+                        "showTitle": true,
+                        "visualizationType": "tile",
+                        "visualizationOptions": {
+                            "changeLabel": "",
                             "customVizOpt": {
                                 "LINK_CLASSIFY_SETTINGS": {
-                                    "Pods over time": {
-                                        "chartHeight": 200,
+                                    "Container States": {
+                                        "chartHeight": 295,
                                         "chartType": [
-                                            "bubble"
+                                            "trend"
                                         ],
                                         "classifyColorPalette": {
                                             "1": "default",
-                                            "7": "default",
-                                            "8": "udfs84"
+                                            "6": "udfs143",
+                                            "7": "service_status",
+                                            "8": null,
+                                            "9": null,
+                                            "10": null,
+                                            "11": "color1"
                                         },
                                         "classifyColorPaletteCustom": {
-                                            "8": {}
-                                        },
-                                        "classifyFilters": {
-                                            "classifyNarrowResults": [
-                                                "on"
-                                            ],
-                                            "selectAllFilters": [
-                                                "on"
-                                            ],
-                                            "selectedClassifyFilters": [
-                                                6,
-                                                7,
-                                                8
-                                            ],
-                                            "showClassifyFilters": []
-                                        },
-                                        "colorColumn": 8,
-                                        "descendingXAxis": [
-                                            null
-                                        ],
-                                        "descendingYAxis": [
-                                            null
-                                        ],
-                                        "drilldown": "on",
-                                        "groupAlias": "Groups",
-                                        "groupAliasS": "Group",
-                                        "showAnomaly": [
-                                            "on"
-                                        ],
-                                        "showBaseline": [
-                                            "off"
-                                        ],
-                                        "showDimensions": [
-                                            "on"
-                                        ],
-                                        "sizeColumn": 1,
-                                        "swapXY": [
-                                            "off"
-                                        ],
-                                        "zeroXAxis": [
-                                            "on"
-                                        ],
-                                        "zeroYAxis": [
-                                            "on"
-                                        ]
-                                    },
-                                    "Pods per Nod": {
-                                        "chartHeight": 200,
-                                        "chartType": [
-                                            "treemap"
-                                        ],
-                                        "classifyColorPalette": {
-                                            "1": "default",
-                                            "6": "func2_latest_udfs84",
-                                            "7": "default"
-                                        },
-                                        "classifyColorPaletteCustom": {
-                                            "6": {}
+                                            "6": {},
+                                            "7": {
+                                                "degraded performance|degraded": "waiting",
+                                                "major outage": "terminated",
+                                                "normal performance|operational": "runninng"
+                                            },
+                                            "8": {},
+                                            "9": {},
+                                            "10": {},
+                                            "11": {}
                                         },
                                         "classifyFilters": {
                                             "classifyNarrowResults": [
@@ -533,7 +501,7 @@
                                             ],
                                             "showClassifyFilters": []
                                         },
-                                        "colorColumn": 1,
+                                        "colorColumn": 9,
                                         "descendingXAxis": [
                                             null
                                         ],
@@ -544,69 +512,15 @@
                                         "groupAlias": "Groups",
                                         "groupAliasS": "Group",
                                         "showAnomaly": [
-                                            "on"
+                                            "off"
                                         ],
                                         "showBaseline": [
-                                            "off"
+                                            null
                                         ],
                                         "showDimensions": [
                                             "on"
                                         ],
-                                        "sizeColumn": 1,
-                                        "swapXY": [],
-                                        "zeroXAxis": [
-                                            "on"
-                                        ],
-                                        "zeroYAxis": [
-                                            "on"
-                                        ]
-                                    },
-                                    "Pods per Node": {
-                                        "chartHeight": 200,
-                                        "chartType": [
-                                            "treemap"
-                                        ],
-                                        "classifyColorPalette": {
-                                            "1": "default",
-                                            "6": "func2_latest_udfs84",
-                                            "7": "default"
-                                        },
-                                        "classifyColorPaletteCustom": {
-                                            "6": {}
-                                        },
-                                        "classifyFilters": {
-                                            "classifyNarrowResults": [
-                                                "on"
-                                            ],
-                                            "selectAllFilters": [
-                                                "on"
-                                            ],
-                                            "selectedClassifyFilters": [
-                                                6,
-                                                7
-                                            ],
-                                            "showClassifyFilters": []
-                                        },
-                                        "colorColumn": 1,
-                                        "descendingXAxis": [
-                                            null
-                                        ],
-                                        "descendingYAxis": [
-                                            null
-                                        ],
-                                        "drilldown": "on",
-                                        "groupAlias": "Groups",
-                                        "groupAliasS": "Group",
-                                        "showAnomaly": [
-                                            "on"
-                                        ],
-                                        "showBaseline": [
-                                            "off"
-                                        ],
-                                        "showDimensions": [
-                                            "on"
-                                        ],
-                                        "sizeColumn": 1,
+                                        "sizeColumn": 11,
                                         "swapXY": [
                                             "off"
                                         ],
@@ -617,82 +531,240 @@
                                             "on"
                                         ]
                                     }
-                                },
-                                "LINK_SEARCH_SETTINGS": {
-                                    "chartHeightVal": 200,
-                                    "chartOptions": [
-                                        "bar"
-                                    ],
-                                    "chartType": "bar",
-                                    "chartWidthVal": 60,
-                                    "columnAliases": {},
-                                    "dashboardOptions": {
-                                        "showAnalyzeTab": [],
-                                        "showChartsTab": [],
-                                        "showSummary": [],
-                                        "showTable": [],
-                                        "showTabs": [
-                                            "on"
-                                        ]
+                                }
+                            },
+                            "formatNumber": false,
+                            "hideLabel": true
+                        },
+                        "queryString": "'Log Source' = 'Kubernetes Pod Object Logs' and 'Pod Phase' = running | stats latest('Pod Phase') as Status by Pod",
+                        "scopeFilters": {
+                            "filters": [
+                                {
+                                    "type": "LogGroup",
+                                    "flags": {
+                                        "IncludeSubCompartments": true
                                     },
-                                    "groupAliasP": "Groups",
-                                    "groupAliasS": "Group",
-                                    "hiddenCharts": {
-                                        "groupColumn": true
-                                    },
-                                    "hiddenClassifyCharts": {},
-                                    "hiddenColumns": {
-                                        "eventstats3_func1_count_func1_latest_udfs127": true,
-                                        "g_count": true,
-                                        "g_duration": true,
-                                        "query_end_time": true,
-                                        "query_start_time": true,
-                                        "trend_interval": true,
-                                        "trend_interval_unit": true
-                                    },
-                                    "highlightColumnStatus": {},
-                                    "linkSummaryInput": "",
-                                    "logAliasP": "Log Records",
-                                    "mergeHighlightColumns": [
-                                        "off"
-                                    ],
-                                    "showAllRegions": [],
-                                    "showCombinedCharts": [
-                                        "off"
-                                    ],
-                                    "showNonUnitRawData": [
-                                        "off"
-                                    ],
-                                    "showStack": [
-                                        "off"
-                                    ],
-                                    "showToolTips": [
-                                        "on"
-                                    ],
-                                    "showUnitRawData": [],
-                                    "smartGroup": [
-                                        "off"
-                                    ],
-                                    "styleDefaults": {
-                                        "lineType": "curved",
-                                        "markerDisplayed": "on"
-                                    },
-                                    "tableColumns": [
-                                        "Kubernetes Pod Name",
-                                        "Start Time (UTC+05:30)",
-                                        "End Time (UTC+05:30)",
-                                        "Status",
-                                        "Node",
-                                        "Start Time (UTC-08:00)",
-                                        "End Time (UTC-08:00)",
-                                        "Kubernetes Node Name",
-                                        "Pod"
+                                    "values": [
+                                        {
+                                            "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
+                                            "label": "###### (root)/LogAnalytics"
+                                        }
                                     ]
                                 },
+                                {
+                                    "type": "Entity",
+                                    "flags": {
+                                        "IncludeDependents": true,
+                                        "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q"
+                                    },
+                                    "values": []
+                                }
+                            ],
+                            "isGlobal": false,
+                            "LogGroup": {
+                                "type": "LogGroup",
+                                "flags": {
+                                    "IncludeSubCompartments": true
+                                },
+                                "values": [
+                                    {
+                                        "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
+                                        "label": "###### (root)/LogAnalytics"
+                                    }
+                                ]
+                            },
+                            "Entity": {
+                                "type": "Entity",
+                                "flags": {
+                                    "IncludeDependents": true,
+                                    "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q"
+                                },
+                                "values": []
+                            }
+                        },
+                        "internalKey": "ocid1.managementsavedsearch.oc1..aaaaaaaa22wdx45h3jee2s3bolb2odlozncgwobe3hvsz4euxkon3ulrrupq",
+                        "vizType": "lxSavedSearchWidgetType",
+                        "enableWidgetInApp": true
+                    },
+                    "dataConfig": [],
+                    "screenImage": " ",
+                    "metadataVersion": "2.0",
+                    "widgetTemplate": "jet-modules/dashboards/widgets/lxSavedSearchWidget.html",
+                    "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget",
+                    "freeformTags": {},
+                    "definedTags": {},
+                    "parametersConfig": [],
+                    "drilldownConfig": []
+                },
+                {
+                    "id": "ocid1.managementsavedsearch.oc1..aaaaaaaa4utj6jb4ir2svktabxxntuxiaibacptiqclaiui4hfk4zz663xbq",
+                    "displayName": "Pod Info",
+                    "providerId": "log-analytics",
+                    "providerVersion": "2.0",
+                    "providerName": "Logging Analytics",
+                    "compartmentId": "${compartment_ocid}",
+                    "isOobSavedSearch": false,
+                    "description": "OKE Pod Info",
+                    "nls": {},
+                    "type": "WIDGET_SHOW_IN_DASHBOARD",
+                    "uiConfig": {
+                        "timeSelection": {
+                            "numUnits": 30,
+                            "units": "MINUTES",
+                            "timePeriod": "relative"
+                        },
+                        "showTitle": true,
+                        "visualizationType": "summary_table",
+                        "visualizationOptions": {},
+                        "queryString": "'Log Source' = 'Kubernetes Pod Object Logs' | stats latest(Namespace) as Namespace, latest('Pod IP Address') as 'Pod IP', latest(Node) as Node, latest(Controller) as Controller, latest('Controller Kind') as 'Controller Kind', latest('Scheduler Name') as Scheduler by Pod",
+                        "scopeFilters": {
+                            "filters": [
+                                {
+                                    "type": "LogGroup",
+                                    "flags": {
+                                        "IncludeSubCompartments": true
+                                    },
+                                    "values": [
+                                        {
+                                            "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
+                                            "label": "###### (root)/LogAnalytics",
+                                            "pos": 0
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "MetricCompartment",
+                                    "flags": {},
+                                    "values": [
+                                        {
+                                            "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
+                                            "label": "datascience"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "Entity",
+                                    "flags": {
+                                        "IncludeDependents": true,
+                                        "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q"
+                                    },
+                                    "values": []
+                                },
+                                {
+                                    "type": "LogSet",
+                                    "flags": {},
+                                    "values": []
+                                },
+                                {
+                                    "type": "ResourceCompartment",
+                                    "flags": {
+                                        "IncludeSubCompartments": true
+                                    },
+                                    "values": [
+                                        {
+                                            "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
+                                            "label": "datascience"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "LogFields",
+                                    "flags": {},
+                                    "values": []
+                                }
+                            ],
+                            "isGlobal": false,
+                            "LogGroup": {
+                                "type": "LogGroup",
+                                "flags": {
+                                    "IncludeSubCompartments": true
+                                },
+                                "values": [
+                                    {
+                                        "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
+                                        "label": "###### (root)/LogAnalytics",
+                                        "pos": 0
+                                    }
+                                ]
+                            },
+                            "MetricCompartment": {
+                                "type": "MetricCompartment",
+                                "flags": {},
+                                "values": [
+                                    {
+                                        "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
+                                        "label": "datascience"
+                                    }
+                                ]
+                            },
+                            "Entity": {
+                                "type": "Entity",
+                                "flags": {
+                                    "IncludeDependents": true,
+                                    "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q"
+                                },
+                                "values": []
+                            },
+                            "LogSet": {
+                                "type": "LogSet",
+                                "flags": {},
+                                "values": []
+                            },
+                            "ResourceCompartment": {
+                                "type": "ResourceCompartment",
+                                "flags": {
+                                    "IncludeSubCompartments": true
+                                },
+                                "values": [
+                                    {
+                                        "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
+                                        "label": "datascience"
+                                    }
+                                ]
+                            },
+                            "LogFields": {
+                                "type": "LogFields",
+                                "flags": {},
+                                "values": []
+                            }
+                        },
+                        "internalKey": "ocid1.managementsavedsearch.oc1..aaaaaaaa4utj6jb4ir2svktabxxntuxiaibacptiqclaiui4hfk4zz663xbq",
+                        "vizType": "lxSavedSearchWidgetType",
+                        "enableWidgetInApp": true
+                    },
+                    "dataConfig": [],
+                    "screenImage": " ",
+                    "metadataVersion": "2.0",
+                    "widgetTemplate": "jet-modules/dashboards/widgets/lxSavedSearchWidget.html",
+                    "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget",
+                    "freeformTags": {},
+                    "definedTags": {},
+                    "parametersConfig": [],
+                    "drilldownConfig": []
+                },
+                {
+                    "id": "ocid1.managementsavedsearch.oc1..aaaaaaaaq4wjwgz2jp4mb5gy3drtxdrpbx26grikh6s7tl6i5owrxzv7l3na",
+                    "displayName": "Pods with Warning Events",
+                    "providerId": "log-analytics",
+                    "providerVersion": "3.0.0",
+                    "providerName": "Logging Analytics",
+                    "compartmentId": "${compartment_ocid}",
+                    "isOobSavedSearch": false,
+                    "description": "Pods with Warning Events",
+                    "nls": {},
+                    "type": "WIDGET_SHOW_IN_DASHBOARD",
+                    "uiConfig": {
+                        "timeSelection": {
+                            "timePeriod": "l60min"
+                        },
+                        "showTitle": true,
+                        "visualizationType": "treemap",
+                        "visualizationOptions": {
+                            "customVizOpt": {
                                 "primaryFieldIname": "mbody"
                             }
                         },
-                        "queryString": "'Log Source' = 'Kubernetes Pod Object Logs' and 'Pod Phase' in (failed, pending) and Node != null | stats distinctcount(Pod) as Pods by Node, 'Pod Phase'",
+                        "queryString": "'Log Source' = 'Kubernetes Event Object Logs' and 'Involved Object Kind' = pod and 'Event Type' = warning | stats distinctcount('Involved Object Name') as count by Reason, 'Involved Object Name'",
                         "scopeFilters": {
                             "filters": [
                                 {
@@ -733,7 +805,7 @@
                                     "values": [
                                         {
                                             "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                            "label": "datascience"
+                                            "label": "###### (root)/LogAnalytics"
                                         }
                                     ]
                                 },
@@ -782,7 +854,7 @@
                                 "values": [
                                     {
                                         "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                        "label": "datascience"
+                                        "label": "###### (root)/LogAnalytics"
                                     }
                                 ]
                             },
@@ -792,7 +864,7 @@
                                 "values": []
                             }
                         },
-                        "internalKey": "ocid1.managementsavedsearch.oc1..aaaaaaaamaaktdzvahebkwy6ljzrvdftycauaihk57ytvmts654w74k5hzeq",
+                        "internalKey": "ocid1.managementsavedsearch.oc1..aaaaaaaaq4wjwgz2jp4mb5gy3drtxdrpbx26grikh6s7tl6i5owrxzv7l3na",
                         "vizType": "lxSavedSearchWidgetType",
                         "enableWidgetInApp": true
                     },
@@ -860,472 +932,14 @@
                     "drilldownConfig": []
                 },
                 {
-                    "id": "ocid1.managementsavedsearch.oc1..aaaaaaaacssfzpcndlua7r55j5oxy7b2an27n5l73mnxn727rgbc2ayi6bzq",
-                    "displayName": "Node Status",
+                    "id": "ocid1.managementsavedsearch.oc1..aaaaaaaah2ucotridihloxymwasfoljtqpq7y6eezuoxqgrwqzegwncyqleq",
+                    "displayName": "Kubernetes Clusters",
                     "providerId": "log-analytics",
-                    "providerVersion": "2.0",
+                    "providerVersion": "3.0.0",
                     "providerName": "Logging Analytics",
                     "compartmentId": "${compartment_ocid}",
                     "isOobSavedSearch": false,
-                    "description": "OKE Node Status",
-                    "nls": {},
-                    "type": "WIDGET_SHOW_IN_DASHBOARD",
-                    "uiConfig": {
-                        "timeSelection": {
-                            "numUnits": 60,
-                            "units": "MINUTES",
-                            "timePeriod": "relative"
-                        },
-                        "showTitle": true,
-                        "visualizationType": "link",
-                        "visualizationOptions": {
-                            "showLogScale": false,
-                            "customVizOpt": {
-                                "LINK_SEARCH_SETTINGS": {
-                                    "groupAliasS": "Group",
-                                    "groupAliasP": "Groups",
-                                    "logAliasP": "Log Records",
-                                    "showUnitRawData": [],
-                                    "showNonUnitRawData": [
-                                        "off"
-                                    ],
-                                    "mergeHighlightColumns": [
-                                        "off"
-                                    ],
-                                    "columnAliases": {},
-                                    "hiddenCharts": {
-                                        "groupColumn": true
-                                    },
-                                    "hiddenColumns": {
-                                        "g_duration": true,
-                                        "query_start_time": true,
-                                        "query_end_time": true,
-                                        "trend_interval": true,
-                                        "trend_interval_unit": true
-                                    },
-                                    "highlightColumnStatus": {},
-                                    "hiddenClassifyCharts": {},
-                                    "showCombinedCharts": [
-                                        "off"
-                                    ],
-                                    "showStack": [
-                                        "off"
-                                    ],
-                                    "smartGroup": [
-                                        "off"
-                                    ],
-                                    "styleDefaults": {
-                                        "lineType": "curved",
-                                        "markerDisplayed": "on"
-                                    },
-                                    "chartOptions": "bar",
-                                    "chartType": "bar",
-                                    "chartHeightVal": 200,
-                                    "chartWidthVal": 60,
-                                    "showToolTips": [
-                                        "on"
-                                    ],
-                                    "dashboardOptions": {
-                                        "showTabs": [],
-                                        "showSummary": [],
-                                        "showAnalyzeTab": [],
-                                        "showChartsTab": [],
-                                        "showTable": [
-                                            "on"
-                                        ]
-                                    },
-                                    "linkSummaryInput": "",
-                                    "showAllRegions": []
-                                }
-                            }
-                        },
-                        "queryString": "'Log Source' = 'Kubernetes Node Object Logs' | link Node, 'Ready Status' | stats latest('Disk Pressure Status') as 'Disk Pressure', latest('Memory Pressure Status') as 'Memory Pressure', latest('PID Pressure Status') as 'PID Pressure' | fields 'End Time' as 'Last Reported', Count as Records",
-                        "scopeFilters": {
-                            "filters": [
-                                {
-                                    "type": "LogGroup",
-                                    "flags": {
-                                        "IncludeSubCompartments": true
-                                    },
-                                    "values": [
-                                        {
-                                            "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                            "label": "###### (root)/LogAnalytics"
-                                        }
-                                    ]
-                                },
-                                {
-                                    "type": "MetricCompartment",
-                                    "flags": {},
-                                    "values": []
-                                },
-                                {
-                                    "type": "Entity",
-                                    "flags": {
-                                        "IncludeDependents": true,
-                                        "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q"
-                                    },
-                                    "values": []
-                                },
-                                {
-                                    "type": "LogSet",
-                                    "flags": {},
-                                    "values": []
-                                },
-                                {
-                                    "type": "ResourceCompartment",
-                                    "flags": {
-                                        "IncludeSubCompartments": true
-                                    },
-                                    "values": [
-                                        {
-                                            "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                            "label": "###### (root)/LogAnalytics"
-                                        }
-                                    ]
-                                },
-                                {
-                                    "type": "LogFields",
-                                    "flags": {},
-                                    "values": []
-                                }
-                            ],
-                            "isGlobal": false,
-                            "LogGroup": {
-                                "type": "LogGroup",
-                                "flags": {
-                                    "IncludeSubCompartments": true
-                                },
-                                "values": [
-                                    {
-                                        "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                        "label": "###### (root)/LogAnalytics"
-                                    }
-                                ]
-                            },
-                            "MetricCompartment": {
-                                "type": "MetricCompartment",
-                                "flags": {},
-                                "values": []
-                            },
-                            "Entity": {
-                                "type": "Entity",
-                                "flags": {
-                                    "IncludeDependents": true,
-                                    "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q"
-                                },
-                                "values": []
-                            },
-                            "LogSet": {
-                                "type": "LogSet",
-                                "flags": {},
-                                "values": []
-                            },
-                            "ResourceCompartment": {
-                                "type": "ResourceCompartment",
-                                "flags": {
-                                    "IncludeSubCompartments": true
-                                },
-                                "values": [
-                                    {
-                                        "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                        "label": "###### (root)/LogAnalytics"
-                                    }
-                                ]
-                            },
-                            "LogFields": {
-                                "type": "LogFields",
-                                "flags": {},
-                                "values": []
-                            }
-                        },
-                        "internalKey": "ocid1.managementsavedsearch.oc1..aaaaaaaacssfzpcndlua7r55j5oxy7b2an27n5l73mnxn727rgbc2ayi6bzq",
-                        "vizType": "lxSavedSearchWidgetType",
-                        "enableWidgetInApp": true
-                    },
-                    "dataConfig": [],
-                    "screenImage": " ",
-                    "metadataVersion": "2.0",
-                    "widgetTemplate": "jet-modules/dashboards/widgets/lxSavedSearchWidget.html",
-                    "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget",
-                    "freeformTags": {},
-                    "definedTags": {},
-                    "parametersConfig": [],
-                    "drilldownConfig": []
-                },
-                {
-                    "id": "ocid1.managementsavedsearch.oc1..aaaaaaaa6vyyh6wc3v7kevjri7gsi2vf7hmczodf3ykhwivcntt2xhkyavca",
-                    "displayName": "Pods running on a Node",
-                    "providerId": "log-analytics",
-                    "providerVersion": "2.0",
-                    "providerName": "Logging Analytics",
-                    "compartmentId": "${compartment_ocid}",
-                    "isOobSavedSearch": false,
-                    "description": "Pods running on a given OKE Node",
-                    "nls": {},
-                    "type": "WIDGET_SHOW_IN_DASHBOARD",
-                    "uiConfig": {
-                        "timeSelection": {
-                            "timePeriod": "l60min"
-                        },
-                        "showTitle": true,
-                        "visualizationType": "link",
-                        "visualizationOptions": {
-                            "customVizOpt": {
-                                "LINK_SEARCH_SETTINGS": {
-                                    "chartHeightVal": 200,
-                                    "chartOptions": "bar",
-                                    "chartType": "bar",
-                                    "chartWidthVal": 60,
-                                    "columnAliases": {},
-                                    "dashboardOptions": {
-                                        "showAnalyzeTab": [],
-                                        "showChartsTab": [],
-                                        "showSummary": [
-                                            "on"
-                                        ],
-                                        "showTable": [
-                                            "on"
-                                        ],
-                                        "showTabs": [
-                                            "on"
-                                        ]
-                                    },
-                                    "groupAliasP": "Groups",
-                                    "groupAliasS": "Group",
-                                    "hiddenCharts": {
-                                        "groupColumn": true
-                                    },
-                                    "hiddenClassifyCharts": {},
-                                    "hiddenColumns": {
-                                        "g_count": false,
-                                        "g_duration": true,
-                                        "query_end_time": true,
-                                        "query_start_time": true,
-                                        "trend_interval": true,
-                                        "trend_interval_unit": true
-                                    },
-                                    "highlightColumnStatus": {},
-                                    "linkSummaryInput": "",
-                                    "logAliasP": "Log Records",
-                                    "mergeHighlightColumns": [
-                                        "off"
-                                    ],
-                                    "showAllRegions": [],
-                                    "showCombinedCharts": [
-                                        "off"
-                                    ],
-                                    "showNonUnitRawData": [
-                                        "off"
-                                    ],
-                                    "showStack": [
-                                        "off"
-                                    ],
-                                    "showToolTips": [
-                                        "on"
-                                    ],
-                                    "showUnitRawData": [],
-                                    "smartGroup": [
-                                        "off"
-                                    ],
-                                    "styleDefaults": {
-                                        "lineType": "curved",
-                                        "markerDisplayed": "on"
-                                    }
-                                },
-                                "LINK_CLASSIFY_SETTINGS": {
-                                    "Pods Analysis": {
-                                        "drilldown": "on",
-                                        "chartType": "bubble",
-                                        "showDimensions": [
-                                            "on"
-                                        ],
-                                        "chartHeight": 200,
-                                        "swapXY": [
-                                            "off"
-                                        ],
-                                        "showAnomaly": [
-                                            "off"
-                                        ],
-                                        "showBaseline": [
-                                            "off"
-                                        ],
-                                        "groupAlias": "Groups",
-                                        "groupAliasS": "Group",
-                                        "sizeColumn": 8,
-                                        "colorColumn": 9,
-                                        "descendingXAxis": [
-                                            null
-                                        ],
-                                        "descendingYAxis": [
-                                            null
-                                        ],
-                                        "zeroXAxis": [
-                                            "on"
-                                        ],
-                                        "zeroYAxis": [
-                                            "on"
-                                        ],
-                                        "classifyColorPalette": {
-                                            "1": "default",
-                                            "6": "func2_unique_namespace",
-                                            "7": "process_status",
-                                            "8": "default",
-                                            "9": "service_status",
-                                            "10": "default"
-                                        },
-                                        "classifyColorPaletteCustom": {
-                                            "6": {},
-                                            "7": {},
-                                            "8": {},
-                                            "9": {
-                                                "normal performance|operational": "running | succeeded",
-                                                "major outage": "pending"
-                                            }
-                                        },
-                                        "classifyFilters": {
-                                            "selectAllFilters": [
-                                                "on"
-                                            ],
-                                            "showClassifyFilters": [],
-                                            "selectedClassifyFilters": [
-                                                6,
-                                                7,
-                                                8,
-                                                9
-                                            ],
-                                            "classifyNarrowResults": [
-                                                "on"
-                                            ]
-                                        }
-                                    }
-                                }
-                            },
-                            "showLogScale": false
-                        },
-                        "queryString": "'Log Source' = 'Kubernetes Pod Object Logs' | link Pod, Node | stats latest('Pod Phase') as Status, unique(Namespace) as Namespace | classify topcount = 300 correlate = -*, Pod Namespace, Node, Count, Status as 'Pods Analysis'",
-                        "scopeFilters": {
-                            "filters": [
-                                {
-                                    "type": "LogGroup",
-                                    "flags": {
-                                        "IncludeSubCompartments": true
-                                    },
-                                    "values": [
-                                        {
-                                            "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                            "label": "###### (root)/LogAnalytics"
-                                        }
-                                    ]
-                                },
-                                {
-                                    "type": "MetricCompartment",
-                                    "flags": {},
-                                    "values": []
-                                },
-                                {
-                                    "type": "Entity",
-                                    "flags": {
-                                        "IncludeDependents": true,
-                                        "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q"
-                                    },
-                                    "values": []
-                                },
-                                {
-                                    "type": "LogSet",
-                                    "flags": {},
-                                    "values": []
-                                },
-                                {
-                                    "type": "ResourceCompartment",
-                                    "flags": {
-                                        "IncludeSubCompartments": true
-                                    },
-                                    "values": [
-                                        {
-                                            "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                            "label": "###### (root)/LogAnalytics"
-                                        }
-                                    ]
-                                },
-                                {
-                                    "type": "LogFields",
-                                    "flags": {},
-                                    "values": []
-                                }
-                            ],
-                            "isGlobal": false,
-                            "LogGroup": {
-                                "type": "LogGroup",
-                                "flags": {
-                                    "IncludeSubCompartments": true
-                                },
-                                "values": [
-                                    {
-                                        "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                        "label": "###### (root)/LogAnalytics"
-                                    }
-                                ]
-                            },
-                            "MetricCompartment": {
-                                "type": "MetricCompartment",
-                                "flags": {},
-                                "values": []
-                            },
-                            "Entity": {
-                                "type": "Entity",
-                                "flags": {
-                                    "IncludeDependents": true,
-                                    "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q"
-                                },
-                                "values": []
-                            },
-                            "LogSet": {
-                                "type": "LogSet",
-                                "flags": {},
-                                "values": []
-                            },
-                            "ResourceCompartment": {
-                                "type": "ResourceCompartment",
-                                "flags": {
-                                    "IncludeSubCompartments": true
-                                },
-                                "values": [
-                                    {
-                                        "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                        "label": "###### (root)/LogAnalytics"
-                                    }
-                                ]
-                            },
-                            "LogFields": {
-                                "type": "LogFields",
-                                "flags": {},
-                                "values": []
-                            }
-                        },
-                        "internalKey": "ocid1.managementsavedsearch.oc1..aaaaaaaa6vyyh6wc3v7kevjri7gsi2vf7hmczodf3ykhwivcntt2xhkyavca",
-                        "vizType": "lxSavedSearchWidgetType",
-                        "enableWidgetInApp": true
-                    },
-                    "dataConfig": [],
-                    "screenImage": " ",
-                    "metadataVersion": "2.0",
-                    "widgetTemplate": "jet-modules/dashboards/widgets/lxSavedSearchWidget.html",
-                    "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget",
-                    "freeformTags": {},
-                    "definedTags": {},
-                    "parametersConfig": [],
-                    "drilldownConfig": []
-                },
-                {
-                    "id": "ocid1.managementsavedsearch.oc1..aaaaaaaa4j4ts5oplk2fxcvv7qp26krpmnysk7amh2chgh335ctf26oiuyfq",
-                    "displayName": "Nodes",
-                    "providerId": "log-analytics",
-                    "providerVersion": "2.0",
-                    "providerName": "Logging Analytics",
-                    "compartmentId": "${compartment_ocid}",
-                    "isOobSavedSearch": false,
-                    "description": "OKE Nodes",
+                    "description": "Kubernetes Clusters",
                     "nls": {},
                     "type": "WIDGET_SHOW_IN_DASHBOARD",
                     "uiConfig": {
@@ -1337,141 +951,13 @@
                         "visualizationOptions": {
                             "hideLabel": true,
                             "changeLabel": "",
-                            "formatNumber": false
-                        },
-                        "queryString": "'Log Source' = 'Kubernetes Node Object Logs' | stats latest('Ready Status') as Ready by Node",
-                        "scopeFilters": {
-                            "filters": [
-                                {
-                                    "type": "LogGroup",
-                                    "flags": {
-                                        "IncludeSubCompartments": true
-                                    },
-                                    "values": [
-                                        {
-                                            "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                            "label": "datascience"
-                                        }
-                                    ]
-                                },
-                                {
-                                    "type": "MetricCompartment",
-                                    "flags": {},
-                                    "values": []
-                                },
-                                {
-                                    "type": "Entity",
-                                    "flags": {
-                                        "IncludeDependents": true,
-                                        "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q"
-                                    },
-                                    "values": []
-                                },
-                                {
-                                    "type": "LogSet",
-                                    "flags": {},
-                                    "values": []
-                                },
-                                {
-                                    "type": "ResourceCompartment",
-                                    "flags": {
-                                        "IncludeSubCompartments": true
-                                    },
-                                    "values": [
-                                        {
-                                            "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                            "label": "datascience"
-                                        }
-                                    ]
-                                },
-                                {
-                                    "type": "LogFields",
-                                    "flags": {},
-                                    "values": []
-                                }
-                            ],
-                            "isGlobal": false,
-                            "LogGroup": {
-                                "type": "LogGroup",
-                                "flags": {
-                                    "IncludeSubCompartments": true
-                                },
-                                "values": [
-                                    {
-                                        "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                        "label": "datascience"
-                                    }
-                                ]
-                            },
-                            "MetricCompartment": {
-                                "type": "MetricCompartment",
-                                "flags": {},
-                                "values": []
-                            },
-                            "Entity": {
-                                "type": "Entity",
-                                "flags": {
-                                    "IncludeDependents": true,
-                                    "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q"
-                                },
-                                "values": []
-                            },
-                            "LogSet": {
-                                "type": "LogSet",
-                                "flags": {},
-                                "values": []
-                            },
-                            "ResourceCompartment": {
-                                "type": "ResourceCompartment",
-                                "flags": {
-                                    "IncludeSubCompartments": true
-                                },
-                                "values": [
-                                    {
-                                        "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                        "label": "datascience"
-                                    }
-                                ]
-                            },
-                            "LogFields": {
-                                "type": "LogFields",
-                                "flags": {},
-                                "values": []
+                            "formatNumber": false,
+                            "customVizOpt": {
+                                "primaryFieldDname": "Original Log Content",
+                                "primaryFieldIname": "mbody"
                             }
                         },
-                        "internalKey": "ocid1.managementsavedsearch.oc1..aaaaaaaa4j4ts5oplk2fxcvv7qp26krpmnysk7amh2chgh335ctf26oiuyfq",
-                        "vizType": "lxSavedSearchWidgetType",
-                        "enableWidgetInApp": true
-                    },
-                    "dataConfig": [],
-                    "screenImage": " ",
-                    "metadataVersion": "2.0",
-                    "widgetTemplate": "jet-modules/dashboards/widgets/lxSavedSearchWidget.html",
-                    "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget",
-                    "freeformTags": {},
-                    "definedTags": {},
-                    "parametersConfig": [],
-                    "drilldownConfig": []
-                },
-                {
-                    "id": "ocid1.managementsavedsearch.oc1..aaaaaaaaibkjhz6mejrjhu2fn5efazcwyekb54kb4dcscobuv7lxxpe52bhq",
-                    "displayName": "Node Allocatable",
-                    "providerId": "log-analytics",
-                    "providerVersion": "2.0",
-                    "providerName": "Logging Analytics",
-                    "compartmentId": "${compartment_ocid}",
-                    "isOobSavedSearch": false,
-                    "description": "OKE Node Allocatable",
-                    "nls": {},
-                    "type": "WIDGET_SHOW_IN_DASHBOARD",
-                    "uiConfig": {
-                        "timeSelection": {
-                            "timePeriod": "l60min"
-                        },
-                        "showTitle": true,
-                        "visualizationType": "summary_table",
-                        "visualizationOptions": {},
-                        "queryString": "'Log Source' = 'Kubernetes Node Object Logs' | stats latest('CPU Allocatable') as CPU, latest('Memory Allocatable') as 'Memory (KiB)', latest('Storage Allocatable') as 'Storage (KiB)', latest('Pods Allocatable') as Pods by Node",
+                        "queryString": "* | stats distinctcount('Kubernetes Cluster Name') as Clusters",
                         "scopeFilters": {
                             "filters": [
                                 {
@@ -1571,7 +1057,216 @@
                                 "values": []
                             }
                         },
-                        "internalKey": "ocid1.managementsavedsearch.oc1..aaaaaaaaibkjhz6mejrjhu2fn5efazcwyekb54kb4dcscobuv7lxxpe52bhq",
+                        "vizType": "lxSavedSearchWidgetType",
+                        "enableWidgetInApp": true
+                    },
+                    "dataConfig": [],
+                    "screenImage": " ",
+                    "metadataVersion": "2.0",
+                    "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+                    "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget",
+                    "freeformTags": {},
+                    "definedTags": {},
+                    "parametersConfig": [
+                        {
+                            "name": "log-analytics-log-group-compartment",
+                            "displayName": "Log Group Compartment",
+                            "required": true,
+                            "defaultFilterIds": [
+                                "OOBSS-management-dashboard-filter-4a"
+                            ],
+                            "editUi": {
+                                "inputType": "none"
+                            },
+                            "valueFormat": {
+                                "type": "object"
+                            }
+                        },
+                        {
+                            "name": "log-analytics-entity",
+                            "displayName": "Entity",
+                            "required": true,
+                            "defaultFilterIds": [
+                                "OOBSS-management-dashboard-filter-2a"
+                            ],
+                            "editUi": {
+                                "inputType": "none"
+                            },
+                            "valueFormat": {
+                                "type": "object"
+                            }
+                        },
+                        {
+                            "name": "log-analytics-log-set",
+                            "displayName": "Log Set",
+                            "required": true,
+                            "hidden": "$(window.logSetNotEnabled)",
+                            "defaultFilterIds": [
+                                "OOBSS-management-dashboard-filter-3a"
+                            ],
+                            "editUi": {
+                                "inputType": "none"
+                            },
+                            "valueFormat": {
+                                "type": "object"
+                            }
+                        },
+                        {
+                            "name": "time",
+                            "displayName": "$(bundle.globalSavedSearch.TIME)",
+                            "required": true,
+                            "hidden": true
+                        },
+                        {
+                            "name": "flex"
+                        }
+                    ],
+                    "drilldownConfig": []
+                },
+                {
+                    "id": "ocid1.managementsavedsearch.oc1..aaaaaaaaz2t6olofn3gtksbhrreiudcf2fycyuxh4h3jhjjwnriyaf3dboia",
+                    "displayName": "Namespace Count",
+                    "providerId": "log-analytics",
+                    "providerVersion": "2.0",
+                    "providerName": "Logging Analytics",
+                    "compartmentId": "${compartment_ocid}",
+                    "isOobSavedSearch": false,
+                    "description": "Reported namespaces",
+                    "nls": {},
+                    "type": "WIDGET_SHOW_IN_DASHBOARD",
+                    "uiConfig": {
+                        "timeSelection": {
+                            "numUnits": 60,
+                            "units": "MINUTES",
+                            "timePeriod": "relative"
+                        },
+                        "showTitle": true,
+                        "visualizationType": "tile",
+                        "visualizationOptions": {
+                            "changeLabel": "",
+                            "customVizOpt": {
+                                "LINK_CLASSIFY_SETTINGS": {
+                                    "Container States": {
+                                        "chartHeight": 295,
+                                        "chartType": [
+                                            "trend"
+                                        ],
+                                        "classifyColorPalette": {
+                                            "1": "default",
+                                            "6": "udfs143",
+                                            "7": "service_status",
+                                            "8": null,
+                                            "9": null,
+                                            "10": null,
+                                            "11": "color1"
+                                        },
+                                        "classifyColorPaletteCustom": {
+                                            "6": {},
+                                            "7": {
+                                                "degraded performance|degraded": "waiting",
+                                                "major outage": "terminated",
+                                                "normal performance|operational": "runninng"
+                                            },
+                                            "8": {},
+                                            "9": {},
+                                            "10": {},
+                                            "11": {}
+                                        },
+                                        "classifyFilters": {
+                                            "classifyNarrowResults": [
+                                                "on"
+                                            ],
+                                            "selectAllFilters": [
+                                                "on"
+                                            ],
+                                            "selectedClassifyFilters": [
+                                                6,
+                                                7
+                                            ],
+                                            "showClassifyFilters": []
+                                        },
+                                        "colorColumn": 9,
+                                        "descendingXAxis": [
+                                            null
+                                        ],
+                                        "descendingYAxis": [
+                                            null
+                                        ],
+                                        "drilldown": "on",
+                                        "groupAlias": "Groups",
+                                        "groupAliasS": "Group",
+                                        "showAnomaly": [
+                                            "off"
+                                        ],
+                                        "showBaseline": [
+                                            null
+                                        ],
+                                        "showDimensions": [
+                                            "on"
+                                        ],
+                                        "sizeColumn": 11,
+                                        "swapXY": [
+                                            "off"
+                                        ],
+                                        "zeroXAxis": [
+                                            "on"
+                                        ],
+                                        "zeroYAxis": [
+                                            "on"
+                                        ]
+                                    }
+                                }
+                            },
+                            "formatNumber": false,
+                            "hideLabel": true
+                        },
+                        "queryString": "'Log Source' = 'Kubernetes Namespace Object Logs' | stats latest(Status) as Status by Namespace",
+                        "scopeFilters": {
+                            "filters": [
+                                {
+                                    "type": "LogGroup",
+                                    "flags": {
+                                        "IncludeSubCompartments": true
+                                    },
+                                    "values": [
+                                        {
+                                            "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
+                                            "label": "###### (root)/LogAnalytics"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "Entity",
+                                    "flags": {
+                                        "IncludeDependents": true,
+                                        "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q"
+                                    },
+                                    "values": []
+                                }
+                            ],
+                            "isGlobal": false,
+                            "LogGroup": {
+                                "type": "LogGroup",
+                                "flags": {
+                                    "IncludeSubCompartments": true
+                                },
+                                "values": [
+                                    {
+                                        "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
+                                        "label": "###### (root)/LogAnalytics"
+                                    }
+                                ]
+                            },
+                            "Entity": {
+                                "type": "Entity",
+                                "flags": {
+                                    "IncludeDependents": true,
+                                    "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q"
+                                },
+                                "values": []
+                            }
+                        },
+                        "internalKey": "ocid1.managementsavedsearch.oc1..aaaaaaaaz2t6olofn3gtksbhrreiudcf2fycyuxh4h3jhjjwnriyaf3dboia",
                         "vizType": "lxSavedSearchWidgetType",
                         "enableWidgetInApp": true
                     },
@@ -1586,26 +1281,103 @@
                     "drilldownConfig": []
                 },
                 {
-                    "id": "ocid1.managementsavedsearch.oc1..aaaaaaaa3d7t5vgw3ldws56oi7smqfq3boxdtvfxnz7du67rixxo4q6v3mnq",
-                    "displayName": "Logs",
+                    "id": "ocid1.managementsavedsearch.oc1..aaaaaaaaxu4cv4lwovlaghidg6pnd4lokcbwzmre7t322stvb6z6y4j4hnua",
+                    "displayName": "Pods Status",
                     "providerId": "log-analytics",
                     "providerVersion": "2.0",
                     "providerName": "Logging Analytics",
                     "compartmentId": "${compartment_ocid}",
                     "isOobSavedSearch": false,
-                    "description": "Logs corresponding to OKE Node",
+                    "description": "Pods Status",
                     "nls": {},
                     "type": "WIDGET_SHOW_IN_DASHBOARD",
                     "uiConfig": {
                         "timeSelection": {
-                            "numUnits": 60,
-                            "units": "MINUTES",
-                            "timePeriod": "relative"
+                            "timePeriod": "l60min"
                         },
                         "showTitle": true,
-                        "visualizationType": "pie",
-                        "visualizationOptions": {},
-                        "queryString": "Node != null | stats count as logrecords by 'Log Source'",
+                        "visualizationType": "link",
+                        "visualizationOptions": {
+                            "customVizOpt": {
+                                "LINK_CLASSIFY_SETTINGS": {},
+                                "LINK_SEARCH_SETTINGS": {
+                                    "chartHeightVal": 200,
+                                    "chartOptions": "bar",
+                                    "chartType": "bar",
+                                    "chartWidthVal": 60,
+                                    "columnAliases": {},
+                                    "dashboardOptions": {
+                                        "showAnalyzeTab": [],
+                                        "showChartsTab": [],
+                                        "showSummary": [],
+                                        "showTable": [
+                                            "on"
+                                        ],
+                                        "showTabs": []
+                                    },
+                                    "groupAliasP": "Groups",
+                                    "groupAliasS": "Group",
+                                    "hiddenCharts": {
+                                        "groupColumn": true
+                                    },
+                                    "hiddenClassifyCharts": {},
+                                    "hiddenColumns": {
+                                        "g_count": false,
+                                        "g_duration": true,
+                                        "g_startepoch": true,
+                                        "query_end_time": true,
+                                        "query_start_time": true,
+                                        "trend_interval": true,
+                                        "trend_interval_unit": true
+                                    },
+                                    "highlightColumnStatus": {
+                                        "highlightedGroup1": {
+                                            "on": true,
+                                            "title": true
+                                        },
+                                        "highlightedGroup2": {
+                                            "on": true,
+                                            "title": true
+                                        }
+                                    },
+                                    "linkSummaryInput": "",
+                                    "logAliasP": "Log Records",
+                                    "mergeHighlightColumns": [
+                                        "on"
+                                    ],
+                                    "showAllRegions": [],
+                                    "showCombinedCharts": [],
+                                    "showNonUnitRawData": [],
+                                    "showStack": [
+                                        "on"
+                                    ],
+                                    "showToolTips": [
+                                        "on"
+                                    ],
+                                    "showUnitRawData": [],
+                                    "smartGroup": [
+                                        "off"
+                                    ],
+                                    "styleDefaults": {},
+                                    "tableColumns": [
+                                        "m_fakeMergedHighlight",
+                                        "Pod",
+                                        "Status",
+                                        "Last Reported (UTC-08:00)",
+                                        "Records",
+                                        "Unique(Node)",
+                                        "Latest(Node)",
+                                        "Latest(Controller Kind)",
+                                        "Controller",
+                                        "Last Reported (UTC+05:30)",
+                                        "Node",
+                                        "Namespace"
+                                    ]
+                                }
+                            },
+                            "showLogScale": false
+                        },
+                        "queryString": "'Log Source' = 'Kubernetes Pod Object Logs' | link Pod | stats latest('Pod Phase') as Status, latest(Node) as Node, latest(Namespace) as Namespace | fields Count as Records, 'End Time' as 'Last Reported' | highlightgroups color = green [ * | where Status in (running, succeeded) ] as healthy | highlightgroups color = red [ * | where Status in (pending, failed) ] as warning | sort Status",
                         "scopeFilters": {
                             "filters": [
                                 {
@@ -1616,20 +1388,14 @@
                                     "values": [
                                         {
                                             "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                            "label": "###### (root)/LogAnalytics",
-                                            "pos": 0
+                                            "label": "###### (root)/LogAnalytics"
                                         }
                                     ]
                                 },
                                 {
                                     "type": "MetricCompartment",
                                     "flags": {},
-                                    "values": [
-                                        {
-                                            "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                            "label": "datascience"
-                                        }
-                                    ]
+                                    "values": []
                                 },
                                 {
                                     "type": "Entity",
@@ -1652,9 +1418,14 @@
                                     "values": [
                                         {
                                             "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                            "label": "datascience"
+                                            "label": "###### (root)/LogAnalytics"
                                         }
                                     ]
+                                },
+                                {
+                                    "type": "LogFields",
+                                    "flags": {},
+                                    "values": []
                                 }
                             ],
                             "isGlobal": false,
@@ -1666,20 +1437,14 @@
                                 "values": [
                                     {
                                         "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                        "label": "###### (root)/LogAnalytics",
-                                        "pos": 0
+                                        "label": "###### (root)/LogAnalytics"
                                     }
                                 ]
                             },
                             "MetricCompartment": {
                                 "type": "MetricCompartment",
                                 "flags": {},
-                                "values": [
-                                    {
-                                        "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                        "label": "datascience"
-                                    }
-                                ]
+                                "values": []
                             },
                             "Entity": {
                                 "type": "Entity",
@@ -1702,11 +1467,19 @@
                                 "values": [
                                     {
                                         "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
-                                        "label": "datascience"
+                                        "label": "###### (root)/LogAnalytics"
                                     }
                                 ]
+                            },
+                            "LogFields": {
+                                "type": "LogFields",
+                                "flags": {},
+                                "values": []
                             }
-                        }
+                        },
+                        "internalKey": "ocid1.managementsavedsearch.oc1..aaaaaaaaxu4cv4lwovlaghidg6pnd4lokcbwzmre7t322stvb6z6y4j4hnua",
+                        "vizType": "lxSavedSearchWidgetType",
+                        "enableWidgetInApp": true
                     },
                     "dataConfig": [],
                     "screenImage": " ",
@@ -1717,6 +1490,267 @@
                     "definedTags": {},
                     "parametersConfig": [],
                     "drilldownConfig": []
+                },
+                {
+                    "id": "ocid1.managementsavedsearch.oc1..aaaaaaaajulieq4xym4c7ygnxsd5x2t35x7tfb24h4nin6p6qeslv3mdj4hq",
+                    "displayName": "Pods Pending",
+                    "providerId": "log-analytics",
+                    "providerVersion": "3.0.0",
+                    "providerName": "Logging Analytics",
+                    "compartmentId": "${compartment_ocid}",
+                    "isOobSavedSearch": false,
+                    "description": "Pods Pending",
+                    "nls": {},
+                    "type": "WIDGET_SHOW_IN_DASHBOARD",
+                    "uiConfig": {
+                        "timeSelection": {
+                            "timePeriod": "l60min"
+                        },
+                        "showTitle": true,
+                        "visualizationType": "tile",
+                        "visualizationOptions": {
+                            "hideLabel": true,
+                            "changeLabel": "",
+                            "formatNumber": false,
+                            "customVizOpt": {
+                                "LINK_CLASSIFY_SETTINGS": {
+                                    "Container States": {
+                                        "chartHeight": 295,
+                                        "chartType": [
+                                            "trend"
+                                        ],
+                                        "classifyColorPalette": {
+                                            "1": "default",
+                                            "6": "udfs143",
+                                            "7": "service_status",
+                                            "8": null,
+                                            "9": null,
+                                            "10": null,
+                                            "11": "color1"
+                                        },
+                                        "classifyColorPaletteCustom": {
+                                            "6": {},
+                                            "7": {
+                                                "degraded performance|degraded": "waiting",
+                                                "major outage": "terminated",
+                                                "normal performance|operational": "runninng"
+                                            },
+                                            "8": {},
+                                            "9": {},
+                                            "10": {},
+                                            "11": {}
+                                        },
+                                        "classifyFilters": {
+                                            "classifyNarrowResults": [
+                                                "on"
+                                            ],
+                                            "selectAllFilters": [
+                                                "on"
+                                            ],
+                                            "selectedClassifyFilters": [
+                                                6,
+                                                7
+                                            ],
+                                            "showClassifyFilters": []
+                                        },
+                                        "colorColumn": 9,
+                                        "descendingXAxis": [
+                                            null
+                                        ],
+                                        "descendingYAxis": [
+                                            null
+                                        ],
+                                        "drilldown": "on",
+                                        "groupAlias": "Groups",
+                                        "groupAliasS": "Group",
+                                        "showAnomaly": [
+                                            "off"
+                                        ],
+                                        "showBaseline": [
+                                            null
+                                        ],
+                                        "showDimensions": [
+                                            "on"
+                                        ],
+                                        "sizeColumn": 11,
+                                        "swapXY": [
+                                            "off"
+                                        ],
+                                        "zeroXAxis": [
+                                            "on"
+                                        ],
+                                        "zeroYAxis": [
+                                            "on"
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "queryString": "'Log Source' = 'Kubernetes Pod Object Logs' and 'Pod Phase' = pending and 'Kubernetes Cluster Name' = 'mushop app (magi)' | stats latest('Pod Phase') as Status by Pod",
+                        "scopeFilters": {
+                            "filters": [
+                                {
+                                    "type": "LogGroup",
+                                    "flags": {
+                                        "IncludeSubCompartments": true
+                                    },
+                                    "values": [
+                                        {
+                                            "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
+                                            "label": "datascience"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "MetricCompartment",
+                                    "flags": {},
+                                    "values": []
+                                },
+                                {
+                                    "type": "Entity",
+                                    "flags": {
+                                        "IncludeDependents": true,
+                                        "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q"
+                                    },
+                                    "values": []
+                                },
+                                {
+                                    "type": "LogSet",
+                                    "flags": {},
+                                    "values": []
+                                },
+                                {
+                                    "type": "ResourceCompartment",
+                                    "flags": {
+                                        "IncludeSubCompartments": true
+                                    },
+                                    "values": [
+                                        {
+                                            "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
+                                            "label": "###### (root)/LogAnalytics"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "LogFields",
+                                    "flags": {},
+                                    "values": []
+                                }
+                            ],
+                            "isGlobal": false,
+                            "LogGroup": {
+                                "type": "LogGroup",
+                                "flags": {
+                                    "IncludeSubCompartments": true
+                                },
+                                "values": [
+                                    {
+                                        "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
+                                        "label": "datascience"
+                                    }
+                                ]
+                            },
+                            "MetricCompartment": {
+                                "type": "MetricCompartment",
+                                "flags": {},
+                                "values": []
+                            },
+                            "Entity": {
+                                "type": "Entity",
+                                "flags": {
+                                    "IncludeDependents": true,
+                                    "ScopeCompartmentId": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q"
+                                },
+                                "values": []
+                            },
+                            "LogSet": {
+                                "type": "LogSet",
+                                "flags": {},
+                                "values": []
+                            },
+                            "ResourceCompartment": {
+                                "type": "ResourceCompartment",
+                                "flags": {
+                                    "IncludeSubCompartments": true
+                                },
+                                "values": [
+                                    {
+                                        "value": "ocid1.compartment.oc1..aaaaaaaa4yj2x6hjxntcf5vydrdvsm3trgblkmwgcmvxiar2miklv3ip4t7q",
+                                        "label": "###### (root)/LogAnalytics"
+                                    }
+                                ]
+                            },
+                            "LogFields": {
+                                "type": "LogFields",
+                                "flags": {},
+                                "values": []
+                            }
+                        },
+                        "vizType": "lxSavedSearchWidgetType",
+                        "enableWidgetInApp": true
+                    },
+                    "dataConfig": [],
+                    "screenImage": " ",
+                    "metadataVersion": "2.0",
+                    "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+                    "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget",
+                    "freeformTags": {},
+                    "definedTags": {},
+                    "parametersConfig": [
+                        {
+                            "name": "log-analytics-log-group-compartment",
+                            "displayName": "Log Group Compartment",
+                            "required": true,
+                            "defaultFilterIds": [
+                                "OOBSS-management-dashboard-filter-4a"
+                            ],
+                            "editUi": {
+                                "inputType": "none"
+                            },
+                            "valueFormat": {
+                                "type": "object"
+                            }
+                        },
+                        {
+                            "name": "log-analytics-entity",
+                            "displayName": "Entity",
+                            "required": true,
+                            "defaultFilterIds": [
+                                "OOBSS-management-dashboard-filter-2a"
+                            ],
+                            "editUi": {
+                                "inputType": "none"
+                            },
+                            "valueFormat": {
+                                "type": "object"
+                            }
+                        },
+                        {
+                            "name": "log-analytics-log-set",
+                            "displayName": "Log Set",
+                            "required": true,
+                            "hidden": "$(window.logSetNotEnabled)",
+                            "defaultFilterIds": [
+                                "OOBSS-management-dashboard-filter-3a"
+                            ],
+                            "editUi": {
+                                "inputType": "none"
+                            },
+                            "valueFormat": {
+                                "type": "object"
+                            }
+                        },
+                        {
+                            "name": "time",
+                            "displayName": "$(bundle.globalSavedSearch.TIME)",
+                            "required": true,
+                            "hidden": true
+                        },
+                        {
+                            "name": "flex"
+                        }
+                    ],
+                    "drilldownConfig": []
                 }
             ],
             "parametersConfig": [
@@ -1724,13 +1758,6 @@
                     "savedSearchId": "OOBSS-management-dashboard-filter-4a",
                     "displayName": "Log Group Compartment",
                     "state": "DEFAULT",
-                    "uiConfig": {
-                        "internalKey": "OOBSS-management-dashboard-filter-4a",
-                        "filterName": "log-analytics-loggroup-filter",
-                        "vizFilterType": "lxLogGroupDashFilterType",
-                        "defaultWidth": 3,
-                        "minWidth": 3
-                    },
                     "parametersMap": {
                         "isStoreInLocalStorage": true
                     },
@@ -1742,13 +1769,6 @@
                     "displayName": "Entity",
                     "width": 6,
                     "state": "DEFAULT",
-                    "uiConfig": {
-                        "internalKey": "OOBSS-management-dashboard-filter-2a",
-                        "filterName": "log-analytics-entity-filter",
-                        "vizFilterType": "lxEntityDashFilterType",
-                        "defaultWidth": 6,
-                        "minWidth": 6
-                    },
                     "parametersMap": {
                         "isStoreInLocalStorage": true
                     },
@@ -1769,18 +1789,23 @@
                 },
                 {
                     "savedSearchId": "OOBSS-management-dashboard-filter-xlog",
-                    "displayName": "Worker Node",
+                    "displayName": "Namespace",
                     "state": "DEFAULT",
                     "parametersMap": {
                         "isStoreInLocalStorage": true,
                         "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
-                        "logFieldName": "Node",
+                        "logFieldName": "Namespace",
                         "flex": {
                             "Kubernetes Cluster Name": "$(dashboard.params.log-analytics-log-field-filter)"
                         }
                     },
                     "name": "log-analytics-log-field-filter1",
-                    "localStorageKey": "logField_Node"
+                    "localStorageKey": "logField_Namespace"
+                },
+                {
+                    "name": "time",
+                    "displayName": "$(bundle.globalSavedSearch.TIME)",
+                    "src": "$(context.time)"
                 },
                 {
                     "name": "time",
