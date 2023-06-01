@@ -6,15 +6,12 @@ data "oci_identity_user" "livelab_user" {
 }
 
 locals {
-
   ## livelab
   oci_username            = data.oci_identity_user.livelab_user.name
   livelab_service_account = local.oci_username
 
-
   ## Helm release
   fluentd_baseDir_path = var.livelab_switch ? "/var/log/${local.oci_username}" : var.fluentd_baseDir_path
-
 }
 
 // Import Kubernetes Dashboards
