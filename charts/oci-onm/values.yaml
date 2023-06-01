@@ -38,7 +38,6 @@ oci-onm-logan:
   ociLALogGroupID:
 
 oci-onm-mgmt-agent:
-  enabled: false # temp fix
   oci-onm-common:
     enabled: false
   namespace: "{{ .Values.global.namespace }}"

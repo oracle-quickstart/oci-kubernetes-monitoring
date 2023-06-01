@@ -82,8 +82,6 @@ The following are the list of objects supported at present:
 
 > **_NOTE:_** If you aren't already signed in, when prompted, enter the tenancy and user credentials. Review and accept the terms and conditions. If you aren't on-boarded to OCI Logging Analytics, refer to [Pre-requisites](#pre-requisites) section to enable Logging Analytics in the region where you want to deploy the stack. The default container image available through the deployment is only for demo/non-production use-cases, we recommend you to refer [Docker Image](#docker-image) section to build your own image.
 
-> Deployment via Resource Manager is only supported for public OKE clusters. For private OKE clusters, hem based installation method is recommended.
-
 - Click to deploy the stack
 
     [![Deploy to Oracle Cloud][orm_button]][oci_kubernetes_monitoring_stack]
@@ -500,10 +498,13 @@ The Dashboards are imported as part of deploying the Kubernetes solution using [
 1. Find the **OCID** of compartment, where the dashboards need to be imported.
 1. Download the dashboard JSONs from [here](logan/terraform/oke/modules/dashboards/dashboards_json/).
 1. **Replace** all the instances of the keyword - "`${compartment_ocid}`" in the JSONs with the **Compartment OCID** identified in STEP 2.
-    - Following command is for quick reference that can be used in a linux/cloud-shell envirnment :
+    - Following are the set of commands for quick reference that can be used in a linux/cloud-shell envirnment :
 
         ```
-        sed -i "s/\${compartment_ocid}/<Replace-with-Compartment-OCID>/g" *.json
+        sed -i "s/\${compartment_ocid}/<Replace-with-Compartment-OCID>/g" file://cluster.json
+        sed -i "s/\${compartment_ocid}/<Replace-with-Compartment-OCID>/g" file://node.json
+        sed -i "s/\${compartment_ocid}/<Replace-with-Compartment-OCID>/g" file://workload.json
+        sed -i "s/\${compartment_ocid}/<Replace-with-Compartment-OCID>/g" file://pod.json
         ```
 1. Run the following commands to import the dashboards.
 
