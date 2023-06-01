@@ -56,10 +56,3 @@ terraform.rc
 
 # Ignore util dir
 logan/util/*
-
-# helm-chart
-charts/oci-onm/Chart.lock
-charts/oci-onm/charts/
-
-# zip artifacts
-releases/
