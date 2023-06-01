@@ -18,34 +18,25 @@ function abspath    {
     pwd
 }
 
-ROOT_DIR=".."
-ROOT_DIR=$(abspath $ROOT_DIR) # Convert to absolute path
-
-RELEASE_PATH="$ROOT_DIR/releases"
-TEMP_ZIP="${RELEASE_PATH}/temp.zip"
-TEMP_DIR="${RELEASE_PATH}/temp"
-
-HELM_SOURCE="$ROOT_DIR/charts"
-MODULES_SOURCE="$ROOT_DIR/terraform/modules"
-ROOT_MODULE_PATH="$ROOT_DIR/terraform/oke"
-
-PREFIX="oke"
-
 usage="
 $(basename "$0") [-h] [-n name] -- program to build marketplace app from oracle-quickstart/oci-kubernetes-monitoring repo.
 
 where:
     -h  show this help text
     -n  name of output zip file without extention (Optional)
+    -l  flag to generate livelab build; otherwise oke build is generated
 
 The zip artifacts shall be stored at -
      $RELEASE_PATH"
 
-while getopts "hn:" option; do
+while getopts "hn:l" option; do
     case $option in
         h) # display Help
             echo "$usage"
             exit
+            ;;
+        l) #livelab-build
+            LIVE_LAB_BUILD=true
             ;;
         n)  
             release_name=$OPTARG
@@ -60,6 +51,23 @@ while getopts "hn:" option; do
             ;;
     esac
 done
+
+ROOT_DIR=".."
+ROOT_DIR=$(abspath $ROOT_DIR) # Convert to absolute path
+
+RELEASE_PATH="$ROOT_DIR/releases"
+TEMP_ZIP="${RELEASE_PATH}/temp.zip"
+TEMP_DIR="${RELEASE_PATH}/temp"
+
+HELM_SOURCE="$ROOT_DIR/charts"
+MODULES_SOURCE="$ROOT_DIR/terraform/modules"
+ROOT_MODULE_PATH="$ROOT_DIR/terraform/oke"
+
+if [ -n "$LIVE_LAB_BUILD" ]; then
+    PREFIX="livelab"
+else
+    PREFIX="oke"
+fi
 
 # Create a release DIR if it does not exist already.
 if test ! -d "$RELEASE_PATH"; then
@@ -132,6 +140,12 @@ echo -e "Copied orignal modules"
 
 cd "$TEMP_DIR" || error_and_exit "Could not switch to temp dir"
 echo -e "Switched to temp dir"
+
+# update livelab switch input to true
+if [ -n "$LIVE_LAB_BUILD" ]; then
+    sed "s/false/true/g" -i livelab.tf
+    echo -e "Enabled livelab switch in livelab.tf"
+fi
 
 zip -r "${RELEASE_ZIP}" ./* >/dev/null  || error_and_exit "Could not zip temp dir"
 
