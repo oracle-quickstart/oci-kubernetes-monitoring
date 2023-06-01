@@ -84,6 +84,15 @@ variable "enable_macs" {
 }
 
 ####
+## livelab
+####
+
+variable "livelab_switch" {
+  type = bool
+  default = false
+}
+
+####
 ##  Dynamic Group and Policies
 ####
 

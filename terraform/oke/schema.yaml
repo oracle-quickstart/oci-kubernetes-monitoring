@@ -34,6 +34,7 @@ variableGroups:
       - container_image_url
       - macs_agent_image_url
       - kubernetes_namespace
+      - livelab_switch
     visible: false
 
   - title: "Select an OKE Cluster deployed in this region to start monitoring"
@@ -63,6 +64,7 @@ variableGroups:
     visible:
       and:
         - enable_helm_release
+        - not: livelab_switch
 
 variables:
 
@@ -125,6 +127,10 @@ variables:
     type: boolean
     title: Check if you want to create a new Log Group
     default: false
+    visible:
+      and:
+        - enable_helm_release
+        - not: livelab_switch
 
   # OCI Logging Analytics LogGroup OCID of existing LogGroup
   oci_la_logGroup_id:
