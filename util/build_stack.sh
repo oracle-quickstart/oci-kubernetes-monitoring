@@ -22,6 +22,14 @@ ROOT_DIR=".."
 ROOT_DIR=$(abspath $ROOT_DIR) # Convert to absolute path
 
 RELEASE_PATH="$ROOT_DIR/releases"
+TEMP_ZIP="${RELEASE_PATH}/temp.zip"
+TEMP_DIR="${RELEASE_PATH}/temp"
+
+HELM_SOURCE="$ROOT_DIR/charts"
+MODULES_SOURCE="$ROOT_DIR/terraform/modules"
+ROOT_MODULE_PATH="$ROOT_DIR/terraform/oke"
+
+PREFIX="oke"
 
 usage="
 $(basename "$0") [-h] [-n name] -- program to build marketplace app from oracle-quickstart/oci-kubernetes-monitoring repo.
@@ -67,14 +75,73 @@ if test -z "${release_name}"; then
     BRANCH=$(git symbolic-ref --short HEAD)
     COMMIT_HASH_SHORT=$(git rev-parse --short HEAD)
     COMMIT_COUNT=$(git rev-list --count HEAD)
-    release_name="${BRANCH}-${COMMIT_HASH_SHORT}-${COMMIT_COUNT}"
+    release_name="${PREFIX}-${BRANCH}-${COMMIT_HASH_SHORT}-${COMMIT_COUNT}"
 fi
 
 RELEASE_ZIP="${RELEASE_PATH}/${release_name}.zip"
 
-# Clean up an existing zip file, if exists
-rm "${RELEASE_ZIP}" 2>/dev/null && echo -e "Removed stale zip." 
+echo -e ""
+echo -e "Build parameters - "
+echo -e ""
+echo -e "ROOT_DIR = $ROOT_DIR"
+echo -e "HELM_SOURCE = $HELM_SOURCE"
+echo -e "MODULES_SOURCE = $MODULES_SOURCE"
+echo -e "TEMP_DIR = $TEMP_DIR"
+echo -e "TEMP_ZIP = $TEMP_ZIP"
+echo -e "RELEASE_ZIP = $RELEASE_ZIP"
+echo -e "ROOT_MODULE_PATH = $ROOT_MODULE_PATH"
+echo -e ""
 
-# Create git archive
-git archive HEAD -o "$RELEASE_ZIP" --format=zip  >/dev/null || error_and_exit "git archive failed."
-echo -e "Created release - $RELEASE_ZIP"
+# Clean up stale dirs and files
+rm "${RELEASE_ZIP}" 2>/dev/null && echo -e "Removed stale release zip"
+rm "$TEMP_ZIP" 2>/dev/null && echo -e "Removed stale temp zip"
+rm -rf "$TEMP_DIR" 2>/dev/null && echo -e "Removed stale temp dir"
+
+# Switch to Root Module for gitzip
+cd $ROOT_MODULE_PATH || echo -e "Failed to Switch to root module"
+
+# Create git archive as temp.zip
+git archive HEAD -o "$TEMP_ZIP" --format=zip  >/dev/null || error_and_exit "git archive failed."
+echo -e "Created Git archive - temp.zip"
+
+# Switch back to release dir
+# cd "$RELEASE_PATH" || error_and_exit "Could not switch back to releases dir."
+# echo -e "Switched back to releases DIR."
+
+# unzip the temp.zip file
+unzip -d "$TEMP_DIR" "$TEMP_ZIP" >/dev/null || error_and_exit "Could not unzip temp.zip"
+echo -e "Unzipped temp.zip to temp dir"
+
+# remove the helm-chart symlink
+rm "$TEMP_DIR/charts" || error_and_exit "Could not remove helm-chart symlink"
+echo -e "Removed helm-chart symlink"
+
+# copy the helm-chart
+cp -R "$HELM_SOURCE" "$TEMP_DIR" || error_and_exit "Could not copy helm chart"
+echo -e "Copied helm-chart to temp dir"
+
+# remove the terraform modules symlink
+rm "$TEMP_DIR/modules" || error_and_exit "Could not remove modules symlink"
+echo -e "Removed terraform modules symlink"
+
+# copy the modules
+cp -R "$MODULES_SOURCE" "$TEMP_DIR" || error_and_exit "Could not copy modules"
+echo -e "Copied orignal modules"
+
+# to be fixed from here - 
+
+cd "$TEMP_DIR" || error_and_exit "Could not switch to temp dir"
+echo -e "Switched to temp dir"
+
+zip -r "${RELEASE_ZIP}" ./* >/dev/null  || error_and_exit "Could not zip temp dir"
+
+cd "$RELEASE_PATH" || error_and_exit "Could not switch to Util dir"
+
+# clean up temp zip file
+rm "$TEMP_ZIP" 2>/dev/null && echo -e "stale zip file removed."
+rm -rf "$TEMP_DIR" 2>/dev/null && echo -e "stale zip dir removed."
+
+echo -e "\nNew Release Created - $RELEASE_PATH/$release_name.zip"
+
+
+
