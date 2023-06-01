@@ -158,6 +158,24 @@ helm upgrade <release-name> --values <path-to-override-values.yaml> <path-to-hel
 ```
 Refer [this](https://helm.sh/docs/helm/helm_uninstall/) for further details on `helm uninstall`.
   
+#### OCI Resource Manager
+
+Launch OCI Resource Manager Stack in OCI Tenancy and Region of the OKE Cluster, which you want to monitor.
+
+[![Launch OCI Resource Manager Stack][orm_button]][oci_kubernetes_monitoring_stack]
+
+<details>
+  <summary>Instructions</summary>
+  
+  * Select the region and compartment where you want to deploy the stack.
+  * Follow the on-screen prompts and instructions to create the stack.
+  * After creating the stack, click Terraform Actions, and select Plan.
+  * Wait for the job to be completed, and review the plan.
+  * To make any changes, return to the Stack Details page, click Edit Stack, and make the required changes. Then, run the Plan action again.
+  * If no further changes are necessary, return to the Stack Details page, click Terraform Actions, and select Apply.
+  
+</details>    
+  
 #### Kubectl
 
 While the recommended approach for installation is through helm, if you intend to use `kubectl` based installation, then the resource yaml files can still be generated through `helm` using the instructions provided below.
@@ -215,24 +233,6 @@ Use `kubectl` tool to apply the yaml files generated in the previous step in the
 ##### 3.c Import Dashboards
 
 Refer [here](#3c-import-dashboards).
-
-#### OCI Resource Manager
-
-Launch OCI Resource Manager Stack in OCI Tenancy and Region of the OKE Cluster, which you want to monitor.
-
-[![Launch OCI Resource Manager Stack][orm_button]][oci_kubernetes_monitoring_stack]
-
-<details>
-  <summary>Instructions</summary>
-  
-  * Select the region and compartment where you want to deploy the stack.
-  * Follow the on-screen prompts and instructions to create the stack.
-  * After creating the stack, click Terraform Actions, and select Plan.
-  * Wait for the job to be completed, and review the plan.
-  * To make any changes, return to the Stack Details page, click Edit Stack, and make the required changes. Then, run the Plan action again.
-  * If no further changes are necessary, return to the Stack Details page, click Terraform Actions, and select Apply.
-  
-</details>  
 
 ### Upgrading to a major version
 
