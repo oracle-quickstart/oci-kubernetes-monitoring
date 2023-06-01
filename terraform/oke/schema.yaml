@@ -167,6 +167,8 @@ variables:
     default: /var/log
     required: true
     pattern: '^/[\w- /]*$'
+    visible:
+      not: livelab_switch
 
   ####
   ##  Pre-requisites
