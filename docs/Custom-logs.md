@@ -9,7 +9,7 @@ Once you have defined/identified a logSource for a particular pod log, the follo
 
 #### Use Pod Annotations
 
-In this approach, all that you need to do is add the following annotation, "oracle.com/oci_la_log_source_name" (with logSourceName as value) to all the pods of choice.
+In this approach, all that you need to do is add the following annotation, `oracle.com/oci_la_log_source_name` (with logSourceName as value) to all the pods of choice.
 This approach works for all the use-cases, except for multi-line plain text formatted logs.
 
 * Refer [this doc](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) to find how to add the annotation through Pod's metadata section. This is the recommended approach as it provides the persistent behavior.
@@ -20,9 +20,9 @@ This approach works for all the use-cases, except for multi-line plain text form
 * oracle.com/oci_la_log_group_id => to use custom logGroupId (oci_la_log_group_id)
 * oracle.com/oci_la_entity_id => to use custom entityId (oci_la_entity_id)
 
-#### customLogs section in helm chart
+#### customLogs section in helm chart values.yaml
 
-In this approach, all that you need to do is to provide the necessary configuration information like log file path, logSource, multiline start regular expression (in case of multi-line logs) in the customLogs section of values.yaml.
+In this approach, all that you need to do is to provide the necessary configuration information like log file path, logSource, multiline start regular expression (in case of multi-line logs) in the customLogs section of override_values.yaml.
 Using this information the corresponding Fluentd configuration is generated automatically.
 
 **Note** This approach is valid only when using helm chart based installation.
@@ -30,32 +30,55 @@ Using this information the corresponding Fluentd configuration is generated auto
 The following example demonstrates a container customLogs configuration
 
 ```
-      #custom-id1:
-         #path: /var/log/containers/custom*.log
-         #ociLALogSourceName: "Custom1 Logs"
-         #multilineStartRegExp:
-         # Set isContainerLog to false if the log is not a container log (/var/log/containers/*.log). Default value is true.
-         #isContainerLog: true
+...
+...
+oci-onm-logan:
+  ...
+  ...
+  fluentd:
+      ...
+      ...
+      custom-log1:
+         path: /var/log/containers/custom-1.log
+         ociLALogSourceName: "Custom1 Logs"
+         multilineStartRegExp: <Multi-line start expression for multi-line logs>
+         isContainerLog: true
 ```
 
 The following example demonstrates a non container customLogs configuration
 
 ```
-      #custom-id2:
-         #path: /var/log/custom/*.log
-         #ociLALogSourceName: "Custom2 Logs"
-         #multilineStartRegExp:
-         # Set isContainerLog to false if the log is not a container log (/var/log/containers/*.log). Default value is true.
-         #isContainerLog: false
+...
+...
+oci-onm-logan:
+  ...
+  ...
+  fluentd:
+      ...
+      ...
+      custom-log2:
+         path: /var/log/custom/custom-2.log
+         ociLALogSourceName: "Custom2 Logs"
+         multilineStartRegExp: <Multi-line start expression for multi-line logs>
+         isContainerLog: false
 ```
 
 #### Use Fluentd conf
 
 In this approach, a new set of Source, Filter sections have to be created in the customFluentdConf section of values.yaml.
-The following example demonstrates a custom fluentd config to tag /var/log/containers/frontend*.log with logSource "Guestbook Frontend Logs"
-(*to be added to helm-chart values.yaml, under customFluentdConf section if using helm chart OR to either of configmap-cri.yaml / configmap-docker.yaml if using kubectl approach).
+The following example demonstrates a custom fluentd config to tag `/var/log/containers/frontend*.log` with logSource "Guestbook Frontend Logs"
+(*To be added to helm-chart override_values.yaml, under customFluentdConf section*).
 
 ```
+...
+...
+oci-onm-logan:
+  ...
+  ...
+  fluentd:
+    ...
+    ...
+    customFluentdConf: |
          <source>
             @type tail
             @id in_tail_frontend
@@ -90,7 +113,23 @@ The following example demonstrates a custom fluentd config to tag /var/log/conta
          </filter>
 ```
 
-**Note**: The log path */var/log/containers/frontend-*.log*has to be excluded from the generic container logs to avoid duplicate log collection. Add the log path to*exclude_path*value under*in_tail_containerlogs* source section.
+**Note**: The log path `/var/log/containers/frontend-*.log` has to be excluded from the generic container logs to avoid duplicate log collection. Add the log path to*exclude_path*value under*in_tail_containerlogs* source section.
 
-In addition to the above, you may need to modify the source section to add *multiline* parser, if the logs are of plain text multi-line format (OR) add a concat plugin filter if the logs are of say multi-line but wrapped in json.
-Refer OOB fluentd config in the helm-chart values.yaml for examples.
+```
+...
+...
+oci-onm-logan:
+  ...
+  ...
+  fluentd:
+    ...
+    ...
+    genericContainerLogs:
+      exclude_path:
+        - '"/var/log/containers/kube-proxy-*.log"'
+        ...
+        ...
+        - '"/var/log/containers/frontend-*.log"'
+```        
+
+In addition to the above, you may need to modify the source section to add `multiline parser`, if the logs are of plain text multi-line format (OR) add a concat plugin filter if the logs are of say multi-line but wrapped in json. Refer oci-onm-logan chart logs-configmap template for examples.
