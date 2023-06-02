@@ -21,4 +21,5 @@ By default, pre-built images by Oracle are used.
     - [How to push the image to Local Registry](https://docs.docker.com/registry/deploying/).
 
 ##### Management Agent Container Image
+Instructions to build the container image for Management Agent are available in the Oracle's Docker Images repository on [Github](https://github.com/oracle/docker-images/tree/main/OracleManagementAgent)
 
