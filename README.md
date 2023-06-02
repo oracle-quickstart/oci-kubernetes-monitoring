@@ -220,7 +220,7 @@ Use `kubectl` tool to apply the yaml files generated in the previous step in the
   kubectl apply -f fluentd-daemonset.yaml
   kubectl apply -f fluentd-deployment.yaml
   ```
-  _For non OKE or when you choose to use Config file based AuthZ for monitoring the logs, you may need to apply oci-config-secret.yaml before applying fluentd-daemonset.yaml & fluentd-deployment.yaml. Refer [here](TBD) for how to configure Config based AuthZ._ 
+  _For non OKE or when you choose to use Config file based AuthZ for monitoring the logs, you may need to apply oci-config-secret.yaml before applying fluentd-daemonset.yaml & fluentd-deployment.yaml. Refer [here](docs/FAQ.md#how-to-use-configfile-based-authz-user-principal-instead-of-default-authz-instance-principal-) for how to configure Config based AuthZ._ 
 * oci-onm-mgmt-agent
   ```
   kubectl apply -f mgmt-agent-secrets.yaml
@@ -339,15 +339,15 @@ If you are already using a separate values.yaml for your customisations, you sti
   
 ## Getting Help
 
-### [Ask a question](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/discussions/new?category=q-a)
+#### [Ask a question](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/discussions/new?category=q-a)
 
 ## Resources
 
-### :question: [Frequently Asked Questions](./docs/FAQ.md)
+#### :question: [Frequently Asked Questions](./docs/FAQ.md)
 
-### [Custom Logs Configuration](./docs/Custom-logs.md)
+#### [Custom Logs Configuration](./docs/Custom-logs.md)
 
-### [Building Custom Container Images](./docs/customimages.md)
+#### [Building Custom Container Images](./docs/customimages.md)
 
 ## License
 
