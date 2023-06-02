@@ -345,9 +345,9 @@ If you are already using a separate values.yaml for your customisations, you sti
 
 #### :question: [Frequently Asked Questions](./docs/FAQ.md)
 
-#### [Custom Logs Configuration](./docs/Custom-logs.md)
+#### [Custom Logs Configuration](./docs/custom-logs.md)
 
-#### [Building Custom Container Images](./docs/customimages.md)
+#### [Building Custom Container Images](./docs/custom-images.md)
 
 ## License
 
