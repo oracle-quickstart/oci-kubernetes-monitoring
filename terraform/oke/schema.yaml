@@ -65,7 +65,6 @@ variableGroups:
     visible:
       and:
         - enable_helm_release
-        - not: livelab_switch
 
 variables:
 
