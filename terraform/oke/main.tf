@@ -31,7 +31,7 @@ module "policy_and_dynamic-group" {
   oke_compartment_ocid             = var.oke_compartment_ocid
   oke_cluster_ocid                 = var.oke_cluster_ocid
 
-  #count = var.opt_create_dynamicGroup_and_policies && !var.livelab_switch ? 1 : 0
+  count = var.opt_create_dynamicGroup_and_policies && !var.livelab_switch ? 1 : 0
 
   providers = {
     oci = oci.home_region
