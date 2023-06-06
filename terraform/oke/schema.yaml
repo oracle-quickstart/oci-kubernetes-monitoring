@@ -124,7 +124,8 @@ variables:
     visible:
       and:
         - enable_helm_release
-        - not: livelab_switch
+        - not: 
+          - livelab_switch
 
   # Compartment for creating dashboards and logGroup
   oci_la_compartment_ocid:
@@ -142,7 +143,8 @@ variables:
     visible:
       and:
         - enable_helm_release
-        - not: livelab_switch
+        - not: 
+          - livelab_switch
 
   # OCI Logging Analytics LogGroup OCID of existing LogGroup
   oci_la_logGroup_id:
@@ -180,7 +182,8 @@ variables:
     required: true
     pattern: '^/[\w- /]*$'
     visible:
-      not: livelab_switch
+      not: 
+        - livelab_switch
 
   ####
   ##  Pre-requisites
