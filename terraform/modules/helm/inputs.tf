@@ -83,6 +83,11 @@ variable "macs_agent_image_url" {
   default = "container-registry.oracle.com/oci_observability_management/oci-management-agent:1.0.0"
 }
 
+variable "deploy_metric_server" {
+  type    = bool
+  default = true
+}
+
 ####
 ##  livelab
 ####

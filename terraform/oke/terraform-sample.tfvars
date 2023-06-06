@@ -35,6 +35,9 @@ oke_cluster_ocid = ""
 # Change this, if you want to deploy in a custom namespace
 kubernetes_namespace = "oci-onm"
 
+# Option to control metric server installation as part of helm release
+deploy_metric_server = true
+
 # Compartment for creating dashboards and saved-searches  and logGroup
 oci_la_compartment_ocid = ""
 

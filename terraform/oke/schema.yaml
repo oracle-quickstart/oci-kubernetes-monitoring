@@ -50,6 +50,7 @@ variableGroups:
   - title: "OCI Observability & Management Services Configuration"
     description: "See: https://github.com/oracle-quickstart/oci-kubernetes-monitoring for list of resources created"
     variables:
+    - deploy_metric_server
     - oci_la_compartment_ocid
     - opt_create_new_la_logGroup
     - oci_la_logGroup_id
@@ -111,8 +112,19 @@ variables:
   #   required: true
 
   ####
-  ##  OCI Logging Analytics Information
+  ##  OCI Observability & Management Services Configuration
   ####
+  
+  # Option to enable/disable metric server installation during helm deployment
+  deploy_metric_server:
+    type: boolean
+    title: Enable Metric Server Installation
+    description: Uncheck this if Metric Server is already installed in your cluster.
+    default: true
+    visible:
+      and:
+        - enable_helm_release
+        - not: livelab_switch
 
   # Compartment for creating dashboards and logGroup
   oci_la_compartment_ocid:

@@ -172,3 +172,9 @@ variable "macs_agent_image_url" {
   type    = string
   default = "container-registry.oracle.com/oci_observability_management/oci-management-agent:1.0.0"
 }
+
+# Option to deploy metric server
+variable "deploy_metric_server" {
+  type    = bool
+  default = true
+}

@@ -74,9 +74,10 @@ module "helm_release" {
 
   installKeyFileContent = module.management_agent[0].Mgmtagent_Install_Key
   macs_agent_image_url  = var.macs_agent_image_url
+  deploy_metric_server  = var.livelab_switch ? true : var.deploy_metric_server
 
   deploy_mushop_config    = var.livelab_switch
   livelab_service_account = local.livelab_service_account
 
-  count = var.enable_helm_release && var.enable_helm_release ? 1 : 0
+  count = var.enable_helm_release ? 1 : 0
 }
