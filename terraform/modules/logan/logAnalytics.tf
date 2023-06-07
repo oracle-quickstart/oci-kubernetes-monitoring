@@ -1,16 +1,12 @@
 # Copyright (c) 2023, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-data "oci_objectstorage_namespace" "tenant_namespace" {
-  compartment_id = var.tenancy_ocid # tenancy ocid
-}
-
-data "oci_log_analytics_namespace" "la_namespace" {
-  namespace = data.oci_objectstorage_namespace.tenant_namespace.namespace
+data "oci_log_analytics_namespaces" "logan_namespaces" {
+    compartment_id = var.tenancy_ocid
 }
 
 locals {
-  oci_la_namespace         = data.oci_log_analytics_namespace.la_namespace.namespace
+  oci_la_namespace         = data.oci_log_analytics_namespaces.logan_namespaces.namespace_collection[0].items[0].namespace
   final_oci_la_logGroup_id = var.create_new_logGroup ? oci_log_analytics_log_analytics_log_group.new_log_group[0].id : var.existing_logGroup_id
 }
 
@@ -28,7 +24,7 @@ resource "oci_log_analytics_log_analytics_log_group" "new_log_group" {
 
   # lifecycle {
   #     precondition {
-  #         condition     = data.oci_log_analytics_namespace.tenant_namespace.is_onboarded == true
+  #         condition     = data.oci_log_analytics_namespaces.logan_namespaces.namespace_collection[0].items[0].is_onboarded == true
   #         error_message = "Tenancy is not on-boarded to OCI Logging Analytics Service in ${var.region} region."
   #     }
   # }
