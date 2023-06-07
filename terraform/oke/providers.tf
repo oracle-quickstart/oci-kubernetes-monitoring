@@ -28,26 +28,14 @@ provider "oci" {
   user_ocid        = var.user_ocid
 }
 
-data "oci_identity_region_subscriptions" "regions" {
-  tenancy_id = var.tenancy_ocid
-}
-
-locals {
-  home_region = [for s in data.oci_identity_region_subscriptions.regions.region_subscriptions : s.region_name if s.is_home_region == true][0]
-}
-
 provider "oci" {
   alias        = "home_region"
   tenancy_ocid = var.boat_auth ? var.boat_tenancy_ocid : var.tenancy_ocid
-  region       = local.home_region
+  region       = lookup(data.oci_identity_regions.home_region.regions[0], "name")
 
   private_key_path = var.private_key_path
   fingerprint      = var.fingerprint
   user_ocid        = var.user_ocid
-}
-
-data "oci_containerengine_cluster_kube_config" "oke" {
-  cluster_id = var.oke_cluster_ocid
 }
 
 locals {
