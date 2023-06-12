@@ -25,7 +25,7 @@ locals {
     #oci-onm-mgmt-agent
     "oci-onm-mgmt-agent.mgmtagent.installKeyFileContent" = var.installKeyFileContent
     "oci-onm-mgmt-agent.mgmtagent.image.url"             = var.macs_agent_image_url
-    "oci-onm-mgmt-agent.deployMetricServer" =  var.deploy_metric_server
+    "oci-onm-mgmt-agent.deployMetricServer"              = var.deploy_metric_server
   }
 
   mushop_helm_inputs = {

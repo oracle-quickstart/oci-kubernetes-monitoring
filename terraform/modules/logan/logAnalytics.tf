@@ -2,7 +2,7 @@
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 data "oci_log_analytics_namespaces" "logan_namespaces" {
-    compartment_id = var.tenancy_ocid
+  compartment_id = var.tenancy_ocid
 }
 
 locals {
