@@ -178,8 +178,9 @@ Launch OCI Resource Manager Stack in OCI Tenancy and Region of the OKE Cluster, 
   
 #### Kubectl
 
-While the recommended approach for installation is through helm, if you intend to use `kubectl` based installation, then the resource yaml files can still be generated through `helm` using the instructions provided below.
-  
+<details>
+  <summary>While the recommended approach for installation is through helm, if you intend to use `kubectl` based installation, then the resource yaml files can still be generated through `helm` using the instructions provided below.</summary>  
+
 ##### 0 Pre-requisites
 
 * Workstation or OCI Cloud Shell with access configured to the target k8s cluster.
@@ -233,6 +234,8 @@ Use `kubectl` tool to apply the yaml files generated in the previous step in the
 ##### 3.c Import Dashboards
 
 Refer [here](#3c-import-dashboards).
+  
+</details>  
 
 ### Upgrading to a major version
 
@@ -275,6 +278,9 @@ We recommend you to uninstall the release created using 2.x chart and follow the
 If you have modified values.yaml provided in helm chart directly, we recommend you to identify all the changes and move them to override_values.yaml and follow the instructions provided in install or upgrade sections under [this](#helm). We recommend you to use override_values.yaml for updating values for any variables or to incorporate any customisations on top of existing values.yaml.
   
 If you are already using a separate values.yaml for your customisations, you still need to compare 2.x vs 3.x variable heirarchy and make the necessary changes accordingly. 
+  
+<details>
+  <summary>Examples</summary>
   
 ##### Example 1: Using docker runtime instead of default runtime (cri)
   
@@ -336,6 +342,8 @@ If you are already using a separate values.yaml for your customisations, you sti
     ...
   
   *The difference is all about moving the required configuration (variable definitions) under oci-onm-logan section appropriately.*
+  
+</details>  
   
 ## Getting Help
 
