@@ -68,7 +68,7 @@ fluentd_baseDir_path = "/var/log"
 enable_dashboard_import = false
 enable_helm_release     = false
 enable_helm_template         = false
-enable_macs             = false
+enable_mgmt_agent             = false
 
 
 

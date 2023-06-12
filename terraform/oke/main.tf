@@ -39,7 +39,7 @@ module "management_agent" {
   uniquifier       = md5(var.oke_cluster_ocid)
   compartment_ocid = var.oci_la_compartment_ocid
 
-  count = var.enable_macs ? 1 : 0
+  count = var.enable_mgmt_agent ? 1 : 0
 }
 
 // Create Logging Analytics Resorces

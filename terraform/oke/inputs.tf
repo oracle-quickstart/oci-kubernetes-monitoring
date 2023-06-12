@@ -90,7 +90,9 @@ variable "enable_dashboard_import" {
   default = true
 }
 
-variable "enable_macs" {
+# Enable/Disable Management Agent module
+# - must be enabled for helm release
+variable "enable_mgmt_agent" {
   type    = bool
   default = true
 }
