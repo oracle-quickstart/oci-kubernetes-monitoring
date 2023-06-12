@@ -5,7 +5,7 @@
 ## Switches
 ####
 
-variable "skip_helm_apply" {
+variable "enable_helm_template" {
   type    = bool
   default = false
 }
@@ -14,9 +14,9 @@ variable "skip_helm_apply" {
 ##  Helm chart
 ####
 
+# Absoulte path to helm chart directory
 variable "helm_abs_path" {
   type        = string
-  description = "Absoulte path of helm chart"
 }
 
 ####
@@ -70,10 +70,10 @@ variable "fluentd_baseDir_path" {
 }
 
 ####
-##  MACS Configuration
+##  Management Agent Configuration
 ####
 
-variable "installKeyFileContent" {
+variable "mgmt_agent_install_key_content" {
   type = string
 }
 

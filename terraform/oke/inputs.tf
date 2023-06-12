@@ -39,12 +39,13 @@ variable "fingerprint" {
 ## Stack Variable - Auto-pupulated while running RM Stack
 ####
 
-// Stack compartment
+# Stack compartment - where marketplace app / Resoruce Manager stack is executed
 variable "compartment_ocid" {
   type    = string
   default = ""
 }
 
+# OCID of user running the marketplace app / Resoruce Manager stack
 variable "current_user_ocid" {
   type = string
 }
@@ -53,30 +54,37 @@ variable "current_user_ocid" {
 ## Boat configuration
 ####
 
+# Option to enable BOAT authentication. Used for running stack in non-prod/test tenants.
 variable "boat_auth" {
   type    = bool
   default = false
 }
 
+# OCID of BOAT tenancy. Used for running stack in non-prod/test tenants.
 variable "boat_tenancy_ocid" {
   type    = string
   default = ""
 }
 
 ####
-## Switches
+## Switches - These inputs are meant to be used for development purpose only. Leave it to default values for production use.
 ####
 
+# Enable/Disable helm module 
 variable "enable_helm_release" {
   type    = bool
   default = true
 }
 
-variable "skip_helm_apply" {
+# Enable/Disable helm template. When set as true, 
+# - helm module will generate template file inside ../modules/helm/local directory
+# - Setting this to true disables/skips the helm release
+variable "enable_helm_template" {
   type    = bool
   default = false
 }
 
+# Enable/Disable logan dashboards module
 variable "enable_dashboard_import" {
   type    = bool
   default = true
@@ -161,7 +169,6 @@ variable "container_image_url" {
   type    = string
   default = "container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.0.0"
 }
-
 
 ####
 ##  Management Agent Configuration

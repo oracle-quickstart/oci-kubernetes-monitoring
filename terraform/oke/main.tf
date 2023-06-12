@@ -57,7 +57,7 @@ module "loggingAnalytics" {
 module "helm_release" {
   source          = "./modules/helm"
   helm_abs_path   = abspath("./charts/oci-onm")
-  skip_helm_apply = var.skip_helm_apply
+  enable_helm_template = var.enable_helm_template
 
   oke_compartment_ocid = var.oke_compartment_ocid
   oke_cluster_ocid     = var.oke_cluster_ocid
@@ -68,7 +68,7 @@ module "helm_release" {
   oci_la_namespace     = module.loggingAnalytics.oci_la_namespace
   fluentd_baseDir_path = local.fluentd_baseDir_path
 
-  installKeyFileContent = module.management_agent[0].Mgmtagent_Install_Key
+  mgmt_agent_install_key_content = module.management_agent[0].mgmt_agent_install_key_content
   macs_agent_image_url  = var.macs_agent_image_url
   deploy_metric_server  = var.livelab_switch ? true : var.deploy_metric_server
 

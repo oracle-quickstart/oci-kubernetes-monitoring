@@ -24,7 +24,7 @@ variableGroups:
       - user_ocid
       - private_key_path
       - fingerprint
-      - skip_helm_apply
+      - enable_helm_template
       - enable_dashboard_import
       - enable_helm_release
       - enable_macs

@@ -2,6 +2,6 @@
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 # Management Agent Install Key
-output "Mgmtagent_Install_Key" {
+output "mgmt_agent_install_key_content" {
   value = local.inputRspFileContent
 }

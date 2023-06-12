@@ -23,7 +23,7 @@ locals {
     "oci-onm-logan.fluentd.baseDir"       = var.fluentd_baseDir_path
 
     #oci-onm-mgmt-agent
-    "oci-onm-mgmt-agent.mgmtagent.installKeyFileContent" = var.installKeyFileContent
+    "oci-onm-mgmt-agent.mgmtagent.installKeyFileContent" = var.mgmt_agent_install_key_content
     "oci-onm-mgmt-agent.mgmtagent.image.url"             = var.macs_agent_image_url
     "oci-onm-mgmt-agent.deployMetricServer"              = var.deploy_metric_server
   }
@@ -61,7 +61,7 @@ resource "helm_release" "oci-kubernetes-monitoring" {
     }
   }
 
-  count = var.skip_helm_apply ? 0 : 1
+  count = var.enable_helm_template ? 0 : 1
 }
 
 data "helm_template" "oci-kubernetes-monitoring" {
@@ -87,12 +87,12 @@ data "helm_template" "oci-kubernetes-monitoring" {
     }
   }
 
-  count = var.skip_helm_apply ? 1 : 0
+  count = var.enable_helm_template ? 1 : 0
 }
 
 # Helm release artifacts for local testing and validation. Not used by helm resource.
 resource "local_file" "helm_release" {
   content  = tostring(data.helm_template.oci-kubernetes-monitoring[0].manifest)
   filename = "${path.module}/local/helmrelease.yaml"
-  count    = var.skip_helm_apply ? 1 : 0
+  count    = var.enable_helm_template ? 1 : 0
 }
