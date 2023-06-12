@@ -26,7 +26,7 @@ locals {
   cluster_region         = yamldecode(data.oci_containerengine_cluster_kube_config.oke.content)["users"][0]["user"]["exec"]["args"][6]
 
   home_region_key = data.oci_identity_tenancy.tenant_details.home_region_key
-  home_region     = [for r in data.oci_identity_regions.region_map.regions : r.name if r.key == local.home_region_key][0]
+  home_region     = var.livelab_switch ? "us-phoenix-1" : [for r in data.oci_identity_regions.region_map.regions : r.name if r.key == local.home_region_key][0]
 }
 
 provider "oci" {
