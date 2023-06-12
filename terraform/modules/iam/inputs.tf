@@ -6,8 +6,8 @@ variable "root_compartment_ocid" {
   type = string
 }
 
-# Compartment of OCI Logging Analytics LogGroup
-variable "oci_la_logGroup_compartment_ocid" {
+# Compartment for OCI O&M service resources
+variable "oci_onm_compartment_ocid" {
   type = string
 }
 

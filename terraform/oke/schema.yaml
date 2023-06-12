@@ -51,7 +51,7 @@ variableGroups:
     description: "See: https://github.com/oracle-quickstart/oci-kubernetes-monitoring for list of resources created"
     variables:
     - deploy_metric_server
-    - oci_la_compartment_ocid
+    - oci_onm_compartment_ocid
     - opt_create_new_la_logGroup
     - oci_la_logGroup_id
     - oci_la_logGroup_name
@@ -127,8 +127,8 @@ variables:
         - not: 
           - livelab_switch
 
-  # Compartment for creating dashboards and logGroup
-  oci_la_compartment_ocid:
+  # Compartment for creating OCI O&M resources
+  oci_onm_compartment_ocid:
     type: oci:identity:compartment:id
     required: true
     title: Select compartment for Logging Analytics, Management Agent, and Monitoring service resources
@@ -150,7 +150,7 @@ variables:
   oci_la_logGroup_id:
     type: oci:logan:loggroup:id
     dependsOn:
-      compartmentId: ${oci_la_compartment_ocid}
+      compartmentId: ${oci_onm_compartment_ocid}
     title: OCI Logging Analytics Log Group
     description: Log Groups are logical containers for log data, and provide access control for your data using IAM Policies
     required: true

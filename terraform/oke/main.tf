@@ -13,7 +13,7 @@ locals {
 // Import Kubernetes Dashboards
 module "import_kubernetes_dashbords" {
   source           = "./modules/dashboards"
-  compartment_ocid = var.oci_la_compartment_ocid
+  compartment_ocid = var.oci_onm_compartment_ocid
 
   count = var.enable_dashboard_import ? 1 : 0
 }
@@ -23,7 +23,7 @@ module "import_kubernetes_dashbords" {
 module "policy_and_dynamic-group" {
   source                           = "./modules/iam"
   root_compartment_ocid            = var.tenancy_ocid
-  oci_la_logGroup_compartment_ocid = var.oci_la_compartment_ocid
+  oci_onm_compartment_ocid = var.oci_onm_compartment_ocid
   oke_compartment_ocid             = var.oke_compartment_ocid
   oke_cluster_ocid                 = var.oke_cluster_ocid
 
@@ -37,7 +37,7 @@ module "policy_and_dynamic-group" {
 module "management_agent" {
   source           = "./modules/mgmt_agent"
   uniquifier       = md5(var.oke_cluster_ocid)
-  compartment_ocid = var.oci_la_compartment_ocid
+  compartment_ocid = var.oci_onm_compartment_ocid
 
   count = var.enable_mgmt_agent ? 1 : 0
 }
@@ -48,7 +48,7 @@ module "loggingAnalytics" {
   tenancy_ocid         = var.tenancy_ocid
   create_new_logGroup  = var.opt_create_new_la_logGroup
   new_logGroup_name    = var.oci_la_logGroup_name
-  compartment_ocid     = var.oci_la_compartment_ocid
+  compartment_ocid     = var.oci_onm_compartment_ocid
   existing_logGroup_id = var.oci_la_logGroup_id
 }
 

@@ -130,11 +130,11 @@ variable "kubernetes_namespace" {
 }
 
 ####
-##  OCI Logging Analytics Information
+##  OCI O&M Information
 ####
 
-# Compartment for creating logging analytics LogGroup and Dashboards
-variable "oci_la_compartment_ocid" {
+# Compartment for creating OCI O&M resources
+variable "oci_onm_compartment_ocid" {
   type    = string
   default = ""
 }

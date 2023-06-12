@@ -39,7 +39,7 @@ kubernetes_namespace = "oci-onm"
 deploy_metric_server = true
 
 # Compartment for creating dashboards and saved-searches  and logGroup
-oci_la_compartment_ocid = ""
+oci_onm_compartment_ocid = ""
 
 # if ture, oci_la_logGroup_name must be set
 opt_create_new_la_logGroup = false
