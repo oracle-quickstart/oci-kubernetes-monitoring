@@ -13,12 +13,12 @@ locals {
     # global
     "global.namespace"           = var.deploy_mushop_config ? "livelab-test" : var.kubernetes_namespace
     "global.kubernetesClusterID" = var.oke_cluster_ocid
+    "global.kubernetesClusterName" = local.oke_cluster_name    
 
     # oci-onm-logan
     "oci-onm-logan.ociLANamespace"        = var.oci_la_namespace
     "oci-onm-logan.ociLALogGroupID"       = var.oci_la_logGroup_id
     "oci-onm-logan.image.url"             = var.container_image_url
-    "oci-onm-logan.kubernetesClusterName" = local.oke_cluster_name
     "oci-onm-logan.image.url"             = var.container_image_url
     "oci-onm-logan.fluentd.baseDir"       = var.fluentd_baseDir_path
 
