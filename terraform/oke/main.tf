@@ -15,17 +15,17 @@ module "import_kubernetes_dashbords" {
   source           = "./modules/dashboards"
   compartment_ocid = var.oci_onm_compartment_ocid
 
-  count = var.enable_dashboard_import ? 1 : 0
+  count = var.enable_dashboard_module ? 1 : 0
 }
 
 // Create Required Polcies and Dynamic Group
 // Needs to be called with OCI Home Region Provider
 module "policy_and_dynamic-group" {
-  source                           = "./modules/iam"
-  root_compartment_ocid            = var.tenancy_ocid
+  source                   = "./modules/iam"
+  root_compartment_ocid    = var.tenancy_ocid
   oci_onm_compartment_ocid = var.oci_onm_compartment_ocid
-  oke_compartment_ocid             = var.oke_compartment_ocid
-  oke_cluster_ocid                 = var.oke_cluster_ocid
+  oke_compartment_ocid     = var.oke_compartment_ocid
+  oke_cluster_ocid         = var.oke_cluster_ocid
 
   count = var.opt_create_dynamicGroup_and_policies && !var.livelab_switch ? 1 : 0
 
@@ -39,7 +39,7 @@ module "management_agent" {
   uniquifier       = md5(var.oke_cluster_ocid)
   compartment_ocid = var.oci_onm_compartment_ocid
 
-  count = var.enable_mgmt_agent ? 1 : 0
+  count = var.enable_mgmt_agent_module ? 1 : 0
 }
 
 // Create Logging Analytics Resorces
@@ -55,25 +55,25 @@ module "loggingAnalytics" {
 
 // deploy oke-monitoring solution (helm release)
 module "helm_release" {
-  source          = "./modules/helm"
-  helm_abs_path   = abspath("./charts/oci-onm")
-  enable_helm_template = var.enable_helm_template
+  source                 = "./modules/helm"
+  helm_abs_path          = abspath("./charts/oci-onm")
+  generate_helm_template = var.generate_helm_template
 
-  oke_compartment_ocid = var.oke_compartment_ocid
-  oke_cluster_ocid     = var.oke_cluster_ocid
-  logan_container_image_url  = var.logan_container_image_url
-  kubernetes_namespace = var.kubernetes_namespace
+  oke_compartment_ocid      = var.oke_compartment_ocid
+  oke_cluster_ocid          = var.oke_cluster_ocid
+  logan_container_image_url = var.logan_container_image_url
+  kubernetes_namespace      = var.kubernetes_namespace
 
   oci_la_logGroup_id   = module.loggingAnalytics.oci_la_logGroup_ocid
   oci_la_namespace     = module.loggingAnalytics.oci_la_namespace
   fluentd_baseDir_path = local.fluentd_baseDir_path
 
   mgmt_agent_install_key_content = module.management_agent[0].mgmt_agent_install_key_content
-  mgmt_agent_container_image_url  = var.mgmt_agent_container_image_url
-  deploy_metric_server  = var.livelab_switch ? true : var.deploy_metric_server
+  mgmt_agent_container_image_url = var.mgmt_agent_container_image_url
+  deploy_metric_server           = var.livelab_switch ? true : var.deploy_metric_server
 
   deploy_mushop_config    = var.livelab_switch
   livelab_service_account = local.livelab_service_account
 
-  count = var.enable_helm_release ? 1 : 0
+  count = var.enable_helm_module ? 1 : 0
 }

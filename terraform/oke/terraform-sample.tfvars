@@ -65,10 +65,10 @@ fluentd_baseDir_path = "/var/log"
 ## Optional Switches
 ####
 
-enable_dashboard_import = false
-enable_helm_release     = false
-enable_helm_template         = false
-enable_mgmt_agent             = false
+enable_dashboard_module  = false
+enable_helm_module       = false
+generate_helm_template   = false
+enable_mgmt_agent_module = false
 
 
 

@@ -24,10 +24,10 @@ variableGroups:
       - user_ocid
       - private_key_path
       - fingerprint
-      - enable_helm_template
-      - enable_dashboard_import
-      - enable_helm_release
-      - enable_mgmt_agent
+      - generate_helm_template
+      - enable_dashboard_module
+      - enable_helm_module
+      - enable_mgmt_agent_module
       - boat_auth
       - boat_tenancy_ocid
       - compartment_ocid
@@ -45,7 +45,7 @@ variableGroups:
       - oke_cluster_ocid
     visible:
       and:
-        - enable_helm_release
+        - enable_helm_module
 
   - title: "OCI Observability & Management Services Configuration"
     description: "See: https://github.com/oracle-quickstart/oci-kubernetes-monitoring for list of resources created"
@@ -58,14 +58,14 @@ variableGroups:
     - fluentd_baseDir_path
     visible:
       and:
-        - enable_helm_release
+        - enable_helm_module
 
   - title: "OCI IAM Policies and Dynaimic Groups (Optional)"
     variables:
       - opt_create_dynamicGroup_and_policies
     visible:
       and:
-        - enable_helm_release
+        - enable_helm_module
 
 variables:
 
@@ -74,7 +74,7 @@ variables:
   ####
 
   # Option to install helm chart
-  # enable_helm_release:
+  # enable_helm_module:
   #   type: boolean
   #   title: Deploy Kubernetes Monitoring Solution
   #   description: "Ref: https://github.com/oracle-quickstart/oci-kubernetes-monitoring"
@@ -123,7 +123,7 @@ variables:
     default: true
     visible:
       and:
-        - enable_helm_release
+        - enable_helm_module
         - not: 
           - livelab_switch
 
@@ -142,7 +142,7 @@ variables:
     default: false
     visible:
       and:
-        - enable_helm_release
+        - enable_helm_module
         - not: 
           - livelab_switch
 

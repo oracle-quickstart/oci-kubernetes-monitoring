@@ -7,7 +7,7 @@
 ####
 
 # Enable/Disable helm module 
-variable "enable_helm_release" {
+variable "enable_helm_module" {
   type    = bool
   default = true
 }
@@ -15,20 +15,20 @@ variable "enable_helm_release" {
 # Enable/Disable helm template. When set as true, 
 # - helm module will generate template file inside ../modules/helm/local directory
 # - Setting this to true disables/skips the helm release
-variable "enable_helm_template" {
+variable "generate_helm_template" {
   type    = bool
   default = false
 }
 
 # Enable/Disable logan dashboards module
-variable "enable_dashboard_import" {
+variable "enable_dashboard_module" {
   type    = bool
   default = true
 }
 
 # Enable/Disable Management Agent module
 # - must be enabled for helm release
-variable "enable_mgmt_agent" {
+variable "enable_mgmt_agent_module" {
   type    = bool
   default = true
 }
