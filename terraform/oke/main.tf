@@ -35,7 +35,7 @@ module "policy_and_dynamic-group" {
 }
 
 module "management_agent" {
-  source           = "./modules/macs"
+  source           = "./modules/mgmt_agent"
   uniquifier       = md5(var.oke_cluster_ocid)
   compartment_ocid = var.oci_la_compartment_ocid
 
