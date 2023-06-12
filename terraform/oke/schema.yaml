@@ -31,8 +31,8 @@ variableGroups:
       - boat_auth
       - boat_tenancy_ocid
       - compartment_ocid
-      - container_image_url
-      - macs_agent_image_url
+      - logan_container_image_url
+      - mgmt_agent_container_image_url
       - kubernetes_namespace
       - current_user_ocid
       - livelab_switch

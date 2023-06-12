@@ -61,7 +61,7 @@ module "helm_release" {
 
   oke_compartment_ocid = var.oke_compartment_ocid
   oke_cluster_ocid     = var.oke_cluster_ocid
-  container_image_url  = var.container_image_url
+  logan_container_image_url  = var.logan_container_image_url
   kubernetes_namespace = var.kubernetes_namespace
 
   oci_la_logGroup_id   = module.loggingAnalytics.oci_la_logGroup_ocid
@@ -69,7 +69,7 @@ module "helm_release" {
   fluentd_baseDir_path = local.fluentd_baseDir_path
 
   mgmt_agent_install_key_content = module.management_agent[0].mgmt_agent_install_key_content
-  macs_agent_image_url  = var.macs_agent_image_url
+  mgmt_agent_container_image_url  = var.mgmt_agent_container_image_url
   deploy_metric_server  = var.livelab_switch ? true : var.deploy_metric_server
 
   deploy_mushop_config    = var.livelab_switch
