@@ -67,7 +67,8 @@ variable "boat_tenancy_ocid" {
 }
 
 ####
-## Switches - These inputs are meant to be used for development purpose only. Leave it to default values for production use.
+## Switches - These inputs are meant to be used for development purpose only
+## Leave it to default for production use
 ####
 
 # Enable/Disable helm module 
