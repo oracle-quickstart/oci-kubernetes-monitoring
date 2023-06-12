@@ -11,15 +11,15 @@ locals {
 
   helm_inputs = {
     # global
-    "global.namespace"           = var.deploy_mushop_config ? "livelab-test" : var.kubernetes_namespace
-    "global.kubernetesClusterID" = var.oke_cluster_ocid
-    "global.kubernetesClusterName" = local.oke_cluster_name    
+    "global.namespace"             = var.deploy_mushop_config ? "livelab-test" : var.kubernetes_namespace
+    "global.kubernetesClusterID"   = var.oke_cluster_ocid
+    "global.kubernetesClusterName" = local.oke_cluster_name
 
     # oci-onm-logan
-    "oci-onm-logan.ociLANamespace"        = var.oci_la_namespace
-    "oci-onm-logan.ociLALogGroupID"       = var.oci_la_logGroup_id
-    "oci-onm-logan.image.url"             = var.logan_container_image_url
-    "oci-onm-logan.fluentd.baseDir"       = var.fluentd_baseDir_path
+    "oci-onm-logan.ociLANamespace"  = var.oci_la_namespace
+    "oci-onm-logan.ociLALogGroupID" = var.oci_la_logGroup_id
+    "oci-onm-logan.image.url"       = var.logan_container_image_url
+    "oci-onm-logan.fluentd.baseDir" = var.fluentd_baseDir_path
 
     #oci-onm-mgmt-agent
     "oci-onm-mgmt-agent.mgmtagent.installKeyFileContent" = var.mgmt_agent_install_key_content
@@ -60,7 +60,7 @@ resource "helm_release" "oci-kubernetes-monitoring" {
     }
   }
 
-  count = var.enable_helm_template ? 0 : 1
+  count = var.generate_helm_template ? 0 : 1
 }
 
 data "helm_template" "oci-kubernetes-monitoring" {
@@ -86,12 +86,12 @@ data "helm_template" "oci-kubernetes-monitoring" {
     }
   }
 
-  count = var.enable_helm_template ? 1 : 0
+  count = var.generate_helm_template ? 1 : 0
 }
 
 # Helm release artifacts for local testing and validation. Not used by helm resource.
 resource "local_file" "helm_release" {
   content  = tostring(data.helm_template.oci-kubernetes-monitoring[0].manifest)
   filename = "${path.module}/local/helmrelease.yaml"
-  count    = var.enable_helm_template ? 1 : 0
+  count    = var.generate_helm_template ? 1 : 0
 }

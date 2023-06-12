@@ -5,7 +5,7 @@
 ## Switches
 ####
 
-variable "enable_helm_template" {
+variable "generate_helm_template" {
   type    = bool
   default = false
 }
@@ -16,7 +16,7 @@ variable "enable_helm_template" {
 
 # Absoulte path to helm chart directory
 variable "helm_abs_path" {
-  type        = string
+  type = string
 }
 
 ####

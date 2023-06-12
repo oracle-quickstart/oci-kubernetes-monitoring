@@ -3,8 +3,8 @@
 
 locals {
   # Compartments
-  oci_onm_compartment_name  = data.oci_identity_compartment.oci_onm_compartment.name
-  oke_compartment_name = data.oci_identity_compartment.oke_compartment.name
+  oci_onm_compartment_name = data.oci_identity_compartment.oci_onm_compartment.name
+  oke_compartment_name     = data.oci_identity_compartment.oke_compartment.name
 
   # Dynmaic Group
   uuid_dynamic_group            = md5(var.oke_cluster_ocid)
