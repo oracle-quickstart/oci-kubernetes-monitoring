@@ -67,38 +67,6 @@ variable "boat_tenancy_ocid" {
 }
 
 ####
-## Switches - These inputs are meant to be used for development purpose only
-## Leave it to default for production use
-####
-
-# Enable/Disable helm module 
-variable "enable_helm_release" {
-  type    = bool
-  default = true
-}
-
-# Enable/Disable helm template. When set as true, 
-# - helm module will generate template file inside ../modules/helm/local directory
-# - Setting this to true disables/skips the helm release
-variable "enable_helm_template" {
-  type    = bool
-  default = false
-}
-
-# Enable/Disable logan dashboards module
-variable "enable_dashboard_import" {
-  type    = bool
-  default = true
-}
-
-# Enable/Disable Management Agent module
-# - must be enabled for helm release
-variable "enable_mgmt_agent" {
-  type    = bool
-  default = true
-}
-
-####
 ##  Dynamic Group and Policies
 ####
 
