@@ -71,7 +71,7 @@ module "helm_release" {
 
   mgmt_agent_install_key_content = module.management_agent[0].mgmt_agent_install_key_content
   mgmt_agent_container_image_url = var.mgmt_agent_container_image_url
-  opt_deploy_metric_server       = var.livelab_switch ? true : var.opt_deploy_metric_server
+  opt_deploy_metric_server       = var.livelab_switch ? false : var.opt_deploy_metric_server
 
   is_livelab       = var.livelab_switch
   livelab_username = local.livelab_username
