@@ -2,8 +2,8 @@
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 title: OCI Kubernetes Monitoring Solution
-description: OCI Kubernetes Monitoring Solution is a turn-key Kubernetes monitoring and management package based on OCI Logging Analytics cloud service, OCI Monitoring, OCI Management Agent.
-informationalText: OCI Kubernetes Monitoring Solution is a turn-key Kubernetes monitoring and management package based on OCI Logging Analytics cloud service, OCI Monitoring, OCI Management Agent.
+description: Monitoring Solution for Kubernetes offered by OCI Logging Analytics
+informationalText: Monitoring Solution for Kubernetes offered by OCI Logging Analytics
 schemaVersion: 1.1.0
 version: "20221004"
 
@@ -33,34 +33,40 @@ variableGroups:
       - compartment_ocid
     visible: false
 
-  - title: "Select an OKE Cluster deployed in this region to start monitoring"
-    description: "Use CLI (Helm) if your cluster does not have public API Endpoint or restricted from accessing container-registry.oracle.com. See: https://github.com/oracle-quickstart/oci-kubernetes-monitoring"
-    variables:
-      - oke_compartment_ocid
-      - oke_cluster_ocid
-    visible:
-      and:
-        - enable_helm_release
-
-  - title: "OCI Observability & Management Services Configuration"
-    description: "See: https://github.com/oracle-quickstart/oci-kubernetes-monitoring for list of resources created"
-    variables:
-    - oci_la_compartment_ocid
-    - opt_create_new_la_logGroup
-    - oci_la_logGroup_id
-    - oci_la_logGroup_name
-    - fluentd_baseDir_path
-    visible:
-      and:
-        - enable_helm_release
-
-  - title: "OCI IAM Policies and Dynaimic Groups (Optional)"
+  - title: "Pre-requisites"
     variables:
       - opt_create_dynamicGroup_and_policies
     visible:
       and:
         - enable_helm_release
 
+  - title: "OKE Cluster Information"
+    variables:
+      - oke_compartment_ocid
+      - oke_cluster_ocid
+      - kubernetes_namespace
+      - opt_create_kubernetes_namespace
+    visible:
+      and:
+        - enable_helm_release
+
+  - title: "OCI Logging Analytics Information"
+    variables:
+    - oci_la_compartment_ocid
+    - opt_create_new_la_logGroup
+    - oci_la_logGroup_id
+    - oci_la_logGroup_name
+    visible:
+      and:
+        - enable_helm_release
+
+  - title: "Fluentd Configuration"
+    variables:
+      - container_image_url
+      - fluentd_baseDir_path
+    visible:
+      and:
+        - enable_helm_release
 
 variables:
 
@@ -83,10 +89,10 @@ variables:
   # Option to create Dynamic Group and Policies
   opt_create_dynamicGroup_and_policies:
     type: boolean
-    title: Check to create Dynamic Group and Policies required for deploying monitoring solution
+    title: Create Dynamic Group and Policies required for Kubernetes Monitoring Solution (Un-check if created manually)
     #description: "Ref: https://github.com/oracle-quickstart/oci-kubernetes-monitoring#pre-requisites"
-    description: "Note: The dynamic group definition must be updated, if node pool(s) and OKE Cluster are in different compartments."
-    default: false
+    description: "Note: The auto-created dynamic group may need changes, if node pool(s) compartment is different than cluster compartment."
+    default: true
     required: true
 
   ####
@@ -97,7 +103,7 @@ variables:
   oke_compartment_ocid:
     type: oci:identity:compartment:id
     required: true
-    title: "Select OKE Cluster Compartment"
+    title: OKE Cluster Compartment
     default: compartment_ocid
 
   # OKE Cluster OCID
@@ -105,7 +111,7 @@ variables:
     type: oci:container:cluster:id
     dependsOn:
       compartmentId: ${oke_compartment_ocid}
-    title: Select OKE Cluster
+    title: OKE Cluster
     required: true
 
   # Kubernetes Namespace
@@ -135,14 +141,14 @@ variables:
   oci_la_compartment_ocid:
     type: oci:identity:compartment:id
     required: true
-    title: Select compartment for Logging Analytics, Management Agent, and Monitoring service resources
-    description: This compartment will be used for creating Dashboards, Log Groups, Entities, Management Agent Keys, Metrics Namespace etc. See https://github.com/oracle-quickstart/oci-kubernetes-monitoring for full list of resources.
+    title: OCI Logging Analytics Compartment
+    description: Compartment to store Logging Analytics dashboards and logGroup
     default: compartment_ocid
 
   # Option to create Logging Analytics
   opt_create_new_la_logGroup: # change this to create new log group
     type: boolean
-    title: Check if you want to create a new Log Group
+    title: Create a new LogGroup
     default: false
 
   # OCI Logging Analytics LogGroup OCID of existing LogGroup
@@ -150,8 +156,8 @@ variables:
     type: oci:logan:loggroup:id
     dependsOn:
       compartmentId: ${oci_la_compartment_ocid}
-    title: OCI Logging Analytics Log Group
-    description: Log Groups are logical containers for log data, and provide access control for your data using IAM Policies
+    title: OCI Logging Analytics LogGroup
+    description: LogGroup to store collected logs
     required: true
     visible:
       not:
@@ -163,8 +169,8 @@ variables:
     maxLength: 255
     minLength: 1
     required: true
-    title: "OCI Logging Analytics Log Group Name"
-    description: "Tip: Give a unique name which can be identified with your cluster name to make it easy to find in Dashboards and Logs Explorer"
+    title: "OCI Logging Analytics LogGroup Name"
+    description: "Note: LogGroup name must be unique in a tenant"
     visible:
       and:
         - opt_create_new_la_logGroup
@@ -190,8 +196,8 @@ variables:
     type: string
     maxLength: 255
     minLength: 1
-    title: FluentD Working Directory
-    description: A directory on the node (with read & write permission) to use for storing Fluentd related data
+    title: Fluentd Base Directory
+    description: Base directory on the node (with read & write permission) to store fluentd plugin's related data
     default: /var/log
     required: true
     pattern: '^/[\w- /]*$'
