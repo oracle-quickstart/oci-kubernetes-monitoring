@@ -36,7 +36,7 @@ oke_cluster_ocid = ""
 kubernetes_namespace = "oci-onm"
 
 # Option to control metric server installation as part of helm release
-deploy_metric_server = true
+opt_deploy_metric_server = true
 
 # Compartment for creating dashboards and saved-searches  and logGroup
 oci_onm_compartment_ocid = ""

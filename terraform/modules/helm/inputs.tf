@@ -84,7 +84,7 @@ variable "mgmt_agent_container_image_url" {
 }
 
 # Option to control the metric server deployment inside kubernetes cluster
-variable "deploy_metric_server" {
+variable "opt_deploy_metric_server" {
   type    = bool
   default = true
 }

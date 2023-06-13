@@ -152,7 +152,7 @@ variable "mgmt_agent_container_image_url" {
 }
 
 # Option to deploy metric server
-variable "deploy_metric_server" {
+variable "opt_deploy_metric_server" {
   type    = bool
   default = true
 }
