@@ -1,6 +1,15 @@
 # Change Log
 
-## 2022-02-07
+## 2023-06-14
+### Added
+- Kubernetes Metrics Collection to OCI Monitoring using OCI Management Agent.
+- Support for Kubernetes Service and EndpointSlice Object logs collection.
+### Changed
+- Refactoring of helm chart, terraform and stack/market place app to support the consolidation of logs, objects and metrics collection.
+### Breaking Changes
+- The refactoring work done in this version, may cause issues if you upgrade to this version (v3.0.0) from previous versions. Refer [README.md#2x-to-3x](here) for further details. 
+
+## 2023-02-07
 ### Added
 - Create a new mount (rw) using the value provided for baseDir.
 - Expose "encoding" parameter of Fluentd's tail plugin as part of values.yaml, which allows users to override default encoding (ASCII-8BIT) for applicable logs/log types.
