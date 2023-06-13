@@ -6,7 +6,7 @@ variable "root_compartment_ocid" {
   type = string
 }
 
-# Compartment for OCI O&M service resources
+# Compartment for OCI Observability and Management service resources
 variable "oci_onm_compartment_ocid" {
   type = string
 }
