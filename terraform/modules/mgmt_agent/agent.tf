@@ -3,7 +3,7 @@
 
 locals {
   installKey          = oci_management_agent_management_agent_install_key.Kubernetes_AgentInstallKey.key
-  inputRspFileContent = base64encode(join("\n", ["ManagementAgentInstallKey = ${local.installKey}", "AgentDisplayName = k8_mgmt__agent-${var.uniquifier}"]))
+  inputRspFileContent = base64encode(join("\n", ["ManagementAgentInstallKey = ${local.installKey}", "AgentDisplayName = k8_mgmt_agent-${var.uniquifier}"]))
 }
 
 resource "oci_management_agent_management_agent_install_key" "Kubernetes_AgentInstallKey" {
