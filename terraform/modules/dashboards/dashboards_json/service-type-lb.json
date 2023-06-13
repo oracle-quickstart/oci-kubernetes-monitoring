@@ -14,8 +14,8 @@
             "CreatedOn": "2023-05-15T20:52:06.134Z"
           }
         },
-        "description": "Kubernetes Monitoring Dashboard",
-        "displayName": "Kubernetes Services (Type: Load Balancer)_copy",
+        "description": "Kubernetes Services (Type: Load Balancer)",
+        "displayName": "Kubernetes Services (Type: Load Balancer)",
         "drilldownConfig": [],
         "featuresConfig": {
           "crossService": {
