@@ -4,10 +4,10 @@
 locals {
   ## livelab
   oci_username     = data.oci_identity_user.livelab_user.name
-  livelab_username = local.oci_username
+  livelab_user_id = lower(local.oci_username)
 
   ## Helm release
-  fluentd_baseDir_path = var.livelab_switch ? "/var/log/${local.oci_username}" : var.fluentd_baseDir_path
+  fluentd_baseDir_path = var.livelab_switch ? "/var/log/${local.livelab_user_id}" : var.fluentd_baseDir_path
 }
 
 // Import Kubernetes Dashboards
@@ -74,7 +74,7 @@ module "helm_release" {
   opt_deploy_metric_server       = var.livelab_switch ? false : var.opt_deploy_metric_server
 
   is_livelab       = var.livelab_switch
-  livelab_username = local.livelab_username
+  livelab_user_id = local.livelab_user_id
 
   count = var.enable_helm_module ? 1 : 0
 }

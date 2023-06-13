@@ -11,7 +11,7 @@ locals {
 
   helm_inputs = {
     # global
-    "global.namespace"             = var.is_livelab ? var.livelab_username : var.kubernetes_namespace
+    "global.namespace"             = var.is_livelab ? var.livelab_user_id : var.kubernetes_namespace
     "global.kubernetesClusterID"   = var.oke_cluster_ocid
     "global.kubernetesClusterName" = local.oke_cluster_name
 
@@ -30,7 +30,7 @@ locals {
   mushop_helm_inputs = {
     # oci-onm-logan
     "createServiceAccount" = false
-    "serviceAccount"       = var.livelab_username
+    "serviceAccount"       = var.livelab_user_id
   }
 
 }

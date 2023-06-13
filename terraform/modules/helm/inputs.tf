@@ -99,8 +99,8 @@ variable "is_livelab" {
   default = false
 }
 
-# Unique livelab username
-variable "livelab_username" {
+# Unique livelab user id
+variable "livelab_user_id" {
   type    = string
   default = ""
 }
