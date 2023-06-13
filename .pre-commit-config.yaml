@@ -17,10 +17,10 @@ repos:
       #  rev: v1.5.1
       #  hooks:
       #    - id: insert-license
-      #      exclude: '.*.md|.*.txt|.pre-commit-config.yaml'
+      #      exclude: '*.json|*.txt|.*.md|.*.txt|.pre-commit-config.yaml'
       #      args:
       #        - --license-filepath
-      #        - license-short.txt
+      #        - ./docs/license-short.txt
 - repo: https://github.com/norwoodj/helm-docs
   rev: v1.2.0
   hooks:
