@@ -39,7 +39,8 @@ module "management_agent" {
   uniquifier       = md5(var.oke_cluster_ocid)
   compartment_ocid = var.oci_onm_compartment_ocid
 
-  count = var.enable_mgmt_agent_module ? 1 : 0
+  # this module is only required in case of helm deployment
+  count = var.enable_helm_module ? 1 : 0
 }
 
 // Create Logging Analytics Resorces

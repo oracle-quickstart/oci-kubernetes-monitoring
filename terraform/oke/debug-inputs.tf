@@ -25,10 +25,3 @@ variable "enable_dashboard_module" {
   type    = bool
   default = true
 }
-
-# Enable/Disable Management Agent module
-# - must be enabled for helm release
-variable "enable_mgmt_agent_module" {
-  type    = bool
-  default = true
-}
