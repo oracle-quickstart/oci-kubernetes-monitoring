@@ -195,4 +195,14 @@ variables:
     #description: "Ref: https://github.com/oracle-quickstart/oci-kubernetes-monitoring#pre-requisites"
     description: "Note: The dynamic group definition must be updated, if node pool(s) and OKE Cluster are in different compartments."
     default: false
-    required: true    
+    required: true
+
+outputs:
+
+  livelab_button_link:
+    type: link
+    title: View Dashboard
+    displayText: View Dashboard
+    visible: false
+
+primaryOutputButton: ${livelab_button_link}
