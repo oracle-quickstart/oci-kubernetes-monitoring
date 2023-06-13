@@ -2,7 +2,7 @@
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 locals {
-  dashboards = ["cluster.json", "node.json", "pod.json", "workload.json"]
+  dashboards = ["cluster.json", "node.json", "pod.json", "workload.json", "service-type-lb.json"]
 }
 
 resource "oci_management_dashboard_management_dashboards_import" "multi_management_dashboards_import" {
