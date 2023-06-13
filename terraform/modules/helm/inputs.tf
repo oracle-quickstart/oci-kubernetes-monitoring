@@ -83,6 +83,7 @@ variable "mgmt_agent_container_image_url" {
   default = "container-registry.oracle.com/oci_observability_management/oci-management-agent:1.0.0"
 }
 
+# Option to control the metric server deployment inside kubernetes cluster
 variable "deploy_metric_server" {
   type    = bool
   default = true
@@ -92,11 +93,13 @@ variable "deploy_metric_server" {
 ##  livelab
 ####
 
+# Option to deploy mushop specific values.yaml (inputs)
 variable "deploy_mushop_config" {
   type    = bool
   default = false
 }
 
+# Service Account to be used when working on livelab cluster
 variable "livelab_service_account" {
   type    = string
   default = ""
