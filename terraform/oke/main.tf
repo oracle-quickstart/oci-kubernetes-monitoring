@@ -4,7 +4,7 @@
 locals {
   ## livelab
   oci_username            = data.oci_identity_user.livelab_user.name
-  livelab_service_account = local.oci_username
+  livelab_username = local.oci_username
 
   ## Helm release
   fluentd_baseDir_path = var.livelab_switch ? "/var/log/${local.oci_username}" : var.fluentd_baseDir_path
@@ -73,8 +73,8 @@ module "helm_release" {
   mgmt_agent_container_image_url = var.mgmt_agent_container_image_url
   opt_deploy_metric_server           = var.livelab_switch ? true : var.opt_deploy_metric_server
 
-  deploy_mushop_config    = var.livelab_switch
-  livelab_service_account = local.livelab_service_account
+  is_livelab    = var.livelab_switch
+  livelab_username = local.livelab_username
 
   count = var.enable_helm_module ? 1 : 0
 }

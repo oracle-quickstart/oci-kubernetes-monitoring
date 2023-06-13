@@ -11,7 +11,7 @@ locals {
 
   helm_inputs = {
     # global
-    "global.namespace"             = var.deploy_mushop_config ? "livelab-test" : var.kubernetes_namespace
+    "global.namespace"             = var.is_livelab ? var.livelab_username : var.kubernetes_namespace
     "global.kubernetesClusterID"   = var.oke_cluster_ocid
     "global.kubernetesClusterName" = local.oke_cluster_name
 
@@ -30,7 +30,7 @@ locals {
   mushop_helm_inputs = {
     # oci-onm-logan
     "createServiceAccount" = false
-    "serviceAccount"       = var.livelab_service_account
+    "serviceAccount"       = var.livelab_username
   }
 
 }
@@ -42,7 +42,7 @@ resource "helm_release" "oci-kubernetes-monitoring" {
   dependency_update = true
   atomic            = true
 
-  values = var.deploy_mushop_config ? ["${file("${path.module}/mushop_values.yaml")}"] : null
+  values = var.is_livelab ? ["${file("${path.module}/mushop_values.yaml")}"] : null
 
   dynamic "set" {
     for_each = local.helm_inputs
@@ -53,7 +53,7 @@ resource "helm_release" "oci-kubernetes-monitoring" {
   }
 
   dynamic "set" {
-    for_each = var.deploy_mushop_config ? local.mushop_helm_inputs : {}
+    for_each = var.is_livelab ? local.mushop_helm_inputs : {}
     content {
       name  = set.key
       value = set.value
@@ -68,7 +68,7 @@ data "helm_template" "oci-kubernetes-monitoring" {
   chart             = var.helm_abs_path
   dependency_update = true
 
-  values = var.deploy_mushop_config ? ["${file("${path.module}/mushop_values.yaml")}"] : null
+  values = var.is_livelab ? ["${file("${path.module}/mushop_values.yaml")}"] : null
 
   dynamic "set" {
     for_each = local.helm_inputs
@@ -79,7 +79,7 @@ data "helm_template" "oci-kubernetes-monitoring" {
   }
 
   dynamic "set" {
-    for_each = var.deploy_mushop_config ? local.mushop_helm_inputs : {}
+    for_each = var.is_livelab ? local.mushop_helm_inputs : {}
     content {
       name  = set.key
       value = set.value

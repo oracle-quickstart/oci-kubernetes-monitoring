@@ -93,14 +93,14 @@ variable "opt_deploy_metric_server" {
 ##  livelab
 ####
 
-# Option to deploy mushop specific values.yaml (inputs)
-variable "deploy_mushop_config" {
+# Option to control livelab specific helm release
+variable "is_livelab" {
   type    = bool
   default = false
 }
 
-# Service Account to be used when working on livelab cluster
-variable "livelab_service_account" {
+# Unique livelab username
+variable "livelab_username" {
   type    = string
   default = ""
 }
