@@ -41,7 +41,6 @@ resource "oci_identity_dynamic_group" "oke_dynamic_group" {
   description    = local.dynamic_group_desc
   compartment_id = var.root_compartment_ocid
   matching_rule  = local.complied_dynamic_group_rules
-  #provider       = oci.home_region
 }
 
 # Policy
@@ -50,7 +49,6 @@ resource "oci_identity_policy" "oke_monitoring_policy" {
   description    = local.policy_desc
   compartment_id = var.oci_onm_compartment_ocid
   statements     = local.policy_statements
-  #provider       = oci.home_region
 
   depends_on = [oci_identity_dynamic_group.oke_dynamic_group]
 }
