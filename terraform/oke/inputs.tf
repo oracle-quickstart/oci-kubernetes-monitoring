@@ -51,16 +51,16 @@ variable "current_user_ocid" {
 }
 
 ####
-## Boat configuration
+## Boat configuration - Used for internal developement purpose only.
 ####
 
-# Option to enable BOAT authentication. Used for running stack in non-prod/test tenants.
+# Option to enable BOAT authentication.
 variable "boat_auth" {
   type    = bool
   default = false
 }
 
-# OCID of BOAT tenancy. Used for running stack in non-prod/test tenants.
+# OCID of BOAT tenancy.
 variable "boat_tenancy_ocid" {
   type    = string
   default = ""
@@ -98,10 +98,10 @@ variable "kubernetes_namespace" {
 }
 
 ####
-##  OCI O&M Information
+##  OCI Observability and Management Information
 ####
 
-# Compartment for creating OCI O&M resources
+# Compartment for creating OCI Observability and Management resources
 variable "oci_onm_compartment_ocid" {
   type    = string
   default = ""

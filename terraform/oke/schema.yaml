@@ -126,7 +126,7 @@ variables:
         - not: 
           - livelab_switch
 
-  # Compartment for creating OCI O&M resources
+  # Compartment for creating OCI Observability and Management resources
   oci_onm_compartment_ocid:
     type: oci:identity:compartment:id
     required: true
