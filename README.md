@@ -108,6 +108,11 @@ It does extensive enrichment of logs, metrics and object information to enable c
       ociLANamespace:
       # OCI Logging Analytics Log Group OCID
       ociLALogGroupID:
+  
+    oci-onm-mgmt-agent:
+      mgmtagent:
+        # Provide the base64 encoded content of the Management Agent Install Key file
+        installKeyFileContent: 
     ```
 * **Refer to the oci-onm chart and sub-charts values.yaml for customising or modifying any other configuration.** It is recommended to not modify the values.yaml provided with the charts, instead use override_values.yaml to achieve the same.    
   
