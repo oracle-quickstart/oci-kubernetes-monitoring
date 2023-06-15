@@ -1,0 +1,17 @@
+# Copyright (c) 2023, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+
+# -- Automatically create, a readonly cluster role, cluster role binding and
+# serviceaccount is required # to read various cluster objects for monitoring.
+# If set to false serviceaccount value must be provided in the parent chart.
+# Refer, README for the cluster role definition and other details.
+createServiceAccount: true
+
+# -- Automatically create namespace for all resources (namespaced) used by OCI Kubernetes Monitoring Solution.
+createNamespace: true
+
+# -- Kubernetes Namespace for creating serviceaccount. Default: oci-onm
+namespace: oci-onm
+
+# -- Resoure Name Prefix: Wherever allowed, this prefix will be used with all resources used by this chart
+resourceNamePrefix: oci-onm

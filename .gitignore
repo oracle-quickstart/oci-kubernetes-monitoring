@@ -1,3 +1,6 @@
+# Copyright (c) 2023, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+
 .DS_Store
 
 ####
@@ -54,4 +57,9 @@ terraform.rc
 # Ignore util dir
 logan/util/*
 
+# helm-chart
+charts/oci-onm/Chart.lock
+charts/oci-onm/charts/
 
+# zip artifacts
+releases/

@@ -1,0 +1,9 @@
+# Copyright (c) 2023, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+
+apiVersion: v2
+name: oci-onm-common
+description: Common resources for OCI Kubernetes Monitoring solution helm charts
+type: application
+version: 3.0.0
+appVersion: "3.0.0"

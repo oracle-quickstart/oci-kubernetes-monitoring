@@ -1,11 +1,20 @@
 # Change Log
 
-## 2022-02-07
+## 2023-06-14
+### Added
+- Kubernetes Metrics Collection to OCI Monitoring using OCI Management Agent.
+- Support for Kubernetes Service and EndpointSlice Object logs collection.
+### Changed
+- Refactoring of helm chart, terraform and stack/market place app to support the consolidation of logs, objects and metrics collection.
+### Breaking Changes
+- The refactoring work done in this version, may cause issues if you upgrade to this version (v3.0.0) from previous versions. Refer [here](README.md#2x-to-3x) for further details. 
+
+## 2023-02-07
 ### Added
 - Create a new mount (rw) using the value provided for baseDir.
-- Expose "encoding" parameter of Fluentd's tail plugin as part of values.yaml, which allows users to override default encoding (ASCII-8BIT) for applicable logs/log types. 
+- Expose "encoding" parameter of Fluentd's tail plugin as part of values.yaml, which allows users to override default encoding (ASCII-8BIT) for applicable logs/log types.
 - Partial CRI logs handling.
-- Oracle Resource Manager / Terraform support for deploying the solution. 
+- Oracle Resource Manager / Terraform support for deploying the solution.
 ### Changed
 - Modified /var/log to mount as readonly by default, except when /var/log is set as baseDir (to store Fluentd state, buffer etc.,).
 ### Breaking Changes
@@ -13,8 +22,8 @@
 
 ## 2022-08-30
 ### Added
-- Helm chart templatisation/parameterisation to provide granular level control on the chart and its values. 
-- Support for custom ServiceAccount. 
+- Helm chart templatisation/parameterisation to provide granular level control on the chart and its values.
+- Support for custom ServiceAccount.
 ### Breaking Changes
 - If you have not modified any of the templates values.yaml for any customisation including custom Fluentd configuration etc., then upgrading to this version is a non breaking change. In case, if you have any modifications or customisations, then you may need to adjust those according to the new templatisation format before upgrading to this version.
 
@@ -35,7 +44,7 @@
 - Pod Annotations based customiation of configuration paremeters (oci_la_log_source_name, oci_la_log_group_id, oci_la_entity_id) for logs collected through "Kubernetes Container Generic Logs".
 - README update for custom configuration documentation.
 - Flush interval and timeout label configuration for Concat plugin section.
- 
+
 ## 2022-02-24
 ### Added
 - Oracle Linux 8 based Docker Image support.

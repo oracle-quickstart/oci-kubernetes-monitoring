@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "required": [
+    "runtime",
+    "authtype",
+    "namespace",
+    "image",
+    "ociLANamespace",
+    "ociLALogGroupID",
+    "fluentd"
+  ],
+  "properties": {
+    "image": {
+      "type": "object",
+      "required": [
+        "url"
+      ],
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "pullPolicy": {
+          "type": "string",
+          "pattern": "^(Always|Never|IfNotPresent)$"
+        }
+      }
+    },
+    "runtime": {
+      "type": "string",
+      "enum": ["docker", "cri"]
+    },
+    "authtype": {
+      "type": "string",
+      "enum": ["InstancePrincipal", "config"]
+    },
+    "namespace": {
+      "type": "string"
+    },
+    "ociLANamespace": {
+      "type": "string"
+    },
+    "ociLALogGroupID": {
+      "type": "string"
+    },
+    "fluentd": {
+      "type": "object",
+      "required": [
+        "baseDir"
+      ],
+      "properties": {
+        "baseDir": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

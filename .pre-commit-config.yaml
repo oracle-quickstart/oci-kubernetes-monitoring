@@ -1,0 +1,31 @@
+# Copyright (c) 2023, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v2.3.0
+  hooks:
+    - id: check-yaml
+      args: [--allow-multiple-documents]
+      exclude: '^charts/.*/templates/'
+    - id: end-of-file-fixer
+    - id: trailing-whitespace
+      #- id: check-json
+    - id: check-merge-conflict
+    - id: check-symlinks
+      #- repo: https://github.com/Lucas-C/pre-commit-hooks
+      #  rev: v1.5.1
+      #  hooks:
+      #    - id: insert-license
+      #      exclude: '*.json|*.txt|.*.md|.*.txt|.pre-commit-config.yaml'
+      #      args:
+      #        - --license-filepath
+      #        - ./docs/license-short.txt
+- repo: https://github.com/norwoodj/helm-docs
+  rev: v1.2.0
+  hooks:
+    - id: helm-docs
+      args:
+        - --chart-search-root=charts
+        # The `./` makes it relative to the chart-search-root set above
+        #- --template-files=./_templates.gotmpl

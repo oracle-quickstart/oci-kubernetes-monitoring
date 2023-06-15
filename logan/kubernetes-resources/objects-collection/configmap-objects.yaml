@@ -1,3 +1,6 @@
+# Copyright (c) 2023, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -19,7 +22,7 @@ data:
         plugin_log_location       "#{ENV['FLUENT_OCI_LOG_LOCATION'] || '/var/log/'}"
         plugin_log_level          "#{ENV['FLUENT_OCI_LOG_LEVEL'] || 'info'}"
         plugin_log_file_size      "#{ENV['FLUENT_OCI_LOG_FILE_SIZE'] || '10MB'}"
-        plugin_log_file_count     "#{ENV['FLUENT_OCI_LOG_FILE_COUNT'] || 10}"				
+        plugin_log_file_count     "#{ENV['FLUENT_OCI_LOG_FILE_COUNT'] || 10}"
         <buffer>
             @type                           file
             path                            "#{ENV['FLUENT_OCI_BUFFER_PATH'] || '/var/log/oci_la_fluentd_outplugin/objects/buffer/'}"
@@ -71,7 +74,7 @@ data:
     <source>
 
       @type kubernetes_objects
-      tag k8s.*      
+      tag k8s.*
       api_version v1
       api_endpoint apis/apps
 
@@ -111,7 +114,7 @@ data:
       </pull>
 
     </source>
-    
+
     # To support cronJob Object collection for Kubernetes versions <= 1.19 where cronJob is available under v1beta1 api version.
     <source>
 
