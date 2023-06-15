@@ -5,15 +5,6 @@
         "createdBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
         "dashboardId": "ocid1.managementdashboard.oc1..aaaaaaaa7tmp6wlxgpkjavvyeuvdn3eevm32pmski2z4m22w3jxhtq32h6rq",
         "dataConfig": [],
-        "definedTags": {
-          "Oracle-Recommended-Tags": {
-            "ResourceType": "demo"
-          },
-          "Oracle-Tags": {
-            "CreatedBy": "oracle/kumar.varun@oracle.com",
-            "CreatedOn": "2023-05-15T20:52:06.134Z"
-          }
-        },
         "description": "Kubernetes Services (Type: Load Balancer)",
         "displayName": "Kubernetes Services (Type: Load Balancer)",
         "drilldownConfig": [],
@@ -160,15 +151,6 @@
             "compartmentId": "${compartment_ocid}",
             "createdBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
             "dataConfig": [],
-            "definedTags": {
-              "Oracle-Recommended-Tags": {
-                "ResourceType": "demo"
-              },
-              "Oracle-Tags": {
-                "CreatedBy": "oracle/kumar.varun@oracle.com",
-                "CreatedOn": "2023-05-11T21:06:02.414Z"
-              }
-            },
             "description": "Count of load balancers being monitored",
             "displayName": "Load Balancers Count",
             "drilldownConfig": [],
@@ -377,15 +359,6 @@
             "compartmentId": "${compartment_ocid}",
             "createdBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
             "dataConfig": [],
-            "definedTags": {
-              "Oracle-Recommended-Tags": {
-                "ResourceType": "demo"
-              },
-              "Oracle-Tags": {
-                "CreatedBy": "oracle/kumar.varun@oracle.com",
-                "CreatedOn": "2023-05-11T21:06:02.548Z"
-              }
-            },
             "description": "Service count",
             "displayName": "Services",
             "drilldownConfig": [],
@@ -609,15 +582,6 @@
             "compartmentId": "${compartment_ocid}",
             "createdBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
             "dataConfig": [],
-            "definedTags": {
-              "Oracle-Recommended-Tags": {
-                "ResourceType": "demo"
-              },
-              "Oracle-Tags": {
-                "CreatedBy": "oracle/kumar.varun@oracle.com",
-                "CreatedOn": "2023-05-11T21:06:02.645Z"
-              }
-            },
             "description": "",
             "displayName": "SD: Load Balancer to Node and Pods",
             "drilldownConfig": [],
@@ -899,15 +863,6 @@
             "compartmentId": "${compartment_ocid}",
             "createdBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
             "dataConfig": [],
-            "definedTags": {
-              "Oracle-Recommended-Tags": {
-                "ResourceType": "demo"
-              },
-              "Oracle-Tags": {
-                "CreatedBy": "oracle/kumar.varun@oracle.com",
-                "CreatedOn": "2023-05-11T21:06:02.440Z"
-              }
-            },
             "description": "Problem labels by lb name",
             "displayName": "LB Problem Labels",
             "drilldownConfig": [],
@@ -1130,15 +1085,6 @@
                 "type": "monitoringDataSource"
               }
             ],
-            "definedTags": {
-              "Oracle-Recommended-Tags": {
-                "ResourceType": "demo"
-              },
-              "Oracle-Tags": {
-                "CreatedBy": "oracle/kumar.varun@oracle.com",
-                "CreatedOn": "2023-05-15T20:29:55.862Z"
-              }
-            },
             "description": "Node Memory Usage",
             "displayName": "Node Memory Usage",
             "drilldownConfig": [],
@@ -1247,15 +1193,6 @@
                 "type": "monitoringDataSource"
               }
             ],
-            "definedTags": {
-              "Oracle-Recommended-Tags": {
-                "ResourceType": "demo"
-              },
-              "Oracle-Tags": {
-                "CreatedBy": "oracle/kumar.varun@oracle.com",
-                "CreatedOn": "2023-05-15T20:21:35.676Z"
-              }
-            },
             "description": "Pods CPU Usage",
             "displayName": "Pods CPU Usage",
             "drilldownConfig": [],
@@ -1350,15 +1287,6 @@
             "compartmentId": "${compartment_ocid}",
             "createdBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
             "dataConfig": [],
-            "definedTags": {
-              "Oracle-Recommended-Tags": {
-                "ResourceType": "demo"
-              },
-              "Oracle-Tags": {
-                "CreatedBy": "oracle/kumar.varun@oracle.com",
-                "CreatedOn": "2023-05-11T21:06:02.469Z"
-              }
-            },
             "description": "",
             "displayName": "Backend Connect Times",
             "drilldownConfig": [],
@@ -1590,15 +1518,6 @@
             "compartmentId": "${compartment_ocid}",
             "createdBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
             "dataConfig": [],
-            "definedTags": {
-              "Oracle-Recommended-Tags": {
-                "ResourceType": "demo"
-              },
-              "Oracle-Tags": {
-                "CreatedBy": "oracle/kumar.varun@oracle.com",
-                "CreatedOn": "2023-05-11T21:06:02.529Z"
-              }
-            },
             "description": "",
             "displayName": "Response Time",
             "drilldownConfig": [],
@@ -1894,15 +1813,6 @@
                 "type": "monitoringDimensionDataSource"
               }
             ],
-            "definedTags": {
-              "Oracle-Recommended-Tags": {
-                "ResourceType": "demo"
-              },
-              "Oracle-Tags": {
-                "CreatedBy": "oracle/kumar.varun@oracle.com",
-                "CreatedOn": "2023-05-11T21:06:02.700Z"
-              }
-            },
             "description": "Kubernetes objects in a compartment",
             "displayName": "Kubernetes Node",
             "drilldownConfig": [],
@@ -1958,15 +1868,6 @@
             "compartmentId": "${compartment_ocid}",
             "createdBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
             "dataConfig": [],
-            "definedTags": {
-              "Oracle-Recommended-Tags": {
-                "ResourceType": "demo"
-              },
-              "Oracle-Tags": {
-                "CreatedBy": "oracle/kumar.varun@oracle.com",
-                "CreatedOn": "2023-05-11T21:06:02.585Z"
-              }
-            },
             "description": "OKE Nodes",
             "displayName": "Nodes",
             "drilldownConfig": [],
@@ -2081,15 +1982,6 @@
             "compartmentId": "${compartment_ocid}",
             "createdBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
             "dataConfig": [],
-            "definedTags": {
-              "Oracle-Recommended-Tags": {
-                "ResourceType": "demo"
-              },
-              "Oracle-Tags": {
-                "CreatedBy": "oracle/kumar.varun@oracle.com",
-                "CreatedOn": "2023-05-11T21:06:02.615Z"
-              }
-            },
             "description": "",
             "displayName": "Load Balancer Errors and Services",
             "drilldownConfig": [],
@@ -2362,15 +2254,6 @@
             "compartmentId": "${compartment_ocid}",
             "createdBy": "ocid1.saml2idp.oc1..aaaaaaaa7ehdi53lr546fhugwewrbeltbgqvkocc27qslgbahsw5v55bvh4a/KUMAR.VARUN@ORACLE.COM",
             "dataConfig": [],
-            "definedTags": {
-              "Oracle-Recommended-Tags": {
-                "ResourceType": "demo"
-              },
-              "Oracle-Tags": {
-                "CreatedBy": "oracle/kumar.varun@oracle.com",
-                "CreatedOn": "2023-05-11T21:06:02.496Z"
-              }
-            },
             "description": "",
             "displayName": "Backend Processing Times",
             "drilldownConfig": [],
