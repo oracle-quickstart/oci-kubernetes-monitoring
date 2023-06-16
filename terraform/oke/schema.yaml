@@ -199,10 +199,10 @@ variables:
 
 outputs:
 
-  livelab_button_link:
+  dashbords_button_link:
     type: link
     title: View Dashboards
     displayText: View Dashboards
     visible: false
 
-primaryOutputButton: ${livelab_button_link}
+primaryOutputButton: ${dashbords_button_link}

@@ -100,7 +100,7 @@ variable "is_livelab" {
 }
 
 # Unique livelab user id
-variable "livelab_user_id" {
+variable "livelab_id" {
   type    = string
   default = ""
 }

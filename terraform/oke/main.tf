@@ -2,12 +2,10 @@
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 locals {
-  ## livelab
-  oci_username     = data.oci_identity_user.livelab_user.name
-  livelab_user_id = lower(local.oci_username)
-
-  ## Helm release
-  fluentd_baseDir_path = var.livelab_switch ? "/var/log/${local.livelab_user_id}" : var.fluentd_baseDir_path
+  oci_username                 = data.oci_identity_user.livelab_user.name
+  livelab_res_num              = trimprefix(trimsuffix(lower(local.oci_username), "-user"), "ll")
+  livelab_reservationId        = "resr${local.livelab_res_num}"
+  livelab_fluentd_baseDir_path = "/var/log/${local.livelab_reservationId}"
 }
 
 // Import Kubernetes Dashboards
@@ -67,14 +65,14 @@ module "helm_release" {
 
   oci_la_logGroup_id   = module.loggingAnalytics.oci_la_logGroup_ocid
   oci_la_namespace     = module.loggingAnalytics.oci_la_namespace
-  fluentd_baseDir_path = local.fluentd_baseDir_path
+  fluentd_baseDir_path = var.livelab_switch ? local.livelab_fluentd_baseDir_path : var.fluentd_baseDir_path
 
   mgmt_agent_install_key_content = module.management_agent[0].mgmt_agent_install_key_content
   mgmt_agent_container_image_url = var.mgmt_agent_container_image_url
   opt_deploy_metric_server       = var.livelab_switch ? false : var.opt_deploy_metric_server
 
-  is_livelab       = var.livelab_switch
-  livelab_user_id = local.livelab_user_id
+  is_livelab = var.livelab_switch
+  livelab_id = local.livelab_reservationId
 
   count = var.enable_helm_module ? 1 : 0
 }
