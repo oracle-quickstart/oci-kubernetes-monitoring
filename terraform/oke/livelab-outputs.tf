@@ -1,6 +1,13 @@
 # Copyright (c) 2023, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-output livelab_button_link  {
-    value = var.livelab_switch ? "https://www.oracle.com/cloud/sign-in.html?redirect_uri=https%3A%2F%2Fcloud.oracle.com%2Floganalytics%2Fdashboards%3Fid%3DdashboardHome%26comp%3Docid1.compartment.oc1..aaaaaaaa66eembgbbw4y5aqqt5obj2bu7wsdlamckmmdmzg6nr6cg7my7lkq%26region%3Dus-phoenix-1" : null
+locals {
+  url_prefix             = "https://cloud.oracle.com/loganalytics/dashboards?id=dashboardHome"
+  url_compartment_prefix = "%26comp%3D"
+  url_region_prefix      = "%26region%3D"
+  dashbords_button_link  = join("", [local.url_prefix, local.url_compartment_prefix, var.oci_onm_compartment_ocid, local.url_region_prefix, var.region])
+}
+
+output "dashbords_button_link" {
+  value = var.livelab_switch ? local.url_prefix : null
 }

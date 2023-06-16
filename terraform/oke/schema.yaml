@@ -201,8 +201,8 @@ outputs:
 
   livelab_button_link:
     type: link
-    title: View Dashboard
-    displayText: View Dashboard
+    title: View Dashboards
+    displayText: View Dashboards
     visible: false
 
 primaryOutputButton: ${livelab_button_link}
