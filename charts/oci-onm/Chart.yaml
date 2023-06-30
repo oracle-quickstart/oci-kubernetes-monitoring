@@ -18,7 +18,7 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 3.0.0
+version: 3.0.1
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
@@ -28,14 +28,14 @@ appVersion: "3.0.0"
 
 dependencies:
 - name: oci-onm-common
-  version: "3.0.0"
+  version: "3.0.1"
   repository: "file://../common"
   condition: oci-onm-common.enabled
 - name: oci-onm-logan
-  version: "3.0.0"
+  version: "3.0.1"
   repository: "file://../logan"
   condition: oci-onm-logan.enabled
 - name: oci-onm-mgmt-agent
-  version: "3.0.0"
+  version: "3.0.1"
   repository: "file://../mgmt-agent"
   condition: oci-onm-mgmt-agent.enabled
