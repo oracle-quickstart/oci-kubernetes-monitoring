@@ -1,4 +1,4 @@
-oci-onm-common:  
+oci-onm-logan:  
   fluentd:
      customLogs:
        mushop-orders:

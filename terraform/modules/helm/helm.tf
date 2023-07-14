@@ -28,11 +28,12 @@ locals {
   }
 
   livelab_helm_inputs = {
-    "oci-onm-common.createNamespace"      = false
-    "oci-onm-common.createServiceAccount" = false
-    "oci-onm-common.serviceAccount"       = var.livelab_id
-    "oci-onm-mgmt-agent.serviceAccount"   = var.livelab_id
-    "oci-onm-logan.serviceAccount"        = var.livelab_id
+    "oci-onm-common.createNamespace"                = false
+    "oci-onm-common.createServiceAccount"           = false
+    "oci-onm-common.serviceAccount"                 = var.livelab_id
+    "oci-onm-mgmt-agent.serviceAccount"             = var.livelab_id
+    "oci-onm-logan.serviceAccount"                  = var.livelab_id
+    "oci-onm-logan.fluentd.tailPlugin.readFromHead" = false
   }
 
 }
