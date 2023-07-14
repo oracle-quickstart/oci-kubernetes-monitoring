@@ -59,7 +59,7 @@ variableGroups:
       and:
         - enable_helm_module
 
-  - title: "OCI IAM Policies and Dynaimic Groups (Optional)"
+  - title: "OCI IAM Policies and Dynamic Groups (Optional)"
     variables:
       - opt_create_dynamicGroup_and_policies
     visible:
