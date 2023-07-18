@@ -12,7 +12,7 @@ By default, pre-built images by Oracle are used.
 ##### Fluentd Container Image
 
 - Download all the files from the below mentioned dir into a local machine having access to internet and docker installed.
-  - [OL8](logan/docker-images/v1.0/oraclelinux/8/)
+  - [OL8-Slim](logan/docker-images/v1.0/oraclelinux/8-slim/)
 - Run the following command to build the image.
     - `docker build -t oci-la-fluentd-collector-custom -f Dockerfile .`
 - The docker image built from the above step, can either be pushed to Docker Hub or OCI Container Registry (OCIR) or to a Local Docker Registry depending on the requirements.
