@@ -1,5 +1,19 @@
 # Change Log
 
+## 2023-07-24
+### Added
+- Multi Process Worker Support
+- Custom Container Image for Fluentd using OL8-Slim as base Image.
+- PV, PVC Objects Collection 
+### Changed
+- Updates to Custom Container Image for Fluentd using OL8 as base Image. 
+### Deprecating
+- Custom Container Image for Fluentd using Debian and OL8 as base Image. 
+
+## 2023-07-19
+### Added
+- Helm repo throguh Github pages.
+
 ## 2023-06-14
 ### Added
 - Kubernetes Metrics Collection to OCI Monitoring using OCI Management Agent.
