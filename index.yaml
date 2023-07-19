@@ -1,0 +1,73 @@
+apiVersion: v1
+entries:
+  oci-onm:
+  - apiVersion: v2
+    appVersion: 3.0.0
+    created: "2023-07-19T10:59:40.89024921Z"
+    dependencies:
+    - condition: oci-onm-common.enabled
+      name: oci-onm-common
+      repository: file://../common
+      version: 3.0.1
+    - condition: oci-onm-logan.enabled
+      name: oci-onm-logan
+      repository: file://../logan
+      version: 3.0.1
+    - condition: oci-onm-mgmt-agent.enabled
+      name: oci-onm-mgmt-agent
+      repository: file://../mgmt-agent
+      version: 3.0.1
+    description: Helm chart for collecting Kubernetes logs & objects and metrics using
+      Fluentd and ManagementAgent into OCI Logging Analytics and OCI Monitoring respectively.
+    digest: bde2596edab1bd81f376afcdf474a2b9bcfc73a57f377491712ef516d8f4cf06
+    name: oci-onm
+    type: application
+    urls:
+    - https://github.com/oracle-quickstart/oci-kubernetes-monitoring/releases/download/oci-onm-3.0.1/oci-onm-3.0.1.tgz
+    version: 3.0.1
+  oci-onm-common:
+  - apiVersion: v2
+    appVersion: 3.0.0
+    created: "2023-07-19T10:59:41.050439582Z"
+    description: Common resources for OCI Kubernetes Monitoring solution helm charts
+    digest: 28f0a5aa17c4d9f5fe1ac1f7c8cd64e274b1c14b8fc86961819a89bb39026ffe
+    name: oci-onm-common
+    type: application
+    urls:
+    - https://github.com/oracle-quickstart/oci-kubernetes-monitoring/releases/download/oci-onm-common-3.0.1/oci-onm-common-3.0.1.tgz
+    version: 3.0.1
+  oci-onm-logan:
+  - apiVersion: v2
+    appVersion: 3.0.0
+    created: "2023-07-19T10:59:41.186311377Z"
+    dependencies:
+    - condition: oci-onm-common.enabled
+      name: oci-onm-common
+      repository: file://../common
+      version: 3.0.1
+    description: Charts for sending Kubernetes platform logs, compute logs, and Kubernetes
+      Objects information to OCI Logging Analytics.
+    digest: c85f9bfed76d2827c8da591443030433a1cb1880ffc664319bfa23ab529fe299
+    name: oci-onm-logan
+    type: application
+    urls:
+    - https://github.com/oracle-quickstart/oci-kubernetes-monitoring/releases/download/oci-onm-logan-3.0.1/oci-onm-logan-3.0.1.tgz
+    version: 3.0.1
+  oci-onm-mgmt-agent:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2023-07-19T10:59:41.328684719Z"
+    dependencies:
+    - condition: oci-onm-common.enabled
+      name: oci-onm-common
+      repository: file://../common
+      version: 3.0.1
+    description: A Helm chart for collecting Kubernetes Metrics using OCI Management
+      Agent into OCI Monitoring.
+    digest: b028471d5c273f15a44eb77f5d75b9df00d9a24ee0aad7e5bf0c3c4f00902b75
+    name: oci-onm-mgmt-agent
+    type: application
+    urls:
+    - https://github.com/oracle-quickstart/oci-kubernetes-monitoring/releases/download/oci-onm-mgmt-agent-3.0.1/oci-onm-mgmt-agent-3.0.1.tgz
+    version: 3.0.1
+generated: "2023-07-19T10:59:41.328694619Z"
