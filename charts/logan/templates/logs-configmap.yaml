@@ -174,6 +174,69 @@ data:
     {{- end }}
     {{- end }}
 
+    {{- if .Values.fluentd.kubernetesAdditional }}
+    {{- range $name, $logDefinition := .Values.fluentd.kubernetesAdditional.logs }}
+    <source>
+       @type tail
+       @id {{ $name }}
+       path_key tailed_path
+       path {{ $logDefinition.path | required (printf "fluentd.kubernetesAdditional.logs.%s.path is required" $name) }}
+       pos_file {{ $.Values.fluentd.baseDir }}/oci_la_fluentd_outplugin/pos/{{ $name }}.logs.pos
+       tag oci.k8s.{{ $name }}.*
+       read_from_head "{{ $.Values.fluentd.tailPlugin.readFromHead }}"
+       {{- if $logDefinition.encoding }}
+       encoding {{ $logDefinition.encoding }}
+       {{- else if $.Values.fluentd.kubernetesAdditional.encoding }}
+       encoding {{ $.Values.fluentd.kubernetesAdditional.encoding }}
+       {{- else if $.Values.fluentd.tailPlugin.encoding }}
+       encoding {{ $.Values.fluentd.tailPlugin.encoding }}
+       {{- end }}
+       <parse>
+       {{- if $logDefinition.multilineStartRegExp }}
+       @type multiline
+       format_firstline {{ $logDefinition.multilineStartRegExp }}
+       format1 /^(?<message>.*)/
+       {{- else }}
+       @type none
+       {{- end }}
+       </parse>
+    </source>
+    <filter oci.k8s.{{ $name }}.**>
+       @type record_transformer
+       enable_ruby true
+       <record>
+       {{- if $logDefinition.metadata }}
+       oci_la_metadata ${{"{{"}}"Kubernetes Cluster Name":"{{ $kubernetesClusterName }}", "Kubernetes Cluster ID": "{{ $kubernetesClusterId }}", "Node": "#{ENV['K8S_NODE_NAME'] || 'UNDEFINED'}" {{- range $k, $v := $logDefinition.metadata }},{{ $k | quote }}: {{ $v | quote -}} {{- end }}{{"}}"}}
+       {{- else if $.Values.fluentd.kubernetesAdditional.metadata }}
+       oci_la_metadata ${{"{{"}}"Kubernetes Cluster Name":"{{ $kubernetesClusterName }}", "Kubernetes Cluster ID": "{{ $kubernetesClusterId }}", "Node": "#{ENV['K8S_NODE_NAME'] || 'UNDEFINED'}" {{- range $k, $v := $.Values.fluentd.kubernetesAdditional.metadata }},{{ $k | quote }}: {{ $v | quote -}} {{- end }}{{"}}"}}
+       {{- else }}
+       oci_la_metadata ${{"{{"}}"Kubernetes Cluster Name":"{{ $kubernetesClusterName }}", "Kubernetes Cluster ID": "{{ $kubernetesClusterId }}", "Node": "#{ENV['K8S_NODE_NAME'] || 'UNDEFINED'}" {{- range $k, $v := $.Values.metadata }},{{ $k | quote }}: {{ $v | quote -}} {{- end }}{{"}}"}}
+       {{- end }}
+       {{- if $logDefinition.ociLALogGroupID }}
+       oci_la_log_group_id "{{ $logDefinition.ociLALogGroupID }}"
+       {{- else if $.Values.fluentd.kubernetesAdditional.ociLALogGroupID }}
+       oci_la_log_group_id "{{ $.Values.fluentd.kubernetesAdditional.ociLALogGroupID }}"
+       {{- else }}
+       oci_la_log_group_id "{{ required "ociLALogGroupID is required" $.Values.ociLALogGroupID }}"
+       {{- end }}
+       oci_la_log_path "${record['tailed_path']}"
+       oci_la_log_source_name "{{ $logDefinition.ociLALogSourceName | required (printf "fluentd.kubernetesAdditional.logs.%s.ociLALogSourceName is required" $name) }}"
+       {{- if $logDefinition.ociLAEntityID }}
+       oci_la_entity_id "{{ $logDefinition.ociLAEntityID }}"
+       {{- else }}
+       oci_la_entity_id "{{ $.Values.fluentd.kubernetesAdditional.ociLAEntityID | default $.Values.ociLAEntityID }}"
+       {{- end }}
+       {{- if $logDefinition.ociLALogSet }}
+       oci_la_log_set "{{ $logDefinition.ociLALogSet }}"
+       {{- else }}
+       oci_la_log_set "{{ $.Values.fluentd.kubernetesAdditional.ociLALogSet | default $.Values.ociLALogSet }}"
+       {{- end }}
+       tag ${tag}
+       </record>
+    </filter>
+    {{- end }}
+    {{- end }}
+
     {{- if .Values.fluentd.linuxSystem }}
     {{- range $name, $logDefinition := .Values.fluentd.linuxSystem.logs }}
     {{- if and (ne $name "syslog") (ne $name "kubeletlog") }}
