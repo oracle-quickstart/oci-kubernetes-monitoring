@@ -294,6 +294,21 @@ fluentd:
             ociLALogSourceName: "Kubernetes Autoscaler Logs"
             #  The regular expression pattern for the starting line in case of multi-line logs.
             multilineStartRegExp: /^\S\d{2}\d{2}\s+[^\:]+:[^\:]+:[^\.]+\.\d{0,3}/
+
+         # -- Kubernetes (EKS) AWS Node Logs collection configuration
+         eks-node:
+           # aws node log files location.
+           path: /var/log/containers/aws-node*aws-node*.log
+           # Logging Analytics log source to use for parsing and processing Kubernetes AWS Node Logs.
+           ociLALogSourceName: "Kubernetes AWS Node Logs"
+
+         # -- Kubernetes (EKS) EBS CSI Controller Logs collection configuration 
+         eks-ebs-csi-controller:
+           # aws ebs csi controller log files location.
+           path: /var/log/containers/ebs-csi-controller-*.log
+           # Logging Analytics log source to use for parsing and processing Kubernetes AWS EBS CSI Controller Logs. 
+           ociLALogSourceName: "Kubernetes EBS CSI Controller Logs"
+
    # Configuration for Linux System specific logs like CronLogs and SecureLogs
    linuxSystem:
       logs:
@@ -373,8 +388,11 @@ fluentd:
          - '"/var/log/containers/kube-dns-autoscaler-*.log"'
          - '"/var/log/containers/coredns-*.log"'
          - '"/var/log/containers/csi-oci-node-*.log"'
+         - '"/var/log/containers/ebs-csi-node-*.log"'
+         - '"/var/log/containers/ebs-csi-controller-*.log"'
          - '"/var/log/containers/proxymux-client-*.log"'
          - '"/var/log/containers/cluster-autoscaler-*.log"'
+         - '"/var/log/containers/aws-node*aws-node*.log"'
 
    # -- Configuration for any custom logs which are not part of the default configuration defined in this file.
    # All the pod/container logs will be collected as per "genericContainerLogs" section.
