@@ -275,7 +275,7 @@ fluentd:
          # -- Kubernetes CSI Node Driver Logs collection configuration
          csinode:
             # csinode log files location.
-            path: /var/log/containers/csi-oci-node-*.log
+            path: /var/log/containers/csi-oci-node-*.log,/var/log/containers/ebs-csi-node-*.log
             # Logging Analytics log source to use for parsing and processing Kubernetes CSI Node Driver Logs.
             ociLALogSourceName: "Kubernetes CSI Node Driver Logs"
 
