@@ -62,7 +62,7 @@ data:
        @id {{ $name }}{{- ternary (print "_" $currWorker) "" $multiWorkersEnabled }}
        path_key tailed_path
        path {{ $logDefinition.path | required (printf "fluentd.kubernetesSystem.logs.%s.path is required" $name) }}
-       pos_file {{ $.Values.fluentd.baseDir }}/oci_la_fluentd_outplugin/pos{{- ternary (print "/worker-" $currWorker) "" $multiWorkersEnabled }}/{{ $name }}.logs.pos
+       pos_file {{ $.Values.fluentd.baseDir }}/oci_la_fluentd_outplugin/pos/{{ $name }}.logs.pos
        tag oci{{- ternary (print "." $currWorker) "" $multiWorkersEnabled }}.oke.{{ $name }}.*
        read_from_head "{{ $.Values.fluentd.tailPlugin.readFromHead }}"
        {{- if $logDefinition.encoding }}
@@ -165,7 +165,7 @@ data:
        @id {{ $name }}{{- ternary (print "_" $currWorker) "" $multiWorkersEnabled }}
        path_key tailed_path
        path {{ $logDefinition.path | required (printf "fluentd.linuxSystem.logs.%s.path is required" $name) }}
-       pos_file {{ $.Values.fluentd.baseDir }}/oci_la_fluentd_outplugin/pos{{- ternary (print "/worker-" $currWorker) "" $multiWorkersEnabled }}/{{ $name }}.logs.pos
+       pos_file {{ $.Values.fluentd.baseDir }}/oci_la_fluentd_outplugin/pos/{{ $name }}.logs.pos
        tag oci{{- ternary (print "." $currWorker) "" $multiWorkersEnabled }}.oke.{{ $name }}.*
        read_from_head "{{ $.Values.fluentd.tailPlugin.readFromHead }}"
        {{- if $logDefinition.encoding }}
@@ -240,7 +240,7 @@ data:
        @id in_tail_syslog{{- ternary (print "_" $currWorker) "" $multiWorkersEnabled }}
        path_key tailed_path
        path {{ required "fluentd.linuxSystem.logs.syslog.path is required" $.Values.fluentd.linuxSystem.logs.syslog.path }}
-       pos_file {{ $.Values.fluentd.baseDir }}/oci_la_fluentd_outplugin/pos{{- ternary (print "/worker-" $currWorker) "" $multiWorkersEnabled }}/syslog.logs.pos
+       pos_file {{ $.Values.fluentd.baseDir }}/oci_la_fluentd_outplugin/pos/syslog.logs.pos
        tag oci{{- ternary (print "." $currWorker) "" $multiWorkersEnabled }}.oke.syslog.messages.**
        read_from_head "{{ $.Values.fluentd.tailPlugin.readFromHead }}"
        {{- if $.Values.fluentd.linuxSystem.logs.syslog.encoding }}
@@ -365,7 +365,7 @@ data:
        @id {{ $name }}{{- ternary (print "_" $currWorker) "" $multiWorkersEnabled }}
        path_key tailed_path
        path {{ $logDefinition.path | required (printf "fluentd.customLogs.%s.path is required" $name) }}
-       pos_file {{ $.Values.fluentd.baseDir }}/oci_la_fluentd_outplugin/pos{{- ternary (print "/worker-" $currWorker) "" $multiWorkersEnabled }}/{{ $name }}.logs.pos
+       pos_file {{ $.Values.fluentd.baseDir }}/oci_la_fluentd_outplugin/pos/{{ $name }}.logs.pos
        tag oci{{- ternary (print "." $currWorker) "" $multiWorkersEnabled }}.oke.{{ $name }}.*
        read_from_head "{{ $.Values.fluentd.tailPlugin.readFromHead }}"
        {{- if $logDefinition.encoding }}
@@ -463,7 +463,7 @@ data:
        @id in_tail_containerlogs{{- ternary (print "_" $currWorker) "" $multiWorkersEnabled }}
        path_key tailed_path
        path {{ required "fluentd.genericContainerLogs.path is required" $.Values.fluentd.genericContainerLogs.path }}
-       pos_file {{ $.Values.fluentd.baseDir }}/oci_la_fluentd_outplugin/pos{{- ternary (print "/worker-" $currWorker) "" $multiWorkersEnabled }}/containerlogs.logs.pos
+       pos_file {{ $.Values.fluentd.baseDir }}/oci_la_fluentd_outplugin/pos/containerlogs.logs.pos
        tag oci{{- ternary (print "." $currWorker) "" $multiWorkersEnabled }}.oke.containerlogs.*
        read_from_head "{{ $.Values.fluentd.tailPlugin.readFromHead }}"
        # Modify the exclude path once a specific container log config is explictly defined to avoid duplicate collection.
