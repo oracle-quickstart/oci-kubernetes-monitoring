@@ -138,7 +138,7 @@ Dashboards needs to be imported manually. Below is an example for importing Dash
 
 1. Download and configure [OCI CLI](https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/cliinstall.htm) or open cloud-shell where OCI CLI is pre-installed. Alternative methods like REST API, SDK, Terraform etc can also be used.
 2. Find the **OCID** of the compartment, where the dashboards need to be imported.
-3. Download the dashboard JSONs from [here](logan/terraform/oke/modules/dashboards/dashboards_json/) (TBD).
+3. Download the dashboard JSONs from [here](terraform/modules/dashboards/dashboards_json/).
 4. **Replace** all the instances of the keyword - "`${compartment_ocid}`" in the JSONs with the **Compartment OCID** identified in previous step.
     * Following command is for quick reference that can be used in a linux/cloud-shell envirnment :
 
@@ -153,6 +153,7 @@ Dashboards needs to be imported manually. Below is an example for importing Dash
     oci management-dashboard dashboard import --from-json file://node.json
     oci management-dashboard dashboard import --from-json file://workload.json
     oci management-dashboard dashboard import --from-json file://pod.json
+    oci management-dashboard dashboard import --from-json file://service-type-lb.json
     ```
 
 ##### 4 Uninstall
