@@ -316,6 +316,7 @@ fluentd:
             path: /var/log/containers/etcd-*.log
             # Logging Analytics log source to use for parsing and processing the logs: Kubernetes etcd Logs.
             ociLALogSourceName: "Kubernetes etcd Logs"
+            encoding: UTF-8
 
          # Config specific to kube-controller-manager Logs Collection
          kube-controller-manager:
