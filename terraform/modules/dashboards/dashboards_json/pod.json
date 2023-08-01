@@ -1586,7 +1586,7 @@
                                 }
                             }
                         },
-                        "queryString": "'Log Source' = 'Kubernetes Pod Object Logs' and 'Pod Phase' = pending and 'Kubernetes Cluster Name' = 'mushop app (magi)' | stats latest('Pod Phase') as Status by Pod",
+                        "queryString": "'Log Source' = 'Kubernetes Pod Object Logs' and 'Pod Phase' = pending | stats latest('Pod Phase') as Status by Pod",
                         "scopeFilters": {
                             "filters": [
                                 {
