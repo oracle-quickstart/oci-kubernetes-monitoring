@@ -5,11 +5,11 @@ apiVersion: v2
 name: oci-onm-logan
 description: Charts for sending Kubernetes platform logs, compute logs, and Kubernetes Objects information to OCI Logging Analytics.
 type: application
-version: 3.0.1
+version: 3.0.2
 appVersion: "3.0.0"
 
 dependencies:
 - name: oci-onm-common
-  version: "3.0.1"
+  version: "3.0.2"
   repository: "file://../common"
   condition: oci-onm-common.enabled
