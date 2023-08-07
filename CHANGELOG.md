@@ -1,6 +1,6 @@
 # Change Log
 
-## 2023-07-24
+## 2023-08-07
 ### Added
 - Support Fluentd's [Multi Process Workers](https://docs.fluentd.org/deployment/multi-process-workers). 
 - Custom Container Image for Fluentd using OL8-Slim as base Image.
