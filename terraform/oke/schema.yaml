@@ -145,9 +145,10 @@ variables:
   ####
   ##  Kubernetes Deployment Options
   ####
+  
   opt_deploy_helm:
     title: "Enable helm release. Creates all (OCI + K8s) resources."
-    description: "Uncheck this to create only OCI resources. This will not deploy helm release."
+    description: "Uncheck this to skip helm release and only create OCI resources."
     type: boolean
     default: true
     required: true

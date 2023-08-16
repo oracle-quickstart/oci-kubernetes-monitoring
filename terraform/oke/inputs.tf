@@ -47,7 +47,8 @@ variable "compartment_ocid" {
 
 # OCID of user running the marketplace app / Resoruce Manager stack
 variable "current_user_ocid" {
-  type = string
+  type    = string
+  default = ""
 }
 
 ####
@@ -70,17 +71,13 @@ variable "boat_tenancy_ocid" {
 ##  Stack Deployment Options
 ####
 variable "opt_deploy_helm" {
-  type    = boolean
+  type    = bool
   default = true
 }
 
 ####
 ##  Dynamic Group and Policies
 ####
-variable "opt_create_dynamicGroup_and_policies" {
-  type    = bool
-  default = false
-}
 
 # Option to create Dynamic Group and Policies
 variable "opt_create_dynamicGroup_and_policies" {

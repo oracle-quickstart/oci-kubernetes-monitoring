@@ -2,7 +2,7 @@
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 terraform {
-  required_version = ">= 1.0.0, <= 1.5"
+  required_version = ">= 1.0.0, <= 1.6"
   required_providers {
     oci = {
       source  = "oracle/oci"

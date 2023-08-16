@@ -2,16 +2,26 @@
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 locals {
-  ## livelab
-  oci_username            = data.oci_identity_user.livelab_user.name
-  livelab_service_account = local.oci_username
-
-  ## Helm release
-  fluentd_baseDir_path = var.livelab_switch ? "/var/log/${local.oci_username}" : var.fluentd_baseDir_path
+  livelab_service_account = var.livelab_switch ? module.livelab[0].service_account : ""
+  fluentd_baseDir_path    = var.livelab_switch ? module.livelab[0].fluentd_baseDir_path : var.fluentd_baseDir_path
 
   ## Deployment options
   deployment_options = {
     enable_helm_module = var.enable_helm_module && var.opt_deploy_helm
+  }
+}
+
+// Only execute for livelab stack
+module "livelab" {
+  source = "./modules/livelab"
+
+  # follwing will only work when livelab user is a local user
+  current_user_ocid = var.livelab_switch ? var.current_user_ocid : ""
+
+  count = var.livelab_switch ? 1 : 0
+
+  providers = {
+    oci = oci.home_region
   }
 }
 
