@@ -67,8 +67,8 @@ variables:
   ##  Kubernetes Deployment Options
   ####
   opt_deploy_helm:
-    title: "Enable helm release. Creates all resource (OCI + Kubernetes)."
-    description: "Un-check to create only OCI resources. Will not deploy helm release."
+    title: "Enable helm release. Creates all (OCI + K8s) resources."
+    description: "Uncheck this to create only OCI resources. Does NOT deploy helm release."
     type: boolean
     default: true
     required: true
@@ -104,7 +104,6 @@ variables:
     title: Select OKE Cluster
     required: true
 
-  # Kubernetes Namespace
   # kubernetes_namespace:
   #   type: string
   #   minLength: 1
@@ -175,7 +174,7 @@ variables:
       and: 
       - opt_deploy_helm
       - not: 
-        - livelab_switch
+        - livelab_switch    
 
   ####
   ##  Pre-requisites

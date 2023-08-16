@@ -73,8 +73,7 @@ variable "fluentd_baseDir_path" {
 ##  Management Agent Configuration
 ####
 
-# OCID of compartment where management agent installation key is to be created
-variable "mgmt_agent_compartment_ocid" {
+variable "mgmt_agent_install_key_content" {
   type = string
 }
 

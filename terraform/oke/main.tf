@@ -49,6 +49,13 @@ module "loggingAnalytics" {
   existing_logGroup_id = var.oci_la_logGroup_id
 }
 
+# Create a management agent key
+module "management_agent" {
+  source           = "./modules/mgmt_agent"
+  uniquifier       = md5(var.oke_cluster_ocid)
+  compartment_ocid = var.oci_onm_compartment_ocid
+}
+
 // deploy oke-monitoring solution (helm release)
 module "helm_release" {
   source                 = "./modules/helm"
@@ -65,7 +72,7 @@ module "helm_release" {
   oci_la_namespace     = module.loggingAnalytics.oci_la_namespace
   fluentd_baseDir_path = local.fluentd_baseDir_path
 
-  mgmt_agent_compartment_ocid    = var.oci_onm_compartment_ocid
+  mgmt_agent_install_key_content = module.management_agent.mgmt_agent_install_key_content
   mgmt_agent_container_image_url = var.mgmt_agent_container_image_url
   opt_deploy_metric_server       = var.livelab_switch ? true : var.opt_deploy_metric_server
 
