@@ -8,6 +8,11 @@ locals {
 
   ## Helm release
   fluentd_baseDir_path = var.livelab_switch ? "/var/log/${local.oci_username}" : var.fluentd_baseDir_path
+
+  ## Deployment options
+  deployment_options = {
+    enable_helm_module = var.enable_helm_module && length(regexall("^Full:", var.stack_deployment_option)) > 0
+  }
 }
 
 // Import Kubernetes Dashboards
@@ -67,5 +72,5 @@ module "helm_release" {
   deploy_mushop_config    = var.livelab_switch
   livelab_service_account = local.livelab_service_account
 
-  count = var.enable_helm_module ? 1 : 0
+  count = local.deployment_options.enable_helm_module ? 1 : 0
 }

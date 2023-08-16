@@ -38,19 +38,16 @@ variableGroups:
       - livelab_switch
     visible: false
 
-  - title: "configuration inputs"
-    variables:
-      - stack_deployment_option
-    visible: true
-
   - title: "Select an OKE Cluster deployed in this region to start monitoring"
     description: "Use CLI (Helm) if your cluster does not have public API Endpoint or restricted from accessing container-registry.oracle.com. See: https://github.com/oracle-quickstart/oci-kubernetes-monitoring"
     variables:
       - oke_compartment_ocid
       - oke_cluster_ocid
-    visible:
-      and:
-        - enable_helm_module
+
+  - title: "configuration inputs"
+    variables:
+      - stack_deployment_option
+    visible: true      
 
   - title: "OCI Observability & Management Services Configuration"
     description: "See: https://github.com/oracle-quickstart/oci-kubernetes-monitoring for list of resources created"
@@ -61,16 +58,10 @@ variableGroups:
     - oci_la_logGroup_id
     - oci_la_logGroup_name
     - fluentd_baseDir_path
-    visible:
-      and:
-        - enable_helm_module
 
   - title: "OCI IAM Policies and Dynaimic Groups (Optional)"
     variables:
       - opt_create_dynamicGroup_and_policies
-    visible:
-      and:
-        - enable_helm_module
 
 variables:
   ####
@@ -80,10 +71,10 @@ variables:
     title: "Deployment Options"
     description: "Choose to deploy with/without helm"
     type: enum
-    enum:
-    - "With Helm"
-    - "Without Helm"
-    default: "With Helm"
+    enum: # Dev Note - change in following strings requires as change in oke/inputs.tf
+    - "Full: Create OCI Resources + Deploy solution in k8 cluster."
+    - "Only create OCI resources required to deploy helm. Does NOT deploy helm."
+    default: "Full: Create OCI Resources + Deploy solution in k8 cluster."
     required: true
 
   ####
@@ -147,7 +138,6 @@ variables:
     default: false
     visible:
       and:
-        - enable_helm_module
         - not: 
           - livelab_switch
 

@@ -67,8 +67,20 @@ variable "boat_tenancy_ocid" {
 }
 
 ####
+##  Stack Deployment Options
+####
+variable "stack_deployment_option" {
+  type    = string
+  default = "Full: Create OCI Resources + Deploy solution in k8 cluster."
+}
+
+####
 ##  Dynamic Group and Policies
 ####
+variable "opt_create_dynamicGroup_and_policies" {
+  type    = bool
+  default = false
+}
 
 # Option to create Dynamic Group and Policies
 variable "opt_create_dynamicGroup_and_policies" {
