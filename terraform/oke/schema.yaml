@@ -1,5 +1,6 @@
 # Copyright (c) 2023, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+# yaml-language-server: $schema=./meta-schema.yaml
 
 title: OCI Kubernetes Monitoring Solution
 description: OCI Kubernetes Monitoring Solution is a turn-key Kubernetes monitoring and management package based on OCI Logging Analytics cloud service, OCI Monitoring, OCI Management Agent.
@@ -17,7 +18,7 @@ source:
 locale: "en"
 
 variableGroups:
-  - title: "configuration inputs"
+  - title: "hidden inputs"
     variables:
       - tenancy_ocid
       - region
@@ -36,6 +37,11 @@ variableGroups:
       - current_user_ocid
       - livelab_switch
     visible: false
+
+  - title: "configuration inputs"
+    variables:
+      - stack_deployment_option
+    visible: true
 
   - title: "Select an OKE Cluster deployed in this region to start monitoring"
     description: "Use CLI (Helm) if your cluster does not have public API Endpoint or restricted from accessing container-registry.oracle.com. See: https://github.com/oracle-quickstart/oci-kubernetes-monitoring"
@@ -67,18 +73,18 @@ variableGroups:
         - enable_helm_module
 
 variables:
-
   ####
   ##  Deployment Options
   ####
-
-  # Option to install helm chart
-  # enable_helm_module:
-  #   type: boolean
-  #   title: Deploy Kubernetes Monitoring Solution
-  #   description: "Ref: https://github.com/oracle-quickstart/oci-kubernetes-monitoring"
-  #   default: true
-  #   required: true
+  stack_deployment_option:
+    title: "Deployment Options"
+    description: "Choose to deploy with/without helm"
+    type: enum
+    enum:
+    - "With Helm"
+    - "Without Helm"
+    default: "With Helm"
+    required: true
 
   ####
   ##  OKE Cluster Information
