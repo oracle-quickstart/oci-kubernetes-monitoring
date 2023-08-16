@@ -57,33 +57,15 @@ variableGroups:
       - opt_deploy_helm
       - opt_deploy_metric_server
       - fluentd_baseDir_path
+    visible:
+      not: 
+        - livelab_switch
 
   - title: "OCI IAM Policies and Dynaimic Groups (Optional)"
     variables:
       - opt_create_dynamicGroup_and_policies
 
 variables:
-  ####
-  ##  Kubernetes Deployment Options
-  ####
-  opt_deploy_helm:
-    title: "Enable helm release. Creates all (OCI + K8s) resources."
-    description: "Uncheck this to create only OCI resources. Does NOT deploy helm release."
-    type: boolean
-    default: true
-    required: true
-
-  # Option to enable/disable metric server installation during helm deployment
-  opt_deploy_metric_server:
-    type: boolean
-    title: Enable Metric Server Installation
-    description: Uncheck this if Metric Server is already installed in your cluster.
-    default: true
-    visible:
-      and:
-      - opt_deploy_helm
-      - not: 
-        - livelab_switch
 
   ####
   ##  OKE Cluster Information
@@ -158,7 +140,29 @@ variables:
     visible:
       and:
         - opt_create_new_la_logGroup
-    pattern: '^([a-zA-Z0-9]|[a-zA-Z0-9][\\ a-zA-Z0-9_\-]*[\\a-zA-Z\-0-9_])$'
+    pattern: '^([a-zA-Z0-9]|[a-zA-Z0-9][\\ a-zA-Z0-9_\-]*[\\a-zA-Z\-0-9_])$'  
+
+  ####
+  ##  Kubernetes Deployment Options
+  ####
+  opt_deploy_helm:
+    title: "Enable helm release. Creates all (OCI + K8s) resources."
+    description: "Uncheck this to create only OCI resources. This will not deploy helm release."
+    type: boolean
+    default: true
+    required: true
+
+  # Option to enable/disable metric server installation during helm deployment
+  opt_deploy_metric_server:
+    type: boolean
+    title: Enable Metric Server Installation
+    description: Uncheck this if Metric Server is already installed in your cluster.
+    default: true
+    visible:
+      and:
+      - opt_deploy_helm
+      - not: 
+        - livelab_switch
 
   # Fluentd Base Directory
   fluentd_baseDir_path:
@@ -174,7 +178,7 @@ variables:
       and: 
       - opt_deploy_helm
       - not: 
-        - livelab_switch    
+        - livelab_switch  
 
   ####
   ##  Pre-requisites
