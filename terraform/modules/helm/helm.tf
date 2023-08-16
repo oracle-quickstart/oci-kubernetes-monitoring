@@ -9,6 +9,8 @@ locals {
   oke_clusters_list = data.oci_containerengine_clusters.oke_clusters_list.clusters
   oke_cluster_name  = [for c in local.oke_clusters_list : c.name if c.id == var.oke_cluster_ocid][0]
 
+  mgmt_agent_install_key_content = module.management_agent.mgmt_agent_install_key_content
+
   helm_inputs = {
     # global
     "global.namespace"             = var.deploy_mushop_config ? "livelab-test" : var.kubernetes_namespace
@@ -22,7 +24,7 @@ locals {
     "oci-onm-logan.fluentd.baseDir" = var.fluentd_baseDir_path
 
     #oci-onm-mgmt-agent
-    "oci-onm-mgmt-agent.mgmtagent.installKeyFileContent" = var.mgmt_agent_install_key_content
+    "oci-onm-mgmt-agent.mgmtagent.installKeyFileContent" = local.mgmt_agent_install_key_content
     "oci-onm-mgmt-agent.mgmtagent.image.url"             = var.mgmt_agent_container_image_url
     "oci-onm-mgmt-agent.deployMetricServer"              = var.opt_deploy_metric_server
   }
@@ -32,9 +34,16 @@ locals {
     "createServiceAccount" = false
     "serviceAccount"       = var.livelab_service_account
   }
-
 }
 
+# Create a management agent
+module "management_agent" {
+  source           = "../mgmt_agent"
+  uniquifier       = md5(var.oke_cluster_ocid)
+  compartment_ocid = var.mgmt_agent_compartment_ocid
+}
+
+# Create helm release
 resource "helm_release" "oci-kubernetes-monitoring" {
   name              = "oci-kubernetes-monitoring"
   chart             = var.helm_abs_path
@@ -63,6 +72,7 @@ resource "helm_release" "oci-kubernetes-monitoring" {
   count = var.generate_helm_template ? 0 : 1
 }
 
+# Create helm template
 data "helm_template" "oci-kubernetes-monitoring" {
   name              = "oci-kubernetes-monitoring"
   chart             = var.helm_abs_path

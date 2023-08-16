@@ -34,15 +34,6 @@ module "policy_and_dynamic-group" {
   }
 }
 
-module "management_agent" {
-  source           = "./modules/mgmt_agent"
-  uniquifier       = md5(var.oke_cluster_ocid)
-  compartment_ocid = var.oci_onm_compartment_ocid
-
-  # this module is only required in case of helm deployment
-  count = var.enable_helm_module ? 1 : 0
-}
-
 // Create Logging Analytics Resorces
 module "loggingAnalytics" {
   source               = "./modules/logan"
@@ -53,15 +44,15 @@ module "loggingAnalytics" {
   existing_logGroup_id = var.oci_la_logGroup_id
 }
 
-
 // deploy oke-monitoring solution (helm release)
 module "helm_release" {
   source                 = "./modules/helm"
   helm_abs_path          = abspath("./charts/oci-onm")
   generate_helm_template = var.generate_helm_template
 
-  oke_compartment_ocid      = var.oke_compartment_ocid
-  oke_cluster_ocid          = var.oke_cluster_ocid
+  oke_compartment_ocid = var.oke_compartment_ocid
+  oke_cluster_ocid     = var.oke_cluster_ocid
+
   logan_container_image_url = var.logan_container_image_url
   kubernetes_namespace      = var.kubernetes_namespace
 
@@ -69,9 +60,9 @@ module "helm_release" {
   oci_la_namespace     = module.loggingAnalytics.oci_la_namespace
   fluentd_baseDir_path = local.fluentd_baseDir_path
 
-  mgmt_agent_install_key_content = module.management_agent[0].mgmt_agent_install_key_content
+  mgmt_agent_compartment_ocid    = var.oci_onm_compartment_ocid
   mgmt_agent_container_image_url = var.mgmt_agent_container_image_url
-  opt_deploy_metric_server           = var.livelab_switch ? true : var.opt_deploy_metric_server
+  opt_deploy_metric_server       = var.livelab_switch ? true : var.opt_deploy_metric_server
 
   deploy_mushop_config    = var.livelab_switch
   livelab_service_account = local.livelab_service_account

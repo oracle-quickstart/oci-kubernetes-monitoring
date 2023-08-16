@@ -20,4 +20,3 @@ variable "oke_compartment_ocid" {
 variable "oke_cluster_ocid" {
   type = string
 }
-
