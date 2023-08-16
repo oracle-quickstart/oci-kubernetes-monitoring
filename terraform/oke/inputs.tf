@@ -69,9 +69,9 @@ variable "boat_tenancy_ocid" {
 ####
 ##  Stack Deployment Options
 ####
-variable "stack_deployment_option" {
-  type    = string
-  default = "Full: Create OCI Resources + Deploy solution in k8 cluster."
+variable "opt_deploy_helm" {
+  type    = boolean
+  default = true
 }
 
 ####

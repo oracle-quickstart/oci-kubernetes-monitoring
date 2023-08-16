@@ -11,7 +11,7 @@ locals {
 
   ## Deployment options
   deployment_options = {
-    enable_helm_module = var.enable_helm_module && length(regexall("^Full:", var.stack_deployment_option)) > 0
+    enable_helm_module = var.enable_helm_module && var.opt_deploy_helm
   }
 }
 

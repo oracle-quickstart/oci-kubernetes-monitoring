@@ -44,20 +44,19 @@ variableGroups:
       - oke_compartment_ocid
       - oke_cluster_ocid
 
-  - title: "configuration inputs"
-    variables:
-      - stack_deployment_option
-    visible: true      
-
   - title: "OCI Observability & Management Services Configuration"
     description: "See: https://github.com/oracle-quickstart/oci-kubernetes-monitoring for list of resources created"
     variables:
-    - opt_deploy_metric_server
     - oci_onm_compartment_ocid
     - opt_create_new_la_logGroup
     - oci_la_logGroup_id
     - oci_la_logGroup_name
-    - fluentd_baseDir_path
+
+  - title: "Kubernetes Deployment Configuration"
+    variables:
+      - opt_deploy_helm
+      - opt_deploy_metric_server
+      - fluentd_baseDir_path
 
   - title: "OCI IAM Policies and Dynaimic Groups (Optional)"
     variables:
@@ -65,17 +64,26 @@ variableGroups:
 
 variables:
   ####
-  ##  Deployment Options
+  ##  Kubernetes Deployment Options
   ####
-  stack_deployment_option:
-    title: "Deployment Options"
-    description: "Choose to deploy with/without helm"
-    type: enum
-    enum: # Dev Note - change in following strings requires as change in oke/inputs.tf
-    - "Full: Create OCI Resources + Deploy solution in k8 cluster."
-    - "Only create OCI resources required to deploy helm. Does NOT deploy helm."
-    default: "Full: Create OCI Resources + Deploy solution in k8 cluster."
+  opt_deploy_helm:
+    title: "Enable helm release. Creates all resource (OCI + Kubernetes)."
+    description: "Un-check to create only OCI resources. Will not deploy helm release."
+    type: boolean
+    default: true
     required: true
+
+  # Option to enable/disable metric server installation during helm deployment
+  opt_deploy_metric_server:
+    type: boolean
+    title: Enable Metric Server Installation
+    description: Uncheck this if Metric Server is already installed in your cluster.
+    default: true
+    visible:
+      and:
+      - opt_deploy_helm
+      - not: 
+        - livelab_switch
 
   ####
   ##  OKE Cluster Information
@@ -111,18 +119,6 @@ variables:
   ##  OCI Observability & Management Services Configuration
   ####
   
-  # Option to enable/disable metric server installation during helm deployment
-  opt_deploy_metric_server:
-    type: boolean
-    title: Enable Metric Server Installation
-    description: Uncheck this if Metric Server is already installed in your cluster.
-    default: true
-    visible:
-      and:
-        - enable_helm_module
-        - not: 
-          - livelab_switch
-
   # Compartment for creating OCI Observability and Management resources
   oci_onm_compartment_ocid:
     type: oci:identity:compartment:id
@@ -137,9 +133,8 @@ variables:
     title: Check if you want to create a new Log Group
     default: false
     visible:
-      and:
-        - not: 
-          - livelab_switch
+      not: 
+      - livelab_switch
 
   # OCI Logging Analytics LogGroup OCID of existing LogGroup
   oci_la_logGroup_id:
@@ -147,7 +142,7 @@ variables:
     dependsOn:
       compartmentId: ${oci_onm_compartment_ocid}
     title: OCI Logging Analytics Log Group
-    description: Log Groups are logical containers for log data, and provide access control for your data using IAM Policies
+    description: Log Groups are logical containers for log data, and provide access control for your data using IAM Policies.
     required: true
     visible:
       not:
@@ -177,7 +172,9 @@ variables:
     required: true
     pattern: '^/[\w- /]*$'
     visible:
-      not: 
+      and: 
+      - opt_deploy_helm
+      - not: 
         - livelab_switch
 
   ####
