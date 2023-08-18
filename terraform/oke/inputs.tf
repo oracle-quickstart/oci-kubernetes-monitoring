@@ -70,6 +70,8 @@ variable "boat_tenancy_ocid" {
 ####
 ##  Stack Deployment Options
 ####
+
+# Option to deploy helm
 variable "opt_deploy_helm" {
   type    = bool
   default = true
@@ -91,8 +93,7 @@ variable "opt_create_dynamicGroup_and_policies" {
 
 # OKE Cluster Compartment
 variable "oke_compartment_ocid" {
-  type    = string
-  default = ""
+  type = string
 }
 
 # OKE Cluster OCID

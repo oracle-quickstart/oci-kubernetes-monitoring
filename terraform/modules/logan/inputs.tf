@@ -28,3 +28,8 @@ variable "new_logGroup_name" {
   type    = string
   default = "" // This is expected to rasie terraform error if ran with default value
 }
+
+# K8s cluster name
+variable "kubernetes_cluster_name" {
+  type = string
+}

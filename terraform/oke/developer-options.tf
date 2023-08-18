@@ -6,8 +6,14 @@
 ## Leave it to default for production use
 ####
 
+# Enable/Disable livelab module
+variable "dev_switch_livelab_module" {
+  type    = bool
+  default = true
+}
+
 # Enable/Disable helm module 
-variable "enable_helm_module" {
+variable "dev_switch_helm_module" {
   type    = bool
   default = true
 }
@@ -15,13 +21,31 @@ variable "enable_helm_module" {
 # Enable/Disable helm template. When set as true, 
 # - helm module will generate template file inside ../modules/helm/local directory
 # - Setting this to true disables/skips the helm release
-variable "generate_helm_template" {
+variable "dev_switch_generate_helm_template" {
   type    = bool
   default = false
 }
 
 # Enable/Disable logan dashboards module
-variable "enable_dashboard_module" {
+variable "dev_switch_dashboards_module" {
+  type    = bool
+  default = true
+}
+
+# Enable/Disable management agent module
+variable "dev_switch_mgmt_agent_module" {
+  type    = bool
+  default = true
+}
+
+# Enable/Disable management agent module
+variable "dev_switch_logan_module" {
+  type    = bool
+  default = true
+}
+
+# Enable/Disable IAM module
+variable "dev_switch_iam_module" {
   type    = bool
   default = true
 }

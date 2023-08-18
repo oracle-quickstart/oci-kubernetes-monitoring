@@ -35,6 +35,9 @@ oke_cluster_ocid = ""
 # Change this, if you want to deploy in a custom namespace
 kubernetes_namespace = "oci-onm"
 
+# Option to deploy helm
+opt_deploy_helm
+
 # Option to control metric server installation as part of helm release
 opt_deploy_metric_server = true
 
@@ -60,13 +63,5 @@ opt_create_dynamicGroup_and_policies = true
 
 # Fluentd installation path
 fluentd_baseDir_path = "/var/log"
-
-#### 
-## Optional Switches
-####
-
-enable_dashboard_module = false
-enable_helm_module      = false
-generate_helm_template  = false
 
 

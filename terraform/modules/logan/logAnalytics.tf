@@ -29,3 +29,10 @@ resource "oci_log_analytics_log_analytics_log_group" "new_log_group" {
   #     }
   # }
 }
+
+resource "oci_log_analytics_log_analytics_entity" "oke_cluster" {
+  compartment_id   = var.compartment_ocid
+  entity_type_name = "Kubernetes Cluster"
+  name             = var.kubernetes_cluster_name
+  namespace        = local.oci_la_namespace
+}
