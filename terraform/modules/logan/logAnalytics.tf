@@ -11,7 +11,7 @@ locals {
   cluster_entity_properties = {
     topology_solution_k8s_onm_compartment_ocid  = var.compartment_ocid
     topology_solution_k8s_onm_metrics_namespace = "mgmtagent_kubernetes_metrics"
-    topology_solution_k8s_trigger               = "add_data_flow"
+    topology_solution_k8s_trigger               = var.triggered_by_add_data_flow ? "add_data_flow" : null
   }
 }
 

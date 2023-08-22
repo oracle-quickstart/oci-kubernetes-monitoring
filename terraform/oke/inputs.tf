@@ -141,6 +141,12 @@ variable "fluentd_baseDir_path" {
   default = "/var/log"
 }
 
+# add data flow identifier
+variable "triggered_by_add_data_flow" {
+  type    = bool
+  default = false
+}
+
 ####
 ##  Fluentd Configuration
 ####

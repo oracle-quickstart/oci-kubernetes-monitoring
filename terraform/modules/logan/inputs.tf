@@ -33,3 +33,9 @@ variable "new_logGroup_name" {
 variable "kubernetes_cluster_name" {
   type = string
 }
+
+# add data flow identifier
+variable "triggered_by_add_data_flow" {
+  type    = bool
+  default = false
+}

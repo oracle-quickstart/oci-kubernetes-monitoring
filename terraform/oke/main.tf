@@ -59,13 +59,14 @@ module "policy_and_dynamic-group" {
 
 // Create Logging Analytics Resorces
 module "loggingAnalytics" {
-  source                  = "./modules/logan"
-  tenancy_ocid            = var.tenancy_ocid
-  create_new_logGroup     = var.opt_create_new_la_logGroup
-  new_logGroup_name       = var.oci_la_logGroup_name
-  compartment_ocid        = var.oci_onm_compartment_ocid
-  existing_logGroup_id    = var.oci_la_logGroup_id
-  kubernetes_cluster_name = local.oke_cluster_name
+  source                     = "./modules/logan"
+  tenancy_ocid               = var.tenancy_ocid
+  create_new_logGroup        = var.opt_create_new_la_logGroup
+  new_logGroup_name          = var.oci_la_logGroup_name
+  compartment_ocid           = var.oci_onm_compartment_ocid
+  existing_logGroup_id       = var.oci_la_logGroup_id
+  kubernetes_cluster_name    = local.oke_cluster_name
+  triggered_by_add_data_flow = var.triggered_by_add_data_flow
 
   count = local.module_controls.enable_logan_module ? 1 : 0
 }
