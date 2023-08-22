@@ -8,6 +8,11 @@ data "oci_log_analytics_namespaces" "logan_namespaces" {
 locals {
   oci_la_namespace         = data.oci_log_analytics_namespaces.logan_namespaces.namespace_collection[0].items[0].namespace
   final_oci_la_logGroup_id = var.create_new_logGroup ? oci_log_analytics_log_analytics_log_group.new_log_group[0].id : var.existing_logGroup_id
+  cluster_entity_properties = {
+    topology_solution_k8s_onm_compartment_ocid  = var.compartment_ocid
+    topology_solution_k8s_onm_metrics_namespace = "mgmtagent_kubernetes_metrics"
+    topology_solution_k8s_trigger               = "add_data_flow"
+  }
 }
 
 resource "oci_log_analytics_log_analytics_log_group" "new_log_group" {
@@ -35,4 +40,5 @@ resource "oci_log_analytics_log_analytics_entity" "oke_cluster" {
   entity_type_name = "Kubernetes Cluster"
   name             = var.kubernetes_cluster_name
   namespace        = local.oci_la_namespace
+  properties       = local.cluster_entity_properties
 }
