@@ -7,7 +7,9 @@ locals {
 
   oke_cluster_name = [for c in data.oci_containerengine_clusters.oke_clusters.clusters : c.name if c.id == var.oke_cluster_ocid][0]
 
-  ## Module Controls evalues developer options and UI inputs/options (ex - opt_deploy_helm) to determine
+  deploy_helm_ui_option = var.stack_deployment_option == "Full" ? true : false
+
+  ## Module Controls evalues developer options and UI inputs/options (ex - stack_deployment_option) to determine
   ## if a module should be executed
   module_controls = {
     enable_livelab_module    = alltrue([var.dev_switch_livelab_module, var.livelab_switch])
@@ -15,7 +17,7 @@ locals {
     enable_iam_module        = alltrue([var.dev_switch_iam_module, var.opt_create_dynamicGroup_and_policies, !var.livelab_switch])
     enable_logan_module      = alltrue([var.dev_switch_logan_module])
     enable_mgmt_agent_module = alltrue([var.dev_switch_mgmt_agent_module])
-    enable_helm_module       = alltrue([var.dev_switch_helm_module, var.opt_deploy_helm])
+    enable_helm_module       = alltrue([var.dev_switch_helm_module, local.deploy_helm_ui_option])
   }
 }
 

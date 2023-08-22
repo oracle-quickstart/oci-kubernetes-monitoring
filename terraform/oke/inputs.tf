@@ -68,16 +68,6 @@ variable "boat_tenancy_ocid" {
 }
 
 ####
-##  Stack Deployment Options
-####
-
-# Option to deploy helm
-variable "opt_deploy_helm" {
-  type    = bool
-  default = true
-}
-
-####
 ##  Dynamic Group and Policies
 ####
 
@@ -110,6 +100,12 @@ variable "kubernetes_namespace" {
 ####
 ##  OCI Observability and Management Information
 ####
+
+# Stack Deployment Options
+variable "stack_deployment_option" {
+  type    = string
+  default = "Full"
+}
 
 # Compartment for creating OCI Observability and Management resources
 variable "oci_onm_compartment_ocid" {
