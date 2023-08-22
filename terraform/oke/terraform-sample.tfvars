@@ -36,7 +36,7 @@ oke_cluster_ocid = ""
 kubernetes_namespace = "oci-onm"
 
 # Option to deploy helm
-opt_deploy_helm
+opt_deploy_helm = true
 
 # Option to control metric server installation as part of helm release
 opt_deploy_metric_server = true
