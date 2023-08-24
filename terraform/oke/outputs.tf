@@ -18,7 +18,7 @@ locals {
     }
   })
 
-  output_helm_command_2 = join("\n" , [
+  output_helm_command_2 = join("\n", [
     "helm install oci-kubernetes-monitoring oci-onm/oci-onm \\",
     "--set global.kubernetesClusterID=${var.oke_cluster_ocid} \\",
     "--set global.kubernetesClusterName=${local.oke_cluster_name} \\",
@@ -28,11 +28,11 @@ locals {
   ])
 }
 
-output helm_command_1 {
+output "helm_command_1" {
   value = "helm repo add oci-onm https://oracle-quickstart.github.io/oci-kubernetes-monitoring"
 }
 
-output helm_command_2 {
+output "helm_command_2" {
   value = local.output_helm_command_2
 }
 

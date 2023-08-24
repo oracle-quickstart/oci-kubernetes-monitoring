@@ -6,6 +6,9 @@ data "oci_containerengine_clusters" "oke_clusters_list" {
 }
 
 locals {
+  helm_repo_url   = "https://oracle-quickstart.github.io/oci-kubernetes-monitoring"
+  helm_repo_chart = "oci-onm"
+
   oke_clusters_list = data.oci_containerengine_clusters.oke_clusters_list.clusters
   oke_cluster_name  = [for c in local.oke_clusters_list : c.name if c.id == var.oke_cluster_ocid][0]
 
@@ -37,7 +40,8 @@ locals {
 # Create helm release
 resource "helm_release" "oci-kubernetes-monitoring" {
   name              = "oci-kubernetes-monitoring"
-  chart             = var.helm_abs_path
+  repository        = var.use_local_helm_chart ? null : local.helm_repo_url
+  chart             = var.use_local_helm_chart ? var.helm_abs_path : local.helm_repo_chart
   wait              = true
   dependency_update = true
   atomic            = true
@@ -66,7 +70,8 @@ resource "helm_release" "oci-kubernetes-monitoring" {
 # Create helm template
 data "helm_template" "oci-kubernetes-monitoring" {
   name              = "oci-kubernetes-monitoring"
-  chart             = var.helm_abs_path
+  repository        = var.use_local_helm_chart ? null : local.helm_repo_url
+  chart             = var.use_local_helm_chart ? var.helm_abs_path : local.helm_repo_chart
   dependency_update = true
 
   values = var.deploy_mushop_config ? ["${file("${path.module}/mushop_values.yaml")}"] : null

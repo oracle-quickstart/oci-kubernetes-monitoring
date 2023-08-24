@@ -86,6 +86,7 @@ module "management_agent" {
 module "helm_release" {
   source                         = "./modules/helm"
   helm_abs_path                  = abspath("./charts/oci-onm")
+  use_local_helm_chart           = var.dev_switch_use_local_helm_chart
   generate_helm_template         = var.dev_switch_generate_helm_template
   oke_compartment_ocid           = var.oke_compartment_ocid
   oke_cluster_ocid               = var.oke_cluster_ocid

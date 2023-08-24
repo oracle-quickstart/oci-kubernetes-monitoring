@@ -28,6 +28,7 @@ variableGroups:
       - boat_auth
       - boat_tenancy_ocid
       - dev_switch_generate_helm_template
+      - dev_switch_use_local_helm_chart
       - dev_switch_dashboards_module
       - dev_switch_helm_module
       - dev_switch_mgmt_agent_module

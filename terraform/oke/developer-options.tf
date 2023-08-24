@@ -18,6 +18,12 @@ variable "dev_switch_helm_module" {
   default = true
 }
 
+# when false, public helm repo is used for deployment 
+variable "dev_switch_use_local_helm_chart" {
+  type    = bool
+  default = false
+}
+
 # Enable/Disable helm template. When set as true, 
 # - helm module will generate template file inside ../modules/helm/local directory
 # - Setting this to true disables/skips the helm release

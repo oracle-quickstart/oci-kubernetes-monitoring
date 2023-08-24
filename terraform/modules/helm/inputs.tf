@@ -10,13 +10,20 @@ variable "generate_helm_template" {
   default = false
 }
 
+variable "use_local_helm_chart" {
+  type    = bool
+  default = false
+}
+
 ####
 ##  Helm chart
 ####
 
+# Used for local testing
 # Absoulte path to helm chart directory
 variable "helm_abs_path" {
-  type = string
+  type    = string
+  default = "optional"
 }
 
 ####
