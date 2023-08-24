@@ -55,6 +55,9 @@ oci_la_logGroup_name = "NewLogGroupName"
 ## Optional  Stack inputs
 ####
 
+# "Full" or "Only OCI Resources"
+stack_deployment_option = "Only OCI Resources"
+
 # Option to create Dynamic Group and Policies
 opt_create_dynamicGroup_and_policies = true
 
