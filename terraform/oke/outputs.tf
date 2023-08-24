@@ -18,12 +18,12 @@ locals {
     }
   })
 
-  output_helm_command_2 = join("\n", [
-    "helm install oci-kubernetes-monitoring oci-onm/oci-onm \\",
-    "--set global.kubernetesClusterID=${var.oke_cluster_ocid} \\",
-    "--set global.kubernetesClusterName=${local.oke_cluster_name} \\",
-    "--set oci-onm-logan.ociLALogGroupID=${module.loggingAnalytics[0].oci_la_logGroup_ocid} \\",
-    "--set oci-onm-logan.ociLANamespace=${module.loggingAnalytics[0].oci_la_namespace} \\",
+  output_helm_command_2 = join(" ", [
+    "helm install oci-kubernetes-monitoring oci-onm/oci-onm",
+    "--set global.kubernetesClusterID=${var.oke_cluster_ocid}",
+    "--set global.kubernetesClusterName=${local.oke_cluster_name}",
+    "--set oci-onm-logan.ociLALogGroupID=${module.loggingAnalytics[0].oci_la_logGroup_ocid}",
+    "--set oci-onm-logan.ociLANamespace=${module.loggingAnalytics[0].oci_la_namespace}",
     "--set oci-onm-mgmt-agent.mgmtagent.installKeyFileContent=${module.management_agent[0].mgmt_agent_install_key_content}"
   ])
 }
