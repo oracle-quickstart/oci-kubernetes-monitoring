@@ -36,6 +36,22 @@ output "helm_command_2" {
   value = local.output_helm_command_2
 }
 
+output "oke_cluster_name" {
+  value = local.oke_cluster_name
+}
+
+output "oci_la_namespace" {
+  value = module.loggingAnalytics[0].oci_la_namespace
+}
+
+output "oci_la_logGroup_ocid" {
+  value = module.loggingAnalytics[0].oci_la_logGroup_ocid
+}
+
+output "mgmt_agent_install_key_content" {
+  value = module.management_agent[0].mgmt_agent_install_key_content
+}
+
 /* output "helm_external_values" {
   value = local.deploy_helm_ui_option ? null : local.output_helm_external_values
 } */
