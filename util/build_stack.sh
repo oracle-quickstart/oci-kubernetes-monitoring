@@ -142,8 +142,8 @@ echo -e "Switched to temp dir"
 
 # update livelab switch input to true
 if [ -n "$LIVE_LAB_BUILD" ]; then
-    sed "s/false/true/g" -i livelab-switch.tf
-    echo -e "Enabled livelab switch in livelab-switch.tf"
+    sed "s/false/true/g" -i livelab_switch.tf
+    echo -e "Enabled livelab switch in livelab_switch.tf"
 fi
 
 # create zip

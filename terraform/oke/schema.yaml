@@ -112,6 +112,9 @@ variables:
     - "Only OCI Resources"
     default: "Full"
     required: true
+    visible:
+      not: 
+      - livelab_switch    
 
   # Option to enable/disable metric server installation during helm deployment
   opt_deploy_metric_server:
