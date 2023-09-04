@@ -10,7 +10,9 @@ locals {
   helm_repo_chart = "oci-onm"
 
   oke_clusters_list = data.oci_containerengine_clusters.oke_clusters_list.clusters
-  oke_cluster_name  = [for c in local.oke_clusters_list : c.name if c.id == var.oke_cluster_ocid][0]
+  oke_cluster_name = var.oke_cluster_name == "NoInput" ? [for c in local.oke_clusters_list :
+  c.name if c.id == var.oke_cluster_ocid][0] : var.oke_cluster_name
+  oke_cluster_entity_ocid = var.oke_cluster_entity_ocid == "NoInput" ? null : var.oke_cluster_entity_ocid
 
   helm_inputs = {
     # global
@@ -57,6 +59,14 @@ resource "helm_release" "oci-kubernetes-monitoring" {
   }
 
   dynamic "set" {
+    for_each = var.oke_cluster_entity_ocid == "NoInput" ? [] : ["run_once"]
+    content {
+      name  = "oci-onm-logan.ociLAClusterEntityID"
+      value = var.oke_cluster_entity_ocid
+    }
+  }
+
+  dynamic "set" {
     for_each = var.deploy_mushop_config ? local.mushop_helm_inputs : {}
     content {
       name  = set.key
@@ -81,6 +91,14 @@ data "helm_template" "oci-kubernetes-monitoring" {
     content {
       name  = set.key
       value = set.value
+    }
+  }
+
+  dynamic "set" {
+    for_each = var.oke_cluster_entity_ocid == "NoInput" ? [] : ["run_once"]
+    content {
+      name  = "oci-onm-logan.ociLAClusterEntityID"
+      value = var.oke_cluster_entity_ocid
     }
   }
 

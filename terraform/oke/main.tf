@@ -98,6 +98,8 @@ module "helm_release" {
   opt_deploy_metric_server       = var.livelab_switch ? true : var.opt_deploy_metric_server
   deploy_mushop_config           = var.livelab_switch
   livelab_service_account        = local.livelab_service_account
+  oke_cluster_name               = var.oke_cluster_name
+  oke_cluster_entity_ocid        = var.oke_cluster_entity_ocid
 
   count = local.module_controls_enable_helm_module ? 1 : 0
 }

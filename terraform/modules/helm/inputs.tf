@@ -40,6 +40,18 @@ variable "oke_cluster_ocid" {
   type = string
 }
 
+# OKE Cluster Name
+variable "oke_cluster_name" {
+  type    = string
+  default = "NoInput" # refactor, if need to change default input
+}
+
+# OKE Cluster Entity OCID
+variable "oke_cluster_entity_ocid" {
+  type    = string
+  default = "NoInput" # refactor, if need to change default input
+}
+
 # Kubernetes Namespace
 variable "kubernetes_namespace" {
   type = string

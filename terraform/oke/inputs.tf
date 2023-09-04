@@ -137,12 +137,6 @@ variable "fluentd_baseDir_path" {
   default = "/var/log"
 }
 
-# add data flow identifier
-variable "triggered_by_add_data_flow" {
-  type    = bool
-  default = false
-}
-
 ####
 ##  Fluentd Configuration
 ####
@@ -167,4 +161,26 @@ variable "mgmt_agent_container_image_url" {
 variable "opt_deploy_metric_server" {
   type    = bool
   default = true
+}
+
+####
+##  Input options hidden from stack UI
+####
+
+# add data flow identifier
+variable "triggered_by_add_data_flow" {
+  type    = bool
+  default = false
+}
+
+# OKE Cluster Name
+variable "oke_cluster_name" {
+  type    = string
+  default = "NoInput" # refactor, if need to change default input
+}
+
+# OKE Cluster Entity OCID
+variable "oke_cluster_entity_ocid" {
+  type    = string
+  default = "NoInput" # refactor, if need to change default input
 }

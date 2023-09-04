@@ -42,6 +42,8 @@ variableGroups:
       - current_user_ocid
       - livelab_switch
       - triggered_by_add_data_flow
+      - oke_cluster_name
+      - oke_cluster_entity_ocid
     visible: false
 
   - title: "Select an OKE Cluster deployed in this region to start monitoring"
