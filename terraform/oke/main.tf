@@ -9,16 +9,16 @@ locals {
 
   deploy_helm_ui_option = var.stack_deployment_option == "Full" ? true : false
 
-  ## Module Controls evalues developer options and UI inputs/options (ex - stack_deployment_option) to determine
-  ## if a module should be executed
-  module_controls = {
-    enable_livelab_module    = alltrue([var.dev_switch_livelab_module, var.livelab_switch])
-    enable_dashboards_module = alltrue([var.dev_switch_dashboards_module])
-    enable_iam_module        = alltrue([var.dev_switch_iam_module, var.opt_create_dynamicGroup_and_policies, !var.livelab_switch])
-    enable_logan_module      = alltrue([var.dev_switch_logan_module])
-    enable_mgmt_agent_module = alltrue([var.dev_switch_mgmt_agent_module])
-    enable_helm_module       = alltrue([var.dev_switch_helm_module, local.deploy_helm_ui_option])
-  }
+  ## Module Controls are are final verdicts on if a module should be executed or not 
+  ## Module dependencies should be included here as well so a module does not run when it's depenedent moudle is disabled
+
+  module_controls_enable_livelab_module    = alltrue([var.dev_switch_livelab_module, var.livelab_switch])
+  module_controls_enable_dashboards_module = alltrue([var.dev_switch_dashboards_module])
+  module_controls_enable_iam_module        = alltrue([var.dev_switch_iam_module, var.opt_create_dynamicGroup_and_policies, !var.livelab_switch])
+  module_controls_enable_logan_module      = alltrue([var.dev_switch_logan_module])
+  module_controls_enable_mgmt_agent_module = alltrue([var.dev_switch_mgmt_agent_module])
+  module_controls_enable_helm_module = alltrue([var.dev_switch_helm_module, local.deploy_helm_ui_option,
+  local.module_controls_enable_mgmt_agent_module, local.module_controls_enable_logan_module])
 }
 
 // Only execute for livelab stack
@@ -28,7 +28,7 @@ module "livelab" {
   source            = "./modules/livelab"
   current_user_ocid = var.current_user_ocid
 
-  count = local.module_controls.enable_livelab_module ? 1 : 0
+  count = local.module_controls_enable_livelab_module ? 1 : 0
 
   /* providers = {
     oci = oci.home_region
@@ -40,7 +40,7 @@ module "import_kubernetes_dashbords" {
   source           = "./modules/dashboards"
   compartment_ocid = var.oci_onm_compartment_ocid
 
-  count = local.module_controls.enable_dashboards_module ? 1 : 0
+  count = local.module_controls_enable_dashboards_module ? 1 : 0
 }
 
 // Create Required Polcies and Dynamic Group
@@ -52,7 +52,7 @@ module "policy_and_dynamic-group" {
   oke_compartment_ocid     = var.oke_compartment_ocid
   oke_cluster_ocid         = var.oke_cluster_ocid
 
-  count = local.module_controls.enable_iam_module ? 1 : 0
+  count = local.module_controls_enable_iam_module ? 1 : 0
 
   providers = {
     oci = oci.home_region
@@ -61,14 +61,14 @@ module "policy_and_dynamic-group" {
 
 // Create Logging Analytics Resorces
 module "loggingAnalytics" {
-  source                     = "./modules/logan"
-  tenancy_ocid               = var.tenancy_ocid
-  create_new_logGroup        = var.opt_create_new_la_logGroup
-  new_logGroup_name          = var.oci_la_logGroup_name
-  compartment_ocid           = var.oci_onm_compartment_ocid
-  existing_logGroup_id       = var.oci_la_logGroup_id
+  source               = "./modules/logan"
+  tenancy_ocid         = var.tenancy_ocid
+  create_new_logGroup  = var.opt_create_new_la_logGroup
+  new_logGroup_name    = var.oci_la_logGroup_name
+  compartment_ocid     = var.oci_onm_compartment_ocid
+  existing_logGroup_id = var.oci_la_logGroup_id
 
-  count = local.module_controls.enable_logan_module ? 1 : 0
+  count = local.module_controls_enable_logan_module ? 1 : 0
 }
 
 # Create a management agent key
@@ -77,7 +77,7 @@ module "management_agent" {
   uniquifier       = md5(var.oke_cluster_ocid)
   compartment_ocid = var.oci_onm_compartment_ocid
 
-  count = local.module_controls.enable_mgmt_agent_module ? 1 : 0
+  count = local.module_controls_enable_mgmt_agent_module ? 1 : 0
 }
 
 // deploy oke-monitoring solution (helm release)
@@ -99,5 +99,5 @@ module "helm_release" {
   deploy_mushop_config           = var.livelab_switch
   livelab_service_account        = local.livelab_service_account
 
-  count = local.module_controls.enable_helm_module ? 1 : 0
+  count = local.module_controls_enable_helm_module ? 1 : 0
 }
