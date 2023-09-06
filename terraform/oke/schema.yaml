@@ -3,8 +3,8 @@
 # yaml-language-server: $schema=./meta-schema.yaml
 
 title: OCI Kubernetes Monitoring Solution
-description: OCI Kubernetes Monitoring Solution is a turn-key Kubernetes monitoring and management package based on OCI Logging Analytics cloud service, OCI Monitoring, OCI Management Agent.
-informationalText: OCI Kubernetes Monitoring Solution is a turn-key Kubernetes monitoring and management package based on OCI Logging Analytics cloud service, OCI Monitoring, OCI Management Agent.
+description: "OCI Kubernetes Monitoring Solution is a turn-key Kubernetes monitoring and management package based on the following OCI services: Logging Analytics, Monitoring, and Management Agent."
+informationalText: "OCI Kubernetes Monitoring Solution is a turn-key Kubernetes monitoring and management package based on the following OCI services: Logging Analytics, Monitoring, and Management Agent."
 schemaVersion: 1.1.0
 version: "20221004"
 
@@ -46,14 +46,14 @@ variableGroups:
       - oke_cluster_entity_ocid
     visible: false
 
-  - title: "Select an OKE Cluster deployed in this region to start monitoring"
-    description: "Use CLI (Helm) if your cluster does not have public API Endpoint or restricted from accessing container-registry.oracle.com. See: https://github.com/oracle-quickstart/oci-kubernetes-monitoring"
+  - title: Select an OKE cluster deployed in this region to start monitoring.
+    description: "Use CLI (Helm) if your cluster does not have a public API endpoint or if it's restricted from accessing container-registry.oracle.com. See: https://github.com/oracle-quickstart/oci-kubernetes-monitoring"
     variables:
       - oke_compartment_ocid
       - oke_cluster_ocid
 
   - title: "OCI Observability & Management Services Configuration"
-    description: "See: https://github.com/oracle-quickstart/oci-kubernetes-monitoring for list of resources created"
+    description: "For a list of resources created, see: https://github.com/oracle-quickstart/oci-kubernetes-monitoring"
     variables:
     - stack_deployment_option
     - opt_deploy_metric_server
@@ -63,7 +63,7 @@ variableGroups:
     - oci_la_logGroup_name
     - fluentd_baseDir_path
 
-  - title: "OCI IAM Policies and Dynaimic Groups (Optional)"
+  - title: OCI IAM Policies and Dynamic Groups (Optional)
     variables:
       - opt_create_dynamicGroup_and_policies
 
@@ -77,7 +77,7 @@ variables:
   oke_compartment_ocid:
     type: oci:identity:compartment:id
     required: true
-    title: "Select OKE Cluster Compartment"
+    title: "Select OKE cluster compartment"
     default: compartment_ocid
 
   # OKE Cluster OCID
@@ -85,7 +85,7 @@ variables:
     type: oci:container:cluster:id
     dependsOn:
       compartmentId: ${oke_compartment_ocid}
-    title: Select OKE Cluster
+    title: Select OKE cluster
     required: true
 
   # kubernetes_namespace:
@@ -104,8 +104,8 @@ variables:
 
   #  Stack Deployment Options
   stack_deployment_option:
-    title: "Deployment Options"
-    description: '"Full" option creates both OCI and K8s resources.'
+    title: Deployment options
+    description: 'The "Full" option creates both OCI and K8s resources.'
     type: enum
     enum: # Dev Note - # Any change in following options must be refactored across schema.yaml
     - "Full"
@@ -119,8 +119,8 @@ variables:
   # Option to enable/disable metric server installation during helm deployment
   opt_deploy_metric_server:
     type: boolean
-    title: Enable Metric Server Installation
-    description: Uncheck this if Metric Server is already installed in your cluster.
+    title: Enable Metric Server installation
+    description: Clear this check box if Metric Server is already installed in your cluster.
     default: true
     visible:
       and:
@@ -134,14 +134,14 @@ variables:
   oci_onm_compartment_ocid:
     type: oci:identity:compartment:id
     required: true
-    title: Select compartment for Logging Analytics, Management Agent, and Monitoring service resources
-    description: This compartment will be used for creating Dashboards, Log Groups, Entities, Management Agent Keys, Metrics Namespace etc. See https://github.com/oracle-quickstart/oci-kubernetes-monitoring for full list of resources.
+    title: Select compartment for Logging Analytics, Management Agent, and Monitoring service resources.
+    description: "This compartment will be used for creating dashboards, log groups, entities, Management Agent keys, metric namespaces, and related resources. For a full list of resources, see: https://github.com/oracle-quickstart/oci-kubernetes-monitoring"
     default: compartment_ocid
 
   # Option to create Logging Analytics
   opt_create_new_la_logGroup: # change this to create new log group
     type: boolean
-    title: Check if you want to create a new Log Group
+    title: Select this check box if you want to create a new log group.
     default: false
     visible:
       not: 
@@ -152,8 +152,8 @@ variables:
     type: oci:logan:loggroup:id
     dependsOn:
       compartmentId: ${oci_onm_compartment_ocid}
-    title: OCI Logging Analytics Log Group
-    description: Log Groups are logical containers for log data, and provide access control for your data using IAM Policies.
+    title: OCI Logging Analytics log group
+    description: Log groups are logical containers for log data, and they provide access control for your data using IAM policies.
     required: true
     visible:
       not:
@@ -165,8 +165,8 @@ variables:
     maxLength: 255
     minLength: 1
     required: true
-    title: "OCI Logging Analytics Log Group Name"
-    description: "Tip: Give a unique name which can be identified with your cluster name to make it easy to find in Dashboards and Logs Explorer"
+    title: OCI Logging Analytics log group name
+    description: "Tip: To make the log group easy to find in Dashboards and Logs Explorer pages, provide a unique name associated with your cluster name."
     visible:
       and:
         - opt_create_new_la_logGroup
@@ -177,8 +177,8 @@ variables:
     type: string
     maxLength: 255
     minLength: 1
-    title: FluentD Working Directory
-    description: A directory on the node (with read & write permission) to use for storing Fluentd related data
+    title: FluentD working directory
+    description: A directory on the node (with read & write permission) to use for storing data related to Fluentd.
     default: /var/log
     required: true
     pattern: '^/[\w- /]*$'
@@ -197,8 +197,8 @@ variables:
   # Option to create Dynamic Group and Policies
   opt_create_dynamicGroup_and_policies:
     type: boolean
-    title: Check to create Dynamic Group and Policies required for deploying monitoring solution
+    title: Select this check box to create dynamic groups and policies that are required for deploying the monitoring solution.
     #description: "Ref: https://github.com/oracle-quickstart/oci-kubernetes-monitoring#pre-requisites"
-    description: "Note: The dynamic group definition must be updated, if node pool(s) and OKE Cluster are in different compartments."
+    description: "Note: If node pools and the OKE cluster are in different compartments, then the dynamic group definition must be updated."
     default: false
     required: true    
