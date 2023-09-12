@@ -1,12 +1,13 @@
 # Change Log
 
-## 2023-07-24
+## 2023-08-07
 ### Added
-- Multi Process Worker Support
+- Support Fluentd's [Multi Process Workers](https://docs.fluentd.org/deployment/multi-process-workers). 
 - Custom Container Image for Fluentd using OL8-Slim as base Image.
 - PV, PVC Objects Collection 
 ### Changed
-- Updates to Custom Container Image for Fluentd using OL8 as base Image. 
+- Instructions and dependency versions updates to custom container image for Fluentd using OL8 as base image.
+- ClusterRole updates to add read permission for `storage.k8s.io` api group to support PV, PVC Objects collection. 
 ### Deprecating
 - Custom Container Image for Fluentd using Debian and OL8 as base Image. 
 
