@@ -52,7 +52,7 @@ variableGroups:
       - oke_compartment_ocid
       - oke_cluster_ocid
 
-  - title: "OCI Observability & Management Services Configuration"
+  - title: "OCI Observability and Management Services Configuration"
     description: "For a list of resources created, see: https://github.com/oracle-quickstart/oci-kubernetes-monitoring"
     variables:
     - stack_deployment_option
@@ -99,7 +99,7 @@ variables:
   #   required: true
 
   ####
-  ##  OCI Observability & Management Services Configuration
+  ##  OCI Observability and Management Services Configuration
   ####
 
   #  Stack Deployment Options
