@@ -38,6 +38,10 @@ spec:
                 configMapKeyRef:
                   name: k8-discovery-config
                   key: oci_la_log_group_id
+            volumeMounts:
+            - name: ociconfigdir
+              mountPath: /var/opt/.oci
+              readOnly: true      
             command:
                 - oci-logan-oke-resources-discovery
                 - --kubernetes_cluster_name
@@ -48,3 +52,9 @@ spec:
                 - $(OCI_LA_NAMESPACE)
                 - --oci_la_log_group_id
                 - $(OCI_LA_LOG_GROUP_ID)
+          volumes:
+          - name: ociconfigdir
+            projected:
+              sources:
+              - secret:
+                  name: oci-onm-oci-config
