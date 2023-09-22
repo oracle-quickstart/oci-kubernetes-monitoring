@@ -1,33 +1,35 @@
 # Copyright (c) 2023, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 ---
+{{- $authtype := .Values.authtype | lower }}
+{{- $resourceNamePrefix := (include "logan.resourceNamePrefix" .) }}
 apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: {{ include "logan.resourceNamePrefix" . }}-discovery
   namespace: {{ include "logan.namespace" . }}
 spec:
-  schedule: "*/5 * * * *"
+  schedule: {{ .Values.objectDiscovery.cronSchedule | quote }}
   jobTemplate:
     spec:
       template:
         spec:
           restartPolicy: OnFailure
-          serviceAccountName: oci-onm
+          serviceAccountName: {{ .Values.serviceAccount }}
           containers:
           - name: k8-discovery-job
-            image: iad.ocir.io/id3m3bqjn6oc/k8-objects-discovery:commit-f397 
+            image: {{ .Values.objectDiscovery.image.url }}
             env:
             - name: K8_CLUSTER_NAME
               valueFrom:
                 configMapKeyRef:
                   name: k8-discovery-config
                   key: k8_cluster_name
-            - name: K8_CLUSTER_ID
+            - name: K8_CLUSTER_ENTITY_ID
               valueFrom:
                 configMapKeyRef:
                   name: k8-discovery-config
-                  key: k8_cluster_id
+                  key: k8_cluster_entity_id
             - name: OCI_LA_NAMESPACE
               valueFrom:
                 configMapKeyRef:
@@ -38,23 +40,33 @@ spec:
                 configMapKeyRef:
                   name: k8-discovery-config
                   key: oci_la_log_group_id
+            {{- if eq $authtype "config" }}
             volumeMounts:
             - name: ociconfigdir
               mountPath: /var/opt/.oci
-              readOnly: true      
+              readOnly: true
+            {{- end }}
             command:
                 - oci-logan-oke-resources-discovery
                 - --kubernetes_cluster_name
                 - $(K8_CLUSTER_NAME)
-                - --kubernetes_cluster_id
-                - $(K8_CLUSTER_ID)
+                {{- if ne .Values.objectDiscovery.kubernetesClusterEntityID "" }}
+                - --kubernetes_cluster_entity_id
+                - $(K8_CLUSTER_ENTITY_ID)
+                {{- end }}
                 - --oci_la_namespace
                 - $(OCI_LA_NAMESPACE)
                 - --oci_la_log_group_id
                 - $(OCI_LA_LOG_GROUP_ID)
+                {{- if ne .Values.objectDiscovery.api_endpoint "" }}
+                - --endpoint
+                - {{ .Values.objectDiscovery.api_endpoint }}
+                {{- end }}
+          {{- if eq $authtype "config" }}
           volumes:
           - name: ociconfigdir
             projected:
               sources:
               - secret:
-                  name: oci-onm-oci-config
+                  name: {{ $resourceNamePrefix }}-oci-config
+          {{- end }}

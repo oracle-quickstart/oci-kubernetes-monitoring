@@ -473,3 +473,16 @@ fluentd:
             api_endpoint: apis/batch
          endpoint_slices:
             api_endpoint: apis/discovery.k8s.io
+   
+# -- Configuration for collecting Kubernetes Object information via discovery job
+objectDiscovery:
+   cronSchedule: "*/5 * * * *"
+   kubernetesClusterEntityID:
+   api_endpoint: ""
+   ociLANamespace:
+   ociLALogGroupID:
+   image:
+      # Image pull secrets for. Secret must be in the namespace defined by namespace
+      imagePullSecrets:
+      # -- Replace this value with actual docker image url
+      url:

@@ -36,6 +36,15 @@ oci-onm-logan:
   ociLANamespace:
   # OCI Logging Analytics Default Log Group OCID
   ociLALogGroupID:
+  objectDiscovery:
+    kubernetesClusterEntityID:
+    ociLANamespace:
+    ociLALogGroupID:
+    image:
+      # Image pull secrets for. Secret must be in the namespace defined by namespace
+      imagePullSecrets:
+      # -- Replace this value with actual docker image url
+      url:
 
 oci-onm-mgmt-agent:
   oci-onm-common:

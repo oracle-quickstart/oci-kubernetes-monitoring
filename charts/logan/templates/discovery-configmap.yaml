@@ -9,6 +9,6 @@ metadata:
   namespace: {{ include "logan.namespace" . }}
 data:
   k8_cluster_name: {{ include "logan.resourceNamePrefix" . }}
-  k8_cluster_id: {{ include "logan.kubernetesClusterId" . }}
-  oci_la_namespace: {{ .Values.ociLANamespace }}
-  oci_la_log_group_id: {{ .Values.ociLALogGroupID }}
+  k8_cluster_entity_id: {{ .Values.objectDiscovery.kubernetesClusterEntityID }}
+  oci_la_namespace: {{ .Values.objectDiscovery.ociLANamespace }}
+  oci_la_log_group_id: {{ .Values.objectDiscovery.ociLALogGroupID }}
