@@ -58,6 +58,10 @@ spec:
                 - $(OCI_LA_NAMESPACE)
                 - --oci_la_log_group_id
                 - $(OCI_LA_LOG_GROUP_ID)
+                {{- if eq $authtype "config" }}
+                - --config_file_location
+                - {{ .Values.oci.path }}/{{ .Values.oci.file }}
+                {{- end }}
                 {{- if ne .Values.objectDiscovery.api_endpoint "" }}
                 - --endpoint
                 - {{ .Values.objectDiscovery.api_endpoint }}
