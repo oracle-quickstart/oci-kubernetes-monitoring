@@ -15,7 +15,7 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
-          serviceAccountName: {{ .Values.serviceAccount }}
+          serviceAccountName: {{ include "logan.serviceAccount" . }}
           containers:
           - name: k8-discovery-job
             image: {{ .Values.objectDiscovery.image.url }}
@@ -23,22 +23,22 @@ spec:
             - name: K8_CLUSTER_NAME
               valueFrom:
                 configMapKeyRef:
-                  name: k8-discovery-config
+                  name: {{ include "logan.resourceNamePrefix" . }}-discovery
                   key: k8_cluster_name
             - name: K8_CLUSTER_ENTITY_ID
               valueFrom:
                 configMapKeyRef:
-                  name: k8-discovery-config
+                  name: {{ include "logan.resourceNamePrefix" . }}-discovery
                   key: k8_cluster_entity_id
             - name: OCI_LA_NAMESPACE
               valueFrom:
                 configMapKeyRef:
-                  name: k8-discovery-config
+                  name: {{ include "logan.resourceNamePrefix" . }}-discovery
                   key: oci_la_namespace
             - name: OCI_LA_LOG_GROUP_ID
               valueFrom:
                 configMapKeyRef:
-                  name: k8-discovery-config
+                  name: {{ include "logan.resourceNamePrefix" . }}-discovery
                   key: oci_la_log_group_id
             {{- if eq $authtype "config" }}
             volumeMounts:
