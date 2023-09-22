@@ -2,11 +2,11 @@
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 ---
 {{- $authtype := .Values.authtype | lower }}
-{{- $resourceNamePrefix := (include "logan.resourceNamePrefix" .) }}
+{{- $resourceNamePrefix := .Values.global.resourceNamePrefix }}
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ include "logan.resourceNamePrefix" . }}-discovery
+  name: {{ .Values.global.resourceNamePrefix }}-discovery
   namespace: {{ include "logan.namespace" . }}
 spec:
   schedule: {{ .Values.objectDiscovery.cronSchedule | quote }}
