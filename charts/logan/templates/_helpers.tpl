@@ -4,7 +4,7 @@
 
 # tpl render function
 {{- define "common.tplvalues.render" -}}
-  {{- if typeIs "string" .value }}
+  {{- if typeIs "string" .   }}
     {{- tpl .value .context }}
   {{- else }}
     {{- tpl (.value | toYaml) .context }}

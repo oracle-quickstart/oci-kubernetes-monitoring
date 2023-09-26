@@ -7,6 +7,8 @@ global:
   namespace: oci-onm
   # -- Resource names prefix used, where allowed.
   resourceNamePrefix: oci-onm
+  # -- Provide a unique name for the cluster. This would help uniquely identifying the logs and metrics data at OCI Logging Analytics and OCI Monitoring respectivelt, when moitoring multiple clustersa
+  kubernetesClusterName:
 
 oci-onm-common:
 # -- Automatically create, a readonly cluster role, cluster role binding and
@@ -38,7 +40,6 @@ authtype: InstancePrincipal
 # -- Kubernetes Namespace for deploying monitoring resources deployed by this chart.
 namespace: "{{ .Values.global.namespace }}"
 
-
 # -- Resoure Name Prefix: Wherever allowed, this prefix will be used with all resources used by this chart
 resourceNamePrefix: "{{ .Values.global.resourceNamePrefix }}"
 
@@ -69,7 +70,7 @@ kubernetesClusterID:
 
 # -- Kubernetes Cluster name. Need not be the OKE Cluster display name.
 # e.g. production-cluster
-kubernetesClusterName:
+kubernetesClusterName: "{{ .Values.global.kubernetesClusterName }}"
 
 # -- Kubernetes Cluster Entity OCID.
 # e.g. ocid1.loganalyticsentity.oc1.phx.amaaaaaabulluiqabqeq4delvhdlmd7aqcjrdla57n2szsxyz7pfdvnhwuua
@@ -486,7 +487,7 @@ objectDiscovery:
    cmdInputs:
       ####  Mandatory inputs
       #  A unique name for each kubernetes cluster must be provided.
-      kubernetes_cluster_name:
+      # kubernetes_cluster_name:
       ####   Optional inputs
       # Logging Analytics Ingestion API endpoint to ingest your application logs
       # OCI Tenancy Namespace to which the collected objects log data is to be uploaded

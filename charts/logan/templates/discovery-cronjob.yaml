@@ -1,5 +1,6 @@
 {{- $authtype := .Values.authtype | lower }}
 {{- $resourceNamePrefix := .Values.global.resourceNamePrefix }}
+{{- $kubernetesClusterName := (include "logan.kubernetesClusterName" .) }}
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -27,10 +28,10 @@ spec:
               command:
                 - oci-logan-oke-resources-discovery
                 - --kubernetes_cluster_name
-                {{- if .Values.objectDiscovery.cmdInputs.kubernetes_cluster_name }}
-                - {{ .Values.objectDiscovery.cmdInputs.kubernetes_cluster_name }}
+                {{- if ne $kubernetesClusterName "UNDEFINED" }}
+                - {{ $kubernetesClusterName }}
                 {{- else }}
-                {{ required "kubernetes_cluster_name is required" .Values.objectDiscovery.cmdInputs.kubernetes_cluster_name }}
+                {{ required "kubernetes_cluster_name is required" .Values.global.kubernetesClusterName }}
                 {{- end }}
                 - --oci_la_namespace
                 {{- if .Values.objectDiscovery.cmdInputs.oci_la_namespace }}
