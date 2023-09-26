@@ -54,6 +54,10 @@ image:
 
 # -- Logging Analytics namespace. Can be found in OCI console --> Logging Analytics --> Administration --> Service
 ociLANamespace:
+
+# -- A custom logging analytics endpoint to use. Should be left empty in production
+ociLAEndpoint:
+
 # -- OCID of Logging Analytics Log Group to send logs to.
 # Can be overridden for individual log types.
 # e.g. ocid1.loganalyticsloggroup.oc1.phx.amaaaaasdfaskriauucc55rlwlxe4ahe2vfmtuoqa6qsgu7mb6jugxacsk6a
@@ -474,15 +478,55 @@ fluentd:
          endpoint_slices:
             api_endpoint: apis/discovery.k8s.io
    
-# -- Configuration for collecting Kubernetes Object information via discovery job
+# -- Objects disocvery cronjob configuration
 objectDiscovery:
+   # cronjob schedule for running object disocvery job
    cronSchedule: "*/5 * * * *"
-   kubernetesClusterEntityID:
-   api_endpoint: ""
-   ociLANamespace:
-   ociLALogGroupID:
-   image:
-      # Image pull secrets for. Secret must be in the namespace defined by namespace
-      imagePullSecrets:
-      # -- Replace this value with actual docker image url
-      url:
+   # cronJob command inputs/arguments
+   cmdInputs:
+      ####  Mandatory inputs
+      #  A unique name for each kubernetes cluster must be provided.
+      kubernetes_cluster_name:
+      ####   Optional inputs
+      # Logging Analytics Ingestion API endpoint to ingest your application logs
+      # OCI Tenancy Namespace to which the collected objects log data is to be uploaded
+      oci_la_namespace:
+      # -- OCID of Logging Analytics Log Group to send objects logs to.
+      # e.g. ocid1.loganalyticsloggroup.oc1.phx.amaaaaasdfaskriauucc55rlwlxe4ahe2vfmtuoqa6qsgu7mb6jugxacsk6a
+      oci_la_log_group_id:
+      # OCID for K8s cluster entity in OCI Logging Analytics.
+      kubernetes_cluster_entity_id:
+      endpoint:
+      # OCI Config Profile Name to be used from the configuration file
+      profile_name:
+      # The location of the configuration file containing OCI authentication details
+      config_file_location:
+      # Path to the kubernetes configuration (kubeconfig) file
+      kube_config_location:
+      # Kubernetes API server URL. 
+      # Alternatively, environment variables KUBERNETES_SERVICE_HOST and KUBERNETES_SERVICE_PORT can be used
+      kubernetes_url:
+      # Path to certificate file for Kubernetes HTTPs/SSL server certificate validation
+      client_cert:
+      # Path to key for Kubernetes HTTPs/SSL server certificate validation
+      client_key:
+      # Path to CA file for Kubernetes HTTPs/SSL server certificate validation
+      ca_file:
+      # Validate SSL certificates while creating kube clients
+      verify_ssl:
+      # Path to bearer token file if basic authentication is used
+      bearer_token_file:
+      # Path to Kubernetes service account token file to access Kubernetes API
+      secret_dir:
+      # Discovery mode to be used - ["infra", "object"]
+      discovery:
+      # Flag to skip uploading data to OCI Logging Analytics [ONLY FOR INTERNAL TESTING] (Boolean)
+      skip-upload:
+      # Log format to be used - ["text", "json"]
+      log_format:
+      # User defined log level - [1, 0, 3, 4]
+      log_level:
+      # Defaults to sequential execution when parameter is not provided (Boolean)
+      enable_threading:
+      # Number of parallel threads to be used while making requests to API server
+      thread_count:

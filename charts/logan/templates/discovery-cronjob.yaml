@@ -1,6 +1,3 @@
-# Copyright (c) 2023, Oracle and/or its affiliates.
-# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
----
 {{- $authtype := .Values.authtype | lower }}
 {{- $resourceNamePrefix := .Values.global.resourceNamePrefix }}
 apiVersion: batch/v1
@@ -14,63 +11,117 @@ spec:
     spec:
       template:
         spec:
+          startingDeadlineSeconds: 100
+          concurrencyPolicy: Forbid
           restartPolicy: OnFailure
           serviceAccountName: {{ include "logan.serviceAccount" . }}
           containers:
-          - name: k8-discovery-job
-            image: {{ .Values.objectDiscovery.image.url }}
-            env:
-            - name: K8_CLUSTER_NAME
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ include "logan.resourceNamePrefix" . }}-discovery
-                  key: k8_cluster_name
-            - name: K8_CLUSTER_ENTITY_ID
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ include "logan.resourceNamePrefix" . }}-discovery
-                  key: k8_cluster_entity_id
-            - name: OCI_LA_NAMESPACE
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ include "logan.resourceNamePrefix" . }}-discovery
-                  key: oci_la_namespace
-            - name: OCI_LA_LOG_GROUP_ID
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ include "logan.resourceNamePrefix" . }}-discovery
-                  key: oci_la_log_group_id
-            {{- if eq $authtype "config" }}
-            volumeMounts:
-            - name: ociconfigdir
-              mountPath: /var/opt/.oci
-              readOnly: true
-            {{- end }}
-            command:
+            - name: k8-discovery-job
+              image: {{ .Values.image.url }}
+              {{- if eq $authtype "config" }}
+              volumeMounts:
+              - name: ociconfigdir
+                mountPath: /var/opt/.oci
+                readOnly: true
+              {{- end }}
+              command:
                 - oci-logan-oke-resources-discovery
                 - --kubernetes_cluster_name
-                - $(K8_CLUSTER_NAME)
-                {{- if ne .Values.objectDiscovery.kubernetesClusterEntityID "" }}
-                - --kubernetes_cluster_entity_id
-                - $(K8_CLUSTER_ENTITY_ID)
+                {{- if .Values.objectDiscovery.cmdInputs.kubernetes_cluster_name }}
+                - {{ .Values.objectDiscovery.cmdInputs.kubernetes_cluster_name }}
+                {{- else }}
+                {{ required "kubernetes_cluster_name is required" .Values.objectDiscovery.cmdInputs.kubernetes_cluster_name }}
                 {{- end }}
                 - --oci_la_namespace
-                - $(OCI_LA_NAMESPACE)
+                {{- if .Values.objectDiscovery.cmdInputs.oci_la_namespace }}
+                - {{ .Values.objectDiscovery.cmdInputs.oci_la_namespace }}
+                {{- else if .Values.ociLANamespace }}
+                - {{ .Values.ociLANamespace }}
+                {{- else }}
+                {{ required "ociLANamespace is required" .Values.ociLANamespace }}
+                {{- end }}
                 - --oci_la_log_group_id
-                - $(OCI_LA_LOG_GROUP_ID)
-                {{- if eq $authtype "config" }}
-                - --config_file_location
-                - {{ .Values.oci.path }}/{{ .Values.oci.file }}
+                {{- if .Values.objectDiscovery.cmdInputs.oci_la_log_group_id }}
+                - {{ .Values.objectDiscovery.cmdInputs.oci_la_log_group_id }}
+                {{- else if .Values.ociLALogGroupID }}
+                - {{ .Values.ociLALogGroupID }}
+                {{- else }}
+                {{ required "ociLALogGroupID is required" .Values.ociLALogGroupID }}
                 {{- end }}
-                {{- if ne .Values.objectDiscovery.api_endpoint "" }}
+                {{- if .Values.objectDiscovery.cmdInputs.endpoint }}
                 - --endpoint
-                - {{ .Values.objectDiscovery.api_endpoint }}
+                - {{ .Values.objectDiscovery.cmdInputs.endpoint }}
+                {{- else if .Values.ociLAEndpoint }}
+                - --endpoint
+                - {{ .Values.ociLAEndpoint }}
                 {{- end }}
-          {{- if eq $authtype "config" }}
+                {{- if .Values.objectDiscovery.cmdInputs.profile_name }}
+                - --profile_name
+                - {{ .Values.objectDiscovery.cmdInputs.profile_name }}
+                {{- end }}                
+                {{- if .Values.objectDiscovery.cmdInputs.config_file_location }}
+                - --config_file_location
+                - {{ .Values.objectDiscovery.cmdInputs.config_file_location }}
+                {{- end }}
+                {{- if .Values.objectDiscovery.cmdInputs.kube_config_location }}
+                - --kube_config_location
+                - {{ .Values.objectDiscovery.cmdInputs.kube_config_location }}
+                {{- end }}
+                {{- if .Values.objectDiscovery.cmdInputs.kubernetes_url }}
+                - --kubernetes_url
+                - {{ .Values.objectDiscovery.cmdInputs.kubernetes_url }}
+                {{- end }}
+                {{- if .Values.objectDiscovery.cmdInputs.client_cert }}
+                - --client_cert
+                - {{ .Values.objectDiscovery.cmdInputs.client_cert }}
+                {{- end }}                
+                {{- if .Values.objectDiscovery.cmdInputs.client_key }}
+                - --client_key
+                - {{ .Values.objectDiscovery.cmdInputs.client_key }}
+                {{- end }}
+                {{- if .Values.objectDiscovery.cmdInputs.ca_file }}
+                - --ca_file
+                - {{ .Values.objectDiscovery.cmdInputs.ca_file }}
+                {{- end }}
+                {{- if .Values.objectDiscovery.cmdInputs.verify_ssl }}
+                - --verify_ssl
+                - {{ .Values.objectDiscovery.cmdInputs.verify_ssl }}
+                {{- end }}
+                {{- if .Values.objectDiscovery.cmdInputs.bearer_token_file }}
+                - --bearer_token_file
+                - {{ .Values.objectDiscovery.cmdInputs.bearer_token_file }}
+                {{- end }}                
+                {{- if .Values.objectDiscovery.cmdInputs.secret_dir }}
+                - --secret_dir
+                - {{ .Values.objectDiscovery.cmdInputs.secret_dir }}
+                {{- end }}
+                {{- if .Values.objectDiscovery.cmdInputs.discovery }}
+                - --discovery
+                - {{ .Values.objectDiscovery.cmdInputs.discovery }}
+                {{- end }}
+                {{- if index .Values.objectDiscovery.cmdInputs "skip-upload" }}
+                - --skip-upload
+                {{- end }}
+                {{- if .Values.objectDiscovery.cmdInputs.log_format }}
+                - --log_format
+                - {{ .Values.objectDiscovery.cmdInputs.log_format }}
+                {{- end }}                
+                {{- if .Values.objectDiscovery.cmdInputs.log_level }}
+                - --log_level
+                - {{ .Values.objectDiscovery.cmdInputs.log_level }}
+                {{- end }}
+                {{- if .Values.objectDiscovery.cmdInputs.enable_threading }}
+                - --enable_threading
+                {{- end }}
+                {{- if .Values.objectDiscovery.cmdInputs.thread_count }}
+                - --thread_count
+                - {{ .Values.objectDiscovery.cmdInputs.thread_count }}
+                {{- end }}
+            {{- if eq $authtype "config" }}
           volumes:
-          - name: ociconfigdir
-            projected:
-              sources:
-              - secret:
-                  name: {{ $resourceNamePrefix }}-oci-config
-          {{- end }}
+            - name: ociconfigdir
+              projected:
+                sources:
+                - secret:
+                    name: {{- $resourceNamePrefix }}-oci-config
+            {{- end }}
