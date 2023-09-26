@@ -22,7 +22,7 @@ COPY Gemfile* /fluentd/
 # Install ruby, ruby-libs along with rubygems and bundler.
 RUN microdnf -y module enable ruby:2.7 \
 # Install ruby (it's dependencies gdbm-libs) and ruby-libs, disabling week dependencies
- && microdnf -y install --setopt=install_weak_deps=0 --nodocs ruby-2.7.6 ruby-libs-2.7.6 gdbm-libs \
+ && microdnf -y install --setopt=install_weak_deps=0 --nodocs ruby-2.7.8 ruby-libs-2.7.8 gdbm-libs \
 # Install rubygems (it's dependencies rubygem-openssl rubygem-psych), disabling week dependencies
  && microdnf -y install --setopt=install_weak_deps=0 --nodocs rubygems-3.1.6 \
  && gem install bundler -v 2.3.25 \
@@ -59,7 +59,7 @@ ENV FLUENTD_DISABLE_BUNDLER_INJECTION 1
 # Install ruby, ruby-libs along with rubygems and bundler.
 RUN microdnf -y module enable ruby:2.7 \
 # Install ruby (it's dependencies gdbm-libs) and ruby-libs, disabling week dependencies
- && microdnf -y install --setopt=install_weak_deps=0 --nodocs ruby-2.7.6 ruby-libs-2.7.6 gdbm-libs \ 
+ && microdnf -y install --setopt=install_weak_deps=0 --nodocs ruby-2.7.8 ruby-libs-2.7.8 gdbm-libs \ 
 # Install rubygems (it's dependencies rubygem-openssl rubygem-psych), disabling week dependencies
  && microdnf -y install --setopt=install_weak_deps=0 --nodocs rubygems-3.1.6 \ 
  && gem install bundler -v 2.3.25 \
