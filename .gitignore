@@ -58,8 +58,10 @@ terraform.rc
 logan/util/*
 
 # helm-chart
-charts/oci-onm/Chart.lock
+Chart.lock
+charts/logan/charts/
 charts/oci-onm/charts/
+external-values.yaml
 
 # zip artifacts
 releases/
