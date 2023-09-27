@@ -14,7 +14,7 @@ spec:
     spec:
       template:
         spec:
-          restartPolicy: Never
+          restartPolicy: OnFailure
           serviceAccountName: {{ include "logan.serviceAccount" . }}
           containers:
           - name: k8-discovery-job
