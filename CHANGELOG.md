@@ -1,5 +1,9 @@
 # Change Log
 
+## 2023-09-26
+### Changed
+- Ruby upgrade from 2.7.6 to 2.7.8 for OL8-Slim Fluentd container image.
+
 ## 2023-08-07
 ### Added
 - Support Fluentd's [Multi Process Workers](https://docs.fluentd.org/deployment/multi-process-workers). 
