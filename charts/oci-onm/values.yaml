@@ -36,12 +36,6 @@ oci-onm-logan:
   ociLANamespace:
   # OCI Logging Analytics Default Log Group OCID
   ociLALogGroupID:
-  objectDiscovery:
-    # cronJob command inputs/arguments
-    cmdInputs:
-      ####  Mandatory inputs
-      #  A unique name for each kubernetes cluster must be provided.
-      kubernetes_cluster_name:
 
 oci-onm-mgmt-agent:
   oci-onm-common:

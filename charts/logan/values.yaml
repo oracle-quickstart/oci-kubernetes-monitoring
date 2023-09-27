@@ -496,7 +496,7 @@ objectDiscovery:
       # OCID for K8s cluster entity in OCI Logging Analytics.
       kubernetes_cluster_entity_id:
       # Logging Analytics Ingestion API endpoint to ingest your application logs
-      endpoint:
+      #$# endpoint:
       # OCI Config Profile Name to be used from the configuration file
       profile_name:
       # The location of the configuration file containing OCI authentication details
