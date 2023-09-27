@@ -32,6 +32,12 @@ variable "dev_switch_generate_helm_template" {
   default = false
 }
 
+# Enable/Disable helm installation. 
+variable "dev_switch_install_helm" {
+  type    = bool
+  default = true
+}
+
 # Enable/Disable logan dashboards module
 variable "dev_switch_dashboards_module" {
   type    = bool

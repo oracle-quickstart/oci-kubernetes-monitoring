@@ -72,3 +72,7 @@ output "oci_la_logGroup_ocid" {
 output "mgmt_agent_install_key_content" {
   value = local.module_controls_enable_mgmt_agent_module ? module.management_agent[0].mgmt_agent_install_key_content : null
 }
+
+output "helm_template" {
+    value = local.module_controls_enable_helm_module && var.dev_switch_generate_helm_template ? module.helm_release[0].helm_template : null
+}

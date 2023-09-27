@@ -74,7 +74,7 @@ resource "helm_release" "oci-kubernetes-monitoring" {
     }
   }
 
-  count = var.generate_helm_template ? 0 : 1
+  count = var.install_helm ? 1 : 0
 }
 
 # Create helm template
@@ -111,11 +111,4 @@ data "helm_template" "oci-kubernetes-monitoring" {
   }
 
   count = var.generate_helm_template ? 1 : 0
-}
-
-# Helm release artifacts for local testing and validation. Not used by helm resource.
-resource "local_file" "helm_release" {
-  content  = tostring(data.helm_template.oci-kubernetes-monitoring[0].manifest)
-  filename = "${path.module}/local/helmrelease.yaml"
-  count    = var.generate_helm_template ? 1 : 0
 }
