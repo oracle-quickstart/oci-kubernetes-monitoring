@@ -487,9 +487,8 @@ objectDiscovery:
    cmdInputs:
       ####  Mandatory inputs
       #  A unique name for each kubernetes cluster must be provided.
-      # kubernetes_cluster_name:
+      kubernetes_cluster_name:
       ####   Optional inputs
-      # Logging Analytics Ingestion API endpoint to ingest your application logs
       # OCI Tenancy Namespace to which the collected objects log data is to be uploaded
       oci_la_namespace:
       # -- OCID of Logging Analytics Log Group to send objects logs to.
@@ -497,6 +496,7 @@ objectDiscovery:
       oci_la_log_group_id:
       # OCID for K8s cluster entity in OCI Logging Analytics.
       kubernetes_cluster_entity_id:
+      # Logging Analytics Ingestion API endpoint to ingest your application logs
       endpoint:
       # OCI Config Profile Name to be used from the configuration file
       profile_name:

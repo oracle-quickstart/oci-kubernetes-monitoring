@@ -56,6 +56,10 @@ spec:
               - --endpoint
               - {{ .Values.ociLAEndpoint }}
               {{- end }}
+              {{- if .Values.objectDiscovery.cmdInputs.kubernetes_cluster_entity_id }}
+              - --kubernetes_cluster_entity_id
+              - {{ .Values.objectDiscovery.cmdInputs.kubernetes_cluster_entity_id }}
+              {{- end }} 
               {{- if .Values.objectDiscovery.cmdInputs.profile_name }}
               - --profile_name
               - {{ .Values.objectDiscovery.cmdInputs.profile_name }}
