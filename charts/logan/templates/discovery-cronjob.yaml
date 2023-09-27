@@ -22,11 +22,13 @@ spec:
             {{- if eq $authtype "config" }}
             volumeMounts:
             - name: ociconfigdir
-              mountPath: /var/opt/.oci
+              mountPath: {{ .Values.oci.path }}
               readOnly: true
             {{- end }}
             command:
+              # object discovery script
               - oci-logan-oke-resources-discovery
+              # mandatory params
               - --kubernetes_cluster_name
               {{- if ne $kubernetesClusterName "UNDEFINED" }}
               - {{ $kubernetesClusterName }}
@@ -49,24 +51,27 @@ spec:
               {{- else }}
               {{ required "ociLALogGroupID is required" .Values.ociLALogGroupID }}
               {{- end }}
-              {{- if .Values.objectDiscovery.cmdInputs.endpoint }}
-              - --endpoint
-              - {{ .Values.objectDiscovery.cmdInputs.endpoint }}
-              {{- else if .Values.ociLAEndpoint }}
+              # optional params
+              {{- if .Values.ociLAEndpoint }}
               - --endpoint
               - {{ .Values.ociLAEndpoint }}
               {{- end }}
               {{- if .Values.objectDiscovery.cmdInputs.kubernetes_cluster_entity_id }}
               - --kubernetes_cluster_entity_id
               - {{ .Values.objectDiscovery.cmdInputs.kubernetes_cluster_entity_id }}
-              {{- end }} 
+              {{- end }}
+              # params required when authtype is set as config
+              {{- if eq .Values.authtype "config" }}
+              {{- if and .Values.oci.path .Values.oci.file }}
+              - --config_file_location
+              - {{ .Values.oci.path -}}/{{ .Values.oci.file }}
+              {{- else }}
+              {{- required "missing config file. {{ .Values.oci.path -}}/{{ .Values.oci.file }}" .Values.oci.path }}
+              {{- end }}
               {{- if .Values.objectDiscovery.cmdInputs.profile_name }}
               - --profile_name
               - {{ .Values.objectDiscovery.cmdInputs.profile_name }}
-              {{- end }}                
-              {{- if .Values.objectDiscovery.cmdInputs.config_file_location }}
-              - --config_file_location
-              - {{ .Values.objectDiscovery.cmdInputs.config_file_location }}
+              {{- end }}
               {{- end }}
               {{- if .Values.objectDiscovery.cmdInputs.kube_config_location }}
               - --kube_config_location

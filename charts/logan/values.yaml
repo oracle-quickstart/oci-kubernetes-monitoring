@@ -485,10 +485,9 @@ objectDiscovery:
    cronSchedule: "*/5 * * * *"
    # cronJob command inputs/arguments
    cmdInputs:
-      ####  Mandatory inputs
+      ## Note - Inputs marked with #$# below are refereced from existing helm chart values and hence commented out
       #  A unique name for each kubernetes cluster must be provided.
-      kubernetes_cluster_name:
-      ####   Optional inputs
+      #$# kubernetes_cluster_name: 
       # OCI Tenancy Namespace to which the collected objects log data is to be uploaded
       oci_la_namespace:
       # -- OCID of Logging Analytics Log Group to send objects logs to.
@@ -501,7 +500,7 @@ objectDiscovery:
       # OCI Config Profile Name to be used from the configuration file
       profile_name:
       # The location of the configuration file containing OCI authentication details
-      config_file_location:
+      #$# config_file_location:
       # Path to the kubernetes configuration (kubeconfig) file
       kube_config_location:
       # Kubernetes API server URL. 
