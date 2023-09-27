@@ -10,6 +10,11 @@ variable "generate_helm_template" {
   default = false
 }
 
+variable "install_helm" {
+  type    = bool
+  default = true
+}
+
 variable "use_local_helm_chart" {
   type    = bool
   default = false
