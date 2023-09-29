@@ -12,6 +12,6 @@ resource "oci_management_agent_management_agent_install_key" "Kubernetes_AgentIn
   time_expires   = timeadd(timestamp(), "8760h") # 1 year
 
   lifecycle {
-    ignore_changes = [ time_expires ]
+    ignore_changes = [time_expires]
   }
 }
