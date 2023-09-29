@@ -61,7 +61,10 @@ logan/util/*
 Chart.lock
 charts/logan/charts/
 charts/oci-onm/charts/
-external-values.yaml
+charts/.tests/
 
 # zip artifacts
 releases/
+
+# VSCode
+.vscode/
