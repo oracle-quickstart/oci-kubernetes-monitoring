@@ -60,6 +60,7 @@ logan/util/*
 # helm-chart
 charts/oci-onm/Chart.lock
 charts/oci-onm/charts/
+charts/.tests/
 
 # zip artifacts
 releases/
