@@ -63,3 +63,6 @@ charts/oci-onm/charts/
 
 # zip artifacts
 releases/
+
+# VSCode
+.vscode/
