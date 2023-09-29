@@ -10,4 +10,8 @@ resource "oci_management_agent_management_agent_install_key" "Kubernetes_AgentIn
   compartment_id = var.compartment_ocid
   display_name   = "k8_mgmt_agent_key-${var.uniquifier}"
   time_expires   = timeadd(timestamp(), "8760h") # 1 year
+
+  lifecycle {
+    ignore_changes = [ time_expires ]
+  }
 }
