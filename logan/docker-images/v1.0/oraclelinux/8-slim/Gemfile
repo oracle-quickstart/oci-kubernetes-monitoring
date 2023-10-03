@@ -1,0 +1,15 @@
+# Copyright (c) 2023, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+
+source "https://rubygems.org"
+
+gem "oj", "3.14.1"
+gem "json", "2.6.3"
+gem "ext_monitor", "0.1.2"
+gem "fluentd", "1.15.3"
+gem "fluent-plugin-oci-logging-analytics", "2.0.5"
+gem "fluent-plugin-concat", "~> 2.5.0"
+gem "fluent-plugin-rewrite-tag-filter", "~> 2.4.0"
+gem "fluent-plugin-parser-cri", "~> 0.1.1"
+gem "fluent-plugin-kubernetes_metadata_filter", "2.13.0"
+gem "fluent-plugin-kubernetes-objects", "1.2.1"

@@ -157,6 +157,10 @@ fluentd:
    file: fluent.conf
    # -- Base directory on the node (with read write permission) for storing fluentd plugins related data.
    baseDir: /var/log
+   # -- To enable MultiProcessWorkers, set this to (> 0) the number of required workers. Defaults to 0.
+   # -- Set corresponding workerId using worker field against each source/log. When enabled MultiProcessWorkers, the default worker would be 0 until unless set for each source/log.
+   multiProcessWorkers: 0
+
    # Configuration for oci-logging-analytics fluentd output plugin
    ociLoggingAnalyticsOutputPlugin:
       # -- OCI API Key profile to use, if multiple profiles are found in the OCI API config file.
@@ -235,6 +239,9 @@ fluentd:
          #"Third Key": "Third Value"
       #ociLAEntityID:
       #encoding:
+      # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
+      #worker:
+
       logs:
          # -- Kube Proxy logs collection configuration
          kube-proxy:
@@ -251,6 +258,8 @@ fluentd:
             #ociLAEntityID:
             #ociLALogGroupID:
             #encoding:
+            # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
+           #worker:
 
          # -- Kube Flannel logs collection configuration
          kube-flannel:
@@ -349,6 +358,16 @@ fluentd:
 
    # Configuration for Linux System specific logs like CronLogs and SecureLogs
    linuxSystem:
+      # Setting the following properties will override the default/generic configuration and applies to all Kubernetes system logs
+      #ociLALogGroupID:
+      #metadata:
+         #"Client Host Region": "America"
+         #"Environment": "Production"
+         #"Third Key": "Third Value"
+      #ociLAEntityID:
+      #encoding:
+      # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
+      #worker:
       logs:
          # -- Linux CRON logs collection configuration
          cronlog:
@@ -432,19 +451,13 @@ fluentd:
          - '"/var/log/containers/etcd-*.log"'
          - '"/var/log/containers/kube-controller-manager-*.log"'
          - '"/var/log/containers/kube-scheduler-*.log"'
+      # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
+      #worker: 1
 
    # -- Configuration for any custom logs which are not part of the default configuration defined in this file.
    # All the pod/container logs will be collected as per "genericContainerLogs" section.
    # Use this section to create a custom configuration for any of the container logs.
    # Also, you can use this section to define configuration for any other log path existing on a Kubernetes worker node
-   #custom-id1:
-         #path: /var/log/containers/custom*.log
-         # Logging Analytics log source to use for parsing and processing the logs:
-         #ociLALogSourceName: "Custom1 Logs"
-         # The regular expression pattern for the starting line in case of multi-line logs.
-         #multilineStartRegExp:
-         # Set isContainerLog to false if the log is not a container log (/var/log/containers/*.log). Default value is true.
-         #isContainerLog: true
    customLogs:
       #  A unique identifier to represent the configuration for a single log path
       #custom-id1:
@@ -455,6 +468,16 @@ fluentd:
          #multilineStartRegExp:
          # Set isContainerLog to false if the log is not a container log (/var/log/containers/*.log). Default value is true.
          #isContainerLog: true
+         # Setting the following properties will override the default/generic configuration and applies to all Kubernetes system logs
+         #ociLALogGroupID:
+         #metadata:
+            #"Client Host Region": "America"
+            #"Environment": "Production"
+            #"Third Key": "Third Value"
+         #ociLAEntityID:
+         #encoding:
+         # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
+         #worker:
       #custom-id2:
          #path: /var/log/custom/*.log
          # Logging Analytics log source to use for parsing and processing the logs:
