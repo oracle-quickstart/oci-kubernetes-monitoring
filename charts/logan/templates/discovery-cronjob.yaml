@@ -56,9 +56,9 @@ spec:
               - --endpoint
               - {{ .Values.ociLAEndpoint }}
               {{- end }}
-              {{- if .Values.objectDiscovery.cmdInputs.kubernetes_cluster_entity_id }}
+              {{- if .Values.ociLAClusterEntityID }}
               - --kubernetes_cluster_entity_id
-              - {{ .Values.objectDiscovery.cmdInputs.kubernetes_cluster_entity_id }}
+              - {{ .Values.ociLAClusterEntityID  }}
               {{- end }}
               # params required when authtype is set as config
               {{- if eq .Values.authtype "config" }}
