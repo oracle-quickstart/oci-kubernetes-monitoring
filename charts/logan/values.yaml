@@ -344,10 +344,6 @@ fluentd:
             # The regular expression pattern for the starting line in case of multi-line logs.
             multilineStartRegExp: /^\S\d{2}\d{2}\s+[^\:]+:[^\:]+:[^\.]+\.\d{0,3}/
 
-   # Configuration for Kubernetes additonal specific logs like Audit Logs
-   kubernetesAdditional:
-      # Additional Logs for Kubernetes system (not applicalbe for OKE)
-      logs:
          # Config specific to Kubernetes Audit Logs Collection
          kube-audit:
             # The path to the source files.
