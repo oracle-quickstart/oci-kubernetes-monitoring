@@ -10,8 +10,8 @@ locals {
       "kubernetesClusterName" = local.oke_cluster_name
     }
     "oci-onm-logan" = {
-      "ociLANamespace"  = module.loggingAnalytics[0].oci_la_namespace
-      "ociLALogGroupID" = module.loggingAnalytics[0].oci_la_logGroup_ocid
+      "ociLANamespace"       = module.loggingAnalytics[0].oci_la_namespace
+      "ociLALogGroupID"      = module.loggingAnalytics[0].oci_la_logGroup_ocid
       "ociLAClusterEntityID" = var.oke_cluster_entity_ocid == "DEFAULT" ? null : var.oke_cluster_entity_ocid
     }
     "oci-onm-mgmt-agent" = {
@@ -26,7 +26,7 @@ locals {
 
   cmd_2_helm_repo_update = "helm repo update"
 
-  helm_install_opt_entity_id= var.oke_cluster_entity_ocid == "DEFAULT" ? "" : "--set oci-onm-logan.ociLAClusterEntityID=${var.oke_cluster_entity_ocid}"
+  helm_install_opt_entity_id = var.oke_cluster_entity_ocid == "DEFAULT" ? "" : "--set oci-onm-logan.ociLAClusterEntityID=${var.oke_cluster_entity_ocid}"
 
   cmd_3_helm_install = local.generate_helm_output ? join(" ", [
     "helm install oci-kubernetes-monitoring oci-onm/oci-onm",
