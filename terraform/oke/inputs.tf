@@ -176,11 +176,11 @@ variable "triggered_by_add_data_flow" {
 # OKE Cluster Name
 variable "oke_cluster_name" {
   type    = string
-  default = "NoInput" # refactor, if need to change default input
+  default = "DEFAULT"
 }
 
 # OKE Cluster Entity OCID
 variable "oke_cluster_entity_ocid" {
   type    = string
-  default = "NoInput" # refactor, if need to change default input
+  default = "DEFAULT"
 }
