@@ -45,10 +45,10 @@ oci_onm_compartment_ocid = ""
 opt_create_new_la_logGroup = false
 
 # OCI Logging Analytics LogGroup
-# Add OCID of logGroup if opt_use_existing_la_logGroup=true, leave it empty otherwise
+# Add OCID of logGroup if opt_create_new_la_logGroup=false, leave it empty otherwise
 oci_la_logGroup_id = ""
 
-# leave it unchanged, if opt_use_existing_la_logGroup=false
+# leave it unchanged, if opt_create_new_la_logGroup=true
 oci_la_logGroup_name = "NewLogGroupName"
 
 #### 
