@@ -22,11 +22,13 @@ locals {
   }) : null
 
 
-  helm_cmd_1_add_repo = "helm repo add oci-onm https://oracle-quickstart.github.io/oci-kubernetes-monitoring"
+  cmd_1_helm_repo_add = "helm repo add oci-onm https://oracle-quickstart.github.io/oci-kubernetes-monitoring"
+
+  cmd_2_helm_repo_update = "helm repo update"
 
   helm_install_opt_entity_id= var.oke_cluster_entity_ocid == "DEFAULT" ? "" : "--set oci-onm-logan.ociLAClusterEntityID=${var.oke_cluster_entity_ocid}"
 
-  helm_cmd_2_install = local.generate_helm_output ? join(" ", [
+  cmd_3_helm_install = local.generate_helm_output ? join(" ", [
     "helm install oci-kubernetes-monitoring oci-onm/oci-onm",
     "--set global.kubernetesClusterID=${var.oke_cluster_ocid}",
     "--set global.kubernetesClusterName=${local.oke_cluster_name}",
@@ -41,12 +43,16 @@ locals {
 # helm outputs
 ###
 
-output "helm_cmd_1_add_repo" {
-  value = local.generate_helm_output ? local.helm_cmd_1_add_repo : null
+output "cmd_1_helm_repo_add" {
+  value = local.generate_helm_output ? local.cmd_1_helm_repo_add : null
 }
 
-output "helm_cmd_2_install" {
-  value = local.generate_helm_output ? local.helm_cmd_2_install : null
+output "cmd_2_helm_repo_update" {
+  value = local.generate_helm_output ? local.cmd_2_helm_repo_update : null
+}
+
+output "cmd_3_helm_install" {
+  value = local.generate_helm_output ? local.cmd_3_helm_install : null
 }
 
 output "oke_cluster_name" {
