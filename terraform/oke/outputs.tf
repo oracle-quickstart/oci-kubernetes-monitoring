@@ -2,9 +2,9 @@
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 locals {
-  can_generate_helm_output = alltrue([local.module_controls_enable_mgmt_agent_module, local.module_controls_enable_logan_module])
+  generate_helm_output = alltrue([local.module_controls_enable_mgmt_agent_module, local.module_controls_enable_logan_module])
 
-  output_helm_external_values = local.can_generate_helm_output ? yamlencode({
+  output_helm_external_values = local.generate_helm_output ? yamlencode({
     "global" = {
       "kubernetesClusterID"   = var.oke_cluster_ocid
       "kubernetesClusterName" = local.oke_cluster_name
@@ -12,6 +12,7 @@ locals {
     "oci-onm-logan" = {
       "ociLANamespace"  = module.loggingAnalytics[0].oci_la_namespace
       "ociLALogGroupID" = module.loggingAnalytics[0].oci_la_logGroup_ocid
+      "ociLAClusterEntityID" = var.oke_cluster_entity_ocid == "DEFAULT" ? null : var.oke_cluster_entity_ocid
     }
     "oci-onm-mgmt-agent" = {
       "mgmtagent" = {
@@ -21,14 +22,17 @@ locals {
   }) : null
 
 
-  helm_repo_add_cmd = "helm repo add oci-onm https://oracle-quickstart.github.io/oci-kubernetes-monitoring"
+  helm_cmd_1_add_repo = "helm repo add oci-onm https://oracle-quickstart.github.io/oci-kubernetes-monitoring"
 
-  helm_install_cmd = local.can_generate_helm_output ? join(" ", [
+  helm_install_opt_entity_id= var.oke_cluster_entity_ocid == "DEFAULT" ? "" : "--set oci-onm-logan.ociLAClusterEntityID=${var.oke_cluster_entity_ocid}"
+
+  helm_cmd_2_install = local.generate_helm_output ? join(" ", [
     "helm install oci-kubernetes-monitoring oci-onm/oci-onm",
     "--set global.kubernetesClusterID=${var.oke_cluster_ocid}",
     "--set global.kubernetesClusterName=${local.oke_cluster_name}",
     "--set oci-onm-logan.ociLALogGroupID=${module.loggingAnalytics[0].oci_la_logGroup_ocid}",
     "--set oci-onm-logan.ociLANamespace=${module.loggingAnalytics[0].oci_la_namespace}",
+    local.helm_install_opt_entity_id,
     "--set oci-onm-mgmt-agent.mgmtagent.installKeyFileContent=${module.management_agent[0].mgmt_agent_install_key_content}"
   ]) : null
 }
@@ -37,17 +41,25 @@ locals {
 # helm outputs
 ###
 
-output "helm_repo_add_cmd" {
-  value = local.can_generate_helm_output ? local.helm_repo_add_cmd : null
+output "helm_cmd_1_add_repo" {
+  value = local.generate_helm_output ? local.helm_cmd_1_add_repo : null
 }
 
-output "helm_install_cmd" {
-  value = local.can_generate_helm_output ? local.helm_install_cmd : null
+output "helm_cmd_2_install" {
+  value = local.generate_helm_output ? local.helm_cmd_2_install : null
 }
 
 output "oke_cluster_name" {
   value = local.oke_cluster_name
 }
+
+output "oke_cluster_entity_ocid" {
+  value = var.oke_cluster_entity_ocid == "DEFAULT" ? null : var.oke_cluster_entity_ocid
+}
+
+/* output "external_values_yaml" {
+  value = local.output_helm_external_values
+} */
 
 ###
 # Module outputs
@@ -69,7 +81,7 @@ output "oci_la_logGroup_ocid" {
   value = local.module_controls_enable_logan_module ? module.loggingAnalytics[0].oci_la_logGroup_ocid : null
 }
 
-output "mgmt_agent_install_key_content" {
+output "mgmt_agent_install_key" {
   value = local.module_controls_enable_mgmt_agent_module ? module.management_agent[0].mgmt_agent_install_key_content : null
 }
 
