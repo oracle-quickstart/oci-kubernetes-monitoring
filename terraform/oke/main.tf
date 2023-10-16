@@ -7,7 +7,7 @@ locals {
 
   oke_cluster_name = [for c in data.oci_containerengine_clusters.oke_clusters.clusters : c.name if c.id == var.oke_cluster_ocid][0]
 
-  deploy_helm_ui_option = var.stack_deployment_option == "Full" ? true : false
+  deploy_helm = var.stack_deployment_option == "Full" ? true : false
 
   ## Module Controls are are final verdicts on if a module should be executed or not 
   ## Module dependencies should be included here as well so a module does not run when it's depenedent moudle is disabled
@@ -17,7 +17,7 @@ locals {
   module_controls_enable_iam_module        = alltrue([var.dev_switch_iam_module, var.opt_create_dynamicGroup_and_policies, !var.livelab_switch])
   module_controls_enable_logan_module      = alltrue([var.dev_switch_logan_module])
   module_controls_enable_mgmt_agent_module = alltrue([var.dev_switch_mgmt_agent_module])
-  module_controls_enable_helm_module = alltrue([var.dev_switch_helm_module, local.deploy_helm_ui_option,
+  module_controls_enable_helm_module = alltrue([var.dev_switch_helm_module, local.deploy_helm,
   local.module_controls_enable_mgmt_agent_module, local.module_controls_enable_logan_module])
 }
 
