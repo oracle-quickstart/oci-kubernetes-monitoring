@@ -80,6 +80,8 @@ resource "helm_release" "oci-kubernetes-monitoring" {
 # Create helm template
 data "helm_template" "oci-kubernetes-monitoring" {
   name              = "oci-kubernetes-monitoring"
+  # default behaviour is to use remote helm repo | var.use_local_helm_chart = false
+  # the option to use local helm chart is for development purpose only
   repository        = var.use_local_helm_chart ? null : local.helm_repo_url
   chart             = var.use_local_helm_chart ? var.helm_abs_path : local.helm_repo_chart
   dependency_update = true
