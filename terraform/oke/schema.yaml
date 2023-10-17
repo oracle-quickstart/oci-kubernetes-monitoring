@@ -45,6 +45,7 @@ variableGroups:
       - triggered_by_add_data_flow
       - oke_cluster_name
       - oke_cluster_entity_ocid
+      - stack_deployment_option
     visible: false
 
   - title: Select an OKE cluster deployed in this region to start monitoring.
@@ -56,7 +57,6 @@ variableGroups:
   - title: "OCI Observability and Management Services Configuration"
     description: "For a list of resources created, see: https://github.com/oracle-quickstart/oci-kubernetes-monitoring"
     variables:
-    - stack_deployment_option
     - opt_deploy_metric_server
     - oci_onm_compartment_ocid
     - opt_create_new_la_logGroup
@@ -114,8 +114,8 @@ variables:
     default: "Full"
     required: true
     visible:
-      not: 
-      - livelab_switch    
+       not: 
+       - livelab_switch    
 
   # Option to enable/disable metric server installation during helm deployment
   opt_deploy_metric_server:
