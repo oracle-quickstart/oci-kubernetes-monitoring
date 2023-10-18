@@ -277,37 +277,24 @@ oci-onm-logan:
 
 ### Log Collection for OCNE (Oracle Cloud Native Environment)
 
-Use yaml config similar to below and setup OCNE environment. You can follow same steps that are followed for OKE to setup Log Collection.
-
+#### Not able to post logs to Logging Analytics (timeout)
+Sample Error :
 ```
-environments:
-  - environment-name: <env_name>
-    globals:
-      api-server: logan-ocne-operator.<suffix>:8091
-      selinux: permissive
-    modules:
-      - module: kubernetes
-        name: <module_name>
-        args:
-          container-registry: container-registry.oracle.com/olcne
-          control-plane-nodes:
-            - logan-ocne-control.<suffix>:8090
-          worker-nodes:
-            - logan-ocne-worker.<suffix>:8090
-          restrict-service-externalip: false
+E, [2023-08-07T10:17:13.710854 #18] ERROR -- : oci upload exception : Error while uploading the payload. { 'message': 'execution expired', 'status': 0, 'opc-request-id': 'D733ED0C244340748973D8A035068955', 'response-body': '' } 
 ```
- 
-**References**:
-https://docs.oracle.com/en/operating-systems/olcne/index.html
-https://docs.oracle.com/en/operating-systems/olcne/1.7/quickinstall/task-provision-config.html#task_provision-config
 
+Check if your OCNE setup configuration has selinux param value set to permissive or not. If it is set to enforcing, we are seeing connection issues from node to logging analytics service.
 
- ### Log Collection for Standalone cluster (docker runtime)
+#### Permission denied @ dir_s_mkdir - /var/log/oci_la_fluentd_outplugin
+Update priviliged to true (by default false) in values.yaml file to resolve this.
 
- **Note**: Default patch for docker data in standalone cluster is /var/lib/docker/containers. We need to update containerdataHostPath in values.yaml file to this value before helm install.
+### Log Collection for Standalone cluster (docker runtime)
 
-We will observe error like below if host path is not setup correctly.
-
+#### Unreadable container logs
+Sample Error:
 ```
 2023-10-10 13:00:16 +0000 [warn]: #0 [in_tail_containerlogs] /var/log/containers/kube-flannel-ds-kl9bb_kube-flannel_kube-flannel-c2a954a05c57f4f68bc3ab348f071812be2405c76bd1631890638eac7c503506.log unreadable. It is excluded and would be examined next time.
 ```
+
+Default patch for docker data in standalone cluster is /var/lib/docker/containers. We need to update containerdataHostPath in values.yaml file.
+
