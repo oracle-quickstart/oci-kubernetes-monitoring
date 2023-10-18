@@ -275,3 +275,39 @@ oci-onm-logan:
       worker: 1
 ```       
 
+### Log Collection for OCNE (Oracle Cloud Native Environment)
+
+Use yaml config similar to below and setup OCNE environment. You can follow same steps that are followed for OKE to setup Log Collection.
+
+```
+environments:
+  - environment-name: <env_name>
+    globals:
+      api-server: logan-ocne-operator.<suffix>:8091
+      selinux: permissive
+    modules:
+      - module: kubernetes
+        name: <module_name>
+        args:
+          container-registry: container-registry.oracle.com/olcne
+          control-plane-nodes:
+            - logan-ocne-control.<suffix>:8090
+          worker-nodes:
+            - logan-ocne-worker.<suffix>:8090
+          restrict-service-externalip: false
+```
+ 
+**References**:
+https://docs.oracle.com/en/operating-systems/olcne/index.html
+https://docs.oracle.com/en/operating-systems/olcne/1.7/quickinstall/task-provision-config.html#task_provision-config
+
+
+ ### Log Collection for Standalone cluster (docker runtime)
+
+ **Note**: Default patch for docker data in standalone cluster is /var/lib/docker/containers. We need to update containerdataHostPath in values.yaml file to this value before helm install.
+
+We will observe error like below if host path is not setup correctly.
+
+```
+2023-10-10 13:00:16 +0000 [warn]: #0 [in_tail_containerlogs] /var/log/containers/kube-flannel-ds-kl9bb_kube-flannel_kube-flannel-c2a954a05c57f4f68bc3ab348f071812be2405c76bd1631890638eac7c503506.log unreadable. It is excluded and would be examined next time.
+```
