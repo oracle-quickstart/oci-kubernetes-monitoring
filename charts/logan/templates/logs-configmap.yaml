@@ -100,11 +100,6 @@ data:
        {{- end }}
        oci_la_log_path "${record['tailed_path']}"
        oci_la_log_source_name "{{ $logDefinition.ociLALogSourceName | required (printf "fluentd.kubernetesSystem.logs.%s.ociLALogSourceName is required" $name) }}"
-       {{- if $logDefinition.ociLAEntityID }}
-       oci_la_entity_id "{{ $logDefinition.ociLAEntityID }}"
-       {{- else }}
-       oci_la_entity_id "{{ $.Values.fluentd.kubernetesSystem.ociLAEntityID | default $.Values.ociLAEntityID }}"
-       {{- end }}
        {{- if $logDefinition.ociLALogSet }}
        oci_la_log_set "{{ $logDefinition.ociLALogSet }}"
        {{- else }}
@@ -205,11 +200,6 @@ data:
        {{- end }}
        oci_la_log_path "${record['tailed_path']}"
        oci_la_log_source_name "{{ $logDefinition.ociLALogSourceName | required (printf "fluentd.linuxSystem.logs.%s.ociLALogSourceName is required" $name) }}"
-       {{- if $logDefinition.ociLAEntityID }}
-       oci_la_entity_id "{{ $logDefinition.ociLAEntityID }}"
-       {{- else }}
-       oci_la_entity_id "{{ $.Values.fluentd.linuxSystem.ociLAEntityID | default $.Values.ociLAEntityID }}"
-       {{- end }}
        {{- if $logDefinition.ociLALogSet }}
        oci_la_log_set "{{ $logDefinition.ociLALogSet }}"
        {{- else }}
@@ -294,11 +284,6 @@ data:
        {{- end }}
        oci_la_log_path "${record['tailed_path']}"
        oci_la_log_source_name "{{ required "fluentd.linuxSystem.logs.kubeletlog.ociLALogSourceName is required" $.Values.fluentd.linuxSystem.logs.kubeletlog.ociLALogSourceName }}"
-       {{- if $.Values.fluentd.linuxSystem.logs.kubeletlog.ociLAEntityID }}
-       oci_la_entity_id "{{ $.Values.fluentd.linuxSystem.logs.kubeletlog.ociLAEntityID }}"
-       {{- else }}
-       oci_la_entity_id "{{ $.Values.fluentd.linuxSystem.ociLAEntityID | default $.Values.ociLAEntityID }}"
-       {{- end }}
        {{- if $.Values.fluentd.linuxSystem.logs.kubeletlog.ociLALogSet }}
        oci_la_log_set "{{ $.Values.fluentd.linuxSystem.logs.kubeletlog.ociLALogSet }}"
        {{- else }}
@@ -329,11 +314,6 @@ data:
        {{- end }}
        oci_la_log_path "${record['tailed_path']}"
        oci_la_log_source_name "{{ required "fluentd.linuxSystem.logs.syslog.ociLALogSourceName is required" $.Values.fluentd.linuxSystem.logs.syslog.ociLALogSourceName }}"
-       {{- if $.Values.fluentd.linuxSystem.logs.syslog.ociLAEntityID }}
-       oci_la_entity_id "{{ $.Values.fluentd.linuxSystem.logs.syslog.ociLAEntityID }}"
-       {{- else }}
-       oci_la_entity_id "{{ $.Values.fluentd.linuxSystem.ociLAEntityID | default $.Values.ociLAEntityID }}"
-       {{- end }}
        {{- if $.Values.fluentd.linuxSystem.logs.syslog.ociLALogSet }}
        oci_la_log_set "{{ $.Values.fluentd.linuxSystem.logs.syslog.ociLALogSet }}"
        {{- else }}
@@ -408,7 +388,6 @@ data:
        {{- end }}
        oci_la_log_path "${record['tailed_path']}"
        oci_la_log_source_name "{{ $logDefinition.ociLALogSourceName | required (printf "fluentd.customLogs.%s.ociLALogSourceName is required" $name) }}"
-       oci_la_entity_id "{{ $logDefinition.ociLAEntityID | default $.Values.ociLAEntityID }}"
        oci_la_log_set "{{ $logDefinition.ociLALogSet | default $.Values.ociLALogSet }}"
        {{- if and (ne "false" ($logDefinition.isContainerLog | toString)) (eq $runtime "docker") }}
        message "${record['log']}"
@@ -515,7 +494,6 @@ data:
        oci_la_log_group_id ${record.dig("kubernetes", "annotations", "oracle.com/oci_la_log_group_id") ? record.dig("kubernetes", "annotations", "oracle.com/oci_la_log_group_id") : "{{ $.Values.fluentd.genericContainerLogs.ociLALogGroupID | default $.Values.ociLALogGroupID }}"}
        oci_la_log_path "${record['tailed_path']}"
        oci_la_log_source_name ${record.dig("kubernetes", "annotations", "oracle.com/oci_la_log_source_name") ? record.dig("kubernetes", "annotations", "oracle.com/oci_la_log_source_name") : "{{ $.Values.fluentd.genericContainerLogs.ociLALogSourceName | default "Kubernetes Container Generic Logs" }}"}
-       oci_la_entity_id ${record.dig("kubernetes", "annotations", "oracle.com/oci_la_entity_id") ? record.dig("kubernetes", "annotations", "oracle.com/oci_la_entity_id") : "{{ $.Values.fluentd.genericContainerLogs.ociLAEntityID | default $.Values.ociLAEntityID }}"}
        oci_la_log_set ${record.dig("kubernetes", "annotations", "oracle.com/oci_la_log_set") ? record.dig("kubernetes", "annotations", "oracle.com/oci_la_log_set") : "{{ $.Values.fluentd.genericContainerLogs.ociLALogSet | default $.Values.ociLALogSet }}"}
        {{- if eq $runtime "docker" }}
        message "${record['log']}"

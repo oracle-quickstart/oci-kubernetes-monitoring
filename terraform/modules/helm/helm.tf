@@ -6,8 +6,13 @@ data "oci_containerengine_clusters" "oke_clusters_list" {
 }
 
 locals {
+  helm_repo_url   = "https://oracle-quickstart.github.io/oci-kubernetes-monitoring"
+  helm_repo_chart = "oci-onm"
+
   oke_clusters_list = data.oci_containerengine_clusters.oke_clusters_list.clusters
-  oke_cluster_name  = [for c in local.oke_clusters_list : c.name if c.id == var.oke_cluster_ocid][0]
+  oke_cluster_name = var.oke_cluster_name == "DEFAULT" ? [for c in local.oke_clusters_list :
+  c.name if c.id == var.oke_cluster_ocid][0] : var.oke_cluster_name
+  oke_cluster_entity_ocid = var.oke_cluster_entity_ocid == "DEFAULT" ? null : var.oke_cluster_entity_ocid
 
   helm_inputs = {
     # global
@@ -32,12 +37,13 @@ locals {
     "createServiceAccount" = false
     "serviceAccount"       = var.livelab_service_account
   }
-
 }
 
+# Create helm release
 resource "helm_release" "oci-kubernetes-monitoring" {
   name              = "oci-kubernetes-monitoring"
-  chart             = var.helm_abs_path
+  repository        = var.use_local_helm_chart ? null : local.helm_repo_url
+  chart             = var.use_local_helm_chart ? var.helm_abs_path : local.helm_repo_chart
   wait              = true
   dependency_update = true
   atomic            = true
@@ -53,6 +59,14 @@ resource "helm_release" "oci-kubernetes-monitoring" {
   }
 
   dynamic "set" {
+    for_each = var.oke_cluster_entity_ocid == "DEFAULT" ? [] : ["run_once"]
+    content {
+      name  = "oci-onm-logan.ociLAClusterEntityID"
+      value = var.oke_cluster_entity_ocid
+    }
+  }
+
+  dynamic "set" {
     for_each = var.deploy_mushop_config ? local.mushop_helm_inputs : {}
     content {
       name  = set.key
@@ -60,12 +74,16 @@ resource "helm_release" "oci-kubernetes-monitoring" {
     }
   }
 
-  count = var.generate_helm_template ? 0 : 1
+  count = var.install_helm ? 1 : 0
 }
 
+# Create helm template
 data "helm_template" "oci-kubernetes-monitoring" {
-  name              = "oci-kubernetes-monitoring"
-  chart             = var.helm_abs_path
+  name = "oci-kubernetes-monitoring"
+  # default behaviour is to use remote helm repo | var.use_local_helm_chart = false
+  # the option to use local helm chart is for development purpose only
+  repository        = var.use_local_helm_chart ? null : local.helm_repo_url
+  chart             = var.use_local_helm_chart ? var.helm_abs_path : local.helm_repo_chart
   dependency_update = true
 
   values = var.deploy_mushop_config ? ["${file("${path.module}/mushop_values.yaml")}"] : null
@@ -79,6 +97,14 @@ data "helm_template" "oci-kubernetes-monitoring" {
   }
 
   dynamic "set" {
+    for_each = var.oke_cluster_entity_ocid == "DEFAULT" ? [] : ["run_once"]
+    content {
+      name  = "oci-onm-logan.ociLAClusterEntityID"
+      value = var.oke_cluster_entity_ocid
+    }
+  }
+
+  dynamic "set" {
     for_each = var.deploy_mushop_config ? local.mushop_helm_inputs : {}
     content {
       name  = set.key
@@ -87,11 +113,4 @@ data "helm_template" "oci-kubernetes-monitoring" {
   }
 
   count = var.generate_helm_template ? 1 : 0
-}
-
-# Helm release artifacts for local testing and validation. Not used by helm resource.
-resource "local_file" "helm_release" {
-  content  = tostring(data.helm_template.oci-kubernetes-monitoring[0].manifest)
-  filename = "${path.module}/local/helmrelease.yaml"
-  count    = var.generate_helm_template ? 1 : 0
 }

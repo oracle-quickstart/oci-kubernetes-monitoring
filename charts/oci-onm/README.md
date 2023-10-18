@@ -25,7 +25,7 @@ Helm chart for collecting Kubernetes logs & objects and metrics using Fluentd an
 | oci-onm-common.namespace | string | `"{{ .Values.global.namespace }}"` | Kubernetes Namespace in which the serviceaccount to be created. |
 | oci-onm-common.resourceNamePrefix | string | `"{{ .Values.global.resourceNamePrefix }}"` | Prefix to be attached to resources created through this chart. Not all resources may have this prefix. |
 | oci-onm-common.serviceAccount | string | `"{{ .Values.global.resourceNamePrefix }}"` | Name of the Kubernetes ServiceAccount |
-| oci-onm-logan.image.url | string | `"container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.0.0"` |  |
+| oci-onm-logan.image.url | string | `"container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.0.2"` |  |
 | oci-onm-logan.kubernetesClusterID | string | `"{{ .Values.global.kubernetesClusterID }}"` |  |
 | oci-onm-logan.kubernetesClusterName | string | `"{{ .Values.global.kubernetesClusterName }}"` |  |
 | oci-onm-logan.namespace | string | `"{{ .Values.global.namespace }}"` |  |

@@ -47,7 +47,8 @@ variable "compartment_ocid" {
 
 # OCID of user running the marketplace app / Resoruce Manager stack
 variable "current_user_ocid" {
-  type = string
+  type    = string
+  default = ""
 }
 
 ####
@@ -82,8 +83,7 @@ variable "opt_create_dynamicGroup_and_policies" {
 
 # OKE Cluster Compartment
 variable "oke_compartment_ocid" {
-  type    = string
-  default = ""
+  type = string
 }
 
 # OKE Cluster OCID
@@ -100,6 +100,12 @@ variable "kubernetes_namespace" {
 ####
 ##  OCI Observability and Management Information
 ####
+
+# Stack Deployment Options
+variable "stack_deployment_option" {
+  type    = string
+  default = "Full"
+}
 
 # Compartment for creating OCI Observability and Management resources
 variable "oci_onm_compartment_ocid" {
@@ -138,7 +144,7 @@ variable "fluentd_baseDir_path" {
 # OCI LA Fluentd Container Image
 variable "logan_container_image_url" {
   type    = string
-  default = "container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.0.0"
+  default = "container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.0.2"
 }
 
 ####
@@ -155,4 +161,26 @@ variable "mgmt_agent_container_image_url" {
 variable "opt_deploy_metric_server" {
   type    = bool
   default = true
+}
+
+####
+##  Input options hidden from stack UI
+####
+
+# add data flow identifier
+variable "triggered_by_add_data_flow" {
+  type    = bool
+  default = false
+}
+
+# OKE Cluster Name
+variable "oke_cluster_name" {
+  type    = string
+  default = "DEFAULT"
+}
+
+# OKE Cluster Entity OCID
+variable "oke_cluster_entity_ocid" {
+  type    = string
+  default = "DEFAULT"
 }

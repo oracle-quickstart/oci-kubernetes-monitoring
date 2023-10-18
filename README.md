@@ -18,7 +18,7 @@ It does extensive enrichment of logs, metrics and object information to enable c
 ![Kubernetes Cluster Summary Dashboard](logan/images/kubernetes-cluster-summary-dashboard.png)
 
 <details>
-  <summary>Expand for more dasshboard screenshots</summary>
+  <summary>Expand for more dashboard screenshots</summary>
 
 ![Kubernetes Nodes Dashboard](logan/images/kubernetes-nodes-dashboard.png)
 
@@ -67,9 +67,9 @@ It does extensive enrichment of logs, metrics and object information to enable c
       ```
   </details>
 
-### Installation instructions 
+### Installation instructions
 
-#### Multiple methods of installation are avialble, with following differences:
+#### Multiple methods of installation are available, with following differences
 
 | Deployment Method | Supported Environments | Collection Automation | Dashboards | Customzations |
 | ----| :----:| :----:| :---: | ---|
@@ -114,7 +114,7 @@ It does extensive enrichment of logs, metrics and object information to enable c
         # Provide the base64 encoded content of the Management Agent Install Key file
         installKeyFileContent: 
     ```
-* **Refer to the oci-onm chart and sub-charts values.yaml for customising or modifying any other configuration.** It is recommended to not modify the values.yaml provided with the charts, instead use override_values.yaml to achieve the same.    
+* **Refer to the values.yaml file in oci-onm chart and sub-charts for customising or modifying any other configuration.** It is recommended to not modify the values.yaml provided with the charts, instead use override_values.yaml to achieve the same.    
   
 ##### 3.a Install helm release
 

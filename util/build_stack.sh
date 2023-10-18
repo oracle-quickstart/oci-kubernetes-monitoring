@@ -136,19 +136,20 @@ echo -e "Removed terraform modules symlink"
 cp -R "$MODULES_SOURCE" "$TEMP_DIR" || error_and_exit "Could not copy modules"
 echo -e "Copied orignal modules"
 
-# to be fixed from here - 
-
+# switch back to temp dir
 cd "$TEMP_DIR" || error_and_exit "Could not switch to temp dir"
 echo -e "Switched to temp dir"
 
 # update livelab switch input to true
 if [ -n "$LIVE_LAB_BUILD" ]; then
-    sed "s/false/true/g" -i livelab.tf
-    echo -e "Enabled livelab switch in livelab.tf"
+    sed "s/false/true/g" -i livelab_switch.tf
+    echo -e "Enabled livelab switch in livelab_switch.tf"
 fi
 
+# create zip
 zip -r "${RELEASE_ZIP}" ./* >/dev/null  || error_and_exit "Could not zip temp dir"
 
+# switch back to util dir
 cd "$RELEASE_PATH" || error_and_exit "Could not switch to Util dir"
 
 # clean up temp zip file
