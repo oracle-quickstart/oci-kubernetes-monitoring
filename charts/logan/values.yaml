@@ -450,7 +450,7 @@ fluentd:
             # S3 object key
             objectKey: .*?authenticator
             # Logging Analytics log source to use for parsing and processing EKS Control Plane Authenticator Logs.
-            ociLALogSourceName: "Kubernetes EKS Authenticator Logs"
+            ociLALogSourceName: "AWS EKS Authenticator Logs"
             #metadata:
                #"Client Host Region": "America"
                #"Environment": "Production"
