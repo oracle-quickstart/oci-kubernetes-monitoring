@@ -240,7 +240,7 @@ data:
        </assume_role_credentials>
        {{- else }}
          aws_key_id "{{ $.Values.fluentd.eksControlPlane.awsKeyId }}"
-         aws_sec_id "{{ $.Values.fluentd.eksControlPlane.awsSecKey }}"
+         aws_sec_key "{{ $.Values.fluentd.eksControlPlane.awsSecKey }}"
        {{- end }}
        add_object_metadata true
        store_as gzip
