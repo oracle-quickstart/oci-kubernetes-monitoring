@@ -45,12 +45,12 @@ resourceNamePrefix: "{{ .Values.global.resourceNamePrefix }}"
 # --  Kubernetes ServiceAccount
 serviceAccount: "{{ .Values.global.resourceNamePrefix }}"
 image:
-   # Image pull secrets for. Secret must be in the namespace defined by namespace
-   imagePullSecrets:
    # -- Replace this value with actual docker image url
    url: container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.0.0
+   # Image pull secrets for. Secret must be in the namespace defined by namespace
+   imagePullSecret: ""
    # -- Image pull policy
-   imagePullPolicy: Always
+   imagePullPolicy: IfNotPresent
 
 # -- Logging Analytics namespace. Can be found in OCI console --> Logging Analytics --> Administration --> Service
 ociLANamespace:

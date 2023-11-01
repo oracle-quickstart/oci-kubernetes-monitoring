@@ -34,7 +34,7 @@ Helm chart for collecting Kubernetes logs & objects and metrics using Fluentd an
 | oci-onm-logan.ociLANamespace | string | `nil` |  |
 | oci-onm-logan.serviceAccount | string | `"{{ .Values.global.resourceNamePrefix }}"` |  |
 | oci-onm-mgmt-agent.kubernetesCluster.name | string | `"{{ .Values.global.kubernetesClusterName }}"` |  |
-| oci-onm-mgmt-agent.mgmtagent.image.secret | string | `nil` |  |
+| oci-onm-mgmt-agent.mgmtagent.image.imagePullSecret | string | `nil` |  |
 | oci-onm-mgmt-agent.mgmtagent.image.url | string | `nil` |  |
 | oci-onm-mgmt-agent.mgmtagent.installKey | string | `"resources/input.rsp"` |  |
 | oci-onm-mgmt-agent.mgmtagent.installKeyFileContent | string | `nil` |  |

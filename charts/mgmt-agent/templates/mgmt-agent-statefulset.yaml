@@ -25,10 +25,11 @@ spec:
         fsGroup: {{ default 0 .Values.deployment.security.fsGroup }}
       serviceAccountName: {{ include "mgmt-agent.serviceAccount" . }}
       imagePullSecrets:
-        - name: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent-container-registry-key
+        - name: {{ .Values.mgmtagent.image.imagePullSecret }}
       restartPolicy: Always
       containers:
         - name: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent
+          imagePullPolicy: {{ .Values.mgmtagent.image.imagePullPolicy }}
           image: {{ .Values.mgmtagent.image.url }}
           resources:
             requests:

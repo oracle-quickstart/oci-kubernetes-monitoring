@@ -29,9 +29,10 @@ mgmtagent:
    # Follow steps documented at https://github.com/oracle/docker-images/tree/main/OracleManagementAgent to build docker image.
    image:
       # -- Replace this value with actual docker image URL for Management Agent
-      url:
+      url: container-registry.oracle.com/oci_observability_management/oci-management-agent:1.0.0
       # -- Image secrets to use for pulling container image (base64 encoded content of ~/.docker/config.json file)
-      secret:
+      imagePullSecret: ""
+      imagePullPolicy: IfNotPresent
 
 # -- Kubernetes namespace to create and install this helm chart in
 namespace: "{{ .Values.global.namespace }}"
@@ -76,6 +77,6 @@ deployment:
          cpuCore: 500m
          # specify the memory
          memory: 1Gi
-   
+
    # Provide the storage class for StatefulSet's PVC. If not provided then the Cluster's default storage class will be used.
    storageClass:

@@ -58,8 +58,8 @@ Charts for sending Kubernetes platform logs, compute logs, and Kubernetes Object
 | fluentd.tailPlugin | object | `{"flushInterval":60,"readFromHead":true}` | Config for Logs Collection using fluentd tail plugin |
 | global.namespace | string | `"oci-onm"` | Kubernetes Namespace for creating monitoring resources. Ignored if oci-kubernetes-monitoring-common.createNamespace set to false. |
 | global.resourceNamePrefix | string | `"oci-onm"` | Resource names prefix used, where allowed. |
-| image.imagePullPolicy | string | `"Always"` | Image pull policy |
-| image.imagePullSecrets | string | `nil` |  |
+| image.imagePullPolicy | string | `"Always"` | Container image pull policy. |
+| image.imagePullSecret | string | `nil` | Image pull secret name to use for pulling container image |
 | image.url | string | `"container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.0.0"` | Replace this value with actual docker image url |
 | kubernetesClusterID | string | `nil` | OKE Cluster OCID e.g. ocid1.cluster.oc1.phx.aaaaaaaahhbadf3rxa62faaeixanvr7vftmkg6hupycbf4qszctf2wbmqqxq |
 | kubernetesClusterName | string | `nil` | Kubernetes Cluster name. Need not be the OKE Cluster display name. e.g. production-cluster |
