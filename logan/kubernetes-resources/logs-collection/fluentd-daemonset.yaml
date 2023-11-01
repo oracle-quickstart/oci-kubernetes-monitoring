@@ -61,11 +61,8 @@ spec:
       tolerations:
         - key: node-role.kubernetes.io/master
           effect: NoSchedule
-      ## Uncomment the following section if a secret is associated to pull the image
-      #imagePullSecrets:
-      # Replace this value with actual image pull secrets.
-      # Make sure the secret is in the same namespace as defined above.
-      #- name: <IMAGE_PULL_SECRET>
+      imagePullSecrets:
+        - name: {{ .Values.image.imagePullSecret }}
       containers:
         - name: oci-la-fluentd-logs
           # Replace this value with actual docker image url
