@@ -1,5 +1,9 @@
 # Change Log
 
+## 2023-10-31
+### Changed
+- Ruby upgrade from 2.7.8 to 3.1.2 for OL8-Slim Fluentd container image. It also includes Fluentd (1.15.3 to 1.16.2) and other dependency gem upgrades.
+
 ## 2023-09-26
 ### Changed
 - Ruby upgrade from 2.7.6 to 2.7.8 for OL8-Slim Fluentd container image.

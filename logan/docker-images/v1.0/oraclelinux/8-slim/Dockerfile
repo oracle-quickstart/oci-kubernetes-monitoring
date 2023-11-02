@@ -11,20 +11,20 @@ USER root
 WORKDIR /fluentd
 
 # Environment variables
-ENV PATH /fluentd/vendor/bundle/ruby/2.7.0/bin:$PATH
-ENV GEM_PATH /fluentd/vendor/bundle/ruby/2.7.0:$GEM_PATH
-ENV GEM_HOME /fluentd/vendor/bundle/ruby/2.7.0
+ENV PATH /fluentd/vendor/bundle/ruby/3.1.0/bin:$PATH
+ENV GEM_PATH /fluentd/vendor/bundle/ruby/3.1.0:$GEM_PATH
+ENV GEM_HOME /fluentd/vendor/bundle/ruby/3.1.0
 # skip runtime bundler installation
 ENV FLUENTD_DISABLE_BUNDLER_INJECTION 1
 
 COPY Gemfile* /fluentd/
 
 # Install ruby, ruby-libs along with rubygems and bundler.
-RUN microdnf -y module enable ruby:2.7 \
-# Install ruby (it's dependencies gdbm-libs) and ruby-libs, disabling week dependencies
- && microdnf -y install --setopt=install_weak_deps=0 --nodocs ruby-2.7.8 ruby-libs-2.7.8 gdbm-libs \
+RUN microdnf -y module enable ruby:3.1 \
+# Install ruby and ruby-libs, disabling week dependencies
+ && microdnf -y install --setopt=install_weak_deps=0 --nodocs ruby-3.1.2 ruby-libs-3.1.2 \
 # Install rubygems (it's dependencies rubygem-openssl rubygem-psych), disabling week dependencies
- && microdnf -y install --setopt=install_weak_deps=0 --nodocs rubygems-3.1.6 \
+ && microdnf -y install --setopt=install_weak_deps=0 --nodocs rubygems-3.3.7 \
  && gem install bundler -v 2.3.25 \
 # Install development dependent packages for gems native installation
  && microdnf -y install --nodocs gcc make redhat-rpm-config openssl ruby-devel gcc-c++ libtool libffi-devel bzip2 git \
@@ -34,8 +34,8 @@ RUN microdnf -y module enable ruby:2.7 \
  && bundle config --global jobs 9 \
  && bundle install --gemfile=/fluentd/Gemfile \
 # Install tini, init for containers (from EPEL repo)
- && microdnf -y install oracle-epel-release-el8 \
- && microdnf -y install tini-0.19.0 \
+ && microdnf -y install --setopt=install_weak_deps=0 --nodocs oracle-epel-release-el8 \
+ && microdnf -y install --nodocs tini-0.19.0 \
 # Install jemalloc (custom make with no docs)
  && cd /tmp && ls /tmp \
  && git clone -b 5.3.0 https://github.com/jemalloc/jemalloc.git && cd jemalloc/ \  
@@ -50,18 +50,18 @@ USER root
 WORKDIR /fluentd
 
 # Environment variables
-ENV PATH /fluentd/vendor/bundle/ruby/2.7.0/bin:$PATH
-ENV GEM_PATH /fluentd/vendor/bundle/ruby/2.7.0:$GEM_PATH
-ENV GEM_HOME /fluentd/vendor/bundle/ruby/2.7.0
+ENV PATH /fluentd/vendor/bundle/ruby/3.1.0/bin:$PATH
+ENV GEM_PATH /fluentd/vendor/bundle/ruby/3.1.0:$GEM_PATH
+ENV GEM_HOME /fluentd/vendor/bundle/ruby/3.1.0
 # skip runtime bundler installation
 ENV FLUENTD_DISABLE_BUNDLER_INJECTION 1
 
 # Install ruby, ruby-libs along with rubygems and bundler.
-RUN microdnf -y module enable ruby:2.7 \
-# Install ruby (it's dependencies gdbm-libs) and ruby-libs, disabling week dependencies
- && microdnf -y install --setopt=install_weak_deps=0 --nodocs ruby-2.7.8 ruby-libs-2.7.8 gdbm-libs \ 
+RUN microdnf -y module enable ruby:3.1 \
+# Install ruby and ruby-libs, disabling week dependencies
+ && microdnf -y install --setopt=install_weak_deps=0 --nodocs ruby-3.1.2 ruby-libs-3.1.2 \ 
 # Install rubygems (it's dependencies rubygem-openssl rubygem-psych), disabling week dependencies
- && microdnf -y install --setopt=install_weak_deps=0 --nodocs rubygems-3.1.6 \ 
+ && microdnf -y install --setopt=install_weak_deps=0 --nodocs rubygems-3.3.7 \ 
  && gem install bundler -v 2.3.25 \
  && bundle config --local path /fluentd/vendor/bundle \
 # clear caches
