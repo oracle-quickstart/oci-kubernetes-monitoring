@@ -20,8 +20,9 @@ A Helm chart for collecting Kubernetes Metrics using OCI Management Agent into O
 | kubernetesCluster.compartmentId | string | `nil` | OCI Compartment Id to push Kubernetes Monitoring metrics. If not specified default is same as Agent compartment |
 | kubernetesCluster.name | string | `nil` | Kubernetes cluster name |
 | kubernetesCluster.namespace | string | `"*"` | Kubernetes cluster namespace(s) to monitor. This can be a comma-separated list of namespaces or '*' to monitor all the namespaces |
-| mgmtagent.image.secret | string | `nil` | Image secrets to use for pulling container image (base64 encoded content of ~/.docker/config.json file) |
-| mgmtagent.image.url | string | `nil` | Replace this value with actual docker image URL for Management Agent |
+| mgmtagent.image.imageUrl | string | `"container-registry.oracle.com/oci_observability_management/oci-management-agent:1.0.0"` | Replace this value with actual docker image URL for Management Agent |
+| mgmtagent.image.imagePullPolicy | string | `IfNotPresent` | Container image pull policy. |
+| mgmtagent.image.imagePullSecret | string | `""` | Image pull secret name to use for pulling container image |
 | mgmtagent.installKey | string | `"resources/input.rsp"` | Copy the downloaded Management Agent Install Key file under root helm directory as resources/input.rsp |
 | mgmtagent.installKeyFileContent | string | `nil` | Provide the base64 encoded content of the Management Agent Install Key file |
 | namespace | string | `"{{ .Values.global.namespace }}"` | Kubernetes namespace to create and install this helm chart in |
