@@ -287,7 +287,7 @@ fluentd:
          # -- Kubernetes CSI Node Driver Logs collection configuration
          csinode:
             # csinode log files location.
-            path: /var/log/containers/csi-oci-node-*.log
+            path: /var/log/containers/csi-oci-node-*.log,/var/log/containers/ebs-csi-node-*.log
             # Logging Analytics log source to use for parsing and processing Kubernetes CSI Node Driver Logs.
             ociLALogSourceName: "Kubernetes CSI Node Driver Logs"
 
@@ -306,6 +306,14 @@ fluentd:
             ociLALogSourceName: "Kubernetes Autoscaler Logs"
             #  The regular expression pattern for the starting line in case of multi-line logs.
             multilineStartRegExp: /^\S\d{2}\d{2}\s+[^\:]+:[^\:]+:[^\.]+\.\d{0,3}/
+
+         # -- Kubernetes CSI Controller Logs collection configuration
+         csi-controller:
+            # csi controller log files location.
+            path: /var/log/containers/ebs-csi-controller-*.log
+            # Logging Analytics log source to use for parsing and processing Kubernetes CSI Controller Logs.
+            ociLALogSourceName: "Kubernetes CSI Controller Logs"
+
    # Configuration for Linux System specific logs like CronLogs and SecureLogs
    linuxSystem:
       # Setting the following properties will override the default/generic configuration and applies to all Kubernetes system logs
@@ -502,6 +510,8 @@ fluentd:
          - '"/var/log/containers/csi-oci-node-*.log"'
          - '"/var/log/containers/proxymux-client-*.log"'
          - '"/var/log/containers/cluster-autoscaler-*.log"'
+         - '"/var/log/containers/ebs-csi-node-*.log"'
+         - '"/var/log/containers/ebs-csi-controller-*.log"'
       # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
       #worker: 1
 
