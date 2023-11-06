@@ -67,11 +67,11 @@ kubernetesClusterID:
 # e.g. production-cluster
 kubernetesClusterName:
 
-# -- Kubernetes Security Context priviliged flag
+# -- Kubernetes Security Context privileged flag
 # By default, this is false and not required to be set in OKE cluster
 # In some special Kubernetes environments where SELinux mode is enforcing, we require this flag to be set to ture
 # to allow pods to access log files.
-priviliged: false
+privileged: false
 
 # -- Logging Analytics OCID for OKE Cluster
 #ociLAEntityID:

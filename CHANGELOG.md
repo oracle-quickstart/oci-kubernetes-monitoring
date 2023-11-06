@@ -3,7 +3,7 @@
 ## 2023-11-07
 ### Added
 - Control Plane Logs Collection for OCNE and Standalone Kubernetes Clusters.
-- Support for launching Fluentd containers in priviliged mode (default false).
+- Support for launching Fluentd containers in privileged mode (default false).
 - Added FAQ for triaging log collection setup issues in OCNE and Standalone Kubernetes Clusters. 
 
 ## 2023-10-31

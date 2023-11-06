@@ -284,8 +284,8 @@ Sample Error :
 E, [2023-08-07T10:17:13.710854 #18] ERROR -- : oci upload exception : Error while uploading the payload. { 'message': 'execution expired', 'status': 0, 'opc-request-id': 'D733ED0C244340748973D8A035068955', 'response-body': '' } 
 ```
 
-* Check if your OCNE setup configuration has `restrict-service-externalip` value set to `true` for kubernetes module. If yes, update it to false to allow access to Logging Analytics endpoint from containers. Refer [this](https://docs.oracle.com/en/operating-systems/olcne/1.3/orchestration/external-ips.html#8.3-Disabling-Access-to-externalIPs) for more details. If the issue is still not resolved,
-  * Check if your OCNE setup configuration has `selinux` value set to `enforcing` in globals section. If yes, you may need to start the fluentd containers in priviliged mode. To achieve the same, set `priviliged` to true in override_values.yaml.
+* Check if your OCNE setup configuration has `restrict-service-externalip` value set to `true` for kubernetes module. If yes, update it to false to allow access to Logging Analytics endpoint from containers. Refer [this](https://docs.oracle.com/en/operating-systems/olcne/1.3/orchestration/external-ips.html#8.4-Enabling-Access-to-all-externalIPs) for more details. If the issue is still not resolved,
+  * Check if your OCNE setup configuration has `selinux` value set to `enforcing` in globals section. If yes, you may need to start the fluentd containers in privileged mode. To achieve the same, set `privileged` to true in override_values.yaml.
 
 ```
 ..
@@ -293,12 +293,12 @@ E, [2023-08-07T10:17:13.710854 #18] ERROR -- : oci upload exception : Error whil
 oci-onm-logan:
   ..
   ..
-  priviliged: true
+  privileged: true
 ```
 
 #### How to fix _Permission denied @ dir_s_mkdir - /var/log/oci_la_fluentd_outplugin_ error ?
 
-Set `priviliged` to true in override_values.yaml to resolve this.
+Set `privileged` to true in override_values.yaml to resolve this.
 
 ```
 ..
@@ -306,7 +306,7 @@ Set `priviliged` to true in override_values.yaml to resolve this.
 oci-onm-logan:
   ..
   ..
-  priviliged: true
+  privileged: true
 ```
 
 ### Log Collection for Standalone cluster (docker runtime)

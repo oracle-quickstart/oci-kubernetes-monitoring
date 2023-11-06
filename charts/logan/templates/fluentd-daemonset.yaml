@@ -43,9 +43,9 @@ spec:
       - name: {{ $resourceNamePrefix }}-fluentd
         image: {{ .Values.image.url }}
         imagePullPolicy: {{ default "IfNotPresent" .Values.image.imagePullPolicy }}
-        {{- if .Values.priviliged }}
+        {{- if .Values.privileged }}
         securityContext:
-          privileged: {{ .Values.priviliged }}
+          privileged: {{ .Values.privileged }}
         {{- end}}
         env:
           - name: FLUENTD_CONF
