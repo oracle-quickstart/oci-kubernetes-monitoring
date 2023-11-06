@@ -1,5 +1,11 @@
 # Change Log
 
+## 2023-11-07
+### Added
+- Control Plane Logs Collection for OCNE and Standalone Kubernetes Clusters.
+- Support for launching Fluentd containers in priviliged mode (default false).
+- Added FAQ for triaging log collection setup issues in OCNE and Standalone Kubernetes Clusters. 
+
 ## 2023-10-31
 ### Changed
 - Ruby upgrade from 2.7.8 to 3.1.2 for OL8-Slim Fluentd container image. It also includes Fluentd (1.15.3 to 1.16.2) and other dependency gem upgrades.
