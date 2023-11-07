@@ -275,3 +275,6 @@ oci-onm-logan:
       worker: 1
 ```       
 
+### Enable Streaming of EKS Control Plane logs to AWS S3 
+Refer [EKS CP Logs Streaming to S3](./eks-cp-logs.md) for instructions on how to configure streaming of EKS Control Plane logs to AWS S3 and subsequenty collect them in OCI Logging Analytics.
+

@@ -239,9 +239,9 @@ aws logs put-subscription-filter --log-group-name "/aws/eks/<clusterName>/cluste
 Once the above steps are completed, the CloudWatch Logs will start appearing in S3 bucket. The log events would be partitioned before they are written to the S3 bucket. 
 The S3 bucket object name would be created under \_aws\_eks\_\<clusterName\>\_cluster/logStreamType/\<logStreamName\>/ as shown below.
 
-![](https://confluence.oci.oraclecorp.com/download/attachments/3208253209/image2023-9-4_15-27-36.png?version=1&modificationDate=1693821458582&api=v2)
+![s3-partitioned-logs](./s3-partitioned-logs.png)
 
-Once the EKS control plane logs in CloudWatch start streaming and are available in S3 bucket, we need to create and configure few other resources to enable us to collect the logs from S3 using S3 Fluentd plugin. 
+Once the EKS control plane logs in CloudWatch start streaming and are available in S3 bucket, we need to create and configure few other resources to enable us to collect the logs from S3 using S3 Fluentd plugin.
 
 **Create SQS Queues**
 
