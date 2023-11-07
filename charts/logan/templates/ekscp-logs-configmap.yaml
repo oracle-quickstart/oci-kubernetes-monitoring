@@ -154,7 +154,7 @@ data:
     </filter> 
     {{- end }}
 
-    {{- if or (eq "authenticator" $name) (eq "controllermanager" $name) (eq "scheduler" $name) }}
+    {{- if or (eq "authenticator" $name) (eq "kubecontrollermanager" $name) (eq "cloudcontrollermanager" $name) (eq "scheduler" $name) }}
     <source>
        @type cloudwatch_logs
        @id {{ $name }}{{- ternary (print "_" $currWorker) "" $multiWorkersEnabled }}
