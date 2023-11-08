@@ -47,7 +47,7 @@ variable "oke_cluster_ocid" {
 
 # OKE Cluster Name
 variable "oke_cluster_name" {
-  type    = string
+  type = string
 }
 
 # OKE Cluster Entity OCID

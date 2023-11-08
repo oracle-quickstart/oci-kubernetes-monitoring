@@ -8,7 +8,7 @@ locals {
   ### helm
   # Fetch OKE cluster name from OCI OKE Service if user does not provide a name of the target cluster
   oke_cluster_name = var.oke_cluster_name == "DEFAULT" ? [for c in data.oci_containerengine_clusters.oke_clusters.clusters : c.name if c.id == var.oke_cluster_ocid][0] : var.oke_cluster_name
-  deploy_helm = var.stack_deployment_option == "Full" ? true : false
+  deploy_helm      = var.stack_deployment_option == "Full" ? true : false
 
   ## Module Controls are are final verdicts on if a module should be executed or not 
   ## Module dependencies should be included here as well so a module does not run when it's depenedent moudle is disabled
