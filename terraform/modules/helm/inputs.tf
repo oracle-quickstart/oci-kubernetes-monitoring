@@ -80,12 +80,6 @@ variable "oci_la_namespace" {
 ##  Fluentd Configuration
 ####
 
-# OCI LA Fluentd Container Image
-variable "logan_container_image_url" {
-  type    = string
-  default = "container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.0.2"
-}
-
 # Fluentd Base Directory
 variable "fluentd_baseDir_path" {
   type    = string
@@ -98,12 +92,6 @@ variable "fluentd_baseDir_path" {
 
 variable "mgmt_agent_install_key_content" {
   type = string
-}
-
-# OCI Management Agent Container Image
-variable "mgmt_agent_container_image_url" {
-  type    = string
-  default = "container-registry.oracle.com/oci_observability_management/oci-management-agent:1.0.0"
 }
 
 # Option to control the metric server deployment inside kubernetes cluster

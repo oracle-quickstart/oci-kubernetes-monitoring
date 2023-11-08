@@ -14,12 +14,10 @@ locals {
     # oci-onm-logan
     "oci-onm-logan.ociLANamespace"  = var.oci_la_namespace
     "oci-onm-logan.ociLALogGroupID" = var.oci_la_logGroup_id
-    "oci-onm-logan.image.url"       = var.logan_container_image_url
     "oci-onm-logan.fluentd.baseDir" = var.fluentd_baseDir_path
 
     #oci-onm-mgmt-agent
     "oci-onm-mgmt-agent.mgmtagent.installKeyFileContent" = var.mgmt_agent_install_key_content
-    "oci-onm-mgmt-agent.mgmtagent.image.url"             = var.mgmt_agent_container_image_url
     "oci-onm-mgmt-agent.deployMetricServer"              = var.opt_deploy_metric_server
   }
 

@@ -90,13 +90,11 @@ module "helm_release" {
   generate_helm_template         = var.dev_switch_generate_helm_template
   oke_compartment_ocid           = var.oke_compartment_ocid
   oke_cluster_ocid               = var.oke_cluster_ocid
-  logan_container_image_url      = var.logan_container_image_url
   kubernetes_namespace           = var.kubernetes_namespace
   oci_la_logGroup_id             = module.loggingAnalytics[0].oci_la_logGroup_ocid
   oci_la_namespace               = module.loggingAnalytics[0].oci_la_namespace
   fluentd_baseDir_path           = local.fluentd_baseDir_path
   mgmt_agent_install_key_content = module.management_agent[0].mgmt_agent_install_key_content
-  mgmt_agent_container_image_url = var.mgmt_agent_container_image_url
   opt_deploy_metric_server       = var.livelab_switch ? true : var.opt_deploy_metric_server
   deploy_mushop_config           = var.livelab_switch
   livelab_service_account        = local.livelab_service_account

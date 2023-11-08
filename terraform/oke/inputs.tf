@@ -141,21 +141,9 @@ variable "fluentd_baseDir_path" {
 ##  Fluentd Configuration
 ####
 
-# OCI LA Fluentd Container Image
-variable "logan_container_image_url" {
-  type    = string
-  default = "container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.0.2"
-}
-
 ####
 ##  Management Agent Configuration
 ####
-
-# OCI Management Agent Container Image
-variable "mgmt_agent_container_image_url" {
-  type    = string
-  default = "container-registry.oracle.com/oci_observability_management/oci-management-agent:1.0.0"
-}
 
 # Option to deploy metric server
 variable "opt_deploy_metric_server" {

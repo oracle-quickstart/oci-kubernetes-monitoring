@@ -37,8 +37,6 @@ variableGroups:
       - dev_switch_livelab_module
       - dev_switch_iam_module
       - compartment_ocid
-      - logan_container_image_url
-      - mgmt_agent_container_image_url
       - kubernetes_namespace
       - current_user_ocid
       - livelab_switch
