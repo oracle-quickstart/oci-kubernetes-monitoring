@@ -101,6 +101,9 @@ if [ -n "$INCLUDE_LOCAL_HELM" ]; then
 else
     echo -e "-d option NOT passed - local helm-chart files will NOT be part of stack zip"
 fi
+if [ -n "$LIVE_LAB_BUILD" ]; then
+    echo -e "-l option passed - livelab specific zip will be created"
+fi
 
 # Echo Build Parameters
 echo -e ""
@@ -114,8 +117,6 @@ echo -e "TEMP_ZIP = $TEMP_ZIP"
 echo -e "RELEASE_ZIP = $RELEASE_ZIP"
 echo -e "ROOT_MODULE_PATH = $ROOT_MODULE_PATH"
 echo -e ""
-
-
 
 # Start
 echo -e "Building -\n"
