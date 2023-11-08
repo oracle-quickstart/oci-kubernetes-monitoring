@@ -98,12 +98,12 @@ data:
        hostname_command "cat /etc/hostname"
        <rule>
        key message
-       pattern /\\"apiVersion\\":\\"audit.k8s.io/
+       pattern /\\?"kind\\?":\\?"Event\\?"/
        tag eks{{- ternary (print "." $currWorker) "" $multiWorkersEnabled }}.cp.audit.*
        </rule>
        <rule>
        key message
-       pattern /\\"apiVersion\\":\\"audit.k8s.io/
+       pattern /\\?"kind\\?":\\?"Event\\?"/
        invert true
        tag eks{{- ternary (print "." $currWorker) "" $multiWorkersEnabled }}.cp.{{ $name }}.*
        </rule>
