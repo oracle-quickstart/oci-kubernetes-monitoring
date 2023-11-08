@@ -10,13 +10,25 @@ variable "generate_helm_template" {
   default = false
 }
 
+variable "install_helm" {
+  type    = bool
+  default = true
+}
+
+variable "use_local_helm_chart" {
+  type    = bool
+  default = false
+}
+
 ####
 ##  Helm chart
 ####
 
+# Used for local testing
 # Absoulte path to helm chart directory
 variable "helm_abs_path" {
-  type = string
+  type    = string
+  default = "optional"
 }
 
 ####
@@ -31,6 +43,18 @@ variable "oke_compartment_ocid" {
 # OKE Cluster OCID
 variable "oke_cluster_ocid" {
   type = string
+}
+
+# OKE Cluster Name
+variable "oke_cluster_name" {
+  type    = string
+  default = "" # Keep default as null string
+}
+
+# OKE Cluster Entity OCID
+variable "oke_cluster_entity_ocid" {
+  type    = string
+  default = "" # Keep default as null string
 }
 
 # Kubernetes Namespace
@@ -60,7 +84,7 @@ variable "oci_la_namespace" {
 # OCI LA Fluentd Container Image
 variable "logan_container_image_url" {
   type    = string
-  default = "container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.0.0"
+  default = "container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.0.2"
 }
 
 # Fluentd Base Directory
