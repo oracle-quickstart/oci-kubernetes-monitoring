@@ -8,8 +8,6 @@ locals {
   ### helm
   # Fetch OKE cluster name from OCI OKE Service if user does not provide a name of the target cluster
   oke_cluster_name = var.oke_cluster_name == "DEFAULT" ? [for c in data.oci_containerengine_clusters.oke_clusters.clusters : c.name if c.id == var.oke_cluster_ocid][0] : var.oke_cluster_name
-  # Set OKE cluster Entity as null if not user does not provide one
-  oke_cluster_entity_ocid = var.oke_cluster_entity_ocid == "DEFAULT" ? null : var.oke_cluster_entity_ocid
   deploy_helm = var.stack_deployment_option == "Full" ? true : false
 
   ## Module Controls are are final verdicts on if a module should be executed or not 
@@ -103,7 +101,7 @@ module "helm_release" {
   deploy_mushop_config           = var.livelab_switch
   livelab_service_account        = local.livelab_service_account
   oke_cluster_name               = local.oke_cluster_name
-  oke_cluster_entity_ocid        = local.oke_cluster_entity_ocid
+  oke_cluster_entity_ocid        = var.oke_cluster_entity_ocid
 
   count = local.module_controls_enable_helm_module ? 1 : 0
 }

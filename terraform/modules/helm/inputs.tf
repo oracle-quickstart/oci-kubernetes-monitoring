@@ -48,13 +48,12 @@ variable "oke_cluster_ocid" {
 # OKE Cluster Name
 variable "oke_cluster_name" {
   type    = string
-  default = "" # Keep default as null string
 }
 
 # OKE Cluster Entity OCID
 variable "oke_cluster_entity_ocid" {
   type    = string
-  default = "" # Keep default as null string
+  default = "DEFAULT" # Keep default as DEFAULT
 }
 
 # Kubernetes Namespace

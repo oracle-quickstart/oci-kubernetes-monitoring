@@ -9,7 +9,7 @@ locals {
     # global
     "global.namespace"             = var.deploy_mushop_config ? "livelab-test" : var.kubernetes_namespace
     "global.kubernetesClusterID"   = var.oke_cluster_ocid
-    "global.kubernetesClusterName" = var.oke_cluster_name == "" ? null : var.oke_cluster_name
+    "global.kubernetesClusterName" = var.oke_cluster_name
 
     # oci-onm-logan
     "oci-onm-logan.ociLANamespace"  = var.oci_la_namespace
@@ -50,7 +50,7 @@ resource "helm_release" "oci-kubernetes-monitoring" {
   }
 
   dynamic "set" {
-    for_each = var.oke_cluster_entity_ocid == "" ? [] : ["run_once"]
+    for_each = var.oke_cluster_entity_ocid == "DEFAULT" ? [] : ["run_once"]
     content {
       name  = "oci-onm-logan.ociLAClusterEntityID"
       value = var.oke_cluster_entity_ocid
@@ -88,7 +88,7 @@ data "helm_template" "oci-kubernetes-monitoring" {
   }
 
   dynamic "set" {
-    for_each = var.oke_cluster_entity_ocid == "" ? [] : ["run_once"]
+    for_each = var.oke_cluster_entity_ocid == "DEFAULT" ? [] : ["run_once"]
     content {
       name  = "oci-onm-logan.ociLAClusterEntityID"
       value = var.oke_cluster_entity_ocid
