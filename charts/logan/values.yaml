@@ -486,7 +486,7 @@ fluentd:
             # S3 object key
             objectKey: .*?cloud-controller-manager
             # Logging Analytics log source to use for parsing and processing EKS Control Plane Cloud Controller Manager Logs.
-            ociLALogSourceName: "Kubernetes Controller Manager Logs" # Update once content is available
+            ociLALogSourceName: "Cloud Controller Manager Logs"
             #metadata:
                #"Client Host Region": "America"
                #"Environment": "Production"
