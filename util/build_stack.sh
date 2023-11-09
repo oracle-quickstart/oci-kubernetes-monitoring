@@ -145,7 +145,7 @@ echo -e "Created Git archive - $TEMP_ZIP"
 # unzip the temp.zip file
 unzip -d "$TEMP_DIR" "$TEMP_ZIP" >/dev/null || error_and_exit "Could not unzip temp.zip"
 echo -e "Unzipped temp.zip to $TEMP_DIR"
-
+ 
 # remove the helm-chart symlink
 rm "$TEMP_DIR/charts" || error_and_exit "Could not remove helm-chart symlink"
 echo -e "Removed helm-chart symlink - $TEMP_DIR/charts"
@@ -175,7 +175,7 @@ if [ -n "$LIVE_LAB_BUILD" ]; then
 fi
 
 # create zip
-zip -r "${RELEASE_ZIP}" ${TEMP_DIR}/* >/dev/null  || error_and_exit "Could not zip $TEMP_DIR"
+zip -r "${RELEASE_ZIP}" . >/dev/null  || error_and_exit "Could not zip $TEMP_DIR"
 
 # switch back to util dir
 cd "$RELEASE_PATH" || error_and_exit "Could not switch to $RELEASE_PATH"
