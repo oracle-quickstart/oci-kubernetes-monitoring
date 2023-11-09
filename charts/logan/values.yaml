@@ -7,8 +7,9 @@ global:
   namespace: oci-onm
   # -- Resource names prefix used, where allowed.
   resourceNamePrefix: oci-onm
-  # -- Provide a unique name for the cluster.
-  # This would help uniquely identifying the logs and metrics data at OCI Logging Analytics and OCI Monitoring respectivelt, when moitoring multiple clustersa
+  # -- OKE OCID for an OKE cluster or an unique ID for other Kubernetes clusters.
+  kubernetesClusterID:
+  # -- Provide a unique name for the cluster. This would help uniquely identifying the logs and metrics data at OCI Logging Analytics and OCI Monitoring respectivelt, when moitoring multiple clustersa
   kubernetesClusterName:
 
 oci-onm-common:
@@ -71,7 +72,7 @@ ociLALogGroupID:
 
 # -- OKE Cluster OCID
 # e.g. ocid1.cluster.oc1.phx.aaaaaaaahhbadf3rxa62faaeixanvr7vftmkg6hupycbf4qszctf2wbmqqxq
-kubernetesClusterID:
+kubernetesClusterID: "{{ .Values.global.kubernetesClusterID }}"
 
 # -- Kubernetes Cluster name. Need not be the OKE Cluster display name.
 # e.g. production-cluster

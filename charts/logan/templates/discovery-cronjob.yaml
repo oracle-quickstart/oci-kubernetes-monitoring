@@ -1,6 +1,7 @@
 {{- $authtype := .Values.authtype | lower }}
 {{- $resourceNamePrefix := .Values.global.resourceNamePrefix }}
 {{- $kubernetesClusterName := (include "logan.kubernetesClusterName" .) }}
+{{- $kubernetesClusterId := (include "logan.kubernetesClusterId" .) }}
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -29,6 +30,12 @@ spec:
             {{- /* object discovery script */}}
               - oci-logan-oke-resources-discovery
             {{- /* mandatory inputs */}}
+              - --kubernetes_cluster_id
+            {{- if ne $kubernetesClusterId "UNDEFINED" }}
+              - {{ $kubernetesClusterId }}
+            {{- else }}
+              {{ required "kubernetes_cluster_id is required" .Values.global.kubernetesClusterID }}
+            {{- end }}              
               - --kubernetes_cluster_name
             {{- if ne $kubernetesClusterName "UNDEFINED" }}
               - {{ $kubernetesClusterName }}
