@@ -68,9 +68,8 @@ kubernetesClusterID:
 kubernetesClusterName:
 
 # -- Kubernetes Security Context privileged flag
-# By default, this is false and not required to be set in OKE cluster
-# In some special Kubernetes environments where SELinux mode is enforcing, we require this flag to be set to ture
-# to allow pods to access log files.
+# Default: 'false'. This is not a required for OKE clusters.
+# In Kubernetes environments where SELinux mode is enforced, set this flag to 'true' to allow fluentd pods to access log files.
 privileged: false
 
 # -- Logging Analytics OCID for OKE Cluster

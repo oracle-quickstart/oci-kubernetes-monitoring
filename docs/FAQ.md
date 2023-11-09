@@ -279,6 +279,8 @@ oci-onm-logan:
 
 #### How to fix _execution expired_ error ?
 
+Log location: `/var/log/oci-logging-analytics.log`
+
 Sample Error :
 ```
 E, [2023-08-07T10:17:13.710854 #18] ERROR -- : oci upload exception : Error while uploading the payload. { 'message': 'execution expired', 'status': 0, 'opc-request-id': 'D733ED0C244340748973D8A035068955', 'response-body': '' } 
@@ -298,6 +300,8 @@ oci-onm-logan:
 
 #### How to fix _Permission denied @ dir_s_mkdir - /var/log/oci_la_fluentd_outplugin_ error ?
 
+Log location: Pod logs of Daemonset `oci-onm-logan`
+
 Set `privileged` to true in override_values.yaml to resolve this.
 
 ```
@@ -312,6 +316,8 @@ oci-onm-logan:
 ### Log Collection for Standalone cluster (docker runtime)
 
 #### How to fix the warning _/var/log/containers/..log unreadable_ ?
+
+Log location: Pod logs of Daemonset `oci-onm-logan`
 
 Sample Error:
 ```
