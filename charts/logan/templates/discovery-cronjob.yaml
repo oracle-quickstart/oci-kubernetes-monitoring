@@ -1,0 +1,135 @@
+{{- $authtype := .Values.authtype | lower }}
+{{- $resourceNamePrefix := .Values.global.resourceNamePrefix }}
+{{- $kubernetesClusterName := (include "logan.kubernetesClusterName" .) }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ .Values.global.resourceNamePrefix }}-discovery
+  namespace: {{ include "logan.namespace" . }}
+spec:
+  schedule: {{ .Values.objectDiscovery.cronSchedule | quote }}
+  startingDeadlineSeconds: 100
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          serviceAccountName: {{ include "logan.serviceAccount" . }}
+          containers:
+          - name: k8-discovery-job
+            image: {{ .Values.image.url }}
+            {{- if eq $authtype "config" }}
+            volumeMounts:
+            - name: ociconfigdir
+              mountPath: {{ .Values.oci.path }}
+              readOnly: true
+            {{- end }}
+            command:
+            {{- /* object discovery script */}}
+              - oci-logan-oke-resources-discovery
+            {{- /* mandatory inputs */}}
+              - --kubernetes_cluster_name
+            {{- if ne $kubernetesClusterName "UNDEFINED" }}
+              - {{ $kubernetesClusterName }}
+            {{- else }}
+              {{ required "kubernetes_cluster_name is required" .Values.global.kubernetesClusterName }}
+            {{- end }}
+              - --oci_la_namespace
+            {{- if .Values.objectDiscovery.logan.oci_la_namespace }}
+              - {{ .Values.objectDiscovery.logan.oci_la_namespace }}
+            {{- else if .Values.ociLANamespace }}
+              - {{ .Values.ociLANamespace }}
+            {{- else }}
+              {{ required "ociLANamespace is required" .Values.ociLANamespace }}
+            {{- end }}
+            {{- /* optional logan inputs */}}
+            {{- if .Values.objectDiscovery.logan.oci_la_log_group_id }}
+              - --oci_la_log_group_id
+              - {{ .Values.objectDiscovery.logan.oci_la_log_group_id }}
+            {{- else if .Values.ociLALogGroupID }}
+              - --oci_la_log_group_id
+              - {{ .Values.ociLALogGroupID }}
+            {{- end }}
+            {{- if .Values.ociLAClusterEntityID }}
+              - --kubernetes_cluster_entity_id
+              - {{ .Values.ociLAClusterEntityID  }}
+            {{- end }}
+            {{- /* params required when authtype is set as config */}}
+            {{- if eq .Values.authtype "config" }}
+            {{- if and .Values.oci.path .Values.oci.file }}
+              - --config_file_location
+              - {{ .Values.oci.path -}}/{{ .Values.oci.file }}
+            {{- else }}
+                {{- required "missing config file. {{ .Values.oci.path -}}/{{ .Values.oci.file }}" .Values.oci.path }}
+            {{- end }}
+            {{- end }}
+            {{- /* developer options - optional */}}
+            {{- if .Values.objectDiscovery.logan.oci_la_endpoint }}
+              - --endpoint
+              - {{ .Values.objectDiscovery.logan.oci_la_endpoint }}
+            {{- else if .Values.ociLAEndpoint }}
+              - --endpoint
+              - {{ .Values.ociLAEndpoint }}
+            {{- end }}
+            {{- /* optional kubernetes cluster configuration */}}
+            {{- if .Values.objectDiscovery.kubernetes.kube_config_location }}
+              - --kube_config_location
+              - {{ .Values.objectDiscovery.kubernetes.kube_config_location }}
+            {{- end }}
+            {{- if .Values.objectDiscovery.kubernetes.kubernetes_url }}
+              - --kubernetes_url
+              - {{ .Values.objectDiscovery.kubernetes.kubernetes_url }}
+            {{- end }}
+            {{- if .Values.objectDiscovery.kubernetes.client_cert }}
+              - --client_cert
+              - {{ .Values.objectDiscovery.kubernetes.client_cert }}
+            {{- end }}                
+            {{- if .Values.objectDiscovery.kubernetes.client_key }}
+              - --client_key
+              - {{ .Values.objectDiscovery.kubernetes.client_key }}
+            {{- end }}
+            {{- if .Values.objectDiscovery.kubernetes.ca_file }}
+              - --ca_file
+              - {{ .Values.objectDiscovery.kubernetes.ca_file }}
+            {{- end }}
+            {{- if .Values.objectDiscovery.kubernetes.verify_ssl }}
+              - --verify_ssl
+              - {{ .Values.objectDiscovery.kubernetes.verify_ssl }}
+            {{- end }}
+            {{- if .Values.objectDiscovery.kubernetes.bearer_token_file }}
+              - --bearer_token_file
+              - {{ .Values.objectDiscovery.kubernetes.bearer_token_file }}
+            {{- end }}                
+            {{- if .Values.objectDiscovery.kubernetes.secret_dir }}
+              - --secret_dir
+              - {{ .Values.objectDiscovery.kubernetes.secret_dir }}
+            {{- end }}
+            {{- /* optional discovery job configuration */}}
+            {{- if .Values.objectDiscovery.discoveryMode }}
+              - --discovery
+              - {{ .Values.objectDiscovery.discoveryMode }}
+            {{- end }}
+            {{- if .Values.objectDiscovery.log_format }}
+              - --log_format
+              - {{ .Values.objectDiscovery.log_format }}
+            {{- end }}                
+            {{- if .Values.objectDiscovery.log_level }}
+              - --log_level
+              - {{ .Values.objectDiscovery.log_level }}
+            {{- end }}
+            {{- if .Values.objectDiscovery.enable_threading }}
+              - --enable_threading
+            {{- end }}
+            {{- if .Values.objectDiscovery.thread_count }}
+              - --thread_count
+              - {{ .Values.objectDiscovery.thread_count }}
+            {{- end }}
+          {{- if eq $authtype "config" }}
+          volumes:
+          - name: ociconfigdir
+            projected:
+              sources:
+              - secret:
+                  name: {{ $resourceNamePrefix }}-oci-config
+          {{- end }}

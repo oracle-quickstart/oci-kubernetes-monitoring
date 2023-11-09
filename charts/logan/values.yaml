@@ -7,6 +7,9 @@ global:
   namespace: oci-onm
   # -- Resource names prefix used, where allowed.
   resourceNamePrefix: oci-onm
+  # -- Provide a unique name for the cluster.
+  # This would help uniquely identifying the logs and metrics data at OCI Logging Analytics and OCI Monitoring respectivelt, when moitoring multiple clustersa
+  kubernetesClusterName:
 
 oci-onm-common:
 # -- Automatically create, a readonly cluster role, cluster role binding and
@@ -38,12 +41,12 @@ authtype: InstancePrincipal
 # -- Kubernetes Namespace for deploying monitoring resources deployed by this chart.
 namespace: "{{ .Values.global.namespace }}"
 
-
 # -- Resoure Name Prefix: Wherever allowed, this prefix will be used with all resources used by this chart
 resourceNamePrefix: "{{ .Values.global.resourceNamePrefix }}"
 
 # --  Kubernetes ServiceAccount
 serviceAccount: "{{ .Values.global.resourceNamePrefix }}"
+
 image:
    # Image pull secrets for. Secret must be in the namespace defined by namespace
    imagePullSecrets:
@@ -54,6 +57,10 @@ image:
 
 # -- Logging Analytics namespace. Can be found in OCI console --> Logging Analytics --> Administration --> Service
 ociLANamespace:
+
+# -- A custom logging analytics endpoint to use. Should be left empty in production
+ociLAEndpoint:
+
 # -- OCID of Logging Analytics Log Group to send logs to.
 # Can be overridden for individual log types.
 # e.g. ocid1.loganalyticsloggroup.oc1.phx.amaaaaasdfaskriauucc55rlwlxe4ahe2vfmtuoqa6qsgu7mb6jugxacsk6a
@@ -65,7 +72,7 @@ kubernetesClusterID:
 
 # -- Kubernetes Cluster name. Need not be the OKE Cluster display name.
 # e.g. production-cluster
-kubernetesClusterName:
+kubernetesClusterName: "{{ .Values.global.kubernetesClusterName }}"
 
 # -- Kubernetes Cluster Entity OCID.
 # e.g. ocid1.loganalyticsentity.oc1.phx.amaaaaaabulluiqabqeq4delvhdlmd7aqcjrdla57n2szsxyz7pfdvnhwuua
@@ -473,3 +480,44 @@ fluentd:
             api_endpoint: apis/batch
          endpoint_slices:
             api_endpoint: apis/discovery.k8s.io
+
+# objectDiscovery: defines properties that affect kubernetes objects discovery
+objectDiscovery:
+   # cronSchedule: cronjob schedule to run object discovery job
+   cronSchedule: "*/5 * * * *"
+   # discoveryMode: discovery mode to be used - ["infra", "object"]
+   discoveryMode: "object"
+   # Log format to be used - ["text", "json"]
+   log_format: "text"
+   # log_level: defines log level for discovery job [trace|debug|info|warn|error|fatal]
+   log_level: "info"
+   # Defaults to sequential execution when parameter is not provided (Boolean)
+   enable_threading: false
+   # thread_count: Number of parallel threads to be used while making requests to API server
+   thread_count:
+   # logan: OCI Logging Analytics related inputs for kubernetes disocvery job
+   logan:
+      # oci_la_namespace: Logging Analytics namespace; overrides oci-onm-common.ociLANamespace
+      oci_la_namespace:
+      # oci_la_log_group_id: OCID of Logging Analytics Log Group to send kubernetes object logs to; overrides oci-onm-common.ociLALogGroupID
+      oci_la_log_group_id:
+      # oci_la_log_group_id: Logging Analytics Ingestion API endpoint to ingest your object logs; overrides oci-onm-common.ociLAEndpoint
+      oci_la_endpoint:
+   # kubernetes: kubernetes cluster related inputs for kubernetes disocvery job
+   kubernetes:
+      # kube_config_location: if provided, disocvery job will use the specific kube config file to connect to the cluster
+      kube_config_location:
+      # kubernetes_url: Kubernetes API server URL.
+      kubernetes_url:
+      # client_cert: Path to certificate file for Kubernetes HTTPs/SSL server certificate validation
+      client_cert:
+      # client_key: Path to key for Kubernetes HTTPs/SSL server certificate validation
+      client_key:
+      # ca_file: Path to CA file for Kubernetes HTTPs/SSL server certificate validation
+      ca_file:
+      # verify_ssl: Validate SSL certificates while creating kube clients
+      verify_ssl:
+      # bearer_token_file: Path to bearer token file if basic authentication is used
+      bearer_token_file:
+      # secret_dir: Path to Kubernetes service account token file to access Kubernetes API
+      secret_dir:
