@@ -52,7 +52,7 @@ spec:
               - {{ .Values.ociLALogGroupID }}
             {{- end }}
             {{- if .Values.ociLAClusterEntityID }}
-              - --kubernetes_cluster_entity_id
+              - --oci_la_cluster_entity_id
               - {{ .Values.ociLAClusterEntityID  }}
             {{- end }}
             {{- /* params required when authtype is set as config */}}

@@ -58,6 +58,9 @@ image:
 # -- Logging Analytics namespace. Can be found in OCI console --> Logging Analytics --> Administration --> Service
 ociLANamespace:
 
+# -- Logging Analytics Entity OCID representing the target cluster
+ociLAClusterEntityID:
+
 # -- A custom logging analytics endpoint to use. Should be left empty in production
 ociLAEndpoint:
 

@@ -36,6 +36,8 @@ oci-onm-logan:
   ociLANamespace:
   # OCI Logging Analytics Default Log Group OCID
   ociLALogGroupID:
+  # OCI Logging Analytics Entity OCID representing the target cluster
+  ociLAClusterEntityID:
 
 oci-onm-mgmt-agent:
   oci-onm-common:
