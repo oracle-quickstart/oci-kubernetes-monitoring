@@ -39,7 +39,7 @@ spec:
               - --kubernetes_cluster_name
               - {{ $kubernetesClusterName }}
               - --oci_la_namespace
-              - {{ $kubernetesNamespace }}
+              - {{ .Values.ociLANamespace }}
               {{- if .Values.ociLAClusterEntityID }}
               - --oci_la_cluster_entity_id #TODO - Remove if/else and required clause | optional input
               - {{ .Values.ociLAClusterEntityID  }}
