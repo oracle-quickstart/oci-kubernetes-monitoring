@@ -22,7 +22,8 @@ locals {
   policy_scope         = var.root_compartment_ocid == var.oci_onm_compartment_ocid ? "tenancy" : "compartment ${local.oci_onm_compartment_name}"
   mgmt_agent_policy    = ["Allow dynamic-group ${local.dynamic_group_name} to use METRICS in ${local.policy_scope} WHERE target.metrics.namespace = 'mgmtagent_kubernetes_metrics'"]
   fluentd_agent_policy = ["Allow dynamic-group ${local.dynamic_group_name} to {LOG_ANALYTICS_LOG_GROUP_UPLOAD_LOGS} in ${local.policy_scope}"]
-  policy_statements    = concat(local.fluentd_agent_policy, local.mgmt_agent_policy)
+  discovery_api_policy = ["Allow dynamic-group ${local.dynamic_group_name} to {LOG_ANALYTICS_DISCOVERY_UPLOAD} in ${local.policy_scope}"]
+  policy_statements    = concat(local.fluentd_agent_policy, local.mgmt_agent_policy, local.discovery_api_policy)
 }
 
 # Logging Analytics Compartment
