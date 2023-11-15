@@ -13,12 +13,12 @@ locals {
   ## Module Controls are are final verdicts on if a module should be executed or not 
   ## Module dependencies should be included here as well so a module does not run when it's depenedent moudle is disabled
 
-  module_controls_enable_livelab_module    = alltrue([var.dev_switch_livelab_module, var.livelab_switch])
-  module_controls_enable_dashboards_module = alltrue([var.dev_switch_dashboards_module])
-  module_controls_enable_iam_module        = alltrue([var.dev_switch_iam_module, var.opt_create_dynamicGroup_and_policies, !var.livelab_switch])
-  module_controls_enable_logan_module      = alltrue([var.dev_switch_logan_module])
-  module_controls_enable_mgmt_agent_module = alltrue([var.dev_switch_mgmt_agent_module])
-  module_controls_enable_helm_module = alltrue([var.dev_switch_helm_module, local.deploy_helm,
+  module_controls_enable_livelab_module    = alltrue([var.toggle_livelab_module, var.livelab_switch])
+  module_controls_enable_dashboards_module = alltrue([var.toggle_dashboards_module])
+  module_controls_enable_iam_module        = alltrue([var.toggle_iam_module, var.opt_create_dynamicGroup_and_policies, !var.livelab_switch])
+  module_controls_enable_logan_module      = alltrue([var.toggle_logan_module])
+  module_controls_enable_mgmt_agent_module = alltrue([var.toggle_mgmt_agent_module])
+  module_controls_enable_helm_module = alltrue([var.toggle_helm_module, local.deploy_helm,
   local.module_controls_enable_mgmt_agent_module, local.module_controls_enable_logan_module])
 }
 
@@ -85,9 +85,9 @@ module "management_agent" {
 module "helm_release" {
   source                         = "./modules/helm"
   helm_abs_path                  = abspath("./charts/oci-onm")
-  use_local_helm_chart           = var.dev_switch_use_local_helm_chart
-  install_helm                   = var.dev_switch_install_helm
-  generate_helm_template         = var.dev_switch_generate_helm_template
+  use_local_helm_chart           = var.toggle_use_local_helm_chart
+  install_helm                   = var.toggle_install_helm
+  generate_helm_template         = var.toggle_generate_helm_template
   oke_compartment_ocid           = var.oke_compartment_ocid
   oke_cluster_ocid               = var.oke_cluster_ocid
   kubernetes_namespace           = var.kubernetes_namespace

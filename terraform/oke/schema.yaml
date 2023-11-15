@@ -27,15 +27,15 @@ variableGroups:
       - fingerprint
       - boat_auth
       - boat_tenancy_ocid
-      - dev_switch_generate_helm_template
-      - dev_switch_install_helm
-      - dev_switch_use_local_helm_chart
-      - dev_switch_dashboards_module
-      - dev_switch_helm_module
-      - dev_switch_mgmt_agent_module
-      - dev_switch_logan_module
-      - dev_switch_livelab_module
-      - dev_switch_iam_module
+      - toggle_generate_helm_template
+      - toggle_install_helm
+      - toggle_use_local_helm_chart
+      - toggle_dashboards_module
+      - toggle_helm_module
+      - toggle_mgmt_agent_module
+      - toggle_logan_module
+      - toggle_livelab_module
+      - toggle_iam_module
       - compartment_ocid
       - kubernetes_namespace
       - current_user_ocid

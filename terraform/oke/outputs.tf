@@ -93,5 +93,5 @@ output "mgmt_agent_install_key" {
 }
 
 output "helm_template" {
-  value = local.module_controls_enable_helm_module && var.dev_switch_generate_helm_template ? module.helm_release[0].helm_template : null
+  value = local.module_controls_enable_helm_module && var.toggle_generate_helm_template ? module.helm_release[0].helm_template : null
 }

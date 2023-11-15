@@ -7,19 +7,19 @@
 ####
 
 # Enable/Disable livelab module
-variable "dev_switch_livelab_module" {
+variable "toggle_livelab_module" {
   type    = bool
   default = true
 }
 
 # Enable/Disable helm module 
-variable "dev_switch_helm_module" {
+variable "toggle_helm_module" {
   type    = bool
   default = true
 }
 
 # when false, public helm repo is used for deployment 
-variable "dev_switch_use_local_helm_chart" {
+variable "toggle_use_local_helm_chart" {
   type    = bool
   default = false
 }
@@ -27,37 +27,37 @@ variable "dev_switch_use_local_helm_chart" {
 # Enable/Disable helm template. When set as true, 
 # - helm module will generate template file inside ../modules/helm/local directory
 # - Setting this to true disables/skips the helm release
-variable "dev_switch_generate_helm_template" {
+variable "toggle_generate_helm_template" {
   type    = bool
   default = false
 }
 
 # Enable/Disable helm installation. 
-variable "dev_switch_install_helm" {
+variable "toggle_install_helm" {
   type    = bool
   default = true
 }
 
 # Enable/Disable logan dashboards module
-variable "dev_switch_dashboards_module" {
+variable "toggle_dashboards_module" {
   type    = bool
   default = true
 }
 
 # Enable/Disable management agent module
-variable "dev_switch_mgmt_agent_module" {
+variable "toggle_mgmt_agent_module" {
   type    = bool
   default = true
 }
 
 # Enable/Disable management agent module
-variable "dev_switch_logan_module" {
+variable "toggle_logan_module" {
   type    = bool
   default = true
 }
 
 # Enable/Disable IAM module
-variable "dev_switch_iam_module" {
+variable "toggle_iam_module" {
   type    = bool
   default = true
 }
