@@ -95,7 +95,7 @@ module "helm_release" {
   oci_la_namespace               = module.loggingAnalytics[0].oci_la_namespace
   fluentd_baseDir_path           = local.fluentd_baseDir_path
   mgmt_agent_install_key_content = module.management_agent[0].mgmt_agent_install_key_content
-  opt_deploy_metric_server       = var.livelab_switch ? true : var.opt_deploy_metric_server
+  opt_deploy_metric_server       = var.livelab_switch ? false : var.opt_deploy_metric_server
   deploy_mushop_config           = var.livelab_switch
   livelab_service_account        = local.livelab_service_account
   oke_cluster_name               = local.oke_cluster_name
