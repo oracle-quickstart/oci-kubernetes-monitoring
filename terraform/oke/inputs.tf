@@ -155,12 +155,6 @@ variable "opt_deploy_metric_server" {
 ##  Input options hidden from stack UI
 ####
 
-# add data flow identifier
-variable "triggered_by_add_data_flow" {
-  type    = bool
-  default = false
-}
-
 # OKE Cluster Name
 variable "oke_cluster_name" {
   type    = string

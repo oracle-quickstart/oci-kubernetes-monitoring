@@ -40,7 +40,6 @@ variableGroups:
       - kubernetes_namespace
       - current_user_ocid
       - livelab_switch
-      - triggered_by_add_data_flow
       - oke_cluster_name
       - oke_cluster_entity_ocid
       - stack_deployment_option
