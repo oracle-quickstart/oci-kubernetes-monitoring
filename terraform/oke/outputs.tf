@@ -2,6 +2,7 @@
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 locals {
+  # generate_helm_output evaluates to true in production
   generate_helm_output = alltrue([local.module_controls_enable_mgmt_agent_module, local.module_controls_enable_logan_module])
 
   output_helm_external_values = local.generate_helm_output ? yamlencode({
