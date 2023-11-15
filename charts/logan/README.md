@@ -15,7 +15,7 @@ Charts for sending Kubernetes platform logs, compute logs, and Kubernetes Object
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | authtype | string | `"InstancePrincipal"` | Allowed values: InstancePrincipal, config |
-| extraEnv | list | `[]` | Logging Analytics OCID for OKE Cluster ociLAEntityID: Logging Analytics additional metadata. Use this to tag all the collected logs with one or more key:value pairs. Key must be a valid field in Logging Analytics metadata: "Client Host Region": "PCT" "Environment": "Production" "Third key": "Third Value" @param extra environment variables. Example   name: ENV_VARIABLE_NAME   value: ENV_VARIABLE_VALUE |
+| extraEnv | list | `[]` | Use this to tag all the collected logs with one or more key:value pairs. Key must be a valid field in Logging Analytics metadata: "Client Host Region": "PCT" "Environment": "Production" "Third key": "Third Value" @param extra environment variables. Example   name: ENV_VARIABLE_NAME   value: ENV_VARIABLE_VALUE |
 | extraVolumeMounts | list | `[]` | @param extraVolumeMounts Mount extra volume(s). Example:   - name: tmpDir     mountPath: /tmp |
 | extraVolumes | list | `[]` | @param extraVolumes Extra volumes. Example:   - name: tmpDir     hostPath:         path: /tmp log |
 | fluentd.baseDir | string | `"/var/log"` | Base directory on the node (with read write permission) for storing fluentd plugins related data. |
@@ -60,7 +60,7 @@ Charts for sending Kubernetes platform logs, compute logs, and Kubernetes Object
 | global.resourceNamePrefix | string | `"oci-onm"` | Resource names prefix used, where allowed. |
 | image.imagePullPolicy | string | `"Always"` | Image pull policy |
 | image.imagePullSecrets | string | `nil` |  |
-| image.url | string | `"container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.0.0"` | Replace this value with actual docker image url |
+| image.url | string | `"container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.0.2"` | Replace this value with actual docker image url |
 | kubernetesClusterID | string | `nil` | OKE Cluster OCID e.g. ocid1.cluster.oc1.phx.aaaaaaaahhbadf3rxa62faaeixanvr7vftmkg6hupycbf4qszctf2wbmqqxq |
 | kubernetesClusterName | string | `nil` | Kubernetes Cluster name. Need not be the OKE Cluster display name. e.g. production-cluster |
 | namespace | string | `"{{ .Values.global.namespace }}"` | Kubernetes Namespace for deploying monitoring resources deployed by this chart. |
