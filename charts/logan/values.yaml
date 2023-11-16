@@ -60,9 +60,6 @@ ociLANamespace:
 # e.g. ocid1.loganalyticsloggroup.oc1.phx.amaaaaasdfaskriauucc55rlwlxe4ahe2vfmtuoqa6qsgu7mb6jugxacsk6a
 ociLALogGroupID:
 
-# -- A custom logging analytics endpoint to use. Should be left empty in production
-#ociLAEndpoint:
-
 # -- OKE Cluster OCID
 # e.g. ocid1.cluster.oc1.phx.aaaaaaaahhbadf3rxa62faaeixanvr7vftmkg6hupycbf4qszctf2wbmqqxq
 kubernetesClusterID:
@@ -480,8 +477,6 @@ fluentd:
 
 # k8sDiscovery: defines properties that affect kubernetes objects discovery
 k8sDiscovery:
-   # overrides oci-onm-common.ociLAEndpoint for k8s discovery
-   oci_la_endpoint:
    # objects: defines inputs for K8s objects discovery
    objects:
       # cronSchedule: cronjob schedule to run object discovery job
