@@ -64,7 +64,7 @@ ociLAClusterEntityID:
 ociLALogGroupID:
 
 # -- A custom logging analytics endpoint to use. Should be left empty in production
-ociLAEndpoint:
+#ociLAEndpoint:
 
 # -- OKE Cluster OCID
 # e.g. ocid1.cluster.oc1.phx.aaaaaaaahhbadf3rxa62faaeixanvr7vftmkg6hupycbf4qszctf2wbmqqxq
@@ -483,6 +483,9 @@ fluentd:
 
 # k8sDiscovery: defines properties that affect kubernetes objects discovery
 k8sDiscovery:
+   # overrides oci-onm-common.ociLAEndpoint for k8s discovery
+   oci_la_endpoint:
+   # objects: defines inputs for K8s objects discovery
    objects:
       # cronSchedule: cronjob schedule to run object discovery job
       cronSchedule: "*/5 * * * *"
@@ -512,6 +515,3 @@ k8sDiscovery:
       bearer_token_file:
       # secret_dir: Path to Kubernetes service account token file to access Kubernetes API
       secret_dir:
-   logan:
-      # overrides oci-onm-common.ociLAEndpoint for k8s discovery
-      oci_la_endpoint:

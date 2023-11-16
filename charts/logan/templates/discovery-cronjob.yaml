@@ -102,9 +102,9 @@ spec:
               - {{ .Values.k8sDiscovery.kubeClientOptions.secret_dir }}
             {{- end }}
             {{- /* developer options - optional */}}
-            {{- if .Values.k8sDiscovery.logan.oci_la_endpoint }}
+            {{- if .Values.k8sDiscovery.oci_la_endpoint }}
               - --endpoint
-              - {{ .Values.k8sDiscovery.logan.oci_la_endpoint }}
+              - {{ .Values.k8sDiscovery.oci_la_endpoint }}
             {{- else if .Values.ociLAEndpoint }}
               - --endpoint
               - {{ .Values.ociLAEndpoint }}
