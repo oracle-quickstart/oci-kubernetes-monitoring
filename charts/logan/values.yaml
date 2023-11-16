@@ -484,7 +484,6 @@ fluentd:
 # k8sDiscovery: defines properties that affect kubernetes objects discovery
 k8sDiscovery:
    objects:
-      enabled: true
       # cronSchedule: cronjob schedule to run object discovery job
       cronSchedule: "*/5 * * * *"
       # discoveryMode: discovery mode to be used - ["infra", "object"]

@@ -1,4 +1,4 @@
-{{- if eq .Values.k8sDiscovery.objects.enabled true }}
+{{- if .Values.ociLAClusterEntityID }}
 ---
 {{- $authtype := .Values.authtype | lower }}
 {{- $resourceNamePrefix := .Values.global.resourceNamePrefix }}
@@ -40,12 +40,6 @@ spec:
               - {{ $kubernetesClusterName }}
               - --oci_la_namespace
               - {{ .Values.ociLANamespace }}
-              {{- if .Values.ociLAClusterEntityID }}
-              - --oci_la_cluster_entity_id #TODO - Remove if/else and required clause | optional input
-              - {{ .Values.ociLAClusterEntityID  }}
-              {{- else }}
-                {{- required "Missing Input - ociLAClusterEntityID" .Values.ociLAClusterEntityID }}
-              {{- end }}
             {{- /* mandatory inputs when authtype is set as config */}}
             {{- if eq .Values.authtype "config" }}
             {{- if and .Values.oci.path .Values.oci.file }}
@@ -56,6 +50,10 @@ spec:
             {{- end }}
             {{- end }}
             {{- /* optional discovery job configuration */}}
+            {{- if .Values.ociLAClusterEntityID }}
+              - --oci_la_cluster_entity_id
+              - {{ .Values.ociLAClusterEntityID  }}
+              {{- end }}
             {{- if .Values.k8sDiscovery.objects.discoveryMode }}
               - --discovery
               - {{ .Values.k8sDiscovery.objects.discoveryMode }}
