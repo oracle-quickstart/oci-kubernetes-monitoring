@@ -13,7 +13,7 @@ metadata:
   namespace: {{ $kubernetesNamespace }}
 spec:
   schedule: {{ .Values.k8sDiscovery.objects.cronSchedule | quote }}
-  startingDeadlineSeconds: 100
+  startingDeadlineSeconds: 120
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
@@ -81,7 +81,7 @@ spec:
             {{- if .Values.k8sDiscovery.kubeClientOptions.client_cert }}
               - --client_cert
               - {{ .Values.k8sDiscovery.kubeClientOptions.client_cert }}
-            {{- end }}                
+            {{- end }}
             {{- if .Values.k8sDiscovery.kubeClientOptions.client_key }}
               - --client_key
               - {{ .Values.k8sDiscovery.kubeClientOptions.client_key }}
