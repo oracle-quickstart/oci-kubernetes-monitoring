@@ -337,7 +337,7 @@ oci-onm-logan:
     containerdataHostPath: /var/lib/docker/containers
 ```
 
-### Control plane log Collection for AWS EKS (Amazon Elastic Kubernetes Service)
+### Control plane log collection for AWS EKS (Amazon Elastic Kubernetes Service)
 
 AWS EKS control plane logs are available in CloudWatch. 
 Once the control plane log collection is enabled, the logs are directly pulled from CloudWatch and ingested into OCI Logging Analytics for further analysis. Alternatively, the logs can be routed over to S3 and pulled from there.
