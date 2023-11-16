@@ -337,5 +337,48 @@ oci-onm-logan:
     containerdataHostPath: /var/lib/docker/containers
 ```
 
-### Enable Streaming of EKS Control Plane logs to AWS S3
-Refer [EKS CP Logs Streaming to S3](./eks-cp-logs.md) for instructions on how to configure streaming of EKS Control Plane logs to AWS S3 and subsequenty collect them in OCI Logging Analytics.
+### Control plane log Collection for AWS EKS (Amazon Elastic Kubernetes Service)
+
+AWS EKS control plane logs are available in CloudWatch. 
+Once the control plane log collection is enabled, the logs are directly pulled from CloudWatch and ingested into OCI Logging Analytics for further analysis. Alternatively, the logs can be routed over to S3 and pulled from there.
+
+#### When should I use S3 collection mechanism over CloudWatch?
+Pulling CloudWatch logs from S3 is an alternate option. You may want to use it in case of running into [CloudWatch service quotas](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/cloudwatch_limits_cwl.html) or if you are streaming logs over to S3 for any other reason.
+
+#### How do I collect EKS control plane logs from CloudWatch?
+To collect the logs from CloudWatch directly, modify your override_values.yaml to add the following and get the collection started.
+
+```      
+..       
+..       
+oci-onm-logan:
+  ..  
+  ..
+  enableEKSControlPlaneLogs: true  
+  fluentd:
+    ...   
+    ...
+    eksControlPlane:
+      region:<aws_region>
+      awsStsRoleArn:<role_arn>
+```
+
+#### How do I collect EKS control plane logs from S3?
+If you prefer to collect logs from S3, please refer [EKS CP Logs Streaming to S3](./eks-cp-logs.md) for instructions on how to configure streaming of EKS Control Plane logs to AWS S3 and subsequenty collect them in OCI Logging Analytics. Once the streaming of logs is setup, modify your override_values.yaml to add the following and get the collection started.
+
+```      
+..       
+..       
+oci-onm-logan:
+  ..  
+  ..
+  enableEKSControlPlaneLogs: true  
+  fluentd:
+    ...   
+    ...
+    eksControlPlane:
+      collectionType:"s3"
+      region:<aws_region>
+      awsStsRoleArn:<role_arn>
+      s3Bucket:<s3_bucket>
+```
