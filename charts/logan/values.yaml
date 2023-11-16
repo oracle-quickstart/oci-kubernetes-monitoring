@@ -55,9 +55,6 @@ image:
 # -- Logging Analytics namespace. Can be found in OCI console --> Logging Analytics --> Administration --> Service
 ociLANamespace:
 
-# -- Logging Analytics Entity OCID representing the Kubernetes Cluster
-ociLAClusterEntityID:
-
 # -- OCID of Logging Analytics Log Group to send logs to.
 # Can be overridden for individual log types.
 # e.g. ocid1.loganalyticsloggroup.oc1.phx.amaaaaasdfaskriauucc55rlwlxe4ahe2vfmtuoqa6qsgu7mb6jugxacsk6a
