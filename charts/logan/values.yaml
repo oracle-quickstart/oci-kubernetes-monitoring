@@ -497,7 +497,7 @@ k8sDiscovery:
       # thread_count: Number of parallel threads to be used while making requests to API server
       thread_count:
    # kubernetes: kubernetes cluster related inputs for kubernetes disocvery job
-   kubernetes:
+   kubeClientOptions:
       # kubernetes_url: Kubernetes API server URL.
       kubernetes_url:
       # client_cert: Path to certificate file for Kubernetes HTTPs/SSL server certificate validation

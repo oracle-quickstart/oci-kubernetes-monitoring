@@ -74,32 +74,32 @@ spec:
               - {{ .Values.k8sDiscovery.objects.thread_count }}
             {{- end }}
             {{- /* optional kubernetes cluster configuration */}}
-            {{- if .Values.k8sDiscovery.kubernetes.kubernetes_url }}
+            {{- if .Values.k8sDiscovery.kubeClientOptions.kubernetes_url }}
               - --kubernetes_url
-              - {{ .Values.k8sDiscovery.kubernetes.kubernetes_url }}
+              - {{ .Values.k8sDiscovery.kubeClientOptions.kubernetes_url }}
             {{- end }}
-            {{- if .Values.k8sDiscovery.kubernetes.client_cert }}
+            {{- if .Values.k8sDiscovery.kubeClientOptions.client_cert }}
               - --client_cert
-              - {{ .Values.k8sDiscovery.kubernetes.client_cert }}
+              - {{ .Values.k8sDiscovery.kubeClientOptions.client_cert }}
             {{- end }}                
-            {{- if .Values.k8sDiscovery.kubernetes.client_key }}
+            {{- if .Values.k8sDiscovery.kubeClientOptions.client_key }}
               - --client_key
-              - {{ .Values.k8sDiscovery.kubernetes.client_key }}
+              - {{ .Values.k8sDiscovery.kubeClientOptions.client_key }}
             {{- end }}
-            {{- if .Values.k8sDiscovery.kubernetes.ca_file }}
+            {{- if .Values.k8sDiscovery.kubeClientOptions.ca_file }}
               - --ca_file
-              - {{ .Values.k8sDiscovery.kubernetes.ca_file }}
+              - {{ .Values.k8sDiscovery.kubeClientOptions.ca_file }}
             {{- end }}
-            {{- if eq .Values.k8sDiscovery.kubernetes.verify_ssl true }}
+            {{- if eq .Values.k8sDiscovery.kubeClientOptions.verify_ssl true }}
               - --verify_ssl
             {{- end }}
-            {{- if .Values.k8sDiscovery.kubernetes.bearer_token_file }}
+            {{- if .Values.k8sDiscovery.kubeClientOptions.bearer_token_file }}
               - --bearer_token_file
-              - {{ .Values.k8sDiscovery.kubernetes.bearer_token_file }}
+              - {{ .Values.k8sDiscovery.kubeClientOptions.bearer_token_file }}
             {{- end }}
-            {{- if .Values.k8sDiscovery.kubernetes.secret_dir }}
+            {{- if .Values.k8sDiscovery.kubeClientOptions.secret_dir }}
               - --secret_dir
-              - {{ .Values.k8sDiscovery.kubernetes.secret_dir }}
+              - {{ .Values.k8sDiscovery.kubeClientOptions.secret_dir }}
             {{- end }}
             {{- /* developer options - optional */}}
             {{- if .Values.k8sDiscovery.logan.oci_la_endpoint }}
