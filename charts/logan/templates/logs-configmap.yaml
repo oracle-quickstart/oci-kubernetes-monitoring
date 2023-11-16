@@ -73,7 +73,9 @@ data:
        encoding {{ $.Values.fluentd.tailPlugin.encoding }}
        {{- end }}
        <parse>
-       {{- if eq $runtime "docker" }}
+       {{- if eq $name "kube-audit" }}
+       @type none
+       {{- else if eq $runtime "docker" }}
        @type json
        {{- else}}
        @type cri
@@ -119,7 +121,7 @@ data:
     # Concat filter to handle partial logs in CRI/ContainerD
     # Docker can also have partial logs but handling is different for different docker versions. Considering Kubernetes/OKE moved to ContainerD/CRI since last 4-5 releases, ignoring docker handling.
     # This filter can not be clubbed with concat filter for multiline as both are mutually exclusive.
-    {{- if eq $runtime "cri" }}
+    {{- if and (ne $name "kube-audit") (eq $runtime "cri") }}
     <filter oci{{- ternary (print "." $currWorker) "" $multiWorkersEnabled }}.oke.{{ $name }}.**>
       @type concat
       key message

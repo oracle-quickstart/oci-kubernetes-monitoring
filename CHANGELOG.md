@@ -1,8 +1,14 @@
 # Change Log
 
-## 2023-11-06
+## 2023-11-16
 ### Changed
-- Added support for AWS EKS control plane logs.
+- Support for AWS EKS system and control plane logs collection.
+
+## 2023-11-07
+### Added
+- Control Plane Logs Collection for OCNE and Standalone Kubernetes Clusters.
+- Support for launching Fluentd containers in privileged mode (default false).
+- Added FAQ for triaging log collection setup issues in OCNE and Standalone Kubernetes Clusters. 
 
 ## 2023-10-31
 ### Changed
