@@ -68,11 +68,11 @@ ociLAEndpoint:
 
 # -- OKE Cluster OCID
 # e.g. ocid1.cluster.oc1.phx.aaaaaaaahhbadf3rxa62faaeixanvr7vftmkg6hupycbf4qszctf2wbmqqxq
-kubernetesClusterID: UNDEFINED
+kubernetesClusterID:
 
 # -- Kubernetes Cluster name. Need not be the OKE Cluster display name.
 # e.g. production-cluster
-kubernetesClusterName: UNDEFINED
+kubernetesClusterName:
 
 # -- Kubernetes Cluster Entity OCID.
 # e.g. ocid1.loganalyticsentity.oc1.phx.amaaaaaabulluiqabqeq4delvhdlmd7aqcjrdla57n2szsxyz7pfdvnhwuua
