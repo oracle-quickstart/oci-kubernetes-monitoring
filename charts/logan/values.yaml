@@ -482,6 +482,10 @@ k8sDiscovery:
    objects:
       # cronSchedule: cronjob schedule to run object discovery job
       cronSchedule: "*/5 * * * *"
+      # successfulJobsHistoryLimit: specify how many completed jobs should be kept
+      successfulJobsHistoryLimit: 3
+      # failedJobsHistoryLimit: specify how many failed jobs should be kept
+      failedJobsHistoryLimit : 1
       # discoveryMode: discovery mode to be used - ["infra", "object"]
       discoveryMode: "object"
       # Log format to be used - ["text", "json"]
