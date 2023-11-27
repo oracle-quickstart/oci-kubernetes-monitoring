@@ -33,5 +33,5 @@ rules:
   - apiGroups: [""]
     resources: ["configmaps"]
     #resourceNames: ["discovery-state-tracker"]
-    verbs: ["update", "create", "patch"]
+    verbs: ["get", "list", "watch", "update", "create", "patch"]
 {{- end }}
