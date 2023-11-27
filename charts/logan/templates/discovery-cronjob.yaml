@@ -38,6 +38,8 @@ spec:
               - {{ $kubernetesClusterName }}
               - --oci_la_namespace
               - {{ .Values.ociLANamespace }}
+              - --kubernetes_cluster_namespace
+              - {{ $kubernetesNamespace }}
             {{- /* mandatory inputs when authtype is set as config */}}
             {{- if eq .Values.authtype "config" }}
             {{- if and .Values.oci.path .Values.oci.file }}
