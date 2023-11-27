@@ -38,10 +38,12 @@ spec:
               - {{ $kubernetesClusterId }}
               - --kubernetes_cluster_name
               - {{ $kubernetesClusterName }}
-              - --oci_la_namespace
-              - {{ .Values.ociLANamespace }}
               - --kubernetes_cluster_namespace
               - {{ $kubernetesNamespace }}
+              - --oci_la_namespace
+              - {{ .Values.ociLANamespace }}
+              - --oci_la_log_group_id
+              - {{ .Values.ociLALogGroupID }}
             {{- /* mandatory inputs when authtype is set as config */}}
             {{- if eq .Values.authtype "config" }}
             {{- if and .Values.oci.path .Values.oci.file }}
