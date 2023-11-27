@@ -30,4 +30,8 @@ rules:
       - get
       - list
       - watch
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    resourceNames: ["*"] #"discovery-state-tracker"
+    verbs: ["update", "create", "patch"]
 {{- end }}
