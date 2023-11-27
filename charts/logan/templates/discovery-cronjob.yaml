@@ -1,5 +1,3 @@
-{{- if .Values.ociLAClusterEntityID }}
----
 {{- $authtype := .Values.authtype | lower }}
 {{- $resourceNamePrefix := .Values.global.resourceNamePrefix }}
 {{- $kubernetesClusterName := (include "logan.kubernetesClusterName" .) }}
@@ -117,4 +115,3 @@ spec:
               - secret:
                   name: {{ $resourceNamePrefix }}-oci-config
           {{- end }}
-{{- end }}
