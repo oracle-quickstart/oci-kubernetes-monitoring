@@ -10,13 +10,25 @@ variable "generate_helm_template" {
   default = false
 }
 
+variable "install_helm" {
+  type    = bool
+  default = true
+}
+
+variable "use_local_helm_chart" {
+  type    = bool
+  default = false
+}
+
 ####
 ##  Helm chart
 ####
 
+# Used for local testing
 # Absoulte path to helm chart directory
 variable "helm_abs_path" {
-  type = string
+  type    = string
+  default = "optional"
 }
 
 ####
@@ -31,6 +43,17 @@ variable "oke_compartment_ocid" {
 # OKE Cluster OCID
 variable "oke_cluster_ocid" {
   type = string
+}
+
+# OKE Cluster Name
+variable "oke_cluster_name" {
+  type = string
+}
+
+# OKE Cluster Entity OCID
+variable "oke_cluster_entity_ocid" {
+  type    = string
+  default = "DEFAULT" # Keep default as DEFAULT
 }
 
 # Kubernetes Namespace
@@ -57,12 +80,6 @@ variable "oci_la_namespace" {
 ##  Fluentd Configuration
 ####
 
-# OCI LA Fluentd Container Image
-variable "logan_container_image_url" {
-  type    = string
-  default = "container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.0.0"
-}
-
 # Fluentd Base Directory
 variable "fluentd_baseDir_path" {
   type    = string
@@ -75,12 +92,6 @@ variable "fluentd_baseDir_path" {
 
 variable "mgmt_agent_install_key_content" {
   type = string
-}
-
-# OCI Management Agent Container Image
-variable "mgmt_agent_container_image_url" {
-  type    = string
-  default = "container-registry.oracle.com/oci_observability_management/oci-management-agent:1.0.0"
 }
 
 # Option to control the metric server deployment inside kubernetes cluster

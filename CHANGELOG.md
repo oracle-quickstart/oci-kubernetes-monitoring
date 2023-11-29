@@ -1,5 +1,16 @@
 # Change Log
 
+## 2023-11-30
+### Added
+- Added resources information that got created through RM Stack to Stack output.
+- Added new auto created policy for Kubernetes Objects discovery (for future release(s) use). 
+- Added new helm variable for cluster's EntityId (ociLAClusterEntityID) (for future release(s) use). 
+### Changed
+- RM Stack is changed to use remote [helm repo](https://oracle-quickstart.github.io/oci-kubernetes-monitoring), instead of a local copy of helm chart source. 
+- RM Stack is modified to skip recreation of Management Agent Key if the Key already created by Stack. 
+### Breaking Changes
+-  Removed ociLAEntityID input variable of Logan chart. This was an optional and its use-case was not defined so far. Hence, it shouldn't  be a breaking change in general but still documenting for the reference. 
+
 ## 2023-11-07
 ### Added
 - Control Plane Logs Collection for OCNE and Standalone Kubernetes Clusters.

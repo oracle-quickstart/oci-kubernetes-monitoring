@@ -3,7 +3,7 @@
 
 # A unique key to be associated with a single OKE cluster
 variable "uniquifier" {
-  type        = string
+  type = string
 }
 
 # OCID of compartment where management agent installation key is to be created

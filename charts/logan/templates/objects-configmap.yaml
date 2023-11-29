@@ -100,7 +100,6 @@ data:
         oci_la_metadata ${{"{{"}}"Kubernetes Cluster Name":"{{ $kubernetesClusterName }}", "Kubernetes Cluster ID": "{{ $kubernetesClusterId }}" {{- range $k, $v := .Values.metadata }},{{ $k | quote }}: {{ $v | quote -}} {{- end }}{{"}}"}}
         {{- end }}
         oci_la_log_group_id "{{ .Values.fluentd.kubernetesObjects.ociLALogGroupID | default .Values.ociLALogGroupID }}"
-        oci_la_entity_id "{{ .Values.fluentd.kubernetesObjects.ociLAEntityID | default .Values.ociLAEntityID }}"
         oci_la_log_set "{{ .Values.fluentd.kubernetesObjects.ociLALogSet | default .Values.ociLALogSet }}"
         oci_la_log_path ${tag}
         oci_la_log_source_name "Kubernetes Object Logs"
