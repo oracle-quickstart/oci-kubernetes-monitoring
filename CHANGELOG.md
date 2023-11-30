@@ -1,5 +1,9 @@
 # Change Log
 
+## 2023-12-01
+### Added
+- Uptake ARM compatible container image from OCR for logan(Fluentd) chart.
+
 ## 2023-11-30
 ### Added
 - Added resources information that got created through RM Stack to Stack output.
