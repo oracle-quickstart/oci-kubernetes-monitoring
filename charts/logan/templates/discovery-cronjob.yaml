@@ -43,7 +43,7 @@ spec:
               - --oci_la_namespace
               - {{ .Values.ociLANamespace }}
               - --oci_la_log_group_id
-              - {{ .Values.ociLALogGroupID }}
+              - {{ .Values.k8sDiscovery.ociLALogGroupID }}
             {{- /* mandatory inputs when authtype is set as config */}}
             {{- if eq .Values.authtype "config" }}
             {{- if and .Values.oci.path .Values.oci.file }}
