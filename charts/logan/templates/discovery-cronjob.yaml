@@ -54,10 +54,12 @@ spec:
             {{- end }}
             {{- end }}
             {{- /* optional discovery job configuration */}}
-            {{- if .Values.ociLAClusterEntityID }}
+            {{- if and .Values.ociLAClusterEntityID $resourceNamePrefix }}
               - --oci_la_cluster_entity_id
               - {{ .Values.ociLAClusterEntityID  }}
-              {{- end }}
+              - --kubernetes_cluster_prefix
+              - {{ $resourceNamePrefix }}
+            {{- end }}
             {{- if .Values.k8sDiscovery.objects.discoveryMode }}
               - --discovery
               - {{ .Values.k8sDiscovery.objects.discoveryMode }}
@@ -70,12 +72,17 @@ spec:
               - --log_level
               - {{ .Values.k8sDiscovery.objects.log_level }}
             {{- end }}
-            {{- if .Values.k8sDiscovery.objects.enable_threading }}
+            {{- if and .Values.k8sDiscovery.objects.enable_threading .Values.k8sDiscovery.objects.thread_count }}
               - --enable_threading
-            {{- end }}
-            {{- if .Values.k8sDiscovery.objects.thread_count }}
               - --thread_count
               - {{ .Values.k8sDiscovery.objects.thread_count }}
+            {{- end }}
+            {{- if .Values.k8sDiscovery.objects.chunk_limit }}
+              - --chunk_limit
+              - {{ .Values.k8sDiscovery.objects.chunk_limit }}
+            {{- end }}
+            {{- if .Values.k8sDiscovery.objects.collect_warning_events_only }}
+              - --collect_warning_events_only
             {{- end }}
             {{- /* optional kubernetes cluster configuration */}}
             {{- if .Values.k8sDiscovery.kubeClientOptions.kubernetes_url }}
