@@ -41,9 +41,19 @@ spec:
               - --kubernetes_cluster_namespace
               - {{ $kubernetesNamespace }}
               - --oci_la_namespace
+              {{- if  .Values.ociLANamespace }}
               - {{ .Values.ociLANamespace }}
+              {{- else }}
+                {{-  required "missing OCI Logging Analytics Namespace" .Values.ociLANamespace }}
+              {{- end }}
               - --oci_la_log_group_id
+              {{- if  .Values.k8sDiscovery.objects.ociLALogGroupID }}
               - {{ .Values.k8sDiscovery.objects.ociLALogGroupID }}
+              {{- else if  .Values.ociLALogGroupID }}
+              - {{ .Values.ociLALogGroupID }}
+              {{- else }}
+                {{- required "missing LogGroup" .Values.ociLALogGroupID }}
+              {{- end }}
             {{- /* mandatory inputs when authtype is set as config */}}
             {{- if eq .Values.authtype "config" }}
             {{- if and .Values.oci.path .Values.oci.file }}
