@@ -88,8 +88,7 @@ spec:
               - {{ .Values.k8sDiscovery.objects.thread_count }}
             {{- end }}
             {{- if .Values.k8sDiscovery.objects.chunk_limit }}
-              - --chunk_limit
-              - {{ .Values.k8sDiscovery.objects.chunk_limit }}
+              - --chunk_limit {{ .Values.k8sDiscovery.objects.chunk_limit }}
             {{- end }}
             {{- if .Values.k8sDiscovery.objects.collect_warning_events_only }}
               - --collect_warning_events_only
