@@ -85,10 +85,11 @@ spec:
             {{- if and .Values.k8sDiscovery.objects.enable_threading .Values.k8sDiscovery.objects.thread_count }}
               - --enable_threading
               - --thread_count
-              - {{ .Values.k8sDiscovery.objects.thread_count }}
+              - {{ .Values.k8sDiscovery.objects.thread_count | quote }}
             {{- end }}
             {{- if .Values.k8sDiscovery.objects.chunk_limit }}
-              - --chunk_limit {{ .Values.k8sDiscovery.objects.chunk_limit }}
+              - --chunk_limit 
+              - {{ .Values.k8sDiscovery.objects.chunk_limit | quote }}
             {{- end }}
             {{- if .Values.k8sDiscovery.objects.collect_warning_events_only }}
               - --collect_warning_events_only
