@@ -67,7 +67,7 @@ spec:
             {{- if and .Values.ociLAClusterEntityID $resourceNamePrefix }}
               - --oci_la_cluster_entity_id
               - {{ .Values.ociLAClusterEntityID  }}
-              - --kubernetes_cluster_prefix
+              - --kubernetes_resourcename_prefix
               - {{ $resourceNamePrefix }}
             {{- end }}
             {{- if .Values.k8sDiscovery.objects.discoveryMode }}
