@@ -45,7 +45,7 @@ variableGroups:
       - stack_deployment_option
     visible: false
 
-  - title: Select an OKE cluster deployed in this region to start monitoring.
+  - title: Select an OKE cluster deployed in this region to start monitoring
     description: "Use CLI (Helm) if your cluster does not have a public API endpoint or if it's restricted from accessing container-registry.oracle.com. See: https://github.com/oracle-quickstart/oci-kubernetes-monitoring"
     variables:
       - oke_compartment_ocid
@@ -61,7 +61,7 @@ variableGroups:
     - oci_la_logGroup_name
     - fluentd_baseDir_path
 
-  - title: Optional Inputs
+  - title: Advanced Configuration
     variables:
       - opt_create_dynamicGroup_and_policies
       - opt_import_dashboards
@@ -196,7 +196,7 @@ variables:
   # Option to create Dynamic Group and Policies
   opt_create_dynamicGroup_and_policies:
     type: boolean
-    title: Select this check box to create dynamic groups and policies that are required for deploying the monitoring solution.
+    title: Select this check box to create OCI IAM dynamic groups and policies which are required for the monitoring solution
     #description: "Ref: https://github.com/oracle-quickstart/oci-kubernetes-monitoring#pre-requisites"
     description: "Note: If node pools and the OKE cluster are in different compartments, then the dynamic group definition must be updated."
     default: false
@@ -206,5 +206,6 @@ variables:
   opt_import_dashboards:
     type: boolean
     title: Select this check box to import dashboards
+    description: "Note: You may need to manually clean up the dashboards when you destory the stack as dashboards will not be deleted automatically."
     default: true
     required: true
