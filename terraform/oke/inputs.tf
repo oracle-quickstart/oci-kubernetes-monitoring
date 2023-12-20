@@ -68,13 +68,19 @@ variable "boat_tenancy_ocid" {
 }
 
 ####
-##  Dynamic Group and Policies
+##  Optional Inputs
 ####
 
 # Option to create Dynamic Group and Policies
 variable "opt_create_dynamicGroup_and_policies" {
   type    = bool
   default = false
+}
+
+# Option to import dashboards
+variable "opt_import_dashboards" {
+  type    = bool
+  default = true
 }
 
 ####

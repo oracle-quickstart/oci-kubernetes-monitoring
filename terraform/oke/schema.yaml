@@ -61,9 +61,10 @@ variableGroups:
     - oci_la_logGroup_name
     - fluentd_baseDir_path
 
-  - title: OCI IAM Policies and Dynamic Groups (Optional)
+  - title: Optional Inputs
     variables:
       - opt_create_dynamicGroup_and_policies
+      - opt_import_dashboards
 
 variables:
 
@@ -189,7 +190,7 @@ variables:
         - livelab_switch
 
   ####
-  ##  Pre-requisites
+  ##  Optional Inputs
   ####
 
   # Option to create Dynamic Group and Policies
@@ -199,4 +200,11 @@ variables:
     #description: "Ref: https://github.com/oracle-quickstart/oci-kubernetes-monitoring#pre-requisites"
     description: "Note: If node pools and the OKE cluster are in different compartments, then the dynamic group definition must be updated."
     default: false
-    required: true    
+    required: true
+
+  # Option to create Dynamic Group and Policies
+  opt_import_dashboards:
+    type: boolean
+    title: Select this check box to import dashboards
+    default: true
+    required: true
