@@ -48,7 +48,7 @@ image:
    # Image pull secrets for. Secret must be in the namespace defined by namespace
    imagePullSecrets:
    # -- Replace this value with actual docker image url
-   url: container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.1.0
+   url: container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.2.0
    # -- Image pull policy
    imagePullPolicy: Always
 
@@ -67,6 +67,10 @@ kubernetesClusterID:
 # e.g. production-cluster
 kubernetesClusterName:
 
+# -- Kubernetes Cluster Entity OCID.
+# e.g. ocid1.loganalyticsentity.oc1.phx.amaaaaaabulluiqabqeq4delvhdlmd7aqcjrdla57n2szsxyz7pfdvnhwuua
+ociLAClusterEntityID:
+
 # -- Kubernetes Security Context privileged flag
 # Default: 'false'. This is not a required for OKE clusters.
 # In Kubernetes environments where SELinux mode is enforced, set this flag to 'true' to allow fluentd pods to access log files.
@@ -74,9 +78,6 @@ privileged: false
 
 # -- Enables collection of AWS EKS Control Plane logs through CloudWatch or S3 Fluentd plugin
 enableEKSControlPlaneLogs: false
-
-# -- Logging Analytics OCID for OKE Cluster
-#ociLAEntityID:
 
 # Logging Analytics additional metadata. Use this to tag all the collected logs with one or more key:value pairs.
 # Key must be a valid field in Logging Analytics
@@ -239,7 +240,6 @@ fluentd:
          #"Client Host Region": "America"
          #"Environment": "Production"
          #"Third Key": "Third Value"
-      #ociLAEntityID:
       #encoding:
       # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
       #worker:
@@ -257,7 +257,6 @@ fluentd:
                #"Client Host Region": "America"
                #"Environment": "Production"
                #"Third Key": "Third Value"
-            #ociLAEntityID:
             #ociLALogGroupID:
             #encoding:
             # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
@@ -368,7 +367,6 @@ fluentd:
          #"Client Host Region": "America"
          #"Environment": "Production"
          #"Third Key": "Third Value"
-      #ociLAEntityID:
       #encoding:
       # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
       #worker:
@@ -599,7 +597,6 @@ fluentd:
             #"Client Host Region": "America"
             #"Environment": "Production"
             #"Third Key": "Third Value"
-         #ociLAEntityID:
          #encoding:
          # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
          #worker:
@@ -627,7 +624,6 @@ fluentd:
          #"Client Host Region": "America"
          #"Environment": "Production"
          #"Third Key": "Third Value"
-      #ociLAEntityID:
       #ociLALogGroupID:
       objectsList:
          nodes:
