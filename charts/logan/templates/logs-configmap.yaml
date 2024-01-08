@@ -123,6 +123,7 @@ data:
       use_partial_cri_logtag true
       partial_cri_logtag_key logtag
       partial_cri_stream_key stream
+      separator ""
       # timeout scenario should not occur in general for partial logs handling
       timeout_label "@NORMAL{{- ternary (print "." $currWorker) "" $multiWorkersEnabled }}"
     </filter>
@@ -407,6 +408,7 @@ data:
       use_partial_cri_logtag true
       partial_cri_logtag_key logtag
       partial_cri_stream_key stream
+      separator ""
       # timeout scenario should not occur in general for partial logs handling
       timeout_label "@NORMAL{{- ternary (print "." $currWorker) "" $multiWorkersEnabled }}"
     </filter>
@@ -514,6 +516,7 @@ data:
       use_partial_cri_logtag true
       partial_cri_logtag_key logtag
       partial_cri_stream_key stream
+      separator ""
       # timeout scenario should not occur in general for partial logs handling
       timeout_label "@NORMAL{{- ternary (print "." $currWorker) "" $multiWorkersEnabled }}"
     </filter>
