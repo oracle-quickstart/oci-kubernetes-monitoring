@@ -14,7 +14,7 @@ locals {
   ## Module dependencies should be included here as well so a module does not run when it's depenedent moudle is disabled
 
   module_controls_enable_livelab_module    = alltrue([var.toggle_livelab_module, var.livelab_switch])
-  module_controls_enable_dashboards_module = alltrue([var.toggle_dashboards_module])
+  module_controls_enable_dashboards_module = alltrue([var.toggle_dashboards_module, var.opt_import_dashboards])
   module_controls_enable_iam_module        = alltrue([var.toggle_iam_module, var.opt_create_dynamicGroup_and_policies, !var.livelab_switch])
   module_controls_enable_logan_module      = alltrue([var.toggle_logan_module])
   module_controls_enable_mgmt_agent_module = alltrue([var.toggle_mgmt_agent_module])
@@ -34,14 +34,6 @@ module "livelab" {
   /* providers = {
     oci = oci.home_region
   } */
-}
-
-// Import Kubernetes Dashboards
-module "import_kubernetes_dashbords" {
-  source           = "./modules/dashboards"
-  compartment_ocid = var.oci_onm_compartment_ocid
-
-  count = local.module_controls_enable_dashboards_module ? 1 : 0
 }
 
 // Create Required Polcies and Dynamic Group
@@ -102,4 +94,13 @@ module "helm_release" {
   oke_cluster_entity_ocid        = var.oke_cluster_entity_ocid
 
   count = local.module_controls_enable_helm_module ? 1 : 0
+}
+
+// Import Kubernetes Dashboards
+module "import_kubernetes_dashbords" {
+  source           = "./modules/dashboards"
+  compartment_ocid = var.oci_onm_compartment_ocid
+
+  count = local.module_controls_enable_dashboards_module ? 1 : 0
+  depends_on = [ module.helm_release ]
 }
