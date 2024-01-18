@@ -1,5 +1,9 @@
 # Change Log
 
+## 2024-01-18
+### Changed
+- Management Agent docker image has been updated to version 1.2.0
+
 ## 2024-01-09
 ### Changed
 - Concat filter plugin behavior changed to not include newline character as separator while handling CRI partial logs.
