@@ -535,7 +535,7 @@ k8sDiscovery:
       # successfulJobsHistoryLimit: specify how many completed jobs should be kept
       successfulJobsHistoryLimit: 3
       # failedJobsHistoryLimit: specify how many failed jobs should be kept
-      failedJobsHistoryLimit : 1
+      failedJobsHistoryLimit : 3
       # ociLALogGroupID: OCI LA Loggroup to store the k8s discovery logs
       ociLALogGroupID: 
       # discoveryMode: discovery mode to be used - ["infra", "object"]
