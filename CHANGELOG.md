@@ -1,8 +1,13 @@
 # Change Log
 
-## 2024-01-08
+## 2024-01-22
 ### Changed
 - Support for AWS EKS system and control plane logs collection.
+
+## 2024-01-09
+### Changed
+- Concat filter plugin behavior changed to not include newline character as separator while handling CRI partial logs.
+- Dashboards Import is now optional while installing the monitoring solution through RMS Stack. Default behavior remains the same. 
 
 ## 2023-12-01
 ### Added

@@ -64,3 +64,6 @@ charts/**/charts/
 
 # zip artifacts
 releases/
+
+# vscode
+.vscode
