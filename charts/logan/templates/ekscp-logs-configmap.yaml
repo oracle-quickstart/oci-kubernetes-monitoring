@@ -161,11 +161,6 @@ data:
        oci_la_log_group_id "{{ required "ociLALogGroupID is required" $.Values.ociLALogGroupID }}"
        {{- end }}
        oci_la_log_source_name "{{ $logDefinition.ociLALogSourceName | required (printf "fluentd.eksControlPlane.logs.%s.ociLALogSourceName is required" $name) }}"
-       {{- if $logDefinition.ociLAEntityID }}
-       oci_la_entity_id "{{ $logDefinition.ociLAEntityID }}"
-       {{- else }}
-       oci_la_entity_id "{{ $.Values.fluentd.eksControlPlane.ociLAEntityID | default $.Values.ociLAEntityID }}"
-       {{- end }}
        {{- if $logDefinition.ociLALogSet }}
        oci_la_log_set "{{ $logDefinition.ociLALogSet }}"
        {{- else }}
@@ -240,11 +235,6 @@ data:
        oci_la_log_group_id "{{ required "ociLALogGroupID is required" $.Values.ociLALogGroupID }}"
        {{- end }}
        oci_la_log_source_name "{{ $logDefinition.ociLALogSourceName | required (printf "fluentd.eksControlPlane.logs.%s.ociLALogSourceName is required" $name) }}"
-       {{- if $logDefinition.ociLAEntityID }}
-       oci_la_entity_id "{{ $logDefinition.ociLAEntityID }}"
-       {{- else }}
-       oci_la_entity_id "{{ $.Values.fluentd.eksControlPlane.ociLAEntityID | default $.Values.ociLAEntityID }}"
-       {{- end }}
        {{- if $logDefinition.ociLALogSet }}
        oci_la_log_set "{{ $logDefinition.ociLALogSet }}"
        {{- else }}
