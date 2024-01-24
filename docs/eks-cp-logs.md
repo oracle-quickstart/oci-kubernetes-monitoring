@@ -2,8 +2,6 @@
 
 We can use a CloudWatch logs subscription to stream log data in near real-time to AWS S3. Once available in S3, the log data can be pulled and ingested into OCI Logging Analytics.
 
-[FilterWithFirehose](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/SubscriptionFilters.html#FirehoseExample) page documents the steps needed to push the logs to S3 using Kinesis Data Firehose. This page builds on top of it and should be followed before enabling the log collection from S3.
-
 The high level flow of CloudWatch logs to S3 looks as follows
 
 ![Control plane logs to S3](./eks-cp-logs-streaming.png)
@@ -12,7 +10,7 @@ The steps to be followed include:
 
 ### Create a new Lambda function
 
-Create a new Lambda function using "Process CloudWatch logs sent to Kinesis Firehose" blueprint, preferably with Node.js 14.x runtime. Once created, update Lambda's *processRecords* function in *index.mjs* file with the below code. Note the Function ARN as it would be needed during the creation of Firehose delivery stream.
+Create a new Lambda function using "Process CloudWatch logs sent to Kinesis Firehose" blueprint, preferably with Node.js 14.x runtime. Once created, update Lambda's *processRecords* function in *index.mjs* file with the below code. Take a note of the Function ARN as it would be needed during the creation of Firehose delivery stream.
 
 ```
 function processRecords (records) {
@@ -208,7 +206,7 @@ Create CloudWatch Logs subscription filter, choosing the appropriate CloudWatch 
 aws logs put-subscription-filter --log-group-name "/aws/eks/<clusterName>/cluster" --filter-name "CWLToS3" --filter-pattern " " --destination-arn "arn:aws:firehose:<my-region>:<aws-account-id>:deliverystream/<my-stream>" --role-arn "arn:aws:iam::<aws-account-id>:role/CWLtoKinesisFirehoseRole"
 ```
 
-Once the above steps are completed, the CloudWatch Logs will start appearing in S3 bucket. The S3 bucket object name would be created under \_aws\_eks\_\<clusterName\>\_cluster/logStreamType/\<logStreamName\>/ as shown below.
+Once the above steps are completed, the CloudWatch Logs will start appearing in S3 bucket. The logs would be written under the S3 bucket \_aws\_eks\_\<clusterName\>\_cluster/logStreamType/\<logStreamName\>/ as shown below.
 
 ![s3-partitioned-logs](./s3-partitioned-logs.png)
 
@@ -222,9 +220,11 @@ Create six SQS queues *apiserver*, *audit*, *authenticator*, *kube-controller-ma
 
 Create SNS topic like "\<my-sns\>". Once created, edit it to add six new subscriptions, one for each of the SQS queues created above. For every subscription ensure that "Enable raw message delivery" is explicitly enabled.
 
-**SQS access policy (needed for each of the SQS queues).**
+**SQS access policy**
 
-The below access policy is for *apiserver* SQS queue. Update the name of the queue as appropriate.
+The SQS access policy is needed for each of the six SQS queues.
+
+The below access policy is for *apiserver* SQS queue. Update the name of the queue when creating similar policy for other SQS queues.
 
 <details>
   <summary>SQS access policy</summary>
@@ -287,3 +287,6 @@ Also update its access policy (illustrated below) to allow S3 bucket "\<my-bucke
 **Update S3 bucket to send notifications** 
 
 Go to the bucket properties and select "Create event notification" under "Event notifications". Select "All object create events" under "Event types". In Destination, select "SNS topic" and select the SNS topic created earlier, to which the event needs to be published.
+
+##References
+[FilterWithFirehose](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/SubscriptionFilters.html#FirehoseExample) documents the steps needed to push the logs to S3 using Kinesis Data Firehose.

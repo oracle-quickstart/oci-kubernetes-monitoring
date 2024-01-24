@@ -1,6 +1,6 @@
 # Copyright (c) 2023, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
-
+{{- if .Values.enableEKSControlPlaneLogs }}
 {{- $kubernetesClusterName := (include "logan.kubernetesClusterName" .) }}
 {{- $kubernetesClusterId := (include "logan.kubernetesClusterId" .) }}
 apiVersion: v1
@@ -87,7 +87,7 @@ data:
        include_metadata true
        <storage>
          @type local
-         path {{ $.Values.fluentd.baseDir }}/oci_la_fluentd_outplugin/pos/{{ $name }}.logs.pos
+         path {{ $.Values.fluentd.baseDir }}/oci_la_fluentd_outplugin/pos/ekscp.{{ $name }}.logs.pos
        </storage>
        <parse>
          @type none
@@ -108,50 +108,6 @@ data:
        tag eks{{- ternary (print "." $currWorker) "" $multiWorkersEnabled }}.cp.{{ $name }}.*
        </rule>
     </match>    
-    {{- end }}
-
-    {{- if or (eq "apiserver" $name) (eq "audit" $name) }}
-    <filter eks{{- ternary (print "." $currWorker) "" $multiWorkersEnabled }}.cp.{{ $name }}.**>
-       @type record_transformer
-       enable_ruby true
-       <record>
-       {{- if $logDefinition.metadata }}
-       oci_la_metadata ${{"{{"}}"Kubernetes Cluster Name":"{{ $kubernetesClusterName }}", "Kubernetes Cluster ID": "{{ $kubernetesClusterId }}", "Node": "#{ENV['K8S_NODE_NAME'] || 'UNDEFINED'}" {{- range $k, $v := $logDefinition.metadata }},{{ $k | quote }}: {{ $v | quote -}} {{- end }}{{"}}"}}
-       {{- else if $.Values.fluentd.eksControlPlane.metadata }}
-       oci_la_metadata ${{"{{"}}"Kubernetes Cluster Name":"{{ $kubernetesClusterName }}", "Kubernetes Cluster ID": "{{ $kubernetesClusterId }}", "Node": "#{ENV['K8S_NODE_NAME'] || 'UNDEFINED'}" {{- range $k, $v := $.Values.fluentd.eksControlPlane.metadata }},{{ $k | quote }}: {{ $v | quote -}} {{- end }}{{"}}"}}
-       {{- else }}
-       oci_la_metadata ${{"{{"}}"Kubernetes Cluster Name":"{{ $kubernetesClusterName }}", "Kubernetes Cluster ID": "{{ $kubernetesClusterId }}", "Node": "#{ENV['K8S_NODE_NAME'] || 'UNDEFINED'}" {{- range $k, $v := $.Values.metadata }},{{ $k | quote }}: {{ $v | quote -}} {{- end }}{{"}}"}}
-       {{- end }}
-       {{- if $logDefinition.ociLALogGroupID }}
-       oci_la_log_group_id "{{ $logDefinition.ociLALogGroupID }}"
-       {{- else if $.Values.fluentd.eksControlPlane.ociLALogGroupID }}
-       oci_la_log_group_id "{{ $.Values.fluentd.eksControlPlane.ociLALogGroupID }}"
-       {{- else }}
-       oci_la_log_group_id "{{ required "ociLALogGroupID is required" $.Values.ociLALogGroupID }}"
-       {{- end }}
-       oci_la_log_source_name "{{ $logDefinition.ociLALogSourceName | required (printf "fluentd.eksControlPlane.logs.%s.ociLALogSourceName is required" $name) }}"
-       {{- if $logDefinition.ociLAEntityID }}
-       oci_la_entity_id "{{ $logDefinition.ociLAEntityID }}"
-       {{- else }}
-       oci_la_entity_id "{{ $.Values.fluentd.eksControlPlane.ociLAEntityID | default $.Values.ociLAEntityID }}"
-       {{- end }}
-       {{- if $logDefinition.ociLALogSet }}
-       oci_la_log_set "{{ $logDefinition.ociLALogSet }}"
-       {{- else }}
-       oci_la_log_set "{{ $.Values.fluentd.eksControlPlane.ociLALogSet | default $.Values.ociLALogSet }}"
-       {{- end }}
-       message "${record['message']}"
-       tag ${tag}
-       </record>
-    </filter>
-    <filter eks{{- ternary (print "." $currWorker) "" $multiWorkersEnabled }}.cp.{{ $name }}.**>
-      @type record_transformer
-      enable_ruby true
-      <record>
-        oci_la_metadata ${record["oci_la_metadata"].merge({"cloudwatchloggroupname" => record.dig("metadata", "log_group_name"), "cloudwatchlogstreamname" => record.dig("metadata", "log_stream_name")})}
-      </record>
-      remove_keys $.metadata
-    </filter> 
     {{- end }}
 
     {{- if or (eq "authenticator" $name) (eq "kubecontrollermanager" $name) (eq "cloudcontrollermanager" $name) (eq "scheduler" $name) }}
@@ -178,12 +134,14 @@ data:
        include_metadata true
        <storage>
        @type local
-       path {{ $.Values.fluentd.baseDir }}/oci_la_fluentd_outplugin/pos/{{ $name }}.logs.pos
+       path {{ $.Values.fluentd.baseDir }}/oci_la_fluentd_outplugin/pos/ekscp.{{ $name }}.logs.pos
        </storage>
        <parse>
        @type none
        </parse>
     </source>
+    {{- end }}
+
     <filter eks{{- ternary (print "." $currWorker) "" $multiWorkersEnabled }}.cp.{{ $name }}.**>
        @type record_transformer
        enable_ruby true
@@ -224,8 +182,8 @@ data:
         oci_la_metadata ${record["oci_la_metadata"].merge({"cloudwatchloggroupname" => record.dig("metadata", "log_group_name"), "cloudwatchlogstreamname" => record.dig("metadata", "log_stream_name")})}
       </record>
       remove_keys $.metadata
-    </filter> 
-    {{- end }}
+    </filter>
+
     {{- else }}
     <source>
        @type s3
@@ -236,7 +194,7 @@ data:
        {{- if eq $.Values.fluentd.eksControlPlane.awsUseSts true }}
        <assume_role_credentials>
          role_arn "{{ $.Values.fluentd.eksControlPlane.awsStsRoleArn }}"
-         role_session_name fluentd
+         role_session_name oci-kubernetes-monitoring
        </assume_role_credentials>
        {{- else }}
          aws_key_id "{{ $.Values.fluentd.eksControlPlane.awsKeyId }}"
@@ -335,7 +293,7 @@ data:
           kubernetes_metadata_keys_mapping     {"container_name":"Container","namespace_name":"Namespace","pod_name":"Pod","container_image":"Container Image Name","host":"Node"}
           <buffer>
                 @type                           file
-                path                            {{ $.Values.fluentd.baseDir }}/oci_la_fluentd_outplugin/logs/buffer{{- ternary (print "/worker-" $currWorker) "" $multiWorkersEnabled }}/
+                path                            {{ $.Values.fluentd.baseDir }}/oci_la_fluentd_outplugin/ekscplogs/buffer{{- ternary (print "/worker-" $currWorker) "" $multiWorkersEnabled }}/
                 flush_thread_count              "{{ $.Values.fluentd.ociLoggingAnalyticsOutputPlugin.buffer.flush_thread_count }}"
                 chunk_limit_size                "2m"
                 total_limit_size                "{{ $.Values.fluentd.ociLoggingAnalyticsOutputPlugin.buffer.total_limit_size }}"
@@ -356,4 +314,4 @@ data:
     </worker>
     {{- end }}
     {{- end }}
-
+{{- end }}

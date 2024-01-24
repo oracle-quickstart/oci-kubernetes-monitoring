@@ -474,7 +474,7 @@ fluentd:
             objectKey: .*?kube-apiserver/
             # Logging Analytics log source to use for parsing and processing EKS Control Plane API Server Logs.
             ociLALogSourceName: "Kubernetes API Server Logs"
-            multilineStartRegExp: /^(\S)(\d{2})(\d{2})/
+            multilineStartRegExp: /^\S\d{2}\d{2}\s+[^\:]+:[^\:]+:[^\.]+\.\d{0,3}/
             #metadata:
                #"Client Host Region": "America"
                #"Environment": "Production"
@@ -503,6 +503,7 @@ fluentd:
             objectKey: .*?authenticator
             # Logging Analytics log source to use for parsing and processing EKS Control Plane Authenticator Logs.
             ociLALogSourceName: "AWS EKS Authenticator Logs"
+            multilineStartRegExp: /^time=/
             #metadata:
                #"Client Host Region": "America"
                #"Environment": "Production"
@@ -517,6 +518,7 @@ fluentd:
             objectKey: .*?kube-controller-manager
             # Logging Analytics log source to use for parsing and processing EKS Control Plane Kube Controller Manager Logs.
             ociLALogSourceName: "Kubernetes Controller Manager Logs"
+            multilineStartRegExp: /^\S\d{2}\d{2}\s+[^\:]+:[^\:]+:[^\.]+\.\d{0,3}/
             #metadata:
                #"Client Host Region": "America"
                #"Environment": "Production"
@@ -531,6 +533,7 @@ fluentd:
             objectKey: .*?cloud-controller-manager
             # Logging Analytics log source to use for parsing and processing EKS Control Plane Cloud Controller Manager Logs.
             ociLALogSourceName: "Cloud Controller Manager Logs"
+            multilineStartRegExp: /^\S\d{2}\d{2}\s+[^\:]+:[^\:]+:[^\.]+\.\d{0,3}/
             #metadata:
                #"Client Host Region": "America"
                #"Environment": "Production"
@@ -545,6 +548,7 @@ fluentd:
             objectKey: .*?kube-scheduler
             # Logging Analytics log source to use for parsing and processing EKS Control Plane Scheduler Logs.
             ociLALogSourceName: "Kubernetes Scheduler Logs"
+            multilineStartRegExp: /^\S\d{2}\d{2}\s+[^\:]+:[^\:]+:[^\.]+\.\d{0,3}/
             #metadata:
                #"Client Host Region": "America"
                #"Environment": "Production"

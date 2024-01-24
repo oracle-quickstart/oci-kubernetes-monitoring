@@ -1,8 +1,12 @@
 # Change Log
 
-## 2024-01-22
+## 2024-01-24
 ### Changed
 - Support for AWS EKS system and control plane logs collection.
+
+## 2024-01-18
+### Changed
+- Management Agent docker image has been updated to version 1.2.0
 
 ## 2024-01-09
 ### Changed

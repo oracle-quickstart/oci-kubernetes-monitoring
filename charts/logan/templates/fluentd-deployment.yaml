@@ -26,7 +26,9 @@ spec:
         checksum/secrets: {{ include (print $.Template.BasePath "/oci-config-secret.yaml") . | sha256sum }}
         {{- end}}
         checksum/configmap: {{ include (print $.Template.BasePath "/objects-configmap.yaml") . | sha256sum }}
+        {{- if $enableEKSCPLogs }}
         checksum/ekscpconfigmap: {{ include (print $.Template.BasePath "/ekscp-logs-configmap.yaml") . | sha256sum }}
+        {{- end}}
       labels:
         app: {{ $resourceNamePrefix }}-logan
         version: v1
