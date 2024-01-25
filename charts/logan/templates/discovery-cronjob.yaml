@@ -12,7 +12,7 @@ metadata:
 spec:
   schedule: {{ .Values.k8sDiscovery.objects.cronSchedule | quote }}
   startingDeadlineSeconds: 120
-  concurrencyPolicy: Forbid
+  concurrencyPolicy: Replace
   successfulJobsHistoryLimit: {{ .Values.k8sDiscovery.objects.successfulJobsHistoryLimit }}
   failedJobsHistoryLimit: {{ .Values.k8sDiscovery.objects.failedJobsHistoryLimit }}
   jobTemplate:
