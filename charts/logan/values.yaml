@@ -48,7 +48,7 @@ image:
    # Image pull secrets for. Secret must be in the namespace defined by namespace
    imagePullSecrets:
    # -- Replace this value with actual docker image url
-   url: container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.2.0 #TODO
+   url: iad.ocir.io/id3m3bqjn6oc/k8-objects-discovery:master-5e03e34 #TODO
    # -- Image pull policy
    imagePullPolicy: Always
 
