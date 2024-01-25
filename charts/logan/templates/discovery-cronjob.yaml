@@ -33,7 +33,7 @@ spec:
             {{- end }}
             command:
             {{- /* object discovery script */}}
-              - oci-logan-oke-resources-discovery
+              - oci-logan-kubernetes-discovery
             {{- /* mandatory inputs */}}
               - --kubernetes_cluster_id
               - {{ $kubernetesClusterId }}
