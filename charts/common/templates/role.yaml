@@ -11,5 +11,9 @@ metadata:
 rules:
   - apiGroups: [""]
     resources: ["configmaps"]
-    verbs: ["get", "list", "watch", "update", "create", "patch"]
+    verbs: ["create"]
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get", "patch"]
+    resourceNames: ["{{ include "common.resourceNamePrefix" . }}-discovery-state-tracker"]
 {{- end }}
