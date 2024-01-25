@@ -45,7 +45,7 @@ spec:
               {{- if  .Values.ociLANamespace }}
               - {{ .Values.ociLANamespace }}
               {{- else }}
-                {{-  required "missing OCI Logging Analytics Namespace" .Values.ociLANamespace }}
+                {{-  required "ociLANamespace is required" .Values.ociLANamespace }}
               {{- end }}
               - --oci_la_log_group_id
               {{- if  .Values.k8sDiscovery.objects.ociLALogGroupID }}
@@ -53,7 +53,7 @@ spec:
               {{- else if  .Values.ociLALogGroupID }}
               - {{ .Values.ociLALogGroupID }}
               {{- else }}
-                {{- required "missing LogGroup" .Values.ociLALogGroupID }}
+                {{- required "ociLALogGroupID is required" .Values.ociLALogGroupID }}
               {{- end }}
             {{- /* mandatory inputs when authtype is set as config */}}
             {{- if eq .Values.authtype "config" }}
@@ -61,7 +61,7 @@ spec:
               - --config_file_location
               - {{ .Values.oci.path -}}/{{ .Values.oci.file }}
             {{- else }}
-                {{- required "missing config file. {{ .Values.oci.path -}}/{{ .Values.oci.file }}" .Values.oci.path }}
+                {{- required "{{ .Values.oci.path -}}/{{ .Values.oci.file }} is required" .Values.oci.path }}
             {{- end }}
             {{- end }}
             {{- /* optional discovery job configuration */}}
