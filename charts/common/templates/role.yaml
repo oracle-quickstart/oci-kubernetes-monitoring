@@ -12,4 +12,6 @@ rules:
   - apiGroups: [""]
     resources: ["configmaps"]
     verbs: ["get", "list", "watch", "update", "create", "patch"]
+    resourceNames: ["{{ include "common.resourceNamePrefix" . }}-discovery-state-tracker"]
 {{- end }}
+#-discovery-state-tracker"
