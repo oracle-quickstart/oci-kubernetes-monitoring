@@ -20,7 +20,7 @@ spec:
       backoffLimit: 2
       template:
         spec:
-          restartPolicy: OnFailure
+          restartPolicy: {{ .Values.k8sDiscovery.objects.restartPolicy }}
           serviceAccountName: {{ $serviceAccount }}
           containers:
           - name: k8-discovery-job

@@ -532,6 +532,10 @@ k8sDiscovery:
    objects:
       # cronSchedule: cronjob schedule to run object discovery job
       cronSchedule: "*/5 * * * *"
+      # restartPolicy: "Never" or "OnFailure"
+      # Failed containers will be removed by job in case restartPolicy is not set as Never
+      # Ref - https://github.com/kubernetes/kubernetes/issues/74848
+      restartPolicy: "Never"
       # successfulJobsHistoryLimit: specify how many completed jobs should be kept
       successfulJobsHistoryLimit: 3
       # failedJobsHistoryLimit: specify how many failed jobs should be kept
