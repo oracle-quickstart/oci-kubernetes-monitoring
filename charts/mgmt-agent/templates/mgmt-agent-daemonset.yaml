@@ -1,17 +1,15 @@
-# Copyright (c) 2023, Oracle and/or its affiliates.
+# Copyright (c) 2024, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-{{- if not .Values.deployment.daemonSetDeployment }}
+{{- if .Values.deployment.daemonSetDeployment }}
 apiVersion: apps/v1
-kind: StatefulSet
+kind: DaemonSet
 metadata:
   name: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent
   namespace: {{ include "mgmt-agent.namespace" . }}
   labels:
     app: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent
 spec:
-  serviceName: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent
-  replicas: 1
   selector:
     matchLabels:
       app: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent
@@ -42,7 +40,7 @@ spec:
             - name: mgmtagent-secret
               mountPath: /opt/oracle/mgmtagent_secret
               readOnly: true
-            - name: mgmtagent-pvc
+            - name: mgmtagent-hostpath
               mountPath: /opt/oracle
             - name: mgmtagent-config
               mountPath: /opt/oracle/mgmtagent_config
@@ -58,17 +56,9 @@ spec:
         - name: mgmtagent-config
           configMap:
             name: {{ include "mgmt-agent.resourceNamePrefix" . }}-metrics
+        - name: mgmtagent-hostpath
+          hostPath: 
+            path: {{ .Values.deployment.daemonSet.hostPath }}
         - emptyDir: {}
           name: tmp
-  volumeClaimTemplates:
-    - metadata:
-        name: mgmtagent-pvc
-      spec:
-        accessModes: [ "ReadWriteOnce" ]
-        {{- if .Values.deployment.storageClass }}
-        storageClassName: {{ .Values.deployment.storageClass }}
-        {{- end }}
-        resources:
-          requests:
-            storage: {{ .Values.deployment.resource.request.storage }}
 {{- end }}

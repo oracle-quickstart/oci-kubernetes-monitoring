@@ -153,6 +153,20 @@
                                 "integer",
                                 "null"
                             ]
+                        },
+                        "daemonSetDeployment":
+                        {
+                            "type": "boolean"
+                        }
+                    }
+                },
+                "daemonSet":
+                {
+                    "properties":
+                    {
+                        "hostPath":
+                        {
+                            "type": "string"
                         }
                     }
                 },
@@ -203,6 +217,28 @@
                                 "memory"
                             ]
                         }
+                    }
+                }
+            },
+            "required": 
+            [
+                "daemonSetDeployment"
+            ],
+            "if":
+            {
+                "properties": { "daemonSetDeployment": { "const": true } }
+            },
+            "then":
+            {
+                "required": ["daemonSet"],
+                "properties":
+                {
+                    "daemonSet":
+                    {
+                        "required":
+                        [
+                            "hostPath"
+                        ]
                     }
                 }
             }
