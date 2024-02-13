@@ -12,19 +12,19 @@ variable "toggle_livelab_module" {
   default = true
 }
 
-# Enable/Disable helm module 
+# Enable/Disable helm module
 variable "toggle_helm_module" {
   type    = bool
   default = true
 }
 
-# when false, public helm repo is used for deployment 
+# when false, public helm repo is used for deployment
 variable "toggle_use_local_helm_chart" {
   type    = bool
   default = false
 }
 
-# Enable/Disable helm template. When set as true, 
+# Enable/Disable helm template. When set as true,
 # - helm module will generate template file inside ../modules/helm/local directory
 # - Setting this to true disables/skips the helm release
 variable "toggle_generate_helm_template" {
@@ -32,7 +32,7 @@ variable "toggle_generate_helm_template" {
   default = false
 }
 
-# Enable/Disable helm installation. 
+# Enable/Disable helm installation.
 variable "toggle_install_helm" {
   type    = bool
   default = true
