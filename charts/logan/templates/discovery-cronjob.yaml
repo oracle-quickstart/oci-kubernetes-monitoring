@@ -17,7 +17,7 @@ spec:
   failedJobsHistoryLimit: {{ .Values.k8sDiscovery.objects.failedJobsHistoryLimit }}
   jobTemplate:
     spec:
-      backoffLimit: 2
+      backoffLimit: {{ .Values.k8sDiscovery.objects.backoffLimit }}
       template:
         spec:
           restartPolicy: {{ .Values.k8sDiscovery.objects.restartPolicy }}
@@ -33,7 +33,9 @@ spec:
             {{- end }}
             command:
             {{- /* object discovery script */}}
-              - oci-logan-kubernetes-discovery
+              - bundle
+              - exec
+              - oci-loganalytics-kubernetes-discovery
             {{- /* mandatory inputs */}}
               - --kubernetes_cluster_id
               - {{ $kubernetesClusterId }}
@@ -78,7 +80,7 @@ spec:
             {{- if .Values.k8sDiscovery.objects.log_format }}
               - --log_format
               - {{ .Values.k8sDiscovery.objects.log_format }}
-            {{- end }}                
+            {{- end }}
             {{- if .Values.k8sDiscovery.objects.log_level }}
               - --log_level
               - {{ .Values.k8sDiscovery.objects.log_level }}
@@ -89,7 +91,7 @@ spec:
               - {{ .Values.k8sDiscovery.objects.thread_count | quote }}
             {{- end }}
             {{- if .Values.k8sDiscovery.objects.chunk_limit }}
-              - --chunk_limit 
+              - --chunk_limit
               - {{ .Values.k8sDiscovery.objects.chunk_limit | quote }}
             {{- end }}
             {{- if .Values.k8sDiscovery.objects.collect_warning_events_only }}

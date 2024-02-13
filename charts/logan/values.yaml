@@ -48,7 +48,7 @@ image:
    # Image pull secrets for. Secret must be in the namespace defined by namespace
    imagePullSecrets:
    # -- Replace this value with actual docker image url
-   url: iad.ocir.io/id3m3bqjn6oc/k8-objects-discovery:master-5e03e34 #TODO
+   url: container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.3.0
    # -- Image pull policy
    imagePullPolicy: Always
 
@@ -541,7 +541,7 @@ k8sDiscovery:
       # failedJobsHistoryLimit: specify how many failed jobs should be kept
       failedJobsHistoryLimit : 3
       # ociLALogGroupID: OCI LA Loggroup to store the k8s discovery logs
-      ociLALogGroupID: 
+      ociLALogGroupID:
       # discoveryMode: discovery mode to be used - ["infra", "object"]
       discoveryMode: "object"
       # Log format to be used - ["text", "json"]
@@ -559,6 +559,8 @@ k8sDiscovery:
       # collect_warning_events_only: flag to only collect warning event logs
       # Default: All logs are collected and sent to OCI logging analytics for processing
       collect_warning_events_only: false
+      # backoffLimit: Specify the number of retries before considering a Job as failed
+      backoffLimit: 2
    # kubernetes: kubernetes cluster related inputs for kubernetes disocvery job
    kubeClientOptions:
       # kubernetes_url: Kubernetes API server URL.
