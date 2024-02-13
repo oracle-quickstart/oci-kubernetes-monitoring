@@ -38,22 +38,23 @@ authtype: InstancePrincipal
 # -- Kubernetes Namespace for deploying monitoring resources deployed by this chart.
 namespace: "{{ .Values.global.namespace }}"
 
-
 # -- Resoure Name Prefix: Wherever allowed, this prefix will be used with all resources used by this chart
 resourceNamePrefix: "{{ .Values.global.resourceNamePrefix }}"
 
 # --  Kubernetes ServiceAccount
 serviceAccount: "{{ .Values.global.resourceNamePrefix }}"
+
 image:
    # Image pull secrets for. Secret must be in the namespace defined by namespace
    imagePullSecrets:
    # -- Replace this value with actual docker image url
-   url: container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.2.0
+   url: iad.ocir.io/id3m3bqjn6oc/k8-objects-discovery:master-5e03e34 #TODO
    # -- Image pull policy
    imagePullPolicy: Always
 
 # -- Logging Analytics namespace. Can be found in OCI console --> Logging Analytics --> Administration --> Service
 ociLANamespace:
+
 # -- OCID of Logging Analytics Log Group to send logs to.
 # Can be overridden for individual log types.
 # e.g. ocid1.loganalyticsloggroup.oc1.phx.amaaaaasdfaskriauucc55rlwlxe4ahe2vfmtuoqa6qsgu7mb6jugxacsk6a
@@ -524,3 +525,53 @@ fluentd:
             api_endpoint: apis/batch
          endpoint_slices:
             api_endpoint: apis/discovery.k8s.io
+
+# k8sDiscovery: defines properties that affect kubernetes objects discovery
+k8sDiscovery:
+   # objects: defines inputs for K8s objects discovery
+   objects:
+      # cronSchedule: cronjob schedule to run object discovery job
+      cronSchedule: "*/5 * * * *"
+      # restartPolicy: "Never" or "OnFailure"
+      # Failed containers will be removed by job in case restartPolicy is not set as Never
+      # Ref - https://github.com/kubernetes/kubernetes/issues/74848
+      restartPolicy: "Never"
+      # successfulJobsHistoryLimit: specify how many completed jobs should be kept
+      successfulJobsHistoryLimit: 3
+      # failedJobsHistoryLimit: specify how many failed jobs should be kept
+      failedJobsHistoryLimit : 3
+      # ociLALogGroupID: OCI LA Loggroup to store the k8s discovery logs
+      ociLALogGroupID: 
+      # discoveryMode: discovery mode to be used - ["infra", "object"]
+      discoveryMode: "object"
+      # Log format to be used - ["text", "json"]
+      log_format: "text"
+      # log_level: defines log level for discovery job [trace|debug|info|warn|error|fatal]
+      log_level: "info"
+      # enable_threading: Defaults to sequential execution when not set (Boolean)
+      # When true, must also set thread_count
+      enable_threading: false
+      # thread_count: Number of parallel threads to be used while making requests to API server
+      # Expects enable_threading to be set as true
+      thread_count:
+      # chunk_limit: Max number of objects that can be fetched via K8s GET API call. Default: 1000
+      chunk_limit:
+      # collect_warning_events_only: flag to only collect warning event logs
+      # Default: All logs are collected and sent to OCI logging analytics for processing
+      collect_warning_events_only: false
+   # kubernetes: kubernetes cluster related inputs for kubernetes disocvery job
+   kubeClientOptions:
+      # kubernetes_url: Kubernetes API server URL.
+      kubernetes_url:
+      # client_cert: Path to certificate file for Kubernetes HTTPs/SSL server certificate validation
+      client_cert:
+      # client_key: Path to key for Kubernetes HTTPs/SSL server certificate validation
+      client_key:
+      # ca_file: Path to CA file for Kubernetes HTTPs/SSL server certificate validation
+      ca_file:
+      # verify_ssl: Validate SSL certificates while creating kube clients - [true, false]
+      verify_ssl: false
+      # bearer_token_file: Path to bearer token file if basic authentication is used
+      bearer_token_file:
+      # secret_dir: Path to Kubernetes service account token file to access Kubernetes API
+      secret_dir:
