@@ -29,6 +29,9 @@ spec:
       containers:
         - name: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent
           image: {{ .Values.mgmtagent.image.url }}
+          env:
+          - name: HELM_DEPLOYMENT
+            value: "true"
           resources:
             requests:
               cpu: {{ .Values.deployment.resource.request.cpuCore }}

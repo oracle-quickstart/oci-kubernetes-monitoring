@@ -109,7 +109,11 @@
             {
                 "name":
                 {
-                    "type": "string"
+                    "type":
+                    [
+                        "string",
+                        "null"
+                    ]
                 },
                 "namespace":
                 {
@@ -118,7 +122,6 @@
             },
             "required":
             [
-                "name",
                 "namespace"
             ]
         },
