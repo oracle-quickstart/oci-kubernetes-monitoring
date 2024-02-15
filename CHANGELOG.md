@@ -1,9 +1,16 @@
 # Change Log
 
-## 2024-01-24
-### Changed
+## 2024-02-16
+### Added
 - Support for AWS EKS system and control plane logs collection.
 
+## 2024-02-13
+### Added
+- Changes to support Kubernetes Solution Pages Offering by OCI Logging Analytics.
+  - A new role and role binding in the monitoring namespace (which defaults to oci-onm), to manage a ConfigMap.
+  - A new CronJob to handle the Kubernetes Objects discovery and Objects Logs collection using oci-logging-analytics-kubernetes-discovery Gem.
+### Changed
+- Moving forward, Kubernetes Objects logs would be collected using Kubernetes Discovery CronJob along with the (optional) Discovery data instead of Fluentd based Deployment.
 ## 2024-01-18
 ### Changed
 - Management Agent docker image has been updated to version 1.2.0
@@ -11,7 +18,7 @@
 ## 2024-01-09
 ### Changed
 - Concat filter plugin behavior changed to not include newline character as separator while handling CRI partial logs.
-- Dashboards Import is now optional while installing the monitoring solution through RMS Stack. Default behavior remains the same. 
+- Dashboards Import is now optional while installing the monitoring solution through RMS Stack. Default behavior remains the same.
 
 ## 2023-12-01
 ### Added
@@ -20,19 +27,19 @@
 ## 2023-11-30
 ### Added
 - Added resources information that got created through RM Stack to Stack output.
-- Added new auto created policy for Kubernetes Objects discovery (for future release(s) use). 
-- Added new helm variable for cluster's EntityId (ociLAClusterEntityID) (for future release(s) use). 
+- Added new auto created policy for Kubernetes Objects discovery (for future release(s) use).
+- Added new helm variable for cluster's EntityId (ociLAClusterEntityID) (for future release(s) use).
 ### Changed
-- RM Stack is changed to use remote [helm repo](https://oracle-quickstart.github.io/oci-kubernetes-monitoring), instead of a local copy of helm chart source. 
-- RM Stack is modified to skip recreation of Management Agent Key if the Key already created by Stack. 
+- RM Stack is changed to use remote [helm repo](https://oracle-quickstart.github.io/oci-kubernetes-monitoring), instead of a local copy of helm chart source.
+- RM Stack is modified to skip recreation of Management Agent Key if the Key already created by Stack.
 ### Breaking Changes
--  Removed ociLAEntityID input variable of Logan chart. This was an optional and its use-case was not defined so far. Hence, it shouldn't  be a breaking change in general but still documenting for the reference. 
+-  Removed ociLAEntityID input variable of Logan chart. This was an optional and its use-case was not defined so far. Hence, it shouldn't  be a breaking change in general but still documenting for the reference.
 
 ## 2023-11-07
 ### Added
 - Control Plane Logs Collection for OCNE and Standalone Kubernetes Clusters.
 - Support for launching Fluentd containers in privileged mode (default false).
-- Added FAQ for triaging log collection setup issues in OCNE and Standalone Kubernetes Clusters. 
+- Added FAQ for triaging log collection setup issues in OCNE and Standalone Kubernetes Clusters.
 
 ## 2023-10-31
 ### Changed
@@ -44,14 +51,14 @@
 
 ## 2023-08-07
 ### Added
-- Support Fluentd's [Multi Process Workers](https://docs.fluentd.org/deployment/multi-process-workers). 
+- Support Fluentd's [Multi Process Workers](https://docs.fluentd.org/deployment/multi-process-workers).
 - Custom Container Image for Fluentd using OL8-Slim as base Image.
-- PV, PVC Objects Collection 
+- PV, PVC Objects Collection
 ### Changed
 - Instructions and dependency versions updates to custom container image for Fluentd using OL8 as base image.
-- ClusterRole updates to add read permission for `storage.k8s.io` api group to support PV, PVC Objects collection. 
+- ClusterRole updates to add read permission for `storage.k8s.io` api group to support PV, PVC Objects collection.
 ### Deprecating
-- Custom Container Image for Fluentd using Debian and OL8 as base Image. 
+- Custom Container Image for Fluentd using Debian and OL8 as base Image.
 
 ## 2023-07-19
 ### Added
@@ -64,7 +71,7 @@
 ### Changed
 - Refactoring of helm chart, terraform and stack/market place app to support the consolidation of logs, objects and metrics collection.
 ### Breaking Changes
-- The refactoring work done in this version, may cause issues if you upgrade to this version (v3.0.0) from previous versions. Refer [here](README.md#2x-to-3x) for further details. 
+- The refactoring work done in this version, may cause issues if you upgrade to this version (v3.0.0) from previous versions. Refer [here](README.md#2x-to-3x) for further details.
 
 ## 2023-02-07
 ### Added

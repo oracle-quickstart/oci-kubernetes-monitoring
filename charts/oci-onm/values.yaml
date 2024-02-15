@@ -31,11 +31,13 @@ oci-onm-logan:
   kubernetesClusterID: "{{ .Values.global.kubernetesClusterID }}"
   kubernetesClusterName: "{{ .Values.global.kubernetesClusterName }}"
   image:
-    url: container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.2.0
+    url: container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.3.0
   # Go to OCI Logging Analytics Administration, click Service Details, and note the namespace value.
   ociLANamespace:
   # OCI Logging Analytics Default Log Group OCID
   ociLALogGroupID:
+  # OCI Logging Analytics Entity OCID representing the target cluster
+  ociLAClusterEntityID:
 
 oci-onm-mgmt-agent:
   oci-onm-common:
