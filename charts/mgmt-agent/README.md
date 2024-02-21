@@ -20,6 +20,11 @@ A Helm chart for collecting Kubernetes Metrics using OCI Management Agent into O
 | kubernetesCluster.compartmentId | string | `nil` | OCI Compartment Id to push Kubernetes Monitoring metrics. If not specified default is same as Agent compartment |
 | kubernetesCluster.name | string | `nil` | Kubernetes cluster name |
 | kubernetesCluster.namespace | string | `"*"` | Kubernetes cluster namespace(s) to monitor. This can be a comma-separated list of namespaces or '*' to monitor all the namespaces |
+| kubernetesCluster.monitoringNamespace | string | `nil` | OCI namespace to push Kubernetes Monitoring metrics. If not specified then it will pushed to 'mgmtagent_kubernetes_metrics' |
+| kubernetesCluster.overrideAllowMetricsAPIServer | string | `nil` | Provide the specific list of comma separated metric names for agent computed metrics to be collected. |
+| kubernetesCluster.overrideAllowMetricsCluster | string | `nil` | Provide the specific list of comma separated metric names for agent computed metrics to be collected |
+| kubernetesCluster.overrideAllowMetricsKubelet | string | `nil` | Provide the specific list of comma separated metric names for Kubelet (/api/v1/nodes/<node_name>/proxy/metrics) metrics to be collected |
+| kubernetesCluster.overrideAllowMetricsNode | string | `nil` | Provide the specific list of comma separated metric names for Node (/api/v1/nodes/<node_name>/proxy/metrics/resource, /api/v1/nodes/<node_name>/proxy/metrics/cadvisor) metrics to be collected |
 | mgmtagent.image.secret | string | `nil` | Image secrets to use for pulling container image (base64 encoded content of ~/.docker/config.json file) |
 | mgmtagent.image.url | string | `nil` | Replace this value with actual docker image URL for Management Agent |
 | mgmtagent.installKey | string | `"resources/input.rsp"` | Copy the downloaded Management Agent Install Key file under root helm directory as resources/input.rsp |
