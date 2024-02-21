@@ -17,6 +17,8 @@ spec:
       app: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent
   template:
     metadata:
+      annotations:
+        checksum/configmap: {{ include (print $.Template.BasePath "/metrics-configmap.yaml") . | sha256sum }}
       labels:
         app: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent
     spec:
