@@ -50,7 +50,7 @@ kubernetesCluster:
    name:
    # -- Kubernetes cluster namespace(s) to monitor. This can be a comma-separated list of namespaces or '*' to monitor all the namespaces
    namespace: '*'
-   # -- OCI namespace to push Kubernetes Monitoring metrics. If not specified then it will pushed to stream's namespace
+   # -- OCI namespace to push Kubernetes Monitoring metrics. If not specified then it will pushed to 'mgmtagent_kubernetes_metrics'
    monitoringNamespace:
    # -- Provide the specific list of comma separated metric names for API server (/metrics) metrics to be collected.
    overrideAllowMetricsAPIServer:
