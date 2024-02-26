@@ -68,13 +68,13 @@ data:
        @type cloudwatch_logs
        @id {{ $name }}{{- ternary (print "_" $currWorker) "" $multiWorkersEnabled }}
        tag rewrite.eks{{- ternary (print "." $currWorker) "" $multiWorkersEnabled }}.cp.{{ $name }}.*
-       region {{ $.Values.fluentd.eksControlPlane.region }}
+       region {{ $.Values.fluentd.eksControlPlane.region | required (printf "fluentd.eksControlPlane.region is required") }}
        {{- if eq $.Values.fluentd.eksControlPlane.awsUseSts true }}
        aws_use_sts true
-       aws_sts_role_arn "{{ $.Values.fluentd.eksControlPlane.awsStsRoleArn }}"
+       aws_sts_role_arn "{{ $.Values.fluentd.eksControlPlane.awsStsRoleArn | required (printf "fluentd.eksControlPlane.awsStsRoleArn is required") }}"
        {{- else }}
-       aws_key_id "{{ $.Values.fluentd.eksControlPlane.awsKeyId }}"
-       aws_sec_key "{{ $.Values.fluentd.eksControlPlane.awsSecKey }}"
+       aws_key_id "{{ $.Values.fluentd.eksControlPlane.awsKeyId | required (printf "fluentd.eksControlPlane.awsKeyId is required") }}"
+       aws_sec_key "{{ $.Values.fluentd.eksControlPlane.awsSecKey | required (printf "fluentd.eksControlPlane.awsSecKey is required") }}"
        {{- end }}
        {{- if $.Values.fluentd.eksControlPlane.cwLogGroupName }}
        log_group_name "{{ $.Values.fluentd.eksControlPlane.cwLogGroupName }}"
@@ -115,13 +115,13 @@ data:
        @type cloudwatch_logs
        @id {{ $name }}{{- ternary (print "_" $currWorker) "" $multiWorkersEnabled }}
        tag eks{{- ternary (print "." $currWorker) "" $multiWorkersEnabled }}.cp.{{ $name }}.*
-       region {{ $.Values.fluentd.eksControlPlane.region }}
+       region {{ $.Values.fluentd.eksControlPlane.region | required (printf "fluentd.eksControlPlane.region is required") }}
        {{- if eq $.Values.fluentd.eksControlPlane.awsUseSts true }}
        aws_use_sts true
-       aws_sts_role_arn "{{ $.Values.fluentd.eksControlPlane.awsStsRoleArn }}"
+       aws_sts_role_arn "{{ $.Values.fluentd.eksControlPlane.awsStsRoleArn | required (printf "fluentd.eksControlPlane.awsStsRoleArn is required") }}"
        {{- else }}
-       aws_key_id "{{ $.Values.fluentd.eksControlPlane.awsKeyId }}"
-       aws_sec_key "{{ $.Values.fluentd.eksControlPlane.awsSecKey }}"
+       aws_key_id "{{ $.Values.fluentd.eksControlPlane.awsKeyId | required (printf "fluentd.eksControlPlane.awsKeyId is required") }}"
+       aws_sec_key "{{ $.Values.fluentd.eksControlPlane.awsSecKey | required (printf "fluentd.eksControlPlane.awsSecKey is required") }}"
        {{- end }}
        {{- if $.Values.fluentd.eksControlPlane.cwLogGroupName }}
        log_group_name "{{ $.Values.fluentd.eksControlPlane.cwLogGroupName }}"
@@ -184,16 +184,16 @@ data:
        @type s3
        @id {{ $name }}{{- ternary (print "_" $currWorker) "" $multiWorkersEnabled }}
        tag eks{{- ternary (print "." $currWorker) "" $multiWorkersEnabled }}.cp.{{ $name }}.*
-       s3_bucket {{ $.Values.fluentd.eksControlPlane.s3Bucket }}
-       s3_region {{ $.Values.fluentd.eksControlPlane.region }}
+       s3_bucket {{ $.Values.fluentd.eksControlPlane.s3Bucket | required (printf "fluentd.eksControlPlane.s3Bucket is required") }}
+       s3_region {{ $.Values.fluentd.eksControlPlane.region | required (printf "fluentd.eksControlPlane.region is required") }}
        {{- if eq $.Values.fluentd.eksControlPlane.awsUseSts true }}
        <assume_role_credentials>
-         role_arn "{{ $.Values.fluentd.eksControlPlane.awsStsRoleArn }}"
+         role_arn "{{ $.Values.fluentd.eksControlPlane.awsStsRoleArn | required (printf "fluentd.eksControlPlane.awsStsRoleArn is required") }}"
          role_session_name oci-kubernetes-monitoring
        </assume_role_credentials>
        {{- else }}
-         aws_key_id "{{ $.Values.fluentd.eksControlPlane.awsKeyId }}"
-         aws_sec_key "{{ $.Values.fluentd.eksControlPlane.awsSecKey }}"
+         aws_key_id "{{ $.Values.fluentd.eksControlPlane.awsKeyId | required (printf "fluentd.eksControlPlane.awsKeyId is required") }}"
+         aws_sec_key "{{ $.Values.fluentd.eksControlPlane.awsSecKey | required (printf "fluentd.eksControlPlane.awsSecKey is required") }}"
        {{- end }}
        add_object_metadata true
        store_as gzip
