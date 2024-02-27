@@ -42,7 +42,6 @@ variableGroups:
       - livelab_switch
       - oke_cluster_name
       - oke_cluster_entity_ocid
-      - stack_deployment_option
     visible: false
 
   - title: Select an OKE cluster deployed in this region to start monitoring
@@ -54,17 +53,26 @@ variableGroups:
   - title: "OCI Observability and Management Services Configuration"
     description: "For a list of resources created, see: https://github.com/oracle-quickstart/oci-kubernetes-monitoring"
     variables:
-    - opt_deploy_metric_server
     - oci_onm_compartment_ocid
     - opt_create_new_la_logGroup
     - oci_la_logGroup_id
     - oci_la_logGroup_name
-    - fluentd_baseDir_path
+    - opt_show_advanced_options
 
-  - title: Advanced Configuration
+  - title: "Advanced Options: Helmchart"
+    variables:
+      - stack_deployment_option
+      - opt_deploy_metric_server
+      - opt_use_latest_helmchart
+      - helmchart_version
+      - fluentd_baseDir_path
+    visible: opt_show_advanced_options
+
+  - title: "Advanced Options: OCI"
     variables:
       - opt_create_dynamicGroup_and_policies
       - opt_import_dashboards
+    visible: opt_show_advanced_options    
 
 variables:
 
@@ -101,34 +109,6 @@ variables:
   ##  OCI Observability and Management Services Configuration
   ####
 
-  #  Stack Deployment Options
-  stack_deployment_option:
-    title: Deployment options
-    description: 'The "Full" option creates both OCI and K8s resources.'
-    type: enum
-    enum: # Dev Note - # Any change in following options must be refactored across schema.yaml
-    - "Full"
-    - "Only OCI Resources"
-    default: "Full"
-    required: true
-    visible:
-       not: 
-       - livelab_switch    
-
-  # Option to enable/disable metric server installation during helm deployment
-  opt_deploy_metric_server:
-    type: boolean
-    title: Enable Metric Server installation
-    description: Clear this check box if Metric Server is already installed in your cluster.
-    default: true
-    visible:
-      and:
-      - eq:
-        - ${stack_deployment_option}
-        - "Full"
-      - not: 
-        - livelab_switch
-
   # Compartment for creating OCI Observability and Management resources
   oci_onm_compartment_ocid:
     type: oci:identity:compartment:id
@@ -138,9 +118,9 @@ variables:
     default: compartment_ocid
 
   # Option to create Logging Analytics
-  opt_create_new_la_logGroup: # change this to create new log group
+  opt_create_new_la_logGroup:
     type: boolean
-    title: Select this check box if you want to create a new log group.
+    title: Select this check box if you want to create a new log group
     default: false
     visible:
       not: 
@@ -151,8 +131,8 @@ variables:
     type: oci:logan:loggroup:id
     dependsOn:
       compartmentId: ${oci_onm_compartment_ocid}
-    title: OCI Logging Analytics log group
-    description: Log groups are logical containers for log data, and they provide access control for your data using IAM policies.
+    title: Select OCI Logging Analytics log group
+    description: Log groups are logical containers for log data, and they provide access control for your data using IAM policies
     required: true
     visible:
       not:
@@ -164,12 +144,84 @@ variables:
     maxLength: 255
     minLength: 1
     required: true
-    title: OCI Logging Analytics log group name
-    description: "Tip: To make the log group easy to find in Dashboards and Logs Explorer pages, provide a unique name associated with your cluster name."
+    title: Enter a valid OCI Logging Analytics log group name
+    description: "Tip: To make the log group easy to find in Dashboards and Logs Explorer pages, provide a unique name associated with your cluster name"
     visible:
       and:
         - opt_create_new_la_logGroup
     pattern: '^([a-zA-Z0-9]|[a-zA-Z0-9][\\ a-zA-Z0-9_\-]*[\\a-zA-Z\-0-9_])$'  
+
+  # Option to create Logging Analytics
+  opt_show_advanced_options:
+    type: boolean
+    title: Show advanced options?
+    default: false
+    description: "Shows advanced options for policy, dashboards and helm chart deployment controls"
+
+  ####
+  ##  Advanced Options: Helmchart
+  ####
+
+  #  Stack Deployment Options
+  stack_deployment_option:
+    title: Select Deployment option
+    description: 'The "Full" option creates both OCI and K8s resources'
+    type: enum
+    enum: # Dev Note - # Any change in following options must be refactored across schema.yaml
+    - "Full"
+    - "Only OCI Resources"
+    default: "Full"
+    required: true
+    visible:
+       not: 
+       - livelab_switch      
+
+  # Option to enable/disable metric server installation during helm deployment
+  opt_deploy_metric_server:
+    type: boolean
+    title: Enable Metric Server installation
+    description: Clear this check box if Metric Server is already installed in your cluster
+    default: true
+    visible:
+      and:
+      - eq:
+        - ${stack_deployment_option}
+        - "Full"
+      - not: 
+        - livelab_switch
+
+  # Option to enable/disable metric server installation during helm deployment
+  opt_use_latest_helmchart:
+    type: boolean
+    title: Use the latest helmchart
+    description: Clear this check box to use specific version of helmchart
+    default: true
+    visible:
+      and:
+      - eq:
+        - ${stack_deployment_option}
+        - "Full"
+      - not: 
+        - livelab_switch
+
+  # Fluentd Base Directory
+  helmchart_version:
+    type: string
+    maxLength: 8
+    minLength: 5
+    title: Enter helmchart version
+    description: Version reference - https://github.com/oracle-quickstart/oci-kubernetes-monitoring/releases
+    required: true
+    pattern: '^\d{1,2}\.\d{1,2}\.\d{1,2}$'
+    visible:
+      and:
+      - eq:
+        - ${stack_deployment_option}
+        - "Full"
+      - not: 
+        - livelab_switch
+      - not:
+        - opt_use_latest_helmchart
 
   # Fluentd Base Directory
   fluentd_baseDir_path:
@@ -177,7 +229,7 @@ variables:
     maxLength: 255
     minLength: 1
     title: FluentD working directory
-    description: A directory on the node (with read & write permission) to use for storing data related to Fluentd.
+    description: A directory on the node (with read & write permission) to use for storing data related to Fluentd
     default: /var/log
     required: true
     pattern: '^/[\w- /]*$'
@@ -190,7 +242,7 @@ variables:
         - livelab_switch
 
   ####
-  ##  Optional Inputs
+  ##  Advanced Options: OCI
   ####
 
   # Option to create Dynamic Group and Policies
@@ -198,7 +250,7 @@ variables:
     type: boolean
     title: Select this check box to create OCI IAM dynamic groups and policies which are required for the monitoring solution
     #description: "Ref: https://github.com/oracle-quickstart/oci-kubernetes-monitoring#pre-requisites"
-    description: "Note: If node pools and the OKE cluster are in different compartments, then the dynamic group definition must be updated."
+    description: "Note: If node pools and the OKE cluster are in different compartments, then the dynamic group definition must be updated"
     default: false
     required: true
 
@@ -206,6 +258,6 @@ variables:
   opt_import_dashboards:
     type: boolean
     title: Select this check box to import dashboards
-    description: "Note: You may need to manually clean up the dashboards when you destory the stack as dashboards will not be deleted automatically."
+    description: "Note: You may need to manually clean up the dashboards when you destory the stack as dashboards will not be deleted automatically"
     default: true
     required: true
