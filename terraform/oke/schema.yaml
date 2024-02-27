@@ -18,7 +18,7 @@ source:
 locale: "en"
 
 variableGroups:
-  - title: "hidden inputs"
+  - title: "provider configuration inputs (hidden)"
     variables:
       - tenancy_ocid
       - region
@@ -27,6 +27,10 @@ variableGroups:
       - fingerprint
       - boat_auth
       - boat_tenancy_ocid
+    visible: false
+
+  - title: "developer options (hidden)"
+    variables:
       - toggle_generate_helm_template
       - toggle_install_helm
       - toggle_use_local_helm_chart
@@ -36,9 +40,17 @@ variableGroups:
       - toggle_logan_module
       - toggle_livelab_module
       - toggle_iam_module
+    visible: false
+
+  - title: "RM stack auto populated inputs (hidden)"
+    variables:
       - compartment_ocid
-      - kubernetes_namespace
       - current_user_ocid
+    visible: false
+
+  - title: "Non-interactive stack inputs (hidden)"
+    variables:
+      - kubernetes_namespace
       - livelab_switch
       - oke_cluster_name
       - oke_cluster_entity_ocid
@@ -151,12 +163,11 @@ variables:
         - opt_create_new_la_logGroup
     pattern: '^([a-zA-Z0-9]|[a-zA-Z0-9][\\ a-zA-Z0-9_\-]*[\\a-zA-Z\-0-9_])$'  
 
-  # Option to create Logging Analytics
   opt_show_advanced_options:
     type: boolean
     title: Show advanced options?
     default: false
-    description: "Shows advanced options for policy, dashboards and helm chart deployment controls"
+    description: "Shows advanced options for policy, dashboards and helm-chart inputs"
 
   ####
   ##  Advanced Options: Helmchart
@@ -207,12 +218,13 @@ variables:
   # Fluentd Base Directory
   helmchart_version:
     type: string
-    maxLength: 8
+    maxLength: 15
     minLength: 5
     title: Enter helmchart version
-    description: Version reference - https://github.com/oracle-quickstart/oci-kubernetes-monitoring/releases
+    description: "Ex: 3.3.0 | For list of previous releases see: https://github.com/oracle-quickstart/oci-kubernetes-monitoring/releases"
     required: true
-    pattern: '^\d{1,2}\.\d{1,2}\.\d{1,2}$'
+    # ref - https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
+    pattern: '^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$'
     visible:
       and:
       - eq:

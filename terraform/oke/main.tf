@@ -76,6 +76,8 @@ module "management_agent" {
 // deploy oke-monitoring solution (helm release)
 module "helm_release" {
   source                         = "./modules/helm"
+  opt_use_latest_helmchart       = var.opt_use_latest_helmchart
+  helmchart_version              = var.helmchart_version
   helm_abs_path                  = abspath("./charts/oci-onm")
   use_local_helm_chart           = var.toggle_use_local_helm_chart
   install_helm                   = var.toggle_install_helm

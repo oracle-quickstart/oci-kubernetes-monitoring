@@ -24,6 +24,19 @@ variable "use_local_helm_chart" {
 ##  Helm chart
 ####
 
+
+# Option to use latest helmchart
+variable "opt_use_latest_helmchart" {
+  type    = bool
+  default = true
+}
+
+# Option to use latest helmchart
+variable "helmchart_version" {
+  type = string
+  #default = ""
+}
+
 # Used for local testing
 # Absoulte path to helm chart directory
 variable "helm_abs_path" {

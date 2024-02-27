@@ -1,42 +1,9 @@
 # Copyright (c) 2023, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-# When defined in the Terraform configuration, the following variables automatically prepopulate with values on the Console pages used to create and edit the stack.
-# The stack's values are used when you select the Terraform actions Plan, Apply, and Destroy.
-# - tenancy_ocid (tenancy OCID)
-# - region (region)
-#
-# Ref - https://docs.oracle.com/en-us/iaas/Content/ResourceManager/Concepts/terraformconfigresourcemanager_topic-schema.htm#console-howto__prepop
-
 ####
-##  Provider Variables
-####
-
-variable "tenancy_ocid" {
-  type = string
-}
-
-variable "region" {
-  type = string
-}
-
-variable "user_ocid" {
-  type    = string
-  default = ""
-}
-
-variable "private_key_path" {
-  type    = string
-  default = ""
-}
-
-variable "fingerprint" {
-  type    = string
-  default = ""
-}
-
-####
-## Stack Variable - Auto-pupulated while running RM Stack
+## Variable Group in schema.yaml: 
+## RM stack auto populated inputs (hidden)
 ####
 
 # Stack compartment - where marketplace app / Resoruce Manager stack is executed
@@ -52,39 +19,33 @@ variable "current_user_ocid" {
 }
 
 ####
-## Boat configuration - Used for internal developement purpose only.
+## Variable Group in schema.yaml: 
+## Non-interactive stack inputs (hidden)
 ####
 
-# Option to enable BOAT authentication.
-variable "boat_auth" {
-  type    = bool
-  default = false
-}
-
-# OCID of BOAT tenancy.
-variable "boat_tenancy_ocid" {
+# Kubernetes Namespace
+variable "kubernetes_namespace" {
   type    = string
-  default = ""
+  default = "oci-onm"
+}
+
+# livelab_switch inputs is defined in livelab_switch.tf
+
+# OKE Cluster Name
+variable "oke_cluster_name" {
+  type    = string
+  default = "DEFAULT"
+}
+
+# OKE Cluster Entity OCID
+variable "oke_cluster_entity_ocid" {
+  type    = string
+  default = "DEFAULT"
 }
 
 ####
-##  Optional Inputs
-####
-
-# Option to create Dynamic Group and Policies
-variable "opt_create_dynamicGroup_and_policies" {
-  type    = bool
-  default = false
-}
-
-# Option to import dashboards
-variable "opt_import_dashboards" {
-  type    = bool
-  default = true
-}
-
-####
-##  OKE Cluster Information
+## Variable Group in schema.yaml: 
+## Select an OKE cluster deployed in this region to start monitoring
 ####
 
 # OKE Cluster Compartment
@@ -97,21 +58,10 @@ variable "oke_cluster_ocid" {
   type = string
 }
 
-# Kubernetes Namespace
-variable "kubernetes_namespace" {
-  type    = string
-  default = "oci-onm"
-}
-
 ####
-##  OCI Observability and Management Information
+## Variable Group in schema.yaml: 
+## Select an OKE cluster deployed in this region to start monitoring
 ####
-
-# Stack Deployment Options
-variable "stack_deployment_option" {
-  type    = string
-  default = "Full"
-}
 
 # Compartment for creating OCI Observability and Management resources
 variable "oci_onm_compartment_ocid" {
@@ -137,19 +87,27 @@ variable "oci_la_logGroup_name" {
   default = ""
 }
 
-# Fluentd Base Directory
-variable "fluentd_baseDir_path" {
-  type    = string
-  default = "/var/log"
+# Note:
+# - This input is not used by chart but still defined to support user choice caching in RM stack
+# - When user edits and existing RM stack - they will be able to view previously selected options
+# - If this is not defined as terraform variable but just as schema.yaml input (to hide/show other UI elements)
+# - Then this option will be reset to it's default value everytime user vists edit stack page
+# - Therefore hiding previously selected advanced options from user
+variable "opt_show_advanced_options" {
+  type    = bool
+  default = false
 }
 
 ####
-##  Fluentd Configuration
+## Variable Group in schema.yaml: 
+## Advanced Options: Helmchart
 ####
 
-####
-##  Management Agent Configuration
-####
+# Stack Deployment Options
+variable "stack_deployment_option" {
+  type    = string
+  default = "Full"
+}
 
 # Option to deploy metric server
 variable "opt_deploy_metric_server" {
@@ -157,18 +115,37 @@ variable "opt_deploy_metric_server" {
   default = true
 }
 
-####
-##  Input options hidden from stack UI
-####
-
-# OKE Cluster Name
-variable "oke_cluster_name" {
-  type    = string
-  default = "DEFAULT"
+# Option to use latest helmchart
+variable "opt_use_latest_helmchart" {
+  type    = bool
+  default = true
 }
 
-# OKE Cluster Entity OCID
-variable "oke_cluster_entity_ocid" {
+# Option to use latest helmchart
+variable "helmchart_version" {
   type    = string
-  default = "DEFAULT"
+  default = ""
+}
+
+# Fluentd Base Directory
+variable "fluentd_baseDir_path" {
+  type    = string
+  default = "/var/log"
+}
+
+####
+## Variable Group in schema.yaml: 
+## Advanced Options: OCI
+####
+
+# Option to create Dynamic Group and Policies
+variable "opt_create_dynamicGroup_and_policies" {
+  type    = bool
+  default = false
+}
+
+# Option to import dashboards
+variable "opt_import_dashboards" {
+  type    = bool
+  default = true
 }
