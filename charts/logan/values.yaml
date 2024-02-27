@@ -460,7 +460,6 @@ fluentd:
          #"Client Host Region": "America"
          #"Environment": "Production"
          #"Third Key": "Third Value"
-      #ociLAEntityID:
       # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
       #worker:
       logs:
@@ -480,7 +479,6 @@ fluentd:
                #"Client Host Region": "America"
                #"Environment": "Production"
                #"Third Key": "Third Value"
-            #ociLAEntityID:
             #ociLALogGroupID:
             # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
             #worker:
@@ -494,7 +492,6 @@ fluentd:
                #"Client Host Region": "America"
                #"Environment": "Production"
                #"Third Key": "Third Value"
-            #ociLAEntityID:
             #ociLALogGroupID:
             #worker:
          authenticator:
@@ -509,7 +506,6 @@ fluentd:
                #"Client Host Region": "America"
                #"Environment": "Production"
                #"Third Key": "Third Value"
-            #ociLAEntityID:
             #ociLALogGroupID:
             #worker:
          kubecontrollermanager:
@@ -524,7 +520,6 @@ fluentd:
                #"Client Host Region": "America"
                #"Environment": "Production"
                #"Third Key": "Third Value"
-            #ociLAEntityID:
             #ociLALogGroupID:
             #worker:
          cloudcontrollermanager:
@@ -539,7 +534,6 @@ fluentd:
                #"Client Host Region": "America"
                #"Environment": "Production"
                #"Third Key": "Third Value"
-            #ociLAEntityID:
             #ociLALogGroupID:
             #worker:
          scheduler:
@@ -554,7 +548,6 @@ fluentd:
                #"Client Host Region": "America"
                #"Environment": "Production"
                #"Third Key": "Third Value"
-            #ociLAEntityID:
             #ociLALogGroupID:
             #worker:
 
