@@ -101,6 +101,6 @@ module "import_kubernetes_dashbords" {
   source           = "./modules/dashboards"
   compartment_ocid = var.oci_onm_compartment_ocid
 
-  count = local.module_controls_enable_dashboards_module ? 1 : 0
-  depends_on = [ module.helm_release ]
+  count      = local.module_controls_enable_dashboards_module ? 1 : 0
+  depends_on = [module.helm_release]
 }
