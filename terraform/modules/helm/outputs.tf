@@ -6,6 +6,7 @@ locals {
 
   cmd_3_helm_install = join(" ", [
     "helm install oci-kubernetes-monitoring oci-onm/oci-onm",
+    "--set global.namespace=${local.k8s_namespace}",
     "--set global.kubernetesClusterID=${var.oke_cluster_ocid}",
     "--set global.kubernetesClusterName=${var.oke_cluster_name}",
     "--set oci-onm-logan.ociLALogGroupID=${var.oci_la_logGroup_id}",
