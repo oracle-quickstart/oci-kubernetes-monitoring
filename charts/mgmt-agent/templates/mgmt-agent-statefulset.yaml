@@ -36,6 +36,8 @@ spec:
           env:
           - name: HELM_DEPLOYMENT
             value: "true"
+          - name: INSTALL_NAMESPACE
+            value: {{ include "mgmt-agent.namespace" . }}
           resources:
             requests:
               cpu: {{ .Values.deployment.resource.request.cpuCore }}
