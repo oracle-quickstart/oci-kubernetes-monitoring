@@ -1,6 +1,6 @@
 # Change Log
 
-## 2024-02-16
+## 2024-03-08
 ### Added
 - Support for AWS EKS system and control plane logs collection.
 
