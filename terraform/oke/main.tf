@@ -18,8 +18,7 @@ locals {
   module_controls_enable_iam_module        = alltrue([var.toggle_iam_module, var.opt_create_dynamicGroup_and_policies, !var.livelab_switch])
   module_controls_enable_logan_module      = alltrue([var.toggle_logan_module])
   module_controls_enable_mgmt_agent_module = alltrue([var.toggle_mgmt_agent_module])
-  module_controls_enable_helm_module = alltrue([var.toggle_helm_module, local.deploy_helm,
-  local.module_controls_enable_mgmt_agent_module, local.module_controls_enable_logan_module])
+  module_controls_enable_helm_module       = alltrue([var.toggle_helm_module, local.module_controls_enable_mgmt_agent_module, local.module_controls_enable_logan_module])
 }
 
 // Only execute for livelab stack
@@ -78,7 +77,7 @@ module "helm_release" {
   source                         = "./modules/helm"
   helm_abs_path                  = abspath("./charts/oci-onm")
   use_local_helm_chart           = var.toggle_use_local_helm_chart
-  install_helm                   = var.toggle_install_helm
+  install_helm                   = local.deploy_helm && var.toggle_install_helm
   generate_helm_template         = var.toggle_generate_helm_template
   oke_compartment_ocid           = var.oke_compartment_ocid
   oke_cluster_ocid               = var.oke_cluster_ocid
@@ -101,6 +100,6 @@ module "import_kubernetes_dashbords" {
   source           = "./modules/dashboards"
   compartment_ocid = var.oci_onm_compartment_ocid
 
-  count = local.module_controls_enable_dashboards_module ? 1 : 0
-  depends_on = [ module.helm_release ]
+  count      = local.module_controls_enable_dashboards_module ? 1 : 0
+  depends_on = [module.helm_release]
 }

@@ -5,9 +5,11 @@ locals {
   helm_repo_url   = "https://oracle-quickstart.github.io/oci-kubernetes-monitoring"
   helm_repo_chart = "oci-onm"
 
+  k8s_namespace = var.deploy_mushop_config ? "livelab-test" : var.kubernetes_namespace
+
   helm_inputs = {
     # global
-    "global.namespace"             = var.deploy_mushop_config ? "livelab-test" : var.kubernetes_namespace
+    "global.namespace"             = local.k8s_namespace
     "global.kubernetesClusterID"   = var.oke_cluster_ocid
     "global.kubernetesClusterName" = var.oke_cluster_name
 
