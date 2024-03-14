@@ -1,5 +1,9 @@
 # Change Log
 
+## 2024-03-08
+### Added
+- Support for AWS EKS system and control plane logs collection.
+
 ## 2024-02-13
 ### Added
 - Changes to support Kubernetes Solution Pages Offering by OCI Logging Analytics.
@@ -7,7 +11,6 @@
   - A new CronJob to handle the Kubernetes Objects discovery and Objects Logs collection using oci-logging-analytics-kubernetes-discovery Gem.
 ### Changed
 - Moving forward, Kubernetes Objects logs would be collected using Kubernetes Discovery CronJob along with the (optional) Discovery data instead of Fluentd based Deployment.
-
 ## 2024-01-18
 ### Changed
 - Management Agent docker image has been updated to version 1.2.0
