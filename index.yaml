@@ -23,7 +23,7 @@ entries:
     name: oci-onm
     type: application
     urls:
-    - oci-onm-3.4.0.tgz
+    - https://github.com/oracle-quickstart/oci-kubernetes-monitoring/releases/download/oci-onm-3.4.0/oci-onm-3.4.0.tgz
     version: 3.4.0
   - apiVersion: v2
     appVersion: 3.0.0
