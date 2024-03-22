@@ -169,7 +169,11 @@
                     {
                         "hostPath":
                         {
-                            "type": "string"
+                            "type":
+                            [
+                                "string",
+                                "null"
+                            ]
                         }
                     }
                 },
@@ -226,25 +230,7 @@
             "required": 
             [
                 "daemonSetDeployment"
-            ],
-            "if":
-            {
-                "properties": { "daemonSetDeployment": { "const": true } }
-            },
-            "then":
-            {
-                "required": ["daemonSet"],
-                "properties":
-                {
-                    "daemonSet":
-                    {
-                        "required":
-                        [
-                            "hostPath"
-                        ]
-                    }
-                }
-            }
+            ]
         }
     },
     "required":

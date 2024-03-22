@@ -18,7 +18,8 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/configmap: {{ include (print $.Template.BasePath "/metrics-configmap.yaml") . | sha256sum }}
+        checksum/metrics-configmap: {{ include (print $.Template.BasePath "/metrics-configmap.yaml") . | sha256sum }}
+        checksum/agent-configmap: {{ include (print $.Template.BasePath "/agent-configmap.yaml") . | sha256sum }}
       labels:
         app: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent
     spec:
@@ -53,6 +54,8 @@ spec:
               mountPath: /opt/oracle
             - name: mgmtagent-config
               mountPath: /opt/oracle/mgmtagent_config
+            - name: mgmtagent-agent-config
+              mountPath: /opt/oracle/mgmtagent_agent_config
             - mountPath: /tmp
               name: tmp
           securityContext:
@@ -65,6 +68,9 @@ spec:
         - name: mgmtagent-config
           configMap:
             name: {{ include "mgmt-agent.resourceNamePrefix" . }}-metrics
+        - name: mgmtagent-agent-config
+          configMap:
+            name: {{ include "mgmt-agent.resourceNamePrefix" . }}-agent
         - emptyDir: {}
           name: tmp
   volumeClaimTemplates:
