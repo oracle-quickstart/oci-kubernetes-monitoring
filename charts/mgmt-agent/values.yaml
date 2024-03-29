@@ -70,7 +70,7 @@ deployment:
       # Files created in the Container will use group ID 2000, replace it with a different value if desired
       fsGroup: 2000
 
-   # By default Agent will be deployed as StatefulSet. For DaemonSet deployment, set this to true
+   # Set the daemonset deployment to true, to deploy additional agents, to distribute the node metrics collection
    daemonSetDeployment: false
    
    daemonSet:

@@ -33,6 +33,8 @@ spec:
         - name: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent
           image: {{ .Values.mgmtagent.image.url }}
           env:
+          - name: DAEMONSET_DEPLOYMENT
+            value: "{{ .Values.deployment.daemonSetDeployment }}"
           - name: HELM_DEPLOYMENT
             value: "true"
           - name: INSTALL_NAMESPACE

@@ -1,7 +1,6 @@
 # Copyright (c) 2023, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-{{- if not .Values.deployment.daemonSetDeployment }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -35,6 +34,8 @@ spec:
         - name: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent
           image: {{ .Values.mgmtagent.image.url }}
           env:
+          - name: DAEMONSET_DEPLOYMENT
+            value: "{{ .Values.deployment.daemonSetDeployment }}"
           - name: HELM_DEPLOYMENT
             value: "true"
           - name: INSTALL_NAMESPACE
@@ -84,4 +85,3 @@ spec:
         resources:
           requests:
             storage: {{ .Values.deployment.resource.request.storage }}
-{{- end }}
