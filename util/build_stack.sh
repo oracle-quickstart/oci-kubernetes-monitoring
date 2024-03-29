@@ -23,12 +23,17 @@ ROOT_DIR=".."
 ROOT_DIR=$(abspath $ROOT_DIR) # Convert to absolute path
 
 RELEASE_PATH="$ROOT_DIR/releases"
-TEMP_ZIP="${RELEASE_PATH}/temp.zip"
-TEMP_DIR="${RELEASE_PATH}/temp"
+UTIL_PATH="$ROOT_DIR/util"
+BUILD_ZIP="${UTIL_PATH}/temp.zip"
+BUILD_DIR="${UTIL_PATH}/temp"
 
-HELM_SOURCE="$ROOT_DIR/charts"
-MODULES_SOURCE="$ROOT_DIR/terraform/modules"
-ROOT_MODULE_PATH="$ROOT_DIR/terraform/oke"
+HELM_SOURCE="$BUILD_DIR/charts"
+MODULES_SOURCE="$BUILD_DIR/terraform/modules"
+
+STACK_BUILD_PATH="$BUILD_DIR/terraform/oke"
+HELM_SYMLINK="$STACK_BUILD_PATH/charts"
+MODULES_SYMLINK="$STACK_BUILD_PATH/modules"
+
 
 # Usage Instructions
 usage="
@@ -97,97 +102,78 @@ RELEASE_ZIP="${RELEASE_PATH}/${release_name}.zip"
 # Disclaimer
 echo -e "\nDisclaimers - \n"
 if [ -n "$INCLUDE_LOCAL_HELM" ]; then
-    echo -e "-d option passed - local helm-chart files will be part of stack zip"
+    echo -e "\t-d option passed - local helm-chart files will be part of stack zip"
 else
-    echo -e "-d option NOT passed - local helm-chart files will NOT be part of stack zip"
+    echo -e "\t-d option NOT passed - local helm-chart files will NOT be part of stack zip"
 fi
 if [ -n "$LIVE_LAB_BUILD" ]; then
-    echo -e "-l option passed - livelab specific zip will be created"
+    echo -e "\t-l option passed - livelab specific zip will be created"
 fi
 
-# Echo Build Parameters
-echo -e ""
-echo -e "Build parameters - "
-echo -e ""
-echo -e "ROOT_DIR = $ROOT_DIR"
-echo -e "HELM_SOURCE = $HELM_SOURCE"
-echo -e "MODULES_SOURCE = $MODULES_SOURCE"
-echo -e "TEMP_DIR = $TEMP_DIR"
-echo -e "TEMP_ZIP = $TEMP_ZIP"
-echo -e "RELEASE_ZIP = $RELEASE_ZIP"
-echo -e "ROOT_MODULE_PATH = $ROOT_MODULE_PATH"
-echo -e ""
-
 # Start
-echo -e "Building -\n"
+echo -e "\nBuilding -\n"
+
+# Clean up stale temp build dirs and zip file
+rm "$BUILD_ZIP" 2>/dev/null || :
+rm -rf "$BUILD_DIR" 2>/dev/null || :
 
 # Create a release DIR if it does not exist already.
 if test ! -d "$RELEASE_PATH"; then
-    mkdir "${RELEASE_PATH}" || error_and_exit "Could not create releases DIR."
-    echo -e "Created release DIR: ${RELEASE_PATH}"
+    mkdir "${RELEASE_PATH}" || error_and_exit "ERROR: mkdir ${RELEASE_PATH}"
+    echo -e "Created release direcotory - \$PROJECT_HOME/releases"
 fi
 
-#clean up old zip
-rm "${RELEASE_ZIP}" 2>/dev/null && echo -e "Removed stale release zip - ${RELEASE_ZIP}"
+# Clean up old zip
+rm "${RELEASE_ZIP}" 2>/dev/null && echo -e "Removed old stack - ${RELEASE_ZIP}"
 
-# Clean up stale dirs and files
-rm "$TEMP_ZIP" 2>/dev/null && echo -e "Removed stale temp zip - $TEMP_ZIP"
-rm -rf "$TEMP_DIR" 2>/dev/null && echo -e "Removed stale temp dir - $TEMP_DIR"
-
-# Switch to Root Module for gitzip
-cd $ROOT_MODULE_PATH || error_and_exit "Failed to Switch to root module"
-echo -e "Switched to Root Module - $ROOT_MODULE_PATH"
+# Switch to project's root for git archive
+cd $ROOT_DIR || error_and_exit "ERROR: cd $ROOT_DIR"
 
 # Create git archive as temp.zip
-git archive HEAD -o "$TEMP_ZIP" --format=zip  >/dev/null || error_and_exit "git archive failed."
-echo -e "Created Git archive - $TEMP_ZIP"
+git archive HEAD -o "$BUILD_ZIP" --format=zip  >/dev/null || error_and_exit "ERROR: git archive HEAD -o $BUILD_ZIP --format=zip"
+echo -e "Created git archive - $BUILD_ZIP"
 
-# unzip the temp.zip file
-unzip -d "$TEMP_DIR" "$TEMP_ZIP" >/dev/null || error_and_exit "Could not unzip temp.zip"
-echo -e "Unzipped temp.zip to $TEMP_DIR"
+# Unzip the temp.zip file
+unzip -d "$BUILD_DIR" "$BUILD_ZIP" >/dev/null || error_and_exit "ERROR: unzip -d $BUILD_DIR $BUILD_ZIP"
+echo -e "Unzipped git archive - $BUILD_DIR"
  
-# remove the helm-chart symlink
-rm "$TEMP_DIR/charts" || error_and_exit "Could not remove helm-chart symlink"
-echo -e "Removed helm-chart symlink - $TEMP_DIR/charts"
+# Remove the helm-chart symlink
+rm "$HELM_SYMLINK" || error_and_exit "ERROR: rm $HELM_SYMLINK"
+echo -e "Removed helm-chart symlink - $HELM_SYMLINK"
 
 if [ -n "$INCLUDE_LOCAL_HELM" ]; then
     # copy the helm-chart
-    cp -R "$HELM_SOURCE" "$TEMP_DIR" || error_and_exit "Could not copy helm chart"
-    echo -e "Copied helm-chart to $TEMP_DIR"
+    cp -R "$HELM_SOURCE" "$STACK_BUILD_PATH" || error_and_exit "ERROR: cp -R $HELM_SOURCE $STACK_BUILD_PATH"
+    echo -e "Copied helm-chart at - $STACK_BUILD_PATH"
 fi
 
-# remove the terraform modules symlink
-rm "$TEMP_DIR/modules" || error_and_exit "Could not remove modules symlink"
-echo -e "Removed terraform modules symlink - $TEMP_DIR/modules"
+# Remove the terraform modules symlink
+rm "$MODULES_SYMLINK" || error_and_exit "ERROR: rm $MODULES_SYMLINK"
+echo -e "Removed terraform modules symlink - $MODULES_SYMLINK"
 
-# copy the modules
-cp -R "$MODULES_SOURCE" "$TEMP_DIR" || error_and_exit "Could not copy modules"
-echo -e "Copied orignal modules to $TEMP_DIR"
+# Copy the modules
+cp -R "$MODULES_SOURCE" "$STACK_BUILD_PATH" || error_and_exit "ERROR: cp -R $MODULES_SOURCE $STACK_BUILD_PATH"
+echo -e "Copied terraform modules at - $STACK_BUILD_PATH"
 
-# switch back to temp dir
-cd "$TEMP_DIR" || error_and_exit "Could not switch to temp dir"
-echo -e "Switched to $TEMP_DIR"
+# Switch back to stack dir
+cd "$STACK_BUILD_PATH" || error_and_exit "ERROR: cd $STACK_BUILD_PATH"
 
-# update livelab switch input to true
+# Update livelab switch input to true
 if [ -n "$LIVE_LAB_BUILD" ]; then
-    sed "s/false/true/g" -i livelab_switch.tf
-    echo -e "Enabled livelab switch in livelab_switch.tf"
+    sed "s/false/true/g" -i livelab_switch.tf  || error_and_exit "ERROR: sed \"s/false/true/g\" -i livelab_switch.tf"
+    echo -e "Enabled livelab switch in $STACK_BUILD_PATH/livelab_switch.tf"
 fi
 
-# create zip
-zip -r "${RELEASE_ZIP}" . >/dev/null  || error_and_exit "Could not zip $TEMP_DIR"
+# Create final stack zip
+zip -r "${RELEASE_ZIP}" . >/dev/null  || error_and_exit "ERROR: zip -r ${RELEASE_ZIP} ."
 
-# switch back to util dir
-cd "$RELEASE_PATH" || error_and_exit "Could not switch to $RELEASE_PATH"
+# Display Output
+echo -e "\nOutput -\n"
+echo -e "Stack Created - ${RELEASE_ZIP}" 
+
+# Switch back to util dir
+cd "$RELEASE_PATH" || error_and_exit "ERROR: cd $RELEASE_PATH"
 
 # Clean up stale dirs and files
-rm "$TEMP_ZIP" 2>/dev/null && echo -e "Removed stale temp zip - $TEMP_ZIP"
-rm -rf "$TEMP_DIR" 2>/dev/null && echo -e "Removed stale temp dir - $TEMP_DIR"
-
-# Start
-echo -e "\nOutput -\n"
-
-echo -e "New Release Created - $RELEASE_PATH/$release_name.zip"
-
-
-
+rm "$BUILD_ZIP" 2>/dev/null || error_and_exit "ERROR: rm $BUILD_ZIP"
+rm -rf "$BUILD_DIR" 2>/dev/null || error_and_exit "ERROR: rm -rf $BUILD_DIR"

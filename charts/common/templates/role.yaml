@@ -1,0 +1,19 @@
+# Copyright (c) 2023, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+
+{{- if eq (include "common.createServiceAccount" .) "true" }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "common.resourceNamePrefix" . }}
+  namespace: {{ include "common.namespace" . }}
+rules:
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["create"]
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get", "patch"]
+    resourceNames: ["{{ include "common.resourceNamePrefix" . }}-discovery-state-tracker"]
+{{- end }}

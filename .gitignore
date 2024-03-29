@@ -62,6 +62,9 @@ charts/tests/
 charts/**/Chart.lock
 charts/**/charts/
 
+# RM Schema Validation
+meta-schema.yaml
+
 # zip artifacts
 releases/
 

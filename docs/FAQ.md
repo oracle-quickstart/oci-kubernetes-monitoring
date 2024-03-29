@@ -337,4 +337,45 @@ oci-onm-logan:
     containerdataHostPath: /var/lib/docker/containers
 ```
 
+### Control plane log collection for AWS EKS (Amazon Elastic Kubernetes Service)
 
+AWS EKS control plane logs are available in CloudWatch. 
+Once the control plane log collection is enabled, the logs are directly pulled from CloudWatch and ingested into OCI Logging Analytics for further analysis. Alternatively, the logs can be routed over to S3 and pulled from there.
+
+#### How to collect EKS control plane logs from CloudWatch?
+To collect the logs from CloudWatch directly, modify your override_values.yaml to add the following EKS specific variables. Various other variables are available in the values.yaml file and can be updated as necessary.
+
+```      
+..       
+..       
+oci-onm-logan:
+  ..  
+  ..
+  enableEKSControlPlaneLogs: true  
+  fluentd:
+    ...   
+    ...
+    eksControlPlane:
+      region:<aws_region>
+      awsStsRoleArn:<role_arn>
+```
+
+#### How to collect EKS control plane logs from S3?
+If you run into [CloudWatch service quotas](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/cloudwatch_limits_cwl.html), you can alternatively route the logs to S3 and collect them. The control plane logs in S3 need to be in a specific format for the default log collection to work. Please refer [EKS CP Logs Streaming to S3](./eks-cp-logs.md) for instructions on how to configure streaming of Control Plane logs to S3 and subsequenty collect them in OCI Logging Analytics. Once the streaming of logs is setup, modify your override_values.yaml to add the following EKS specific variables. Various other variables are available in the values.yaml file and can be updated as necessary.
+
+```      
+..       
+..       
+oci-onm-logan:
+  ..  
+  ..
+  enableEKSControlPlaneLogs: true  
+  fluentd:
+    ...   
+    ...
+    eksControlPlane:
+      collectionType:"s3"
+      region:<aws_region>
+      awsStsRoleArn:<role_arn>
+      s3Bucket:<s3_bucket>
+```

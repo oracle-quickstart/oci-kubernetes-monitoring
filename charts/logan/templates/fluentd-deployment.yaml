@@ -2,6 +2,7 @@
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 ---
+{{- if .Values.enableEKSControlPlaneLogs }}
 {{- $authtype := .Values.authtype | lower }}
 {{- $imagePullSecrets := .Values.image.imagePullSecrets }}
 {{- $resourceNamePrefix := (include "logan.resourceNamePrefix" .) }}
@@ -24,7 +25,7 @@ spec:
         {{- if eq $authtype "config" }}
         checksum/secrets: {{ include (print $.Template.BasePath "/oci-config-secret.yaml") . | sha256sum }}
         {{- end}}
-        checksum/configmap: {{ include (print $.Template.BasePath "/objects-configmap.yaml") . | sha256sum }}
+        checksum/ekscpconfigmap: {{ include (print $.Template.BasePath "/ekscp-logs-configmap.yaml") . | sha256sum }}
       labels:
         app: {{ $resourceNamePrefix }}-logan
         version: v1
@@ -35,13 +36,9 @@ spec:
       - name: {{ .Values.image.imagePullSecrets }}
       {{- end}}
       containers:
-      - name: {{ $resourceNamePrefix }}-fluentd
+      - name: {{ $resourceNamePrefix }}-ekscp-fluentd
         image: {{ .Values.image.url }}
         imagePullPolicy: {{ default "IfNotPresent" .Values.image.imagePullPolicy }}
-        {{- if .Values.privileged }}
-        securityContext:
-          privileged: {{ .Values.privileged }}
-        {{- end}}
         env:
           - name: FLUENTD_CONF
             value: {{ .Values.fluentd.path }}/{{ .Values.fluentd.file }}
@@ -78,7 +75,7 @@ spec:
           readOnly: true
         {{- end }}
         # Mount directory where fluentd config exists
-        - name: fluentdconfigdir
+        - name: ekscpfluentdconfigdir
           mountPath: {{ .Values.fluentd.path }}
           readOnly: true
         {{- if .Values.extraVolumeMounts }}
@@ -101,8 +98,9 @@ spec:
               - secret:
                   name: {{ $resourceNamePrefix }}-oci-config
       {{- end }}
-      # Mount directory where fluentd config exists
-      - name: fluentdconfigdir
+      # Mount directory where fluentd ekscp config exists
+      - name: ekscpfluentdconfigdir
         configMap:
           # Provide the name of the ConfigMap to mount.
-          name: {{ $resourceNamePrefix }}-objects
+          name: {{ $resourceNamePrefix }}-ekscp-logs
+{{- end }}

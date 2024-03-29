@@ -52,6 +52,18 @@
           "type": "string"
         }
       }
+    },
+    "collectionType": {
+      "type": "string",
+      "enum": ["cloudwatch", "s3"]
+    },
+    "region": {
+      "type": "string"
+    },
+    "s3Bucket": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 63
     }
   }
 }
