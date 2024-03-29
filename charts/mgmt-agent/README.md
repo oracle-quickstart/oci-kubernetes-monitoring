@@ -39,7 +39,7 @@ A Helm chart for collecting Kubernetes Metrics using OCI Management Agent into O
 | deployment.security.runAsUser | integer | `1000` | Processes in the Container will use the specified user ID |
 | deployment.security.runAsGroup | integer | `2000` | Processes in the Container will use the specified group ID |
 | deployment.security.fsGroup | integer | `2000` | Files created in the Container will use the specified group ID |
-| deployment.daemonSetDeployment | bool | `false` | Set the daemonset deployment to true, to deploy additional agents, to distribute the node metrics collection |
+| deployment.daemonSetDeployment | bool | `false` | Setting the daemonset deployment to true, will deploy the Management Agents as a daemonset in addition to deploying the Management Agent as a statefulset. This is done to to distribute the node metrics collection to agents running on the node |
 | deployment.daemonSet.hostPath | string | `nil` |  The host path to store data, if Agent is deployed as DaemonSet. Agent should have read-write access to it |
 | deployment.resource.request.cpuCore | string | `200m` | Minimum CPU cores(millicore) for each agent instance |
 | deployment.resource.request.memory | string | `500Mi` | Minimum memory(mebibytes) for each agent instance |
