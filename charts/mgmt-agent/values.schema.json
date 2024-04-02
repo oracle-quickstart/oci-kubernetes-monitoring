@@ -118,6 +118,19 @@
                 "namespace":
                 {
                     "type": "string"
+                },
+                "monitoringNamespace":
+                {
+                    "anyOf":
+                    [
+                        {
+                          "type": "string",
+                          "pattern": "^[a-z][a-z0-9_]*[a-z0-9]$"
+                        },
+                        {
+                          "type": "null"
+                        }
+                    ]
                 }
             },
             "required":
