@@ -169,12 +169,20 @@
                                 "integer",
                                 "null"
                             ]
-                        },
-                        "daemonSetDeployment":
-                        {
-                            "type": "boolean"
                         }
                     }
+                },
+                "cleanupEpochTime":
+                {
+                    "type":
+                    [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "daemonSetDeployment":
+                {
+                    "type": "boolean"
                 },
                 "daemonSet":
                 {

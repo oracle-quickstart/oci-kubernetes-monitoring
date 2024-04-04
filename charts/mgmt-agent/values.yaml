@@ -70,6 +70,9 @@ deployment:
       # Files created in the Container will use group ID 2000, replace it with a different value if desired
       fsGroup: 2000
 
+   # Please provide the current epoch time in seconds (date +%s) to clean up the agent installation directory from previous deployment
+   cleanupEpochTime:
+
    # Setting the daemonset deployment to true, will deploy the Management Agents as a daemonset in addition to deploying the Management Agent as a statefulset. This is done to to distribute the node metrics collection to agents running on the node
    daemonSetDeployment: false
    

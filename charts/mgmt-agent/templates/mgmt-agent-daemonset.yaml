@@ -39,6 +39,10 @@ spec:
             value: "true"
           - name: INSTALL_NAMESPACE
             value: {{ include "mgmt-agent.namespace" . }}
+          {{- if .Values.deployment.cleanupEpochTime }}
+          - name: POD_CLEANUP_ID
+            value: "{{ .Values.deployment.cleanupEpochTime }}"
+          {{- end }}
           resources:
             requests:
               cpu: {{ .Values.deployment.resource.request.cpuCore }}
