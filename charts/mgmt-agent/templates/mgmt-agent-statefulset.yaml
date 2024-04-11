@@ -19,6 +19,7 @@ spec:
       annotations:
         checksum/metrics-configmap: {{ include (print $.Template.BasePath "/metrics-configmap.yaml") . | sha256sum }}
         checksum/agent-configmap: {{ include (print $.Template.BasePath "/agent-configmap.yaml") . | sha256sum }}
+        checksum/env-configmap: {{ include (print $.Template.BasePath "/env-configmap.yaml") . | sha256sum }}
       labels:
         app: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent
     spec:
@@ -33,17 +34,9 @@ spec:
       containers:
         - name: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent
           image: {{ .Values.mgmtagent.image.url }}
-          env:
-          - name: DAEMONSET_DEPLOYMENT
-            value: "{{ .Values.deployment.daemonSetDeployment }}"
-          - name: HELM_DEPLOYMENT
-            value: "true"
-          - name: INSTALL_NAMESPACE
-            value: {{ include "mgmt-agent.namespace" . }}
-          {{- if .Values.deployment.cleanupEpochTime }}
-          - name: POD_CLEANUP_ID
-            value: "{{ .Values.deployment.cleanupEpochTime }}"
-          {{- end }}
+          envFrom:
+          - configMapRef:
+              name: {{ include "mgmt-agent.resourceNamePrefix" . }}-env
           resources:
             requests:
               cpu: {{ .Values.deployment.resource.request.cpuCore }}
@@ -59,6 +52,8 @@ spec:
               mountPath: /opt/oracle
             - name: mgmtagent-config
               mountPath: /opt/oracle/mgmtagent_config
+            - name: mgmtagent-env
+              mountPath: /opt/oracle/mgmtagent_env
             - name: mgmtagent-agent-config
               mountPath: /opt/oracle/mgmtagent_agent_config
             - mountPath: /tmp
@@ -73,6 +68,9 @@ spec:
         - name: mgmtagent-config
           configMap:
             name: {{ include "mgmt-agent.resourceNamePrefix" . }}-metrics
+        - name: mgmtagent-env
+          configMap:
+            name: {{ include "mgmt-agent.resourceNamePrefix" . }}-env
         - name: mgmtagent-agent-config
           configMap:
             name: {{ include "mgmt-agent.resourceNamePrefix" . }}-agent
