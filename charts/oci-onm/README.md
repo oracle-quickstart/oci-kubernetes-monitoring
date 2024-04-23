@@ -35,7 +35,7 @@ Helm chart for collecting Kubernetes logs & objects and metrics using Fluentd an
 | oci-onm-logan.serviceAccount | string | `"{{ .Values.global.resourceNamePrefix }}"` |  |
 | oci-onm-mgmt-agent.kubernetesCluster.name | string | `"{{ .Values.global.kubernetesClusterName }}"` |  |
 | oci-onm-mgmt-agent.mgmtagent.image.secret | string | `nil` |  |
-| oci-onm-mgmt-agent.mgmtagent.image.url | string | `"container-registry.oracle.com/oci_observability_management/oci-management-agent:1.2.0"` |  |
+| oci-onm-mgmt-agent.mgmtagent.image.url | string | `"container-registry.oracle.com/oci_observability_management/oci-management-agent:1.3.0"` |  |
 | oci-onm-mgmt-agent.mgmtagent.installKey | string | `"resources/input.rsp"` | Copy the downloaded Management Agent Install Key file under root helm directory as resources/input.rsp . Provide either installKeyFileContent or installKey as an install key |
 | oci-onm-mgmt-agent.mgmtagent.installKeyFileContent | string | `nil` | Provide the base64 encoded content of the Management Agent Install Key file. Provide either installKeyFileContent or installKey as an install key |
 | oci-onm-mgmt-agent.namespace | string | `"{{ .Values.global.namespace }}"` |  |
