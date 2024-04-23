@@ -36,13 +36,14 @@ oci-onm-logan:
   ...
   ...
   fluentd:
-      ...
-      ...
+    ...
+    ...
+    customLogs:
       custom-log1:
-         path: /var/log/containers/custom-1.log
-         ociLALogSourceName: "Custom1 Logs"
-         multilineStartRegExp: <Multi-line start expression for multi-line logs>
-         isContainerLog: true
+        path: /var/log/containers/custom-1.log
+        ociLALogSourceName: "Custom1 Logs"
+        multilineStartRegExp: <Multi-line start expression for multi-line logs>
+        isContainerLog: true
 ```
 
 The following example demonstrates a non container customLogs configuration
@@ -54,13 +55,14 @@ oci-onm-logan:
   ...
   ...
   fluentd:
-      ...
-      ...
+    ...
+    ...
+    customLogs:
       custom-log2:
-         path: /var/log/custom/custom-2.log
-         ociLALogSourceName: "Custom2 Logs"
-         multilineStartRegExp: <Multi-line start expression for multi-line logs>
-         isContainerLog: false
+        path: /var/log/custom/custom-2.log
+        ociLALogSourceName: "Custom2 Logs"
+        multilineStartRegExp: <Multi-line start expression for multi-line logs>
+        isContainerLog: false
 ```
 
 #### Use Fluentd conf

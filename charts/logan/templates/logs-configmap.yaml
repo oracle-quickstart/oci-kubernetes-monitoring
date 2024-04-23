@@ -256,12 +256,12 @@ data:
        hostname_command {{ (($.Values.fluentd).rewriteTagPlugin).hostname_command | default "cat /etc/hostname" }}
        <rule>
        key message
-       pattern /kubelet:/
+       pattern /kubelet/
        tag oci{{- ternary (print "." $currWorker) "" $multiWorkersEnabled }}.oke.syslog.kubelet.*
        </rule>
        <rule>
        key message
-       pattern  /^((?!kubelet:).)*$/
+       pattern  /^((?!kubelet).)*$/
        tag oci{{- ternary (print "." $currWorker) "" $multiWorkersEnabled }}.oke.syslog.syslog.*
        </rule>
     </match>

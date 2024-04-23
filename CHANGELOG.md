@@ -1,5 +1,12 @@
 # Change Log
 
+## 2024-04-22
+### Changed
+- Fluentd collector container image uptake to 1.4.1 having changes to uptake new OL8, ruby-default-gems versions. It also has changes to remove fluent-plugin-kubernetes-objects plugin dependency.
+  - Similar updates to build files (Dockerfile, Gemfile) that helps building custom container image.
+- Minor fixes to Documentation. 
+- Minor fix to help `Kubelet logs` to use `Kubernetes Kubelet Logs` Log Source instead of `Linux System Logs` for Kubernetes versions above 1.25.   
+
 ## 2024-03-08
 ### Added
 - Support for AWS EKS system and control plane logs collection.
