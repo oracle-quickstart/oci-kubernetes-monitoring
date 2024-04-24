@@ -28,7 +28,7 @@ A Helm chart for collecting Kubernetes Metrics using OCI Management Agent into O
 | mgmtagent.image.secret | string | `nil` | Image secrets to use for pulling container image (base64 encoded content of ~/.docker/config.json file) |
 | mgmtagent.image.url | string | `nil` | Replace this value with actual docker image URL for Management Agent |
 | mgmtagent.installKey | string | `"resources/input.rsp"` | Copy the downloaded Management Agent Install Key file under root helm directory as resources/input.rsp |
-| mgmtagent.installKeyFileContent | string | `nil` | Provide the base64 encoded content of the Management Agent Install Key file (e.g. cat input.rsp | base64 -w 0) |
+| mgmtagent.installKeyFileContent | string | `nil` | Provide the base64 encoded content of the Management Agent Install Key file (e.g. `cat input.rsp \| base64 -w 0`) |
 | namespace | string | `"{{ .Values.global.namespace }}"` | Kubernetes namespace to create and install this helm chart in |
 | oci-onm-common.createNamespace | bool | `true` | If createNamespace is set to true, it tries to create the namespace defined in 'namespace' variable. |
 | oci-onm-common.createServiceAccount | bool | `true` | By default, a cluster role, cluster role binding and serviceaccount will be created for the monitoring pods to be able to (readonly) access various objects within the cluster, to support collection of various telemetry data. You may set this to false and provide your own serviceaccount (in the parent chart(s)) which has the necessary cluster role(s) binded to it. Refer, README for the cluster role definition and other details. |
