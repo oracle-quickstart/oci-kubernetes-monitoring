@@ -47,7 +47,7 @@ oci-onm-mgmt-agent:
   kubernetesCluster:
     name: "{{ .Values.global.kubernetesClusterName }}"
   mgmtagent:
-    # Provide the base64 encoded content of the Management Agent Install Key file
+    # Provide the base64 encoded content of the Management Agent Install Key file (e.g. `cat input.rsp | base64 -w 0`)
     installKeyFileContent:
     # Follow steps documented at https://github.com/oracle/docker-images/tree/main/OracleManagementAgent to build docker image.
     image:
