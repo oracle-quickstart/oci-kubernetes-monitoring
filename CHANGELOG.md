@@ -1,5 +1,9 @@
 # Change Log
 
+## 2024-04-22
+### Added
+- Support for Management Agent Daemonset deployment
+
 ## 2024-03-08
 ### Added
 - Support for AWS EKS system and control plane logs collection.

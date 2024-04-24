@@ -109,16 +109,32 @@
             {
                 "name":
                 {
-                    "type": "string"
+                    "type":
+                    [
+                        "string",
+                        "null"
+                    ]
                 },
                 "namespace":
                 {
                     "type": "string"
+                },
+                "monitoringNamespace":
+                {
+                    "anyOf":
+                    [
+                        {
+                          "type": "string",
+                          "pattern": "^[a-z][a-z0-9_]*[a-z0-9]$"
+                        },
+                        {
+                          "type": "null"
+                        }
+                    ]
                 }
             },
             "required":
             [
-                "name",
                 "namespace"
             ]
         },
@@ -151,6 +167,32 @@
                             "type":
                             [
                                 "integer",
+                                "null"
+                            ]
+                        }
+                    }
+                },
+                "cleanupEpochTime":
+                {
+                    "type":
+                    [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "daemonSetDeployment":
+                {
+                    "type": "boolean"
+                },
+                "daemonSet":
+                {
+                    "properties":
+                    {
+                        "hostPath":
+                        {
+                            "type":
+                            [
+                                "string",
                                 "null"
                             ]
                         }
@@ -205,7 +247,11 @@
                         }
                     }
                 }
-            }
+            },
+            "required": 
+            [
+                "daemonSetDeployment"
+            ]
         }
     },
     "required":

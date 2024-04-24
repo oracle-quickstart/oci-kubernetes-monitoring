@@ -1,0 +1,20 @@
+# Copyright (c) 2024, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "mgmt-agent.resourceNamePrefix" . }}-env
+  namespace: {{ include "mgmt-agent.namespace" . }}
+data:
+  # Unmodifiable properties
+  # Please do not remove/modify the below properties
+  DAEMONSET_DEPLOYMENT: "{{ .Values.deployment.daemonSetDeployment }}"
+  HELM_DEPLOYMENT: "true"
+  INSTALL_NAMESPACE: "{{ include "mgmt-agent.namespace" . }}"
+  {{- if .Values.deployment.cleanupEpochTime }}
+  POD_CLEANUP_ID: "{{ .Values.deployment.cleanupEpochTime }}"
+  {{- end }}
+
+  # Modifiable properties
+  # Add new or change the below existing properties as required

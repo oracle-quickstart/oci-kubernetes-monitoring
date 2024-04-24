@@ -14,3 +14,23 @@ data:
     clusterName={{ include "mgmt-agent.kubernetesClusterName" . }}
     # Kubernetes Namespace to monitor
     kubernetesNamespace={{ .Values.kubernetesCluster.namespace }}
+    {{- if .Values.kubernetesCluster.monitoringNamespace }}
+    # namespace to push monitoring metrics
+    monitoringNamespace={{ .Values.kubernetesCluster.monitoringNamespace }}
+    {{- end }}
+    {{- if .Values.kubernetesCluster.overrideAllowMetricsAPIServer }}
+    # list of comma separated metric names for API server (/metrics) metrics
+    overrideAllowMetricsAPIServer={{ .Values.kubernetesCluster.overrideAllowMetricsAPIServer }}
+    {{- end }}
+    {{- if .Values.kubernetesCluster.overrideAllowMetricsCluster }}
+    # list of comma separated metric names for agent computed metrics
+    overrideAllowMetricsCluster={{ .Values.kubernetesCluster.overrideAllowMetricsCluster }}
+    {{- end }}
+    {{- if .Values.kubernetesCluster.overrideAllowMetricsKubelet }}
+    # list of comma separated metric names for Kubelet (/api/v1/nodes/<node_name>/proxy/metrics) metrics
+    overrideAllowMetricsKubelet={{ .Values.kubernetesCluster.overrideAllowMetricsKubelet }}
+    {{- end }}
+    {{- if .Values.kubernetesCluster.overrideAllowMetricsNode }}
+    # list of comma separated metric names for Node (/api/v1/nodes/<node_name>/proxy/metrics/resource, /api/v1/nodes/<node_name>/proxy/metrics/cadvisor) metrics
+    overrideAllowMetricsNode={{ .Values.kubernetesCluster.overrideAllowMetricsNode }}
+    {{- end }}
