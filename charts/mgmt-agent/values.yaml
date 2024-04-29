@@ -22,7 +22,7 @@ oci-onm-common:
 mgmtagent:
    # Provide either installKeyFileContent or installKey as an install key. If both provided then installKeyFileContent will take higher precedence.
 
-   # -- Provide the base64 encoded content of the Management Agent Install Key file
+   # -- Provide the base64 encoded content of the Management Agent Install Key file (e.g. cat input.rsp | base64 -w 0)
    installKeyFileContent:
    # -- Copy the downloaded Management Agent Install Key file under root helm directory as resources/input.rsp
    installKey: resources/input.rsp
@@ -50,6 +50,16 @@ kubernetesCluster:
    name:
    # -- Kubernetes cluster namespace(s) to monitor. This can be a comma-separated list of namespaces or '*' to monitor all the namespaces
    namespace: '*'
+   # -- OCI namespace to push Kubernetes Monitoring metrics. The namespace should match the pattern '^[a-z][a-z0-9_]*[a-z0-9]$'. By default metrics will be pushed to 'mgmtagent_kubernetes_metrics'
+   monitoringNamespace:
+   # -- Provide the specific list of comma separated metric names for API server (/metrics) metrics to be collected.
+   overrideAllowMetricsAPIServer:
+   # -- Provide the specific list of comma separated metric names for agent computed metrics to be collected.
+   overrideAllowMetricsCluster:
+   # -- Provide the specific list of comma separated metric names for Kubelet (/api/v1/nodes/<node_name>/proxy/metrics) metrics to be collected.
+   overrideAllowMetricsKubelet:
+   # -- Provide the specific list of comma separated metric names for Node (/api/v1/nodes/<node_name>/proxy/metrics/resource, /api/v1/nodes/<node_name>/proxy/metrics/cadvisor) metrics to be collected.
+   overrideAllowMetricsNode:
 
 deployment:
    security:
@@ -59,6 +69,16 @@ deployment:
       runAsGroup: 2000
       # Files created in the Container will use group ID 2000, replace it with a different value if desired
       fsGroup: 2000
+
+   # Please provide the current epoch time in seconds (Eg: Executing the following command in a bash shell will provide the epoch time: "date +%s") to clean up the agent installation directory from previous deployment
+   cleanupEpochTime:
+
+   # Setting the daemonset deployment to true, will deploy the Management Agents as a daemonset in addition to deploying the Management Agent as a statefulset. This is done to to distribute the node metrics collection to agents running on the node
+   daemonSetDeployment: false
+   
+   daemonSet:
+      # Provide the host path if Agent is deployed as DaemonSet. Management Agent Pod should have read-write access to it.
+      hostPath:
 
    # Provide the agent resources as per Kubernetes resource quantity
    resource:
