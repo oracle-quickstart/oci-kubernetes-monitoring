@@ -160,7 +160,7 @@ Dashboards needs to be imported manually. Below is an example for importing Dash
 
 Use the following `helm uninstall` command to uninstall the chart. Provide the release name used when creating the chart.
 ```
-helm upgrade <release-name> --values <path-to-override-values.yaml> <path-to-helm-chart>
+helm uninstall <release-name>
 ```
 Refer [this](https://helm.sh/docs/helm/helm_uninstall/) for further details on `helm uninstall`.
   
