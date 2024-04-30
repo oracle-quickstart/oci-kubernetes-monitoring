@@ -18,3 +18,8 @@ data:
 
   # Modifiable properties
   # Add new or change the below existing properties as required
+
+  # Openjdk on RHEL with FIPS requires the default secruity property to be disabled, so that 
+  # it does not inadvertently use non-compliant cryptographic configurations from it.
+  # Set this to true to disable, and pass disableJREDefaultSecurityPropertiesFile=true via the rsp file.
+  DISABLE_JRE_DEFAULT_SECURITY_PROPERTIES_FILE: "false"
