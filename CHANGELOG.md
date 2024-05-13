@@ -1,5 +1,10 @@
 # Change Log
 
+## 2024-05-13
+### Changed
+- Fluentd collector container image uptake to 1.4.2 having changes to uptake OCI 2.21.0. 
+  - Similar updates to build files (Dockerfile, Gemfile) that helps building custom container image.
+
 ## 2024-04-29
 ### Added
 - Support for Management Agent Daemonset deployment
