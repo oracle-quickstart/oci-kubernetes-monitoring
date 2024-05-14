@@ -7,8 +7,7 @@ locals {
 
   ### helm
   # Fetch OKE cluster name from OCI OKE Service if user does not provide a name of the target cluster
-  oke_cluster_name = var.oke_cluster_name == "DEFAULT" ? [for c in data.oci_containerengine_clusters.oke_clusters.clusters : c.name if c.id == var.oke_cluster_ocid][0] : var.oke_cluster_name
-  deploy_helm      = var.stack_deployment_option == "Full" ? true : false
+  deploy_helm = var.stack_deployment_option == "Full" ? true : false
 
   ## Module Controls are are final verdicts on if a module should be executed or not 
   ## Module dependencies should be included here as well so a module does not run when it's depenedent moudle is disabled
@@ -19,6 +18,17 @@ locals {
   module_controls_enable_logan_module      = alltrue([var.toggle_logan_module])
   module_controls_enable_mgmt_agent_module = alltrue([var.toggle_mgmt_agent_module])
   module_controls_enable_helm_module       = alltrue([var.toggle_helm_module, local.module_controls_enable_mgmt_agent_module, local.module_controls_enable_logan_module])
+}
+
+module "oke" {
+  source                   = "./modules/oke"
+  oke_is_private           = var.oke_is_private
+  oke_cluster_name         = var.oke_cluster_name
+  oke_cluster_ocid         = var.oke_cluster_ocid
+  oke_compartment_ocid     = var.oke_compartment_ocid
+  oke_subnet_or_pe_ocid    = var.oke_subnet_or_pe_ocid
+  oci_onm_compartment_ocid = var.oci_onm_compartment_ocid
+  tags = var.tags
 }
 
 // Only execute for livelab stack
@@ -89,7 +99,7 @@ module "helm_release" {
   opt_deploy_metric_server       = var.livelab_switch ? false : var.opt_deploy_metric_server
   deploy_mushop_config           = var.livelab_switch
   livelab_service_account        = local.livelab_service_account
-  oke_cluster_name               = local.oke_cluster_name
+  oke_cluster_name               = module.oke.oke_cluster_name
   oke_cluster_entity_ocid        = var.oke_cluster_entity_ocid
 
   count = local.module_controls_enable_helm_module ? 1 : 0

@@ -20,11 +20,6 @@ terraform {
 }
 
 locals {
-  cluster_endpoint       = yamldecode(data.oci_containerengine_cluster_kube_config.oke.content)["clusters"][0]["cluster"]["server"]
-  cluster_ca_certificate = base64decode(yamldecode(data.oci_containerengine_cluster_kube_config.oke.content)["clusters"][0]["cluster"]["certificate-authority-data"])
-  cluster_id             = yamldecode(data.oci_containerengine_cluster_kube_config.oke.content)["users"][0]["user"]["exec"]["args"][4]
-  cluster_region         = yamldecode(data.oci_containerengine_cluster_kube_config.oke.content)["users"][0]["user"]["exec"]["args"][6]
-
   home_region_key = data.oci_identity_tenancy.tenant_details.home_region_key
   home_region     = var.livelab_switch ? "us-phoenix-1" : [for r in data.oci_identity_regions.region_map.regions : r.name if r.key == local.home_region_key][0]
 }
@@ -48,13 +43,15 @@ provider "oci" {
 
 provider "helm" {
   kubernetes {
-    host                   = local.cluster_endpoint
-    cluster_ca_certificate = local.cluster_ca_certificate
+    host                   = module.oke.helm_config.host
+    cluster_ca_certificate = module.oke.helm_config.cluster_ca_certificate
     exec {
       api_version = "client.authentication.k8s.io/v1beta1"
-      args        = ["ce", "cluster", "generate-token", "--cluster-id", local.cluster_id, "--region", local.cluster_region]
-      command     = "oci"
+      args = ["ce", "cluster", "generate-token", "--cluster-id",
+      module.oke.helm_config.cluster_id, "--region", module.oke.helm_config.cluster_region]
+      command = "oci"
     }
+    insecure = module.oke.helm_config.insecure
   }
 }
 

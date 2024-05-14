@@ -83,6 +83,11 @@ variable "opt_import_dashboards" {
   default = true
 }
 
+variable "tags" {
+  # type = object
+  default = null
+}
+
 ####
 ##  OKE Cluster Information
 ####
@@ -97,7 +102,19 @@ variable "oke_cluster_ocid" {
   type = string
 }
 
-# Kubernetes Namespace
+# OKE Cluster OCID
+variable "oke_is_private" {
+  type    = bool
+  default = false
+}
+
+# OKE Cluster OCID
+variable "oke_subnet_or_pe_ocid" {
+  type    = string
+  default = "DEFAULT"
+}
+
+# Kubernetes Namespace TODO: Do we want to keep this and move it under advanced configuration
 variable "kubernetes_namespace" {
   type    = string
   default = "oci-onm"

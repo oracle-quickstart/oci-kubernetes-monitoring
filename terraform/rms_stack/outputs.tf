@@ -18,7 +18,7 @@ output "cmd_3_helm_install" {
 }
 
 output "oke_cluster_name" {
-  value = local.oke_cluster_name
+  value = module.oke.oke_cluster_name
 }
 
 output "oke_cluster_entity_ocid" {

@@ -50,6 +50,8 @@ variableGroups:
     variables:
       - oke_compartment_ocid
       - oke_cluster_ocid
+      - oke_is_private
+      - oke_subnet_or_pe_ocid
 
   - title: "OCI Observability and Management Services Configuration"
     description: "For a list of resources created, see: https://github.com/oracle-quickstart/oci-kubernetes-monitoring"
@@ -65,6 +67,7 @@ variableGroups:
     variables:
       - opt_create_dynamicGroup_and_policies
       - opt_import_dashboards
+      - tags
 
 variables:
 
@@ -86,6 +89,33 @@ variables:
       compartmentId: ${oke_compartment_ocid}
     title: Select OKE cluster
     required: true
+
+  # Option to enable/disable metric server installation during helm deployment
+  oke_is_private:
+    type: boolean
+    title: Is OKE cluster private?
+    description: Select check-box is OKE cluster is private
+    default: false
+    visible:
+      and:
+      - not: 
+        - livelab_switch
+
+  # OKE Cluster OCID
+  oke_subnet_or_pe_ocid:
+    type: string
+    title: "OKE Subnet or Existing Private Endpoint OCID" #TODO
+    description: "OKE Subnet OCID from which OKE Cluster endpoint is reachable; typically this is OKE node subnet and NOT Cluster endpoint subnet" #TODO
+    required: true
+    default: ""
+    pattern: "^ocid1\\.(subnet|ormprivateendpoint)\\.\\S+$"
+    maxLength: 93 # min char count in subnet ocid
+    minLength: 81 # mz char count in private endpoint ocid
+    visible:
+      and:
+      - not: 
+        - livelab_switch
+      - ${oke_is_private}
 
   # kubernetes_namespace:
   #   type: string
@@ -209,3 +239,11 @@ variables:
     description: "Note: You may need to manually clean up the dashboards when you destory the stack as dashboards will not be deleted automatically."
     default: true
     required: true
+
+  tags:
+    type: oci:identity:tag:value
+    title: Tags
+    required: false
+    dependsOn:
+      compartmentId: ${tenancy_ocid}
+
