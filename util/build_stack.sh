@@ -74,7 +74,7 @@ while getopts "hn:lds" option; do
         d)
             INCLUDE_LOCAL_HELM=true
             ;;
-        s) # Run SILENT_MODEly
+        s) # Run SILENT_MODE
             SILENT_MODE=true
             ;;
         :) printf "missing argument for -%s\n" "$OPTARG" >&2
@@ -191,7 +191,7 @@ rm "$BUILD_ZIP" 2>/dev/null || error_and_exit "ERROR: rm $BUILD_ZIP"
 rm -rf "$BUILD_DIR" 2>/dev/null || error_and_exit "ERROR: rm -rf $BUILD_DIR"
 
 if [[ $SILENT_MODE = true ]]; then
-    echo "$BUILD_ZIP" # stdout
+    echo "$RELEASE_ZIP" # stdout
 fi
 
 exit 0
