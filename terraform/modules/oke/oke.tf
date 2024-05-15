@@ -56,6 +56,4 @@ resource "oci_resourcemanager_private_endpoint" "rms_pe" {
   display_name   = "OKE - ${local.oke_cluster_name}"
   vcn_id         = local.oke_vcn_id
   subnet_id      = local.user_provided_subnet_ocid
-  freeform_tags  = var.tags.freeformTags
-  defined_tags   = var.tags.definedTags
 }

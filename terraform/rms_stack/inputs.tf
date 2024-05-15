@@ -83,11 +83,6 @@ variable "opt_import_dashboards" {
   default = true
 }
 
-variable "tags" {
-  # type = object
-  default = null
-}
-
 ####
 ##  OKE Cluster Information
 ####

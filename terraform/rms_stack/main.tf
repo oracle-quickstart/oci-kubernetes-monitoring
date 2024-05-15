@@ -28,7 +28,6 @@ module "oke" {
   oke_compartment_ocid     = var.oke_compartment_ocid
   oke_subnet_or_pe_ocid    = var.oke_subnet_or_pe_ocid
   oci_onm_compartment_ocid = var.oci_onm_compartment_ocid
-  tags = var.tags
 }
 
 // Only execute for livelab stack

@@ -67,7 +67,6 @@ variableGroups:
     variables:
       - opt_create_dynamicGroup_and_policies
       - opt_import_dashboards
-      - tags
 
 variables:
 
@@ -239,11 +238,4 @@ variables:
     description: "Note: You may need to manually clean up the dashboards when you destory the stack as dashboards will not be deleted automatically."
     default: true
     required: true
-
-  tags:
-    type: oci:identity:tag:value
-    title: Tags
-    required: false
-    dependsOn:
-      compartmentId: ${tenancy_ocid}
 
