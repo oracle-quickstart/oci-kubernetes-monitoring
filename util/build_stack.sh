@@ -15,11 +15,13 @@ function error_and_exit {
 
 function abspath    {
     relative_path=$1
-    cd $relative_path
+    cd "$relative_path" || error_and_exit "Absolute path conversion failed: $relative_path"
     pwd
 }
 
-ROOT_DIR=".."
+# define directoriews
+UTIL_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+ROOT_DIR="$UTIL_DIR/.."
 ROOT_DIR=$(abspath $ROOT_DIR) # Convert to absolute path
 
 RELEASE_PATH="$ROOT_DIR/releases"
