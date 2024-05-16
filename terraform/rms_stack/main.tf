@@ -9,6 +9,14 @@ locals {
   # Fetch OKE cluster name from OCI OKE Service if user does not provide a name of the target cluster
   deploy_helm = var.stack_deployment_option == "Full" ? true : false
 
+
+  oke_time_created         = module.oke.metadata_time_created
+  oke_time_created_rfc3398 = replace(replace(local.oke_time_created, " +0000 UTC", "Z", ), " ", "T")
+  new_entity_name          = "${module.oke.metadata_name}_${local.oke_time_created_rfc3398}"
+  create_oke_entity        = var.opt_create_new_la_entity_if_not_provided && var.oke_cluster_entity_ocid == "DEFAULT"
+
+  oke_entity_ocid = local.create_oke_entity ? module.loggingAnalytics[0].oke_cluster_entity_ocid : var.oke_cluster_entity_ocid
+
   ## Module Controls are are final verdicts on if a module should be executed or not 
   ## Module dependencies should be included here as well so a module does not run when it's depenedent moudle is disabled
 
@@ -28,6 +36,7 @@ module "oke" {
   oke_compartment_ocid     = var.oke_compartment_ocid
   oke_subnet_or_pe_ocid    = var.oke_subnet_or_pe_ocid
   oci_onm_compartment_ocid = var.oci_onm_compartment_ocid
+  debug                    = var.toggle_debug
 }
 
 // Only execute for livelab stack
@@ -36,6 +45,7 @@ module "oke" {
 module "livelab" {
   source            = "./modules/livelab"
   current_user_ocid = var.current_user_ocid
+  debug             = var.toggle_debug
 
   count = local.module_controls_enable_livelab_module ? 1 : 0
 
@@ -68,6 +78,9 @@ module "loggingAnalytics" {
   new_logGroup_name    = var.oci_la_logGroup_name
   compartment_ocid     = var.oci_onm_compartment_ocid
   existing_logGroup_id = var.oci_la_logGroup_id
+  create_oke_entity    = local.create_oke_entity
+  oke_entity_name      = local.new_entity_name
+  debug                = var.toggle_debug
 
   count = local.module_controls_enable_logan_module ? 1 : 0
 }
@@ -77,6 +90,7 @@ module "management_agent" {
   source           = "./modules/mgmt_agent"
   uniquifier       = md5(var.oke_cluster_ocid)
   compartment_ocid = var.oci_onm_compartment_ocid
+  debug            = var.toggle_debug
 
   count = local.module_controls_enable_mgmt_agent_module ? 1 : 0
 }
@@ -99,7 +113,8 @@ module "helm_release" {
   deploy_mushop_config           = var.livelab_switch
   livelab_service_account        = local.livelab_service_account
   oke_cluster_name               = module.oke.oke_cluster_name
-  oke_cluster_entity_ocid        = var.oke_cluster_entity_ocid
+  oke_cluster_entity_ocid        = local.oke_entity_ocid
+  debug                          = var.toggle_debug
 
   count = local.module_controls_enable_helm_module ? 1 : 0
 }
@@ -108,6 +123,7 @@ module "helm_release" {
 module "import_kubernetes_dashbords" {
   source           = "./modules/dashboards"
   compartment_ocid = var.oci_onm_compartment_ocid
+  debug            = var.toggle_debug
 
   count      = local.module_controls_enable_dashboards_module ? 1 : 0
   depends_on = [module.helm_release]

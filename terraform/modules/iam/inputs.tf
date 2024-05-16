@@ -20,3 +20,8 @@ variable "oke_compartment_ocid" {
 variable "oke_cluster_ocid" {
   type = string
 }
+
+variable "debug" {
+  type    = bool
+  default = false
+}

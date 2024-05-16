@@ -22,7 +22,7 @@ output "oke_cluster_name" {
 }
 
 output "oke_cluster_entity_ocid" {
-  value = var.oke_cluster_entity_ocid == "DEFAULT" ? null : var.oke_cluster_entity_ocid
+  value = local.oke_entity_ocid == "DEFAULT" ? null : local.oke_entity_ocid
 }
 
 output "oke_dynamic_group_ocid" {

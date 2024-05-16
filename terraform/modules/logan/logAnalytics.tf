@@ -8,6 +8,7 @@ data "oci_log_analytics_namespaces" "logan_namespaces" {
 locals {
   oci_la_namespace         = data.oci_log_analytics_namespaces.logan_namespaces.namespace_collection[0].items[0].namespace
   final_oci_la_logGroup_id = var.create_new_logGroup ? oci_log_analytics_log_analytics_log_group.new_log_group[0].id : var.existing_logGroup_id
+  entity_type = "Kubernetes Cluster"
 }
 
 resource "oci_log_analytics_log_analytics_log_group" "new_log_group" {
@@ -28,4 +29,18 @@ resource "oci_log_analytics_log_analytics_log_group" "new_log_group" {
   #         error_message = "Tenancy is not on-boarded to OCI Logging Analytics Service in ${var.region} region."
   #     }
   # }
+}
+
+resource "oci_log_analytics_log_analytics_entity" "oke" {
+    #Required
+    compartment_id = var.compartment_ocid
+    entity_type_name = local.entity_type
+    name = var.oke_entity_name #TODO Decide on expected name
+    namespace = local.oci_la_namespace
+
+    #Optional
+    cloud_resource_id = null #TODO add ocid of OKE later ?
+    # defined_tags = {"foo-namespace.bar-key"= "value"}
+    # freeform_tags = {"bar-key"= "value"}
+    count = var.create_oke_entity ? 1 : 0
 }

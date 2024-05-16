@@ -7,7 +7,10 @@ locals {
   cluster_private_ip      = var.oke_is_private ? split(":", local.cluster_private_ip_port)[0] : null
   cluster_private_port    = var.oke_is_private ? split(":", local.cluster_private_ip_port)[1] : null
 
-  oke_cluster_name = var.oke_cluster_name == "DEFAULT" ? local.oke_cluster_data.name : var.oke_cluster_name
+  metadata_name         = local.oke_cluster_data.name
+  metadata_time_created = local.oke_cluster_data.metadata[0].time_created # "2021-05-21 16:20:30 +0000 UTC"
+
+  oke_cluster_name = var.oke_cluster_name == "DEFAULT" ? local.metadata_name : var.oke_cluster_name
   oke_vcn_id       = var.oke_is_private ? local.oke_cluster_data.vcn_id : null
 
   # Subnet OCID or Private Endpoint OCID
@@ -35,6 +38,7 @@ locals {
     insecure       = var.oke_is_private
   }
 }
+
 
 data "oci_containerengine_cluster_kube_config" "oke" {
   cluster_id = var.oke_cluster_ocid

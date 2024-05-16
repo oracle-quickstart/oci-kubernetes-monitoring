@@ -61,3 +61,9 @@ variable "toggle_iam_module" {
   type    = bool
   default = true
 }
+
+# Enable/Disable IAM module
+variable "toggle_debug" {
+  type    = bool
+  default = false
+}

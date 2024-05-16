@@ -28,3 +28,18 @@ variable "new_logGroup_name" {
   type    = string
   default = "" // This is expected to rasie terraform error if ran with default value
 }
+
+variable "create_oke_entity" {
+  type    = bool
+  default = false
+}
+
+variable "oke_entity_name" {
+  type    = string
+  default = "DEFAULT"
+}
+
+variable "debug" {
+  type    = bool
+  default = false
+}

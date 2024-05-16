@@ -5,3 +5,8 @@
 variable "compartment_ocid" {
   type = string
 }
+
+variable "debug" {
+  type    = bool
+  default = false
+}

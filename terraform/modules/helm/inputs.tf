@@ -115,3 +115,8 @@ variable "livelab_service_account" {
   type    = string
   default = ""
 }
+
+variable "debug" {
+  type    = bool
+  default = false
+}

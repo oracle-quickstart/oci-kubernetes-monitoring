@@ -184,3 +184,9 @@ variable "oke_cluster_entity_ocid" {
   type    = string
   default = "DEFAULT"
 }
+
+# Option to create Logging Analytics
+variable "opt_create_new_la_entity_if_not_provided" {
+  type    = bool
+  default = false
+}
