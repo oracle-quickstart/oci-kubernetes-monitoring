@@ -16,6 +16,8 @@ locals {
 
   oke_entity_ocid = local.create_oke_entity ? module.loggingAnalytics[0].oke_cluster_entity_ocid : var.oke_cluster_entity_ocid
 
+  helmchart_version = var.helmchart_version == "latest" ? null : var.helmchart_version
+
   ## Module Controls are are final verdicts on if a module should be executed or not 
   ## Module dependencies should be included here as well so a module does not run when it's depenedent moudle is disabled
 
@@ -112,7 +114,7 @@ module "helm_release" {
   deploy_mushop_config           = var.livelab_switch
   livelab_service_account        = local.livelab_service_account
   oke_cluster_name               = module.oke.oke_cluster_name
-  helmchart_version              = var.helmchart_version
+  helmchart_version              = local.helmchart_version
 
   oke_cluster_entity_ocid = local.oke_entity_ocid
 
