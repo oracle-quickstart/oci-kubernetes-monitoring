@@ -44,8 +44,12 @@ variableGroups:
       - oke_cluster_entity_ocid
       - toggle_debug
       - opt_create_new_la_entity_if_not_provided
-
     visible: false
+
+  - title: Stack Options
+    variables:
+      - opt_create_dynamicGroup_and_policies
+      - show_advanced_options
 
   - title: Select an OKE cluster deployed in this region to start monitoring
     description: "Use CLI (Helm) if your cluster does not have a public API endpoint or if it's restricted from accessing container-registry.oracle.com. See: https://github.com/oracle-quickstart/oci-kubernetes-monitoring"
@@ -62,19 +66,38 @@ variableGroups:
     - oci_la_logGroup_id
     - opt_create_new_la_logGroup
     - oci_la_logGroup_name
+    - opt_import_dashboards
+    - tags    
 
-  - title: Advanced Configuration
+  - title: Helmchart Configuration (Optional)
     variables:
       - stack_deployment_option
       - opt_deploy_helm_chart
       - helmchart_version
       - fluentd_baseDir_path
       - opt_deploy_metric_server
-      - opt_create_dynamicGroup_and_policies
-      - opt_import_dashboards
-      - tags
-      
+    visible: show_advanced_options
+
+  # - title:  OCI Configuration (Optional)
+  #   variables:
+
+  #   visible: show_advanced_options
+
 variables:
+
+  #  Stack Deployment Options
+  stack_deployment_option:
+    title: Deployment options
+    description: 'The "Full" option creates both OCI and K8s resources.'
+    type: enum
+    enum: # Dev Note - # Any change in following options must be refactored across schema.yaml
+    - "Full"
+    - "Only OCI Resources"
+    default: ""
+    required: true
+    visible:
+       not: 
+       - livelab_switch
 
   ####
   ##  OKE Cluster Information
@@ -121,6 +144,29 @@ variables:
       - not: 
         - livelab_switch
       - ${oke_is_private}
+
+
+  # Option to enable/disable metric server installation during helm deployment
+  opt_deploy_helm_chart:
+    type: boolean
+    title: Enable helm-chart deployment (This option enables OKE monitoring)
+    description: Clear this check box to skip helm_chart deployment. You can manually install the helm-chart using stack outputs.
+    default: true
+    visible:
+      and:
+      - not: 
+        - livelab_switch
+
+  # Option to enable/disable metric server installation during helm deployment
+  show_advanced_options:
+    type: boolean
+    title: Show Optional Configuration?
+    description: Shows optional configuration options (at bottom)
+    default: false
+    visible:
+      and:
+      - not: 
+        - livelab_switch
 
   # kubernetes_namespace:
   #   type: string
@@ -182,31 +228,6 @@ variables:
   ##  OCI Observability and Management Services Configuration
   ####
 
-  #  Stack Deployment Options
-  stack_deployment_option:
-    title: Deployment options
-    description: 'The "Full" option creates both OCI and K8s resources.'
-    type: enum
-    enum: # Dev Note - # Any change in following options must be refactored across schema.yaml
-    - "Full"
-    - "Only OCI Resources"
-    default: "Full"
-    required: true
-    visible:
-       not: 
-       - livelab_switch
-
-  # Option to enable/disable metric server installation during helm deployment
-  opt_deploy_helm_chart:
-    type: boolean
-    title: Enable helm-chart deployment (This option enables OKE monitoring.)
-    description: Clear this check box to skip helm_chart deployment
-    default: true
-    visible:
-      and:
-      - not: 
-        - livelab_switch
-
   # Helmchart version to deploy
   helmchart_version:
     type: string
@@ -217,13 +238,13 @@ variables:
     required: false
     # ref - https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
     pattern: '^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$'
-    visible:
-      and:
-        - and:
-          - eq:
-            - ${stack_deployment_option}
-            - "Full"
-          - opt_deploy_helm_chart #TODO add NOT livelab dependency
+    # visible:
+    #   and:
+    #     - and:
+    #       - eq:
+    #         - ${stack_deployment_option}
+    #         - "Full"
+    #       - opt_deploy_helm_chart #TODO add NOT livelab dependency
 
   # Option to enable/disable metric server installation during helm deployment
   opt_deploy_metric_server:
@@ -231,12 +252,12 @@ variables:
     title: Enable Metric Server installation
     description: Clear this check box if Metric Server is already installed in your cluster.
     default: true
-    visible:
-      and:
-      - eq:
-        - ${stack_deployment_option} #TODO add livelab dependency
-        - "Full"
-      - opt_deploy_helm_chart
+    # visible:
+    #   and:
+    #   - eq:
+    #     - ${stack_deployment_option} #TODO add livelab dependency
+    #     - "Full"
+    #   - opt_deploy_helm_chart
 
   # Fluentd Base Directory
   fluentd_baseDir_path:
@@ -248,12 +269,12 @@ variables:
     default: /var/log
     required: true
     pattern: '^/[\w- /]*$'
-    visible:
-      and:
-      - eq:
-        - ${stack_deployment_option}
-        - "Full"
-      - opt_deploy_helm_chart #TODO add livelab dependency
+    # visible:
+    #   and:
+    #   - eq:
+    #     - ${stack_deployment_option}
+    #     - "Full"
+    #   - opt_deploy_helm_chart #TODO add livelab dependency
 
   # Option to create Dynamic Group and Policies
   opt_create_dynamicGroup_and_policies:
@@ -268,10 +289,11 @@ variables:
   opt_import_dashboards:
     type: boolean
     title: Select this check box to import dashboards
-    description: "Note: You may need to manually clean up the dashboards when you destory the stack as dashboards will not be deleted automatically."
+    description: "Note: You may need to manually clean up the dashboards when you destroy the stack as dashboards will not be deleted automatically."
     default: true
     required: true
 
+  # OCI tags
   tags:
     type: oci:identity:tag:value
     title: Tags

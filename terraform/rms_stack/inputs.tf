@@ -200,3 +200,8 @@ variable "opt_create_new_la_entity_if_not_provided" {
   type    = bool
   default = false
 }
+
+variable "show_advanced_options" {
+  type    = bool
+  default = false
+}
