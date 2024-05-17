@@ -211,7 +211,7 @@ variables:
   helmchart_version:
     type: string
     maxLength: 15
-    minLength: 5
+    # minLength: 5
     title: Enter helmchart version
     description: "Ex: 3.3.0 | For list of previous releases see: https://github.com/oracle-quickstart/oci-kubernetes-monitoring/releases"
     required: false
