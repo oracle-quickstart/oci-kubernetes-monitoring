@@ -7,8 +7,7 @@ locals {
 
   ### helm
   # Fetch OKE cluster name from OCI OKE Service if user does not provide a name of the target cluster
-  deploy_helm = var.stack_deployment_option == "Full" ? true : false
-
+  deploy_helm = var.stack_deployment_option == "Full" && var.opt_deploy_helm_chart ? true : false
 
   oke_time_created         = module.oke.metadata_time_created
   oke_time_created_rfc3398 = replace(replace(local.oke_time_created, " +0000 UTC", "Z", ), " ", "T")
@@ -113,8 +112,11 @@ module "helm_release" {
   deploy_mushop_config           = var.livelab_switch
   livelab_service_account        = local.livelab_service_account
   oke_cluster_name               = module.oke.oke_cluster_name
-  oke_cluster_entity_ocid        = local.oke_entity_ocid
-  debug                          = var.toggle_debug
+  helmchart_version              = var.helmchart_version
+
+  oke_cluster_entity_ocid = local.oke_entity_ocid
+
+  debug = var.toggle_debug
 
   count = local.module_controls_enable_helm_module ? 1 : 0
 }

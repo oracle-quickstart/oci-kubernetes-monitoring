@@ -115,16 +115,6 @@ variable "kubernetes_namespace" {
   default = "oci-onm"
 }
 
-####
-##  OCI Observability and Management Information
-####
-
-# Stack Deployment Options
-variable "stack_deployment_option" {
-  type    = string
-  default = "Full"
-}
-
 # Compartment for creating OCI Observability and Management resources
 variable "oci_onm_compartment_ocid" {
   type    = string
@@ -149,24 +139,44 @@ variable "oci_la_logGroup_name" {
   default = ""
 }
 
+####
+##  Advanced Configuration
+####
+
+# Stack Deployment Options
+variable "stack_deployment_option" {
+  type    = string
+  default = "Full"
+}
+
+# Stack Deployment Options
+variable "opt_deploy_helm_chart" {
+  type    = bool
+  default = true
+}
+
+# Option to use latest helmchart
+variable "helmchart_version" {
+  type    = string
+  default = null
+}
+
+# Option to deploy metric server
+variable "opt_deploy_metric_server" {
+  type    = bool
+  default = true
+}
+
 # Fluentd Base Directory
 variable "fluentd_baseDir_path" {
   type    = string
   default = "/var/log"
 }
 
-####
-##  Fluentd Configuration
-####
-
-####
-##  Management Agent Configuration
-####
-
-# Option to deploy metric server
-variable "opt_deploy_metric_server" {
-  type    = bool
-  default = true
+# tags
+variable "tags" {
+  type    = object
+  default = { "freeformTags" = {}, "definedTags" = {} }
 }
 
 ####

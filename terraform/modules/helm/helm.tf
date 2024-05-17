@@ -2,10 +2,14 @@
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 locals {
-  helm_repo_url   = "https://oracle-quickstart.github.io/oci-kubernetes-monitoring"
-  helm_repo_chart = "oci-onm"
+  helm_repo_url = "https://oracle-quickstart.github.io/oci-kubernetes-monitoring"
+  chart_name    = "oci-onm"
 
   k8s_namespace = var.deploy_mushop_config ? "livelab-test" : var.kubernetes_namespace
+
+  repository = var.use_local_helm_chart ? null : local.helm_repo_url
+  chart      = var.use_local_helm_chart ? var.helm_abs_path : local.chart_name
+  version    = var.use_local_helm_chart ? null : var.helmchart_version == null ? null : var.helmchart_version
 
   helm_inputs = {
     # global
@@ -33,8 +37,9 @@ locals {
 # Create helm release
 resource "helm_release" "oci-kubernetes-monitoring" {
   name              = "oci-kubernetes-monitoring"
-  repository        = var.use_local_helm_chart ? null : local.helm_repo_url
-  chart             = var.use_local_helm_chart ? var.helm_abs_path : local.helm_repo_chart
+  repository        = local.repository
+  chart             = local.chart
+  version           = local.version
   wait              = true
   dependency_update = true
   atomic            = true
@@ -73,8 +78,9 @@ data "helm_template" "oci-kubernetes-monitoring" {
   name = "oci-kubernetes-monitoring"
   # default behaviour is to use remote helm repo | var.use_local_helm_chart = false
   # the option to use local helm chart is for development purpose only
-  repository        = var.use_local_helm_chart ? null : local.helm_repo_url
-  chart             = var.use_local_helm_chart ? var.helm_abs_path : local.helm_repo_chart
+  repository        = local.repository
+  chart             = local.chart
+  version           = local.version
   dependency_update = true
 
   values = var.deploy_mushop_config ? ["${file("${path.module}/mushop_values.yaml")}"] : null

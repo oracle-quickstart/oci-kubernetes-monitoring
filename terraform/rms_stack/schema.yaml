@@ -42,7 +42,9 @@ variableGroups:
       - livelab_switch
       - oke_cluster_name
       - oke_cluster_entity_ocid
-      - stack_deployment_option
+      - toggle_debug
+      - opt_create_new_la_entity_if_not_provided
+
     visible: false
 
   - title: Select an OKE cluster deployed in this region to start monitoring
@@ -56,18 +58,22 @@ variableGroups:
   - title: "OCI Observability and Management Services Configuration"
     description: "For a list of resources created, see: https://github.com/oracle-quickstart/oci-kubernetes-monitoring"
     variables:
-    - opt_deploy_metric_server
     - oci_onm_compartment_ocid
-    - opt_create_new_la_logGroup
     - oci_la_logGroup_id
+    - opt_create_new_la_logGroup
     - oci_la_logGroup_name
-    - fluentd_baseDir_path
 
   - title: Advanced Configuration
     variables:
+      - stack_deployment_option
+      - opt_deploy_helm_chart
+      - helmchart_version
+      - fluentd_baseDir_path
+      - opt_deploy_metric_server
       - opt_create_dynamicGroup_and_policies
       - opt_import_dashboards
-
+      - tags
+      
 variables:
 
   ####
@@ -130,34 +136,6 @@ variables:
   ##  OCI Observability and Management Services Configuration
   ####
 
-  #  Stack Deployment Options
-  stack_deployment_option:
-    title: Deployment options
-    description: 'The "Full" option creates both OCI and K8s resources.'
-    type: enum
-    enum: # Dev Note - # Any change in following options must be refactored across schema.yaml
-    - "Full"
-    - "Only OCI Resources"
-    default: "Full"
-    required: true
-    visible:
-       not: 
-       - livelab_switch    
-
-  # Option to enable/disable metric server installation during helm deployment
-  opt_deploy_metric_server:
-    type: boolean
-    title: Enable Metric Server installation
-    description: Clear this check box if Metric Server is already installed in your cluster.
-    default: true
-    visible:
-      and:
-      - eq:
-        - ${stack_deployment_option}
-        - "Full"
-      - not: 
-        - livelab_switch
-
   # Compartment for creating OCI Observability and Management resources
   oci_onm_compartment_ocid:
     type: oci:identity:compartment:id
@@ -200,6 +178,66 @@ variables:
         - opt_create_new_la_logGroup
     pattern: '^([a-zA-Z0-9]|[a-zA-Z0-9][\\ a-zA-Z0-9_\-]*[\\a-zA-Z\-0-9_])$'  
 
+  ####
+  ##  OCI Observability and Management Services Configuration
+  ####
+
+  #  Stack Deployment Options
+  stack_deployment_option:
+    title: Deployment options
+    description: 'The "Full" option creates both OCI and K8s resources.'
+    type: enum
+    enum: # Dev Note - # Any change in following options must be refactored across schema.yaml
+    - "Full"
+    - "Only OCI Resources"
+    default: "Full"
+    required: true
+    visible:
+       not: 
+       - livelab_switch
+
+  # Option to enable/disable metric server installation during helm deployment
+  opt_deploy_helm_chart:
+    type: boolean
+    title: Enable helm-chart deployment (This option enables OKE monitoring.)
+    description: Clear this check box to skip helm_chart deployment
+    default: true
+    visible:
+      and:
+      - not: 
+        - livelab_switch
+
+  # Helmchart version to deploy
+  helmchart_version:
+    type: string
+    maxLength: 15
+    minLength: 5
+    title: Enter helmchart version
+    description: "Ex: 3.3.0 | For list of previous releases see: https://github.com/oracle-quickstart/oci-kubernetes-monitoring/releases"
+    required: false
+    # ref - https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
+    pattern: '^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$'
+    visible:
+      and:
+        - and:
+          - eq:
+            - ${stack_deployment_option}
+            - "Full"
+          - opt_deploy_helm_chart #TODO add NOT livelab dependency
+
+  # Option to enable/disable metric server installation during helm deployment
+  opt_deploy_metric_server:
+    type: boolean
+    title: Enable Metric Server installation
+    description: Clear this check box if Metric Server is already installed in your cluster.
+    default: true
+    visible:
+      and:
+      - eq:
+        - ${stack_deployment_option} #TODO add livelab dependency
+        - "Full"
+      - opt_deploy_helm_chart
+
   # Fluentd Base Directory
   fluentd_baseDir_path:
     type: string
@@ -215,17 +253,12 @@ variables:
       - eq:
         - ${stack_deployment_option}
         - "Full"
-      - not: 
-        - livelab_switch
-
-  ####
-  ##  Optional Inputs
-  ####
+      - opt_deploy_helm_chart #TODO add livelab dependency
 
   # Option to create Dynamic Group and Policies
   opt_create_dynamicGroup_and_policies:
     type: boolean
-    title: Select this check box to create OCI IAM dynamic groups and policies which are required for the monitoring solution
+    title: Select this check box to create OCI IAM dynamic group and policies which are required for the monitoring solution
     #description: "Ref: https://github.com/oracle-quickstart/oci-kubernetes-monitoring#pre-requisites"
     description: "Note: If node pools and the OKE cluster are in different compartments, then the dynamic group definition must be updated."
     default: false
@@ -239,3 +272,7 @@ variables:
     default: true
     required: true
 
+  tags:
+    type: oci:identity:tag:value
+    title: Tags
+    required: false
