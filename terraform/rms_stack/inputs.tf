@@ -175,7 +175,7 @@ variable "fluentd_baseDir_path" {
 
 # tags
 variable "tags" {
-  type    = object
+  type    = map(any)
   default = { "freeformTags" = {}, "definedTags" = {} }
 }
 

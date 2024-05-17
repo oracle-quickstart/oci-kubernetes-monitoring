@@ -42,6 +42,8 @@ resource "helm_release" "oci-kubernetes-monitoring" {
   version           = local.version
   wait              = true
   dependency_update = true
+  force_update      = true
+  cleanup_on_fail   = true
   atomic            = true
 
   values = var.deploy_mushop_config ? ["${file("${path.module}/mushop_values.yaml")}"] : null
