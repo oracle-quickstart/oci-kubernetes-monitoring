@@ -10,3 +10,7 @@ variable "debug" {
   type    = bool
   default = false
 }
+
+variable "tags" {
+  type = map(any)
+}

@@ -3,9 +3,18 @@
 
 locals {
   dashboards = ["cluster.json", "node.json", "pod.json", "workload.json", "service-type-lb.json"]
+  #tags
+  defined_tags  = var.tags.definedTags
+  freeform_tags = var.tags.freeformTags
+
+  template_values = {
+    "compartment_ocid" = "${var.compartment_ocid}"
+    "defined_tags"     = join(",", [for key, value in var.tags.definedTags : "\"${key}\": \"${value}\""])
+    "freeform_tags"    = join(",", [for key, value in var.tags.freeformTags : "\"${key}\": \"${value}\""])
+  }
 }
 
 resource "oci_management_dashboard_management_dashboards_import" "multi_management_dashboards_import" {
   for_each       = toset(local.dashboards)
-  import_details = templatefile(format("%s/%s/%s", "${path.module}", "dashboards_json", each.value), { "compartment_ocid" : "${var.compartment_ocid}" })
+  import_details = templatefile(format("%s/%s/%s", "${path.module}", "dashboards_json", each.value), local.template_values)
 }

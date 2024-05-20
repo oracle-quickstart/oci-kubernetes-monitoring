@@ -2,18 +2,18 @@
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 locals {
-  helm_repo_url = "https://oracle-quickstart.github.io/oci-kubernetes-monitoring"
-  chart_name    = "oci-onm"
+  remote_helm_repo = "https://oracle-quickstart.github.io/oci-kubernetes-monitoring"
+  chart_name       = "oci-onm"
 
-  k8s_namespace = var.deploy_mushop_config ? "livelab-test" : var.kubernetes_namespace
+  is_local_helm_chart = var.local_helm_chart != null
 
-  repository = var.use_local_helm_chart ? null : local.helm_repo_url
-  chart      = var.use_local_helm_chart ? var.helm_abs_path : local.chart_name
-  version    = var.use_local_helm_chart ? null : var.helmchart_version == null ? null : var.helmchart_version
+  chart      = local.is_local_helm_chart ? var.local_helm_chart : local.chart_name
+  repository = local.is_local_helm_chart ? null : local.remote_helm_repo
+  version    = local.is_local_helm_chart ? null : var.helmchart_version
 
   helm_inputs = {
     # global
-    "global.namespace"             = local.k8s_namespace
+    "global.namespace"             = var.kubernetes_namespace
     "global.kubernetesClusterID"   = var.oke_cluster_ocid
     "global.kubernetesClusterName" = var.oke_cluster_name
 
@@ -22,7 +22,7 @@ locals {
     "oci-onm-logan.ociLALogGroupID" = var.oci_la_logGroup_id
     "oci-onm-logan.fluentd.baseDir" = var.fluentd_baseDir_path
 
-    #oci-onm-mgmt-agent
+    # oci-onm-mgmt-agent
     "oci-onm-mgmt-agent.mgmtagent.installKeyFileContent" = var.mgmt_agent_install_key_content
     "oci-onm-mgmt-agent.deployMetricServer"              = var.opt_deploy_metric_server
   }
@@ -72,7 +72,7 @@ resource "helm_release" "oci-kubernetes-monitoring" {
     }
   }
 
-  count = var.install_helm ? 1 : 0
+  count = var.install_helm_chart ? 1 : 0
 }
 
 # Create helm template
@@ -112,4 +112,10 @@ data "helm_template" "oci-kubernetes-monitoring" {
   }
 
   count = var.generate_helm_template ? 1 : 0
+}
+
+resource "local_file" "helm_template" {
+  count    = var.debug && var.generate_helm_template ? 1 : 0
+  content  = jsonencode(data.helm_template.oci-kubernetes-monitoring[0])
+  filename = "${path.module}/tf-debug/helm_template.json"
 }

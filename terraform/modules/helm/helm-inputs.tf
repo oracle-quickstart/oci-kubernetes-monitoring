@@ -10,14 +10,14 @@ variable "generate_helm_template" {
   default = false
 }
 
-variable "install_helm" {
+variable "install_helm_chart" {
   type    = bool
   default = true
 }
 
-variable "use_local_helm_chart" {
-  type    = bool
-  default = false
+variable "local_helm_chart" {
+  type    = string
+  default = null
 }
 
 ####
@@ -26,15 +26,7 @@ variable "use_local_helm_chart" {
 
 # Option to use latest helmchart
 variable "helmchart_version" {
-  type    = string
-  default = null
-}
-
-# Used for local testing
-# Absoulte path to helm chart directory
-variable "helm_abs_path" {
-  type    = string
-  default = "optional"
+  type = string
 }
 
 ####
