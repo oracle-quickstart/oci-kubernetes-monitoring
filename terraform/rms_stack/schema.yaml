@@ -27,54 +27,112 @@ variableGroups:
       - fingerprint
       - boat_auth
       - boat_tenancy_ocid
-      - toggle_generate_helm_template
-      - toggle_install_helm
-      - toggle_use_local_helm_chart
-      - toggle_dashboards_module
-      - toggle_helm_module
-      - toggle_mgmt_agent_module
-      - toggle_logan_module
-      - toggle_livelab_module
-      - toggle_iam_module
       - compartment_ocid
-      - kubernetes_namespace
       - current_user_ocid
-      - livelab_switch
-      - oke_cluster_name
-      - oke_cluster_entity_ocid
-      - toggle_debug
-      - opt_create_new_la_entity_if_not_provided
+    visible: false
 
+  # These inputs are hidden from RMS UI and will be removed in future versions
+  - title: "Depreciated inputs"
+    variables:
+      - oke_cluster_name
+      - opt_create_dynamicGroup_and_policies
+      - opt_deploy_helm_chart
+      - kubernetes_namespace
     visible: false
 
   - title: Select an OKE cluster deployed in this region to start monitoring
-    description: "Use CLI (Helm) if your cluster does not have a public API endpoint or if it's restricted from accessing container-registry.oracle.com. See: https://github.com/oracle-quickstart/oci-kubernetes-monitoring"
     variables:
       - oke_compartment_ocid
       - oke_cluster_ocid
       - oke_is_private
       - oke_subnet_or_pe_ocid
 
+  - title: Stack Options
+    variables:
+      - dropdown_create_dynamicGroup_and_policies
+      - stack_deployment_option
+      - show_advanced_options
+
   - title: "OCI Observability and Management Services Configuration"
-    description: "For a list of resources created, see: https://github.com/oracle-quickstart/oci-kubernetes-monitoring"
     variables:
     - oci_onm_compartment_ocid
-    - oci_la_logGroup_id
     - opt_create_new_la_logGroup
+    - oci_la_logGroup_id
     - oci_la_logGroup_name
+    - opt_create_new_la_entity
+    - oke_cluster_entity_ocid
+    - opt_import_dashboards
+    - tags
 
-  - title: Advanced Configuration
+  - title: Helm chart Configuration (Optional)
     variables:
-      - stack_deployment_option
-      - opt_deploy_helm_chart
-      - helmchart_version
-      - fluentd_baseDir_path
       - opt_deploy_metric_server
-      - opt_create_dynamicGroup_and_policies
-      - opt_import_dashboards
-      - tags
-      
+      - helm_chart_version
+      - fluentd_baseDir_path
+    visible: show_advanced_options
+
 variables:
+
+  # @Depreciated 
+  # # Option to create Dynamic Group and Policies
+  # opt_create_dynamicGroup_and_policies:
+  #   type: boolean
+  #   title: Select this check box to create OCI IAM dynamic group and policies which are required for the monitoring solution
+  #   #description: "Ref: https://github.com/oracle-quickstart/oci-kubernetes-monitoring#pre-requisites"
+  #   description: "Note: If node pools and the OKE cluster are in different compartments, then the dynamic group definition must be updated."
+  #   default: false
+  #   required: true
+
+  # Option to create Dynamic Group and Policies
+  dropdown_create_dynamicGroup_and_policies:
+    type: enum
+    title: Choose option to create OCI IAM dynamic group and policies which are required for the monitoring solution
+    #description: "Ref: https://github.com/oracle-quickstart/oci-kubernetes-monitoring#pre-requisites"
+    description: |-
+      [★] If "False" : the required IAM resources need to be created manually before running the stack.          
+      [★] Required DynamicGroup and Policy Statements are <a href="https://github.com/oracle-quickstart/oci-kubernetes-monitoring#pre-requisites" 
+      target="_blank" rel="noopener noreferrer">documented here</a>.
+      [★] Users typically opt-out when:
+      [1] User does not have access to create policy in root compartment.
+      [2] If node pools and the OKE cluster are in different compartments
+      (DynamicGroup created via the stack will need to be updated in this case).
+    # [3] User wants to manage required policies outside of stack as part of an existing policy.
+    enum:
+    - "Create" # Setting enum as "True" fails to save input via stack UI
+    - "Do Not Create"
+    default: "" # Setting this value to "", forces user to select from one of the dropdown options
+    required: true
+
+  #  Stack Deployment Options
+  stack_deployment_option:
+    title: Choose deployment option
+    description: |-
+      [★] Both options create following OCI resources: OCI LA Entity, OCI LA LogGroup, Management Agent Key, 
+      RMS Private Endpoint, Management Dashboards, Policies and DynamicGroup.
+      [★] "Full" option also deploys the <a href="https://oracle-quickstart.github.io/oci-kubernetes-monitoring" 
+      target="_blank" rel="noopener noreferrer">helm chart</a>.
+      [★] "Only OCI Resources" option does NOT deploy the helm chart.
+      [★] Users typically opt to not install helm chart when they want to integrate the solution (helm chart) as part of 
+      their existing kubernetes deployment stack.
+      [★] If you opt for "Only OCI Resources" option, the stack will produce the required helm commands to install 
+      the solution manually. (as outputs)
+      [★] These commands will need to be executed from a node where K8s cluster is accessible.
+    type: enum
+    enum: # Dev Note - # Any change in following options must be refactored across schema.yaml
+    - "Full"
+    - "Only OCI Resources"
+    required: true
+    default: "Full"
+
+  # Option to enable/disable metric server installation during helm deployment
+  show_advanced_options:
+    type: boolean
+    title: Show advanced helm chart Configuration?
+    description: |-
+      [★] Custom helm chart version
+      [★] Fluentd agent base directory path 
+      [★] Control metric server installation
+    default: false
 
   ####
   ##  OKE Cluster Information
@@ -98,19 +156,23 @@ variables:
   # Option to enable/disable metric server installation during helm deployment
   oke_is_private:
     type: boolean
-    title: Is OKE cluster private?
-    description: Select check-box is OKE cluster is private
+    title: Is the selected OKE cluster private?
     default: false
     visible:
-      and:
-      - not: 
-        - livelab_switch
+      eq:
+        - ${stack_deployment_option}
+        - "Full"
 
   # OKE Cluster OCID
   oke_subnet_or_pe_ocid:
     type: string
-    title: "OKE Subnet or Existing Private Endpoint OCID" #TODO
-    description: "OKE Subnet OCID from which OKE Cluster endpoint is reachable; typically this is OKE node subnet and NOT Cluster endpoint subnet" #TODO
+    title: "Enter OKE Node Subnet OCID or RMS Private Endpoint OCID"
+    description: |-
+      [★] A RMS private endpoint is required to connect to a private OKE cluster.
+      [★] If Subnet OCID is provided, stack creates a RMS private endpoint in the provided subnet and uses it.
+      [★] Subnet should be the one from which OKE Cluster endpoint is reachable; typically this is OKE node subnet and 
+      NOT Cluster endpoint subnet.
+      [★] If an existing private endpoint OCID is provided, stack attempts to use it to connect to the private OKE cluster.
     required: true
     default: ""
     pattern: "^ocid1\\.(subnet|ormprivateendpoint)\\.\\S+$"
@@ -118,19 +180,10 @@ variables:
     minLength: 81 # mz char count in private endpoint ocid
     visible:
       and:
-      - not: 
-        - livelab_switch
       - ${oke_is_private}
-
-  # kubernetes_namespace:
-  #   type: string
-  #   minLength: 1
-  #   maxLength: 63
-  #   title: Kubernetes Namespace
-  #   description: Kubernetes Namespace in which the monitoring solution to be deployed
-  #   default: kube-system
-  #   pattern: '^([a-z0-9]|[a-z][a-z\-0-9]*[a-z0-9])$' #Ref - https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#dns-label-names
-  #   required: true
+      - eq:
+        - ${stack_deployment_option}
+        - "Full"
 
   ####
   ##  OCI Observability and Management Services Configuration
@@ -141,7 +194,11 @@ variables:
     type: oci:identity:compartment:id
     required: true
     title: Select compartment for Logging Analytics, Management Agent, and Monitoring service resources.
-    description: "This compartment will be used for creating dashboards, log groups, entities, Management Agent keys, metric namespaces, and related resources. For a full list of resources, see: https://github.com/oracle-quickstart/oci-kubernetes-monitoring"
+    description: |-
+      This compartment will be used for creating dashboards, log groups, entities, 
+      Management Agent keys, metric namespaces, and related resources. For a full list 
+      of resources, see: <a href="https://github.com/oracle-quickstart/oci-kubernetes-monitoring" 
+      target="_blank" rel="noopener noreferrer">https://github.com/oracle-quickstart/oci-kubernetes-monitoring</a>
     default: compartment_ocid
 
   # Option to create Logging Analytics
@@ -149,9 +206,9 @@ variables:
     type: boolean
     title: Select this check box if you want to create a new log group.
     default: false
-    visible:
-      not: 
-      - livelab_switch
+    # visible:
+    #   not: 
+    #   - livelab_switch
 
   # OCI Logging Analytics LogGroup OCID of existing LogGroup
   oci_la_logGroup_id:
@@ -171,60 +228,71 @@ variables:
     maxLength: 255
     minLength: 1
     required: true
-    title: OCI Logging Analytics log group name
+    title: Enter OCI Logging Analytics log group name
     description: "Tip: To make the log group easy to find in Dashboards and Logs Explorer pages, provide a unique name associated with your cluster name."
     visible:
       and:
         - opt_create_new_la_logGroup
     pattern: '^([a-zA-Z0-9]|[a-zA-Z0-9][\\ a-zA-Z0-9_\-]*[\\a-zA-Z\-0-9_])$'  
 
-  ####
-  ##  OCI Observability and Management Services Configuration
-  ####
-
-  #  Stack Deployment Options
-  stack_deployment_option:
-    title: Deployment options
-    description: 'The "Full" option creates both OCI and K8s resources.'
-    type: enum
-    enum: # Dev Note - # Any change in following options must be refactored across schema.yaml
-    - "Full"
-    - "Only OCI Resources"
-    default: "Full"
-    required: true
-    visible:
-       not: 
-       - livelab_switch
-
   # Option to enable/disable metric server installation during helm deployment
-  opt_deploy_helm_chart:
+  opt_create_new_la_entity:
     type: boolean
-    title: Enable helm-chart deployment (This option enables OKE monitoring.)
-    description: Clear this check box to skip helm_chart deployment
-    default: true
-    visible:
-      and:
-      - not: 
-        - livelab_switch
+    title:  Select this check box if you want to create a new Kubernetes Cluster Entity for this cluster
+    default: false
 
-  # Helmchart version to deploy
-  helmchart_version:
+  # OKE Cluster OCID
+  oke_cluster_entity_ocid:
+    type: string
+    title: "Enter OCI Logging Analytics kubernetes cluster Entity OCID"
+    required: true #TODO does this need to be required?
+    default: "<< Replace with a valid OCI Logging Analytics Entity >>"
+    pattern: "^ocid1\\.(loganalyticsentity)\\.\\S+$"
+    maxLength: 93 # min char count in subnet ocid
+    minLength: 93 # mz char count in private endpoint ocid
+    visible:
+      not: 
+        - ${opt_create_new_la_entity}
+
+  # Option to create Dynamic Group and Policies
+  opt_import_dashboards:
+    type: boolean
+    title: Select this check box to import dashboards
+    description: "Note: You may need to manually clean up the dashboards when you destroy the stack as dashboards will not be deleted automatically."
+    default: true
+    required: true
+
+  # OCI tags
+  tags:
+    type: oci:identity:tag:value
+    title: Tags
+    required: false
+    dependsOn:
+      compartmentId: ${oci_onm_compartment_ocid} #TODO check if this needs to be tenancy compartment instead
+
+  ####
+  ##  Helm chart Configuration
+  ####
+
+  helm_chart_version:
     type: string
     maxLength: 15
-    minLength: 5
-    default: latest
-    title: Enter helmchart version
-    description: "Ex: 3.3.0 | For list of previous releases see: https://github.com/oracle-quickstart/oci-kubernetes-monitoring/releases"
-    required: true
+    # minLength: 5 # setting minimum length makes this option mandatory regardless of required: false property
+    default: "null"
+    title: Enter oci-onm helm chart version
+    description: |-
+      Ex: 3.3.0 | For list of previous releases see: <a href="https://github.com/oracle-quickstart/oci-kubernetes-monitoring/releases" 
+      target="_blank" rel="noopener noreferrer">https://github.com/oracle-quickstart/oci-kubernetes-monitoring/releases</a>
+    required: false
     # ref - https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
-    pattern: '^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$|^latest$'
-    visible:
-      and:
-        - and:
-          - eq:
-            - ${stack_deployment_option}
-            - "Full"
-          - opt_deploy_helm_chart #TODO add NOT livelab dependency
+    pattern: '(^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$|^null$)'
+    # visible:
+    #   and:
+    #     - and:
+    #       - eq:
+    #         - ${stack_deployment_option}
+    #         - "Full"
+    #       - opt_deploy_helm_chart #TODO add NOT livelab dependency
 
   # Option to enable/disable metric server installation during helm deployment
   opt_deploy_metric_server:
@@ -232,12 +300,6 @@ variables:
     title: Enable Metric Server installation
     description: Clear this check box if Metric Server is already installed in your cluster.
     default: true
-    visible:
-      and:
-      - eq:
-        - ${stack_deployment_option} #TODO add livelab dependency
-        - "Full"
-      - opt_deploy_helm_chart
 
   # Fluentd Base Directory
   fluentd_baseDir_path:
@@ -249,31 +311,20 @@ variables:
     default: /var/log
     required: true
     pattern: '^/[\w- /]*$'
-    visible:
-      and:
-      - eq:
-        - ${stack_deployment_option}
-        - "Full"
-      - opt_deploy_helm_chart #TODO add livelab dependency
 
-  # Option to create Dynamic Group and Policies
-  opt_create_dynamicGroup_and_policies:
-    type: boolean
-    title: Select this check box to create OCI IAM dynamic group and policies which are required for the monitoring solution
-    #description: "Ref: https://github.com/oracle-quickstart/oci-kubernetes-monitoring#pre-requisites"
-    description: "Note: If node pools and the OKE cluster are in different compartments, then the dynamic group definition must be updated."
-    default: false
-    required: true
+  # # Option to enable/disable metric server installation during helm deployment
+  # opt_deploy_helm_chart:
+  #   type: boolean
+  #   title: Enable helm-chart deployment (This option enables OKE monitoring)
+  #   description: Clear this check box to skip helm_chart deployment. You can manually install the helm-chart using stack outputs.
+  #   default: true
 
-  # Option to create Dynamic Group and Policies
-  opt_import_dashboards:
-    type: boolean
-    title: Select this check box to import dashboards
-    description: "Note: You may need to manually clean up the dashboards when you destory the stack as dashboards will not be deleted automatically."
-    default: true
-    required: true
-
-  tags:
-    type: oci:identity:tag:value
-    title: Tags
-    required: false
+  # kubernetes_namespace:
+  #   type: string
+  #   minLength: 1
+  #   maxLength: 63
+  #   title: Kubernetes Namespace
+  #   description: Kubernetes Namespace in which the monitoring solution to be deployed
+  #   default: kube-system
+  #   pattern: '^([a-z0-9]|[a-z][a-z\-0-9]*[a-z0-9])$' #Ref - https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#dns-label-names
+  #   required: true

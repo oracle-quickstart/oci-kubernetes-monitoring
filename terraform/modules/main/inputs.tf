@@ -125,14 +125,24 @@ variable "install_helm_chart" {
   type = bool
 }
 
+# Option to use latest helmchart
+variable "helmchart_version" {
+  type = string
+}
+
 # Kubernetes Namespace
 variable "kubernetes_namespace" {
   type    = string
   default = "oci-onm"
 }
 
-# Option to use latest helmchart
-variable "helmchart_version" {
+# Kubernetes Cluster OCID
+variable "kubernetes_cluster_id" {
+  type = string
+}
+
+# Kubernetes Cluster Name
+variable "kubernetes_cluster_name" {
   type = string
 }
 

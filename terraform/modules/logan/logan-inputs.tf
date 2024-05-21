@@ -26,6 +26,18 @@ variable "new_oke_entity_name" {
   type = string
 }
 
+# OKE Cluster Entity OCID
+variable "entity_ocid" {
+  type = string
+}
+
+# OCI Logging Analytics LogGroup OCID provided by user
+variable "logGroup_ocid" {
+  type = string
+}
+
+###############################
+
 variable "debug" {
   type    = bool
   default = false

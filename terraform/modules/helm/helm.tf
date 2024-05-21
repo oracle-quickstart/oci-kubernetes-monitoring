@@ -14,13 +14,14 @@ locals {
   helm_inputs = {
     # global
     "global.namespace"             = var.kubernetes_namespace
-    "global.kubernetesClusterID"   = var.oke_cluster_ocid
-    "global.kubernetesClusterName" = var.oke_cluster_name
+    "global.kubernetesClusterID"   = var.kubernetes_cluster_id
+    "global.kubernetesClusterName" = var.kubernetes_cluster_name
 
     # oci-onm-logan
-    "oci-onm-logan.ociLANamespace"  = var.oci_la_namespace
-    "oci-onm-logan.ociLALogGroupID" = var.oci_la_logGroup_id
-    "oci-onm-logan.fluentd.baseDir" = var.fluentd_baseDir_path
+    "oci-onm-logan.ociLANamespace"       = var.oci_la_namespace
+    "oci-onm-logan.ociLALogGroupID"      = var.oci_la_logGroup_ocid
+    "oci-onm-logan.fluentd.baseDir"      = var.fluentd_baseDir_path
+    "oci-onm-logan.ociLAClusterEntityID" = var.oci_la_cluster_entity_ocid
 
     # oci-onm-mgmt-agent
     "oci-onm-mgmt-agent.mgmtagent.installKeyFileContent" = var.mgmt_agent_install_key_content
@@ -56,13 +57,13 @@ resource "helm_release" "oci-kubernetes-monitoring" {
     }
   }
 
-  dynamic "set" {
-    for_each = var.oke_cluster_entity_ocid == "DEFAULT" ? [] : ["run_once"]
-    content {
-      name  = "oci-onm-logan.ociLAClusterEntityID"
-      value = var.oke_cluster_entity_ocid
-    }
-  }
+  # dynamic "set" {
+  #   for_each = var.oci_la_cluster_entity_ocid == "DEFAULT" ? [] : ["run_once"]
+  #   content {
+  #     name  = "oci-onm-logan.ociLAClusterEntityID"
+  #     value = var.oci_la_cluster_entity_ocid
+  #   }
+  # }
 
   dynamic "set" {
     for_each = var.deploy_mushop_config ? local.mushop_helm_inputs : {}
@@ -95,13 +96,13 @@ data "helm_template" "oci-kubernetes-monitoring" {
     }
   }
 
-  dynamic "set" {
-    for_each = var.oke_cluster_entity_ocid == "DEFAULT" ? [] : ["run_once"]
-    content {
-      name  = "oci-onm-logan.ociLAClusterEntityID"
-      value = var.oke_cluster_entity_ocid
-    }
-  }
+  # dynamic "set" {
+  #   for_each = var.oci_la_cluster_entity_ocid == "DEFAULT" ? [] : ["run_once"]
+  #   content {
+  #     name  = "oci-onm-logan.ociLAClusterEntityID"
+  #     value = var.oci_la_cluster_entity_ocid
+  #   }
+  # }
 
   dynamic "set" {
     for_each = var.deploy_mushop_config ? local.mushop_helm_inputs : {}

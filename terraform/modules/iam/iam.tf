@@ -47,16 +47,15 @@ resource "oci_identity_policy" "oke_monitoring_policy" {
 
   depends_on = [oci_identity_dynamic_group.oke_dynamic_group]
 
-  lifecycle {
-    precondition {
-      condition     = length(data.oci_identity_policies.oke_monitoring_policy.policies) == 0
-      error_message = <<-EOT
-        A policy with name - "${local.policy_name}" already exists in root compartment.
-        You might be trying to monitor a cluster which is already being monitored by oke-kubernetes-monitoring solution.
-        EOT
-    }
-  }
-
+  # lifecycle {
+  #   precondition {
+  #     condition     = length(data.oci_identity_policies.oke_monitoring_policy.policies) == 0
+  #     error_message = <<-EOT
+  #       A policy with name - "${local.policy_name}" already exists in root compartment.
+  #       You might be trying to monitor a cluster which is already being monitored by oke-kubernetes-monitoring solution.
+  #       EOT
+  #   }
+  # }
 }
 
 data "oci_identity_policies" "oke_monitoring_policy" {

@@ -30,28 +30,17 @@ variable "helmchart_version" {
 }
 
 ####
-##  OKE Cluster Information
+##  Kubernetes Cluster Information
 ####
 
-# OKE Cluster Compartment
-variable "oke_compartment_ocid" {
+# Kubernetes Cluster OCID
+variable "kubernetes_cluster_id" {
   type = string
 }
 
-# OKE Cluster OCID
-variable "oke_cluster_ocid" {
+# Kubernetes Cluster Name
+variable "kubernetes_cluster_name" {
   type = string
-}
-
-# OKE Cluster Name
-variable "oke_cluster_name" {
-  type = string
-}
-
-# OKE Cluster Entity OCID
-variable "oke_cluster_entity_ocid" {
-  type    = string
-  default = "DEFAULT" # Keep default as DEFAULT
 }
 
 # Kubernetes Namespace
@@ -64,13 +53,18 @@ variable "kubernetes_namespace" {
 ####
 
 # OCI Logging Analytics LogGroup OCID
-variable "oci_la_logGroup_id" {
+variable "oci_la_logGroup_ocid" {
   type    = string
   default = ""
 }
 
-# Log Analytics Namespace
+# OCI Log Analytics Namespace
 variable "oci_la_namespace" {
+  type = string
+}
+
+# OCI Logging Analytics Kubernetes Cluster Entity OCID
+variable "oci_la_cluster_entity_ocid" {
   type = string
 }
 

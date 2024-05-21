@@ -5,10 +5,10 @@ output "oci_la_namespace" {
   value = local.oci_la_namespace
 }
 
-output "new_la_logGroup_ocid" {
-  value = local.create_new_logGroup ? oci_log_analytics_log_analytics_log_group.new_log_group[0].id : null
+output "logGroup_ocid" {
+  value = local.create_new_logGroup ? oci_log_analytics_log_analytics_log_group.new_log_group[0].id : var.logGroup_ocid
 }
 
-output "new_la_oke_entity_ocid" {
-  value = local.create_new_k8s_entity ? oci_log_analytics_log_analytics_entity.oke[0].id : null
+output "oke_entity_ocid" {
+  value = local.create_new_k8s_entity ? oci_log_analytics_log_analytics_entity.oke[0].id : var.entity_ocid
 }

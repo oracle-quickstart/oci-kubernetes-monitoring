@@ -18,3 +18,9 @@ resource "oci_management_dashboard_management_dashboards_import" "multi_manageme
   for_each       = toset(local.dashboards)
   import_details = templatefile(format("%s/%s/%s", "${path.module}", "dashboards_json", each.value), local.template_values)
 }
+
+resource "local_file" "helm_template" {
+  for_each = var.debug ? toset(local.dashboards) : []
+  content  = templatefile(format("%s/%s/%s", "${path.module}", "dashboards_json", each.value), local.template_values)
+  filename = "${path.module}/tf-debug/${each.value}"
+}

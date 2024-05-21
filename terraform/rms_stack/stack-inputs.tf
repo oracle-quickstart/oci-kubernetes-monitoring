@@ -36,22 +36,6 @@ variable "fingerprint" {
 }
 
 ####
-## Stack Variable - Auto-pupulated while running RM Stack
-####
-
-# Stack compartment - where marketplace app / Resoruce Manager stack is executed
-variable "compartment_ocid" {
-  type    = string
-  default = ""
-}
-
-# OCID of user running the marketplace app / Resoruce Manager stack
-variable "current_user_ocid" {
-  type    = string
-  default = ""
-}
-
-####
 ## Boat configuration - Used for internal developement purpose only.
 ####
 
@@ -68,19 +52,66 @@ variable "boat_tenancy_ocid" {
 }
 
 ####
-##  Optional Inputs
+## Stack Variable - Auto-pupulated while running RM Stack
 ####
 
+# Stack compartment - where marketplace app / Resoruce Manager stack is executed
+variable "compartment_ocid" {
+  type    = string
+  default = ""
+}
+
+# OCID of user running the marketplace app / Resoruce Manager stack
+variable "current_user_ocid" {
+  type    = string
+  default = ""
+}
+
+####
+##  Hidden Inputs
+####
+
+# [Depretiated][Released][Hidden]
 # Option to create Dynamic Group and Policies
 variable "opt_create_dynamicGroup_and_policies" {
   type    = bool
   default = false
 }
 
-# Option to import dashboards
-variable "opt_import_dashboards" {
+# [Not-Released][Hidden] #TODO
+# Stack Deployment Options
+variable "opt_deploy_helm_chart" {
   type    = bool
   default = true
+}
+
+# [Released][Hidden]
+# OKE Cluster Name
+variable "oke_cluster_name" {
+  type    = string
+  default = null
+}
+
+####
+##  Stack Options
+####
+
+# New Dropdown option for Dynamic Group and Policies
+variable "dropdown_create_dynamicGroup_and_policies" {
+  type    = string
+  default = "True" # Must set default as True to maintain backward compatibility untill we retire "opt_create_dynamicGroup_and_policies"
+}
+
+# Stack Deployment Options
+variable "stack_deployment_option" {
+  type    = string
+  default = "Full"
+}
+
+# Option to hidden stack configuration
+variable "show_advanced_options" {
+  type    = bool
+  default = false
 }
 
 ####
@@ -106,7 +137,7 @@ variable "oke_is_private" {
 # OKE Cluster OCID
 variable "oke_subnet_or_pe_ocid" {
   type    = string
-  default = "DEFAULT"
+  default = "placeholder_string" # do not remove as it breaks regex-flow in stack-providers.tf
 }
 
 # Kubernetes Namespace TODO: Do we want to keep this and move it under advanced configuration
@@ -115,10 +146,13 @@ variable "kubernetes_namespace" {
   default = "oci-onm"
 }
 
+####
+##  OnM
+####
+
 # Compartment for creating OCI Observability and Management resources
 variable "oci_onm_compartment_ocid" {
-  type    = string
-  default = ""
+  type = string
 }
 
 # Option to create Logging Analytics
@@ -130,33 +164,45 @@ variable "opt_create_new_la_logGroup" {
 # OCI Logging Analytics LogGroup OCID
 variable "oci_la_logGroup_id" {
   type    = string
-  default = ""
+  default = null
 }
 
 # New Log Group to collect Kubernetes data
 variable "oci_la_logGroup_name" {
   type    = string
-  default = ""
+  default = null
 }
 
-####
-##  Advanced Configuration
-####
+# Option to create Logging Analytics
+variable "opt_create_new_la_entity" {
+  type    = bool
+  default = false
+}
 
-# Stack Deployment Options
-variable "stack_deployment_option" {
+# OKE Cluster Entity OCID
+variable "oke_cluster_entity_ocid" {
   type    = string
-  default = "Full"
+  default = null
 }
 
-# Stack Deployment Options
-variable "opt_deploy_helm_chart" {
+# Option to import dashboards
+variable "opt_import_dashboards" {
   type    = bool
   default = true
 }
 
+# tags
+variable "tags" {
+  type    = map(any)
+  default = { "freeformTags" = {}, "definedTags" = {} }
+}
+
+####
+##  Helm (optional)
+####
+
 # Option to use latest helmchart
-variable "helmchart_version" {
+variable "helm_chart_version" {
   type    = string
   default = null
 }
@@ -171,32 +217,4 @@ variable "opt_deploy_metric_server" {
 variable "fluentd_baseDir_path" {
   type    = string
   default = "/var/log"
-}
-
-# tags
-variable "tags" {
-  type    = map(any)
-  default = { "freeformTags" = {}, "definedTags" = {} }
-}
-
-####
-##  Input options hidden from stack UI
-####
-
-# OKE Cluster Name
-variable "oke_cluster_name" {
-  type    = string
-  default = "DEFAULT"
-}
-
-# OKE Cluster Entity OCID
-variable "oke_cluster_entity_ocid" {
-  type    = string
-  default = "DEFAULT"
-}
-
-# Option to create Logging Analytics
-variable "opt_create_new_la_entity_if_not_provided" {
-  type    = bool
-  default = false
 }
