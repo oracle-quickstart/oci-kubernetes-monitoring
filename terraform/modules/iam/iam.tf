@@ -32,6 +32,10 @@ resource "oci_identity_dynamic_group" "oke_dynamic_group" {
   #tags
   defined_tags  = var.tags.definedTags
   freeform_tags = var.tags.freeformTags
+
+  lifecycle {
+    ignore_changes = [defined_tags, freeform_tags]
+  }
 }
 
 # Policy
@@ -44,6 +48,10 @@ resource "oci_identity_policy" "oke_monitoring_policy" {
   #tags
   defined_tags  = var.tags.definedTags
   freeform_tags = var.tags.freeformTags
+
+  lifecycle {
+    ignore_changes = [defined_tags, freeform_tags]
+  }
 
   depends_on = [oci_identity_dynamic_group.oke_dynamic_group]
 

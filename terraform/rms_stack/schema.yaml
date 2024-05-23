@@ -174,7 +174,6 @@ variables:
       NOT Cluster endpoint subnet.
       [★] If an existing private endpoint OCID is provided, stack attempts to use it to connect to the private OKE cluster.
     required: true
-    default: ""
     pattern: "^ocid1\\.(subnet|ormprivateendpoint)\\.\\S+$"
     maxLength: 93 # min char count in subnet ocid
     minLength: 81 # mz char count in private endpoint ocid

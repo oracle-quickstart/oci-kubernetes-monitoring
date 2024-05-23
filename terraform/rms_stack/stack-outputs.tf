@@ -45,6 +45,10 @@ output "mgmt_agent_install_key" {
   value = module.main.mgmt_agent_install_key
 }
 
-output "kube_config" {
-  value = local.kube_config
-}
+# output "kube_config" {
+#   value = local.kube_config
+# }
+
+# output "rechable_ip" {
+#   value = local.enable_rms_pe_module ? module.rms_private_endpoint[0].private_endpoint_reachable_ip : null
+# }

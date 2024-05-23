@@ -21,6 +21,10 @@ resource "oci_log_analytics_log_analytics_log_group" "new_log_group" {
   defined_tags  = var.tags.definedTags
   freeform_tags = var.tags.freeformTags
 
+  lifecycle {
+    ignore_changes = [defined_tags, freeform_tags]
+  }
+
   #Optional
   # lifecycle {
   #   precondition {
@@ -44,7 +48,7 @@ resource "oci_log_analytics_log_analytics_entity" "oke" {
   freeform_tags = var.tags.freeformTags
 
   lifecycle {
-    ignore_changes = [name]
+    ignore_changes = [name, defined_tags, freeform_tags]
     ## name:
     ##    Default entity name is generated from default OKE cluster name at the time of stack execution.
     ##    When OKE cluster name is udpated via UI, we should need deleate &create a new entity

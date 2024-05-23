@@ -137,7 +137,12 @@ variable "oke_is_private" {
 # OKE Cluster OCID
 variable "oke_subnet_or_pe_ocid" {
   type    = string
-  default = "placeholder_string" # do not remove as it breaks regex-flow in stack-providers.tf
+  default = null
+
+  validation {
+    condition     = var.oke_subnet_or_pe_ocid == null ? true : length(regexall("^ocid1\\.(subnet|ormprivateendpoint)\\.\\S+$", var.oke_subnet_or_pe_ocid)) > 0
+    error_message = "Incorrect format: var.oke_subnet_or_pe_ocid"
+  }
 }
 
 # Kubernetes Namespace TODO: Do we want to keep this and move it under advanced configuration
