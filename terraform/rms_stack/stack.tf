@@ -35,7 +35,7 @@ locals {
   new_oci_la_cluster_entity_name = "${local.oke_metadata_name}_${local.oke_time_created_rfc3398}"
 
   # IAM Controls
-  create_dg_and_policy = (var.dropdown_create_dynamicGroup_and_policies == "Create" ||
+  create_dg_and_policy = (var.dropdown_create_dynamicGroup_and_policies == "Create required IAM resources as part of this stack" ||
   var.opt_create_dynamicGroup_and_policies ? true : false)
 
   ### Helm controls
