@@ -66,5 +66,3 @@ variable "tags" {
 #     error_message = "value"
 #   }
 # }
-
-

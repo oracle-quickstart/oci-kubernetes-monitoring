@@ -41,8 +41,6 @@ locals {
   ### Helm controls
   deploy_helm        = var.stack_deployment_option == "Full" && !var.opt_skip_helm_chart ? true : false
   helm_chart_version = var.helm_chart_version == "null" ? null : var.helm_chart_version
-
-
 }
 
 # This module either create a new private endpoint or uses an existing one 
@@ -84,8 +82,8 @@ module "main" {
   opt_import_dashboards = var.opt_import_dashboards
 
   # Logan
-  new_oke_entity_name                   = var.opt_create_new_la_entity ? local.new_oci_la_cluster_entity_name : null
-  user_provided_oke_cluster_entity_ocid = var.oke_cluster_entity_ocid == null ? null : var.oke_cluster_entity_ocid
+  new_oke_entity_name                   = local.new_oci_la_cluster_entity_name
+  user_provided_oke_cluster_entity_ocid = var.oke_cluster_entity_ocid
 
   new_logGroup_name                  = var.opt_create_new_la_logGroup ? var.oci_la_logGroup_name : null
   user_provided_oci_la_logGroup_ocid = var.opt_create_new_la_logGroup ? null : var.oci_la_logGroup_id

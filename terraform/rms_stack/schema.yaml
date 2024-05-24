@@ -321,7 +321,7 @@ variables:
     type: boolean
     title: Skip helm chart installation
     description: |- 
-      Select this check box to skip helm chart installation.
+      Select this check box to SKIP helm chart installation.
       [★] Note: Stack generates <a href="https://helm.sh/docs/intro/using_helm/" target="_blank" rel="noopener noreferrer">helm cli</a> 
       commands for manual helm chart installation.
     default: false

@@ -9,6 +9,40 @@ locals {
   create_new_k8s_entity = var.entity_ocid == null   #var.new_oke_entity_name != null
 }
 
+data "oci_log_analytics_log_analytics_entity" "user_provided_entity" {
+  count                   = !local.create_new_k8s_entity ? 1 : 0
+  log_analytics_entity_id = var.entity_ocid
+  namespace               = local.oci_la_namespace
+}
+
+resource "null_resource" "user_provided_entity_check" {
+  count = !local.create_new_k8s_entity ? 1 : 0
+  lifecycle {
+    precondition {
+      # Incorrect Entity ID check
+      condition     = !(data.oci_log_analytics_log_analytics_entity.user_provided_entity[0].entity_type_name == null)
+      error_message = <<-EOT
+        Invalid entity OCID: ${var.entity_ocid}
+      EOT
+    }
+
+    precondition {
+      # Incorrect Entity Type check
+      condition     = data.oci_log_analytics_log_analytics_entity.user_provided_entity[0].entity_type_name == local.k8s_entity_type
+      error_message = <<-EOT
+        Incorrect entity Type Error:
+        Entity: ${var.entity_ocid} is not of type: Kubenetes Cluster
+      EOT
+    }
+  }
+}
+
+resource "local_file" "user_provided_entity" {
+  count    = !local.create_new_k8s_entity && var.debug ? 1 : 0
+  content  = jsonencode(data.oci_log_analytics_log_analytics_entity.user_provided_entity[0])
+  filename = "${path.module}/tf-debug/user_provided_entity.json"
+}
+
 resource "oci_log_analytics_log_analytics_log_group" "new_log_group" {
   count = local.create_new_logGroup ? 1 : 0
   #Required
@@ -49,6 +83,10 @@ resource "oci_log_analytics_log_analytics_entity" "oke" {
 
   lifecycle {
     ignore_changes = [name, defined_tags, freeform_tags]
+    precondition {
+      condition     = !(var.entity_ocid == null && var.new_oke_entity_name == null)
+      error_message = "Logical Error: var.new_oke_entity_name and var.entity_ocid, both can not be null."
+    }
     ## name:
     ##    Default entity name is generated from default OKE cluster name at the time of stack execution.
     ##    When OKE cluster name is udpated via UI, we should need deleate &create a new entity
