@@ -48,7 +48,7 @@ variableGroups:
       - oke_subnet_or_pe_ocid
       - show_advanced_options
 
-  - title: Create Dynamic Group and Policy (requires root access)
+  - title: Create Dynamic Group and Policy (admin access required)
     variables:
       - dropdown_create_dynamicGroup_and_policies
 
@@ -199,7 +199,7 @@ variables:
   oci_onm_compartment_ocid:
     type: oci:identity:compartment:id
     required: true
-    title: Select compartment for Logging Analytics, Management Agent, and Monitoring service resources.
+    title: Select compartment for Logging Analytics, Management Agent, and Monitoring service resources
     description: |-
       This compartment will be used for creating dashboards, log groups, entities, 
       Management Agent keys, metric namespaces, and related resources. For a full list 
@@ -210,7 +210,7 @@ variables:
   # Option to create Logging Analytics
   opt_create_new_la_logGroup: # change this to create new log group
     type: boolean
-    title: Select this check box if you want to create a new log group.
+    title: Select this check box if you want to create a new log group
     default: false
 
   # OCI Logging Analytics LogGroup OCID of existing LogGroup
@@ -250,6 +250,7 @@ variables:
   oke_cluster_entity_ocid:
     type: string
     title: "Enter OCI Logging Analytics kubernetes cluster Entity OCID"
+    description: "Note: This must be a valid Logging Analytics Entity of type - \"Kubernetes Cluster\"."
     required: true #TODO does this need to be required?
     pattern: "^ocid1\\.(loganalyticsentity)\\.\\S+$"
     # maxLength: 93 # Don't set as realm ID is part of OCID
