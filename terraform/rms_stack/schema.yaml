@@ -36,7 +36,6 @@ variableGroups:
     variables:
       - oke_cluster_name
       - opt_create_dynamicGroup_and_policies
-      - opt_deploy_helm_chart
       - kubernetes_namespace
     visible: false
 
@@ -65,6 +64,7 @@ variableGroups:
   - title: Helm Chart Configuration (Optional)
     variables:
       - stack_deployment_option
+      - opt_skip_helm_chart
       - opt_deploy_metric_server
       - helm_chart_version
       - fluentd_baseDir_path
@@ -316,12 +316,15 @@ variables:
     required: true
     pattern: '^/[\w- /]*$'
 
-  # # Option to enable/disable metric server installation during helm deployment
-  # opt_deploy_helm_chart:
-  #   type: boolean
-  #   title: Enable helm-chart deployment (This option enables OKE monitoring)
-  #   description: Clear this check box to skip helm_chart deployment. You can manually install the helm-chart using stack outputs.
-  #   default: true
+  # Option to enable/disable metric server installation during helm deployment
+  opt_skip_helm_chart:
+    type: boolean
+    title: Skip helm chart installation
+    description: |- 
+      Select this check box to skip helm chart installation.
+      [★] Note: Stack generates <a href="https://helm.sh/docs/intro/using_helm/" target="_blank" rel="noopener noreferrer">helm cli</a> 
+      commands for manual helm chart installation.
+    default: false
 
   # kubernetes_namespace:
   #   type: string

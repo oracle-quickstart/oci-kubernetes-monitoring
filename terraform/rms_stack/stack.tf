@@ -39,7 +39,7 @@ locals {
   var.opt_create_dynamicGroup_and_policies ? true : false)
 
   ### Helm controls
-  deploy_helm        = var.stack_deployment_option == "Full" && var.opt_deploy_helm_chart ? true : false
+  deploy_helm        = var.stack_deployment_option == "Full" && !var.opt_skip_helm_chart ? true : false
   helm_chart_version = var.helm_chart_version == "null" ? null : var.helm_chart_version
 
 

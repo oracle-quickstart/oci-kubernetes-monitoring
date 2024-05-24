@@ -80,9 +80,9 @@ variable "opt_create_dynamicGroup_and_policies" {
 
 # [Not-Released][Hidden] #TODO
 # Stack Deployment Options
-variable "opt_deploy_helm_chart" {
+variable "opt_skip_helm_chart" {
   type    = bool
-  default = true
+  default = false
 }
 
 # [Released][Hidden]
