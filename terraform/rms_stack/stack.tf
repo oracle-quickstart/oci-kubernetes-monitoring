@@ -85,7 +85,7 @@ module "main" {
 
   # Logan
   new_oke_entity_name                   = var.opt_create_new_la_entity ? local.new_oci_la_cluster_entity_name : null
-  user_provided_oke_cluster_entity_ocid = var.opt_create_new_la_entity ? null : var.oke_cluster_entity_ocid
+  user_provided_oke_cluster_entity_ocid = var.oke_cluster_entity_ocid == null ? null : var.oke_cluster_entity_ocid
 
   new_logGroup_name                  = var.opt_create_new_la_logGroup ? var.oci_la_logGroup_name : null
   user_provided_oci_la_logGroup_ocid = var.opt_create_new_la_logGroup ? null : var.oci_la_logGroup_id
