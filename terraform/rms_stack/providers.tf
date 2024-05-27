@@ -1,6 +1,11 @@
 # Copyright (c) 2023, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
+##### Note #####
+## Locals, resources and provider in this file should not depend on any other file
+## so that we can move providers.tf file to a main module when we want to run main module independent of the stack
+##### Note #####
+
 locals {
   # OCI Provider config
   home_region_key = data.oci_identity_tenancy.tenant_details.home_region_key
@@ -34,7 +39,6 @@ data "oci_containerengine_cluster_kube_config" "oke" {
 data "oci_containerengine_clusters" "oke_clusters" {
   compartment_id = var.oke_compartment_ocid
 }
-
 
 provider "oci" {
   alias            = "target_region"
