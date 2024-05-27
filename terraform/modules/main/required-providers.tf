@@ -7,11 +7,12 @@ terraform {
     oci = {
       source                = "oracle/oci"
       version               = ">= 4.96.0"
-      configuration_aliases = [oci, oci.home_region]
+      configuration_aliases = [oci.target_region, oci.home_region]
     }
     helm = {
-      source  = "hashicorp/helm"
-      version = "2.7.1"
+      source                = "hashicorp/helm"
+      version               = "2.7.1"
+      configuration_aliases = [helm]
     }
     local = {
       source  = "hashicorp/local"

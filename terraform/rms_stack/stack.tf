@@ -11,7 +11,7 @@ locals {
   cluster_private_port        = split(":", local.cluster_private_ip_port)[1]
 
   # RMS Private Endpoint
-  use_rms_private_endpoint = var.oke_is_private && local.deploy_helm
+  use_rms_private_endpoint = var.oke_is_private && local.deploy_helm #TODO
 
   # Following regex checks identifies the type of resource ocid entered by stack user
   user_entered_subnet_ocid = var.oke_subnet_or_pe_ocid == null ? false : length(
@@ -99,8 +99,8 @@ module "main" {
   path_to_local_onm_helm_chart = "../../../charts/oci-onm/"
 
   providers = {
-    oci.home_region = oci.home_region
-    oci             = oci.target_region
-    helm            = helm
+    oci.home_region   = oci.home_region
+    oci.target_region = oci.target_region
+    helm              = helm
   }
 }

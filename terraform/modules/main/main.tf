@@ -17,14 +17,6 @@ locals {
   module_controls_enable_dashboards_module = alltrue([var.toggle_dashboards_module, var.opt_import_dashboards])
 }
 
-// Fetch OKE Metadata and kubeconfig
-# module "oke" {
-#   source               = "../oke"
-#   oke_cluster_ocid     = var.oke_cluster_ocid
-#   oke_compartment_ocid = var.oke_compartment_ocid
-#   debug                = var.toggle_debug
-# }
-
 // Create Required Policies and Dynamic Group
 // Needs to be called with OCI Home Region Provider
 module "iam" {
@@ -40,8 +32,6 @@ module "iam" {
   providers = {
     oci = oci.home_region
   }
-
-  # depends_on = [null_resource.validate_inputs]
 }
 
 # Create Logging Analytics Resorces
@@ -60,11 +50,9 @@ module "logan" {
   debug = var.toggle_debug
   tags  = var.tags
 
-  # providers = {
-  #   oci = oci
-  # }
-
-  # depends_on = [null_resource.validate_inputs]
+  providers = {
+    oci = oci.target_region
+  }
 }
 
 # Create a management agent key
@@ -76,11 +64,9 @@ module "management_agent" {
   compartment_ocid = var.oci_onm_compartment_ocid
   debug            = var.toggle_debug
 
-  # providers = {
-  #   oci = oci.target_region
-  # }
-
-  # depends_on = [null_resource.validate_inputs]
+  providers = {
+    oci = oci.target_region
+  }
 }
 
 // deploy oke-monitoring solution (helm release)
@@ -111,11 +97,9 @@ module "helm_release" {
   fluentd_baseDir_path           = var.fluentd_baseDir_path
   # livelab_service_account        = local.livelab_service_account
 
-  # providers = {
-  #   helm = helm
-  # }
-
-  # depends_on = [null_resource.validate_inputs]
+  providers = {
+    helm = helm
+  }
 }
 
 // Import Kubernetes Dashboards
@@ -127,12 +111,18 @@ module "import_kubernetes_dashbords" {
   debug            = var.toggle_debug
   tags             = var.tags
 
-  # providers = {
-  #   oci = oci.target_region
-  # }
-
-  # depends_on = [null_resource.validate_inputs, module.helm_release]
+  providers = {
+    oci = oci.target_region
+  }
 }
+
+// Fetch OKE Metadata and kubeconfig
+# module "oke" {
+#   source               = "../oke"
+#   oke_cluster_ocid     = var.oke_cluster_ocid
+#   oke_compartment_ocid = var.oke_compartment_ocid
+#   debug                = var.toggle_debug
+# }
 
 # // Only execute for livelab stack
 # // livelab module only supports local users
