@@ -198,7 +198,7 @@ variable "opt_import_dashboards" {
 
 # tags
 variable "tags" {
-  type    = map(any)
+  type    = object({ freeformTags = map(string), definedTags = map(string) })
   default = { "freeformTags" = {}, "definedTags" = {} }
 }
 

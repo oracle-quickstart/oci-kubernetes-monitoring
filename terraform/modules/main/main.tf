@@ -124,7 +124,7 @@ module "import_kubernetes_dashbords" {
   count  = local.module_controls_enable_dashboards_module ? 1 : 0
 
   compartment_ocid = var.oci_onm_compartment_ocid
-  debug            = true #var.toggle_debug
+  debug            = var.toggle_debug
   tags             = var.tags
 
   # providers = {

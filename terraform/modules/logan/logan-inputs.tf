@@ -44,8 +44,10 @@ variable "debug" {
 }
 
 variable "tags" {
-  type = map(any)
+  type    = object({ freeformTags = map(string), definedTags = map(string) })
+  default = { "freeformTags" = {}, "definedTags" = {} }
 }
+
 # # Option to create Logging Analytics
 # variable "create_new_logGroup" { # opt_create_new_logGroup
 #   type    = bool
