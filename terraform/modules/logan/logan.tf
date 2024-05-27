@@ -13,28 +13,18 @@ data "oci_log_analytics_log_analytics_entity" "user_provided_entity" {
   count                   = !local.create_new_k8s_entity ? 1 : 0
   log_analytics_entity_id = var.entity_ocid
   namespace               = local.oci_la_namespace
-}
 
-resource "null_resource" "user_provided_entity_check" {
-  count = !local.create_new_k8s_entity ? 1 : 0
   lifecycle {
-    precondition {
-      # Incorrect Entity ID check
-      condition     = !(data.oci_log_analytics_log_analytics_entity.user_provided_entity[0].entity_type_name == null)
-      error_message = <<-EOT
-        Invalid entity OCID: ${var.entity_ocid}
-      EOT
-    }
-
-    precondition {
+    postcondition {
       # Incorrect Entity Type check
-      condition     = data.oci_log_analytics_log_analytics_entity.user_provided_entity[0].entity_type_name == local.k8s_entity_type
+      condition     = self.entity_type_name == local.k8s_entity_type
       error_message = <<-EOT
-        Incorrect entity Type Error:
+        Incorrect entity Type ERROR:
         Entity: ${var.entity_ocid} is not of type: Kubenetes Cluster
       EOT
     }
   }
+
 }
 
 resource "oci_log_analytics_log_analytics_log_group" "new_log_group" {

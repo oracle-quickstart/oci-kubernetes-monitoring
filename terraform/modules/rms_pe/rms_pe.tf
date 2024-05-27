@@ -27,48 +27,35 @@ resource "oci_resourcemanager_private_endpoint" "rms_pe" {
   }
 }
 
-resource "null_resource" "validate_pe_inputs" {
-  # Any change in trigger will re-create the resource hence trigger re-check of pre-conditions
-
-  # Map of arbitray strings
-  triggers = {
-    oke_subnet_ocid       = var.oke_subnet_ocid
-    private_endpoint_ocid = var.private_endpoint_ocid
-    oke_vcn_ocid          = var.oke_vcn_ocid
-  }
+data "oci_core_subnet" "oke_subnet" {
+  count     = var.oke_subnet_ocid != null ? 1 : 0
+  subnet_id = var.oke_subnet_ocid
 
   lifecycle {
-    precondition {
-      condition     = var.private_endpoint_ocid == null ? true : data.oci_resourcemanager_private_endpoint.rms_pe[0].vcn_id == var.oke_vcn_ocid
+    postcondition {
+      condition     = self.vcn_id == var.oke_vcn_ocid
       error_message = <<-EOT
         Private Endpoint ERROR:
         Private Endpoint OCID is not configured with OKE VCN: ${var.oke_vcn_ocid}
       EOT
     }
+  }
+}
 
-    precondition {
-      condition     = var.oke_subnet_ocid == null ? true : data.oci_core_subnet.oke_subnet[0].vcn_id == var.oke_vcn_ocid
+data "oci_resourcemanager_private_endpoint" "rms_pe" {
+  count               = var.private_endpoint_ocid != null ? 1 : 0
+  private_endpoint_id = var.private_endpoint_ocid
+
+  lifecycle {
+    postcondition {
+      condition     = self.vcn_id == var.oke_vcn_ocid
       error_message = <<-EOT
         Subnet ERROR:
         Subnet OCID is not part of OKE VCN: ${var.oke_vcn_ocid}
       EOT
     }
   }
-
-  depends_on = [data.oci_core_subnet.oke_subnet, data.oci_resourcemanager_private_endpoint.rms_pe]
-
 }
-
-data "oci_core_subnet" "oke_subnet" {
-  count     = var.oke_subnet_ocid != null ? 1 : 0
-  subnet_id = var.oke_subnet_ocid
-}
-
-data "oci_resourcemanager_private_endpoint" "rms_pe" {
-  count               = var.private_endpoint_ocid != null ? 1 : 0
-  private_endpoint_id = var.private_endpoint_ocid
-}
-
 
 data "oci_resourcemanager_private_endpoint_reachable_ip" "rechable_ip" {
   private_endpoint_id = local.private_endpoint_ocid
