@@ -12,5 +12,6 @@ variable "debug" {
 }
 
 variable "tags" {
-  type = map(any)
+  type    = object({ freeformTags = map(string), definedTags = map(string) })
+  default = { "freeformTags" = {}, "definedTags" = {} }
 }

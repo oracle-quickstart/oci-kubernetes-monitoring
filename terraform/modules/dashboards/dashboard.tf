@@ -3,15 +3,23 @@
 
 locals {
   dashboards = ["cluster.json", "node.json", "pod.json", "workload.json", "service-type-lb.json"]
+
   #tags
-  defined_tags  = var.tags.definedTags
-  freeform_tags = var.tags.freeformTags
+  defined_tags  = module.format_tags.defined_tags_string
+  freeform_tags = module.format_tags.freeform_tags_string
 
   template_values = {
     "compartment_ocid" = "${var.compartment_ocid}"
-    "defined_tags"     = join(",", [for key, value in var.tags.definedTags : "\"${key}\": \"${value}\""])
-    "freeform_tags"    = join(",", [for key, value in var.tags.freeformTags : "\"${key}\": \"${value}\""])
+
+    # Expected format of tags: https://docs.oracle.com/en-us/iaas/api/#/en/managementdashboard/20200901/ManagementDashboardImportDetails/
+    "defined_tags"  = local.defined_tags
+    "freeform_tags" = local.freeform_tags
   }
+}
+
+module "format_tags" {
+  source = "./format_tags"
+  tags   = var.tags
 }
 
 resource "oci_management_dashboard_management_dashboards_import" "multi_management_dashboards_import" {
@@ -19,7 +27,7 @@ resource "oci_management_dashboard_management_dashboards_import" "multi_manageme
   import_details = templatefile(format("%s/%s/%s", "${path.module}", "dashboards_json", each.value), local.template_values)
 }
 
-resource "local_file" "helm_template" {
+resource "local_file" "dashboard_template" {
   for_each = var.debug ? toset(local.dashboards) : []
   content  = templatefile(format("%s/%s/%s", "${path.module}", "dashboards_json", each.value), local.template_values)
   filename = "${path.module}/tf-debug/${each.value}"
