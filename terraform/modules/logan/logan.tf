@@ -80,4 +80,15 @@ resource "oci_log_analytics_log_analytics_entity" "oke" {
 
 data "oci_log_analytics_namespaces" "logan_namespaces" {
   compartment_id = var.tenancy_ocid
+
+  lifecycle {
+    postcondition {
+      condition     = !(self.namespace_collection == null)
+      error_message = <<-EOT
+        Logging Analytics On-board ERROR:
+        Tenancy: ${var.tenancy_ocid} is not on-boarded to OCI Logging Analytics service.
+        Please on-board to OCI Logging Analytics service from OCI console and retry.
+      EOT
+    }
+  }
 }
