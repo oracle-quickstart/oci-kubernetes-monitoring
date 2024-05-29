@@ -11,7 +11,7 @@ locals {
   cluster_private_port        = split(":", local.cluster_private_ip_port)[1]
 
   # RMS Private Endpoint
-  use_rms_private_endpoint = var.oke_is_private #&& local.deploy_helm #TODO
+  use_rms_private_endpoint = var.oke_is_private && local.deploy_helm
 
   # Following regex checks identifies the type of resource ocid entered by stack user
   user_entered_subnet_ocid = var.oke_subnet_or_pe_ocid == null ? false : length(
@@ -34,13 +34,18 @@ locals {
   oke_metadata_is_private        = !local.cluster_data.endpoint_config[0].is_public_ip_enabled
   new_oci_la_cluster_entity_name = "${local.oke_metadata_name}_${local.oke_time_created_rfc3398}"
 
+  # OCI User provided entity
+  # Stack can set empty string
+  oke_cluster_entity_ocid = var.oke_cluster_entity_ocid == "" ? null : var.oke_cluster_entity_ocid
+
   # IAM Controls
-  create_dg_and_policy = (var.dropdown_create_dynamicGroup_and_policies == "Create required IAM resources as part of this stack" ||
-  var.opt_create_dynamicGroup_and_policies ? true : false)
+  create_dg_and_policy = ((var.dropdown_create_dynamicGroup_and_policies == "Create required IAM resources as part of the stack") ||
+  var.opt_create_dynamicGroup_and_policies)
 
   ### Helm controls
-  deploy_helm        = var.stack_deployment_option == "Full" && !var.opt_skip_helm_chart ? true : false
-  helm_chart_version = var.helm_chart_version == "null" ? null : var.helm_chart_version
+  deploy_helm = var.stack_deployment_option == "Full" && !var.opt_skip_helm_chart ? true : false
+  # Stack can set empty string
+  helm_chart_version = var.helm_chart_version == "" ? null : var.helm_chart_version
 }
 
 # This module either create a new private endpoint or uses an existing one 
@@ -83,7 +88,7 @@ module "main" {
 
   # Logan
   new_oke_entity_name                   = local.new_oci_la_cluster_entity_name
-  user_provided_oke_cluster_entity_ocid = var.oke_cluster_entity_ocid
+  user_provided_oke_cluster_entity_ocid = local.oke_cluster_entity_ocid
 
   new_logGroup_name                  = var.opt_create_new_la_logGroup ? var.oci_la_logGroup_name : null
   user_provided_oci_la_logGroup_ocid = var.opt_create_new_la_logGroup ? null : var.oci_la_logGroup_id

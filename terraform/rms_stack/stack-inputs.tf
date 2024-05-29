@@ -223,3 +223,14 @@ variable "fluentd_baseDir_path" {
   type    = string
   default = "/var/log"
 }
+
+####
+##  Template Version
+####
+
+# This var is not used in stack
+# Purpose: to display stack version on UI without being able to execute it
+variable "template_version" {
+  type    = string
+  default = null
+}

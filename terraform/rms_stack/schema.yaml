@@ -29,6 +29,7 @@ variableGroups:
       - boat_tenancy_ocid
       - compartment_ocid
       - current_user_ocid
+      - opt_create_new_la_entity
     visible: false
 
   # These inputs are hidden from RMS UI and will be removed in future versions
@@ -45,6 +46,7 @@ variableGroups:
       - oke_cluster_ocid
       - oke_is_private
       - oke_subnet_or_pe_ocid
+      - template_version
       - show_advanced_options
 
   - title: Create Dynamic Group and Policy (admin access required)
@@ -58,7 +60,6 @@ variableGroups:
     - oci_la_logGroup_id
     - oci_la_logGroup_name
     - opt_import_dashboards
-    - opt_create_new_la_entity
     - oke_cluster_entity_ocid
 
   - title: Helm Chart Configuration (Optional)
@@ -68,6 +69,7 @@ variableGroups:
       - opt_deploy_metric_server
       - helm_chart_version
       - fluentd_baseDir_path
+
     visible: show_advanced_options
 
   - title: " " # intentionally empty
@@ -150,7 +152,7 @@ variables:
     #   [2] If node pools and the OKE cluster are in different compartments
     #   (DynamicGroup created via the stack will need to be updated in this case).
     # [3] User wants to manage required policies outside of stack as part of an existing policy.
-    enum:
+    enum: # Any change in options string will need to reflect in local.create_dg_and_policy as well
     - "Create required IAM resources as part of the stack" # Setting enum as "True" fails to save input via stack UI
     - "I have already created Pre-requisites IAM resources"
     default: "" # Setting this value to "", forces user to select from one of the dropdown options
@@ -239,27 +241,30 @@ variables:
     pattern: '^([a-zA-Z0-9]|[a-zA-Z0-9][\\ a-zA-Z0-9_\-]*[\\a-zA-Z\-0-9_])$'  
 
   # Option to enable/disable metric server installation during helm deployment
-  opt_create_new_la_entity:
-    type: boolean
-    title:  Select this check box if you want to create a new Kubernetes Cluster Entity for this cluster
-    description: Clear this check box if you want to use an existing Logging Analytics Entity
-    default: true
-    visible: ${show_advanced_options}
+  # opt_create_new_la_entity:
+  #   type: boolean
+  #   title:  Select this check box if you want to create a new Kubernetes Cluster Entity for this cluster
+  #   description: Clear this check box if you want to use an existing Logging Analytics Entity
+  #   default: true
+  #   visible: ${show_advanced_options}
 
   # OKE Cluster OCID
   oke_cluster_entity_ocid:
     type: string
-    title: "Enter OCI Logging Analytics kubernetes cluster Entity OCID"
-    description: "Note: This must be a valid Logging Analytics Entity of type - \"Kubernetes Cluster\"."
-    required: true #TODO does this need to be required?
-    pattern: "^ocid1\\.(loganalyticsentity)\\.\\S+$"
+    title: "Enter OCI Logging Analytics Kubernetes Cluster entity OCID"
+    # default: "null"
+    description: |-
+      [★] Note: This must be a valid Logging Analytics entity of type - "Kubernetes Cluster".
+      [★] If empty, a Logging Analytics LA entity for the target cluster will be created.
+    required: false #TODO does this need to be required?
+    pattern: "^(ocid1\\.loganalyticsentity\\.\\S+)$|^$"
     # maxLength: 93 # Don't set as realm ID is part of OCID
-    minLength: 93 # mz char count in private endpoint ocid
+    # minLength: 93 # Don't add minLength to support optional field
     visible:
       and:
         - ${show_advanced_options}
-        - not: 
-          - ${opt_create_new_la_entity}
+        # - not: 
+        #   - ${opt_create_new_la_entity}
 
   # Option to create Dynamic Group and Policies
   opt_import_dashboards:
@@ -267,7 +272,7 @@ variables:
     title: Select this check box to import dashboards
     description: "Note: You may need to manually clean up the dashboards when you destroy the stack as dashboards will not be deleted automatically."
     default: true
-    required: true
+    # required: true
     visible:
       and:
         - ${show_advanced_options}
@@ -287,15 +292,31 @@ variables:
   helm_chart_version:
     type: string
     maxLength: 15
-    # minLength: 5 # setting minimum length makes this option mandatory regardless of required: false property
-    default: "null"
+    # minLength: 5 # Don't add minLength to for optional field
+    # default: "null" # related to local.user_entered_subnet_ocid
     title: Enter oci-onm helm chart version
     description: |-
-      Ex: 3.3.0 | For list of previous releases see: <a href="https://github.com/oracle-quickstart/oci-kubernetes-monitoring/releases" 
+      [★] Ex: 3.3.0 | For list of previous releases see: <a href="https://github.com/oracle-quickstart/oci-kubernetes-monitoring/releases"
       target="_blank" rel="noopener noreferrer">https://github.com/oracle-quickstart/oci-kubernetes-monitoring/releases</a>
+      [★] If not provided, then latest helm chart version is deployed however,
+      [★] To upgrade helm chart (which was previously deployed using this stack), a new version must be provided
     required: false
     # ref - https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
-    pattern: '(^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$|^null$)'
+    pattern: '(^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$|^$)'
+
+  # Option to create Dynamic Group and Policies
+  template_version:
+    type: enum
+    title: Template Version
+    description: Version of oke-monitoring-solution stack released as Resource Manager Service QuickStart template
+    enum:
+      - "0006" # Must Increment when a new version of template is released to RMS
+    required: false
+    visible:
+      and:
+        - eq:
+          - oke_subnet_or_pe_ocid
+          - "template"
 
 
   # Option to enable/disable metric server installation during helm deployment
@@ -321,7 +342,7 @@ variables:
     type: boolean
     title: Skip helm chart installation
     description: |- 
-      Select this check box to SKIP helm chart installation.
+      Select this check box to skip helm chart installation.
       [★] Note: Stack generates <a href="https://helm.sh/docs/intro/using_helm/" target="_blank" rel="noopener noreferrer">helm cli</a> 
       commands for manual helm chart installation.
     default: false
