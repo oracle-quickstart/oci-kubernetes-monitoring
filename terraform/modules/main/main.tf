@@ -4,8 +4,7 @@
 locals {
   local_helm_path = var.path_to_local_onm_helm_chart != null && var.toggle_use_local_helm_chart ? abspath(var.path_to_local_onm_helm_chart) : null
 
-  new_logGroup_name   = var.user_provided_oci_la_logGroup_ocid == null ? var.new_logGroup_name : null
-  new_oke_entity_name = var.user_provided_oke_cluster_entity_ocid == null ? var.new_oke_entity_name : null
+  new_logGroup_name = var.user_provided_oci_la_logGroup_ocid == null ? var.new_logGroup_name : null
 
   #   ## Module Controls are are final verdicts on if a module should be executed or not 
   #   ## Module dependencies should be included here as well so a module does not run when it's depenedent moudle is disabled
@@ -39,15 +38,16 @@ module "logan" {
   source = "../logan"
   count  = local.module_controls_enable_logan_module ? 1 : 0
 
-  tenancy_ocid        = var.tenancy_ocid
-  region              = var.region
-  compartment_ocid    = var.oci_onm_compartment_ocid
-  new_logGroup_name   = local.new_logGroup_name
-  new_oke_entity_name = local.new_oke_entity_name
-  entity_ocid         = var.user_provided_oke_cluster_entity_ocid
-  logGroup_ocid       = var.user_provided_oci_la_logGroup_ocid
+  tenancy_ocid         = var.tenancy_ocid
+  region               = var.region
+  compartment_ocid     = var.oci_onm_compartment_ocid
+  new_logGroup_name    = local.new_logGroup_name
+  oke_cluster_ocid     = var.oke_cluster_ocid
+  oke_compartment_ocid = var.oke_compartment_ocid
+  entity_ocid          = var.user_provided_oke_cluster_entity_ocid
+  logGroup_ocid        = var.user_provided_oci_la_logGroup_ocid
 
-  debug = var.toggle_debug
+  debug = var.debug
   tags  = var.tags
 
   providers = {
@@ -62,7 +62,7 @@ module "management_agent" {
 
   uniquifier       = md5(var.oke_cluster_ocid)
   compartment_ocid = var.oci_onm_compartment_ocid
-  debug            = var.toggle_debug
+  debug            = var.debug
 
   providers = {
     oci = oci.target_region
@@ -77,7 +77,7 @@ module "helm_release" {
   # module controls
   install_helm_chart     = var.install_helm_chart && var.toggle_install_helm
   generate_helm_template = var.toggle_generate_helm_template
-  debug                  = var.toggle_debug
+  debug                  = var.debug
 
   deploy_mushop_config = false #var.livelab_switch
 
@@ -108,7 +108,7 @@ module "import_kubernetes_dashbords" {
   count  = local.module_controls_enable_dashboards_module ? 1 : 0
 
   compartment_ocid = var.oci_onm_compartment_ocid
-  debug            = var.toggle_debug
+  debug            = var.debug
   tags             = var.tags
 
   providers = {
@@ -121,7 +121,7 @@ module "import_kubernetes_dashbords" {
 #   source               = "../oke"
 #   oke_cluster_ocid     = var.oke_cluster_ocid
 #   oke_compartment_ocid = var.oke_compartment_ocid
-#   debug                = var.toggle_debug
+#   debug                = var.debug
 # }
 
 # // Only execute for livelab stack
@@ -130,7 +130,7 @@ module "import_kubernetes_dashbords" {
 # module "livelab" {
 #   source            = "./modules/livelab"
 #   current_user_ocid = var.current_user_ocid
-#   debug             = var.toggle_debug
+#   debug             = var.debug
 
 #   count = local.module_controls_enable_livelab_module ? 1 : 0
 

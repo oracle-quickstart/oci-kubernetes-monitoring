@@ -36,10 +36,6 @@ data "oci_containerengine_cluster_kube_config" "oke" {
   cluster_id = var.oke_cluster_ocid
 }
 
-data "oci_containerengine_clusters" "oke_clusters" {
-  compartment_id = var.oke_compartment_ocid
-}
-
 provider "oci" {
   alias            = "target_region"
   tenancy_ocid     = var.boat_auth ? var.boat_tenancy_ocid : var.tenancy_ocid

@@ -10,5 +10,5 @@ output "logGroup_ocid" {
 }
 
 output "oke_entity_ocid" {
-  value = local.create_new_k8s_entity ? oci_log_analytics_log_analytics_entity.oke[0].id : var.entity_ocid
+  value = local.create_new_k8s_entity ? oci_log_analytics_log_analytics_entity.new_oke_entity[0].id : var.entity_ocid
 }

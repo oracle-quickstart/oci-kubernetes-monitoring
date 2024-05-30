@@ -30,6 +30,7 @@ variableGroups:
       - compartment_ocid
       - current_user_ocid
       - opt_create_new_la_entity
+      - debug
     visible: false
 
   # These inputs are hidden from RMS UI and will be removed in future versions
@@ -44,7 +45,7 @@ variableGroups:
     variables:
       - oke_compartment_ocid
       - oke_cluster_ocid
-      - oke_is_private
+      - connect_via_private_endpoint
       - oke_subnet_or_pe_ocid
       - template_version
       - show_advanced_options
@@ -98,7 +99,7 @@ variables:
     required: true
 
   # Option to enable/disable metric server installation during helm deployment
-  oke_is_private:
+  connect_via_private_endpoint:
     type: boolean
     title: Is the selected OKE cluster private?
     default: false
@@ -121,7 +122,7 @@ variables:
     minLength: 81 # mz char count in private endpoint ocid
     visible:
       and:
-      - ${oke_is_private}
+      - ${connect_via_private_endpoint}
       # - eq:
       #   - ${stack_deployment_option}
       #   - "Full"

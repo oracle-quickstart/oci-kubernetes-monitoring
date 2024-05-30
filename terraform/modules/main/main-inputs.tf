@@ -93,10 +93,10 @@ variable "opt_import_dashboards" {
 ##  OKE Module Inputs
 ####
 
-# Is OKE Private
-variable "oke_is_private" {
-  type = bool
-}
+# # Use private endpoint to connect to OKE cluster
+# variable "connect_via_private_endpoint" {
+#   type = bool
+# }
 
 # # OKE Subnet or Private Endpoint OCID
 # variable "oke_subnet_or_pe_ocid" {
@@ -106,10 +106,6 @@ variable "oke_is_private" {
 ####
 ##  Logan Module
 ####
-
-variable "new_oke_entity_name" {
-  type = string
-}
 
 # New Log Group to collect Kubernetes data
 variable "new_logGroup_name" {
@@ -170,4 +166,13 @@ variable "user_provided_oke_cluster_entity_ocid" {
 # OCI Logging Analytics LogGroup OCID provided by user
 variable "user_provided_oci_la_logGroup_ocid" {
   type = string
+}
+
+####
+##  Developer Options
+####
+
+variable "debug" {
+  type    = bool
+  default = false
 }

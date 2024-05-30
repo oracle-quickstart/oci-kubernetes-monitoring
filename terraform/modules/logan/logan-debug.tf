@@ -9,3 +9,15 @@ resource "local_file" "logan_namespaces" {
   content  = jsonencode(data.oci_log_analytics_namespaces.logan_namespaces)
   filename = "${path.module}/tf-debug/logan_namespaces.json"
 }
+
+data "oci_log_analytics_log_analytics_entity" "stack_created_entity" {
+  count                   = var.debug && local.create_new_k8s_entity ? 1 : 0
+  log_analytics_entity_id = oci_log_analytics_log_analytics_entity.new_oke_entity[0].id
+  namespace               = local.oci_la_namespace
+}
+
+resource "local_file" "stack_created_entity" {
+  count    = var.debug && local.create_new_k8s_entity ? 1 : 0
+  content  = jsonencode(data.oci_log_analytics_log_analytics_entity.stack_created_entity)
+  filename = "${path.module}/tf-debug/stack_created_entity.json"
+}

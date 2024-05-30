@@ -11,7 +11,7 @@ locals {
   cluster_private_port        = split(":", local.cluster_private_ip_port)[1]
 
   # RMS Private Endpoint
-  use_rms_private_endpoint = var.oke_is_private && local.deploy_helm
+  use_rms_private_endpoint = var.connect_via_private_endpoint #TODO remove comment && local.deploy_helm
 
   # Following regex checks identifies the type of resource ocid entered by stack user
   user_entered_subnet_ocid = var.oke_subnet_or_pe_ocid == null ? false : length(
@@ -28,11 +28,11 @@ locals {
   oke_metadata_name = local.cluster_data.name
   oke_cluster_name  = var.oke_cluster_name != null ? var.oke_cluster_name : local.oke_metadata_name
 
-  # OCI LA Kubernetes Cluster Entity Name
-  oke_metadata_time_created      = local.cluster_data.metadata[0].time_created # "2021-05-21 16:20:30 +0000 UTC"
-  oke_time_created_rfc3398       = replace(replace(local.oke_metadata_time_created, " +0000 UTC", "Z", ), " ", "T")
-  oke_metadata_is_private        = !local.cluster_data.endpoint_config[0].is_public_ip_enabled
-  new_oci_la_cluster_entity_name = "${local.oke_metadata_name}_${local.oke_time_created_rfc3398}"
+  # # OCI LA Kubernetes Cluster Entity Name
+  # oke_metadata_time_created      = local.cluster_data.metadata[0].time_created # "2021-05-21 16:20:30 +0000 UTC"
+  # oke_time_created_rfc3398       = replace(replace(local.oke_metadata_time_created, " +0000 UTC", "Z", ), " ", "T")
+  # oke_metadata_is_private        = !local.cluster_data.endpoint_config[0].is_public_ip_enabled
+  # new_oci_la_cluster_entity_name = "${local.oke_metadata_name}_${local.oke_time_created_rfc3398}"
 
   # OCI User provided entity
   # Stack can set empty string
@@ -46,6 +46,10 @@ locals {
   deploy_helm = var.stack_deployment_option == "Full" && !var.opt_skip_helm_chart ? true : false
   # Stack can set empty string
   helm_chart_version = var.helm_chart_version == "" ? null : var.helm_chart_version
+}
+
+data "oci_containerengine_clusters" "oke_clusters" {
+  compartment_id = var.oke_compartment_ocid
 }
 
 # This module either create a new private endpoint or uses an existing one 
@@ -69,13 +73,13 @@ module "main" {
   region       = var.region
 
   # shared inputs
-  toggle_debug             = false
+  debug                    = var.debug
   oci_onm_compartment_ocid = var.oci_onm_compartment_ocid
   oke_compartment_ocid     = var.oke_compartment_ocid
   oke_cluster_ocid         = var.oke_cluster_ocid
 
-  # OKE
-  oke_is_private = var.oke_is_private
+  # # OKE
+  # connect_via_private_endpoint = var.connect_via_private_endpoint
 
   # tags
   tags = var.tags
@@ -87,7 +91,6 @@ module "main" {
   opt_import_dashboards = var.opt_import_dashboards
 
   # Logan
-  new_oke_entity_name                   = local.new_oci_la_cluster_entity_name
   user_provided_oke_cluster_entity_ocid = local.oke_cluster_entity_ocid
 
   new_logGroup_name                  = var.opt_create_new_la_logGroup ? var.oci_la_logGroup_name : null

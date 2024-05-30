@@ -93,6 +93,15 @@ variable "oke_cluster_name" {
 }
 
 ####
+##  Developer Options
+####
+
+variable "debug" {
+  type    = bool
+  default = false
+}
+
+####
 ##  Stack Options
 ####
 
@@ -129,7 +138,7 @@ variable "oke_cluster_ocid" {
 }
 
 # OKE Cluster OCID
-variable "oke_is_private" {
+variable "connect_via_private_endpoint" {
   type    = bool
   default = false
 }
@@ -178,11 +187,11 @@ variable "oci_la_logGroup_name" {
   default = null
 }
 
-# Option to create Logging Analytics
-variable "opt_create_new_la_entity" {
-  type    = bool
-  default = false
-}
+# # Option to create Logging Analytics
+# variable "opt_create_new_la_entity" {
+#   type    = bool
+#   default = false
+# }
 
 # OKE Cluster Entity OCID
 variable "oke_cluster_entity_ocid" {

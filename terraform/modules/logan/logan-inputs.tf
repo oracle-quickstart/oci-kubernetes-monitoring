@@ -21,8 +21,13 @@ variable "new_logGroup_name" {
   type = string
 }
 
-# New Entity name
-variable "new_oke_entity_name" {
+# OKE Cluster Compartment
+variable "oke_compartment_ocid" {
+  type = string
+}
+
+# OKE Cluster OCID
+variable "oke_cluster_ocid" {
   type = string
 }
 
