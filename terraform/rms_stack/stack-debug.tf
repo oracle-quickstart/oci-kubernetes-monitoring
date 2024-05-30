@@ -16,12 +16,6 @@ resource "local_file" "kube_config" {
   filename = "${path.module}/tf-debug/kube_config.yaml"
 }
 
-resource "local_file" "oci_containerengine_clusters" {
-  count    = var.debug ? 1 : 0
-  content  = jsonencode(data.oci_containerengine_clusters.oke_clusters)
-  filename = "${path.module}/tf-debug/oci_containerengine_clusters.json"
-}
-
 # data "oci_containerengine_clusters" "oke_clusters" {
 #   compartment_id = var.oke_compartment_ocid
 # }

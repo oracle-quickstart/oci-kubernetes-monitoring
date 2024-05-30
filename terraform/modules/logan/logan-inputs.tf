@@ -21,19 +21,23 @@ variable "new_logGroup_name" {
   type = string
 }
 
-# OKE Cluster Compartment
-variable "oke_compartment_ocid" {
-  type = string
-}
-
-# OKE Cluster OCID
-variable "oke_cluster_ocid" {
-  type = string
-}
+# # OKE Cluster OCID
+# variable "oke_cluster_ocid" {
+#   type = string
+# }
 
 # OKE Cluster Entity OCID
-variable "entity_ocid" {
+variable "existing_entity_ocid" {
   type = string
+}
+
+variable "entity_metadata_list" {
+  type = list(object({name = string, type = string, value = string}))
+}
+
+variable "new_entity_name" {
+  type    = string
+  default = null
 }
 
 # OCI Logging Analytics LogGroup OCID provided by user

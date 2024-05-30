@@ -11,18 +11,27 @@ locals {
   home_region_key = data.oci_identity_tenancy.tenant_details.home_region_key
   home_region     = [for r in data.oci_identity_regions.region_map.regions : r.name if r.key == local.home_region_key][0]
 
+
   # Helm provider config
-  oke_host         = yamldecode(data.oci_containerengine_cluster_kube_config.oke.content)["clusters"][0]["cluster"]["server"]
-  oke_private_host = local.use_rms_private_endpoint ? "https://${module.rms_private_endpoint[0].private_endpoint_reachable_ip}:${local.cluster_private_port}" : null
-  oke_cert         = base64decode(yamldecode(data.oci_containerengine_cluster_kube_config.oke.content)["clusters"][0]["cluster"]["certificate-authority-data"])
+  oke_host = yamldecode(data.oci_containerengine_cluster_kube_config.oke.content)["clusters"][0]["cluster"]["server"]
+
+  cluster_private_ip_port = replace(local.oke_host, "https://", "")
+  cluster_private_ip      = split(":", local.cluster_private_ip_port)[0]
+  cluster_private_port    = split(":", local.cluster_private_ip_port)[1]
+
+  oke_cert = base64decode(yamldecode(data.oci_containerengine_cluster_kube_config.oke.content)["clusters"][0]["cluster"]["certificate-authority-data"])
 
   kube_config = {
-    host                   = local.use_rms_private_endpoint ? local.oke_private_host : local.oke_host
+    host                   = local.use_rms_private_endpoint ? "https://${module.rms_private_endpoint[0].private_endpoint_reachable_ip}:${local.cluster_private_port}" : local.oke_host
     cluster_ca_certificate = local.use_rms_private_endpoint ? null : local.oke_cert
     cluster_id             = var.oke_cluster_ocid #yamldecode(data.oci_containerengine_cluster_kube_config.oke.content)["users"][0]["user"]["exec"]["args"][4]
     cluster_region         = var.region           #yamldecode(data.oci_containerengine_cluster_kube_config.oke.content)["users"][0]["user"]["exec"]["args"][6]
     insecure               = local.use_rms_private_endpoint
   }
+}
+
+output "kubeconfig" {
+  value = local.kube_config
 }
 
 data "oci_identity_tenancy" "tenant_details" {

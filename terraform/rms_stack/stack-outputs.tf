@@ -17,10 +17,6 @@ output "cmd_3_helm_install" {
   value = module.main.cmd_3_helm_install
 }
 
-output "oke_cluster_name" {
-  value = local.oke_cluster_name
-}
-
 output "oke_cluster_entity_ocid" {
   value = module.main.oke_cluster_entity_ocid
 }
@@ -44,11 +40,3 @@ output "oci_la_logGroup_ocid" {
 output "mgmt_agent_install_key" {
   value = module.main.mgmt_agent_install_key
 }
-
-# output "kube_config" {
-#   value = local.kube_config
-# }
-
-# output "rechable_ip" {
-#   value = local.enable_rms_pe_module ? module.rms_private_endpoint[0].private_endpoint_reachable_ip : null
-# }

@@ -15,11 +15,6 @@ variable "oke_subnet_ocid" {
 }
 
 variable "pe_compartmnet_ocid" {
-  type     = string
-  nullable = false
-}
-
-variable "oke_vcn_ocid" {
   type = string
 }
 
@@ -28,7 +23,26 @@ variable "private_ip_address" {
   nullable = false
 }
 
+# OKE Cluster Compartment
+variable "oke_compartment_ocid" {
+  type = string
+}
+
+# OKE Cluster OCID
+variable "oke_cluster_ocid" {
+  type = string
+}
+
 variable "tags" {
   type    = object({ freeformTags = map(string), definedTags = map(string) })
   default = { "freeformTags" = {}, "definedTags" = {} }
+}
+
+####
+##  Developer Options
+####
+
+variable "debug" {
+  type    = bool
+  default = false
 }

@@ -6,6 +6,33 @@ locals {
 
   new_logGroup_name = var.user_provided_oci_la_logGroup_ocid == null ? var.new_logGroup_name : null
 
+  oke_cluster_name_in_helm = var.kubernetes_cluster_name == null ? local.oke_name : var.kubernetes_cluster_name #TODO: Should use default OKE name instead
+
+  # OKE Metadata
+  all_clusters_in_compartment = data.oci_containerengine_clusters.oke_clusters.clusters
+  cluster_data                = [for c in local.all_clusters_in_compartment : c if c.id == var.oke_cluster_ocid][0]
+
+  # OCI LA Kubernetes Cluster Entity Name
+  oke_metadata_time_created      = local.cluster_data.metadata[0].time_created                                      # "2021-05-21 16:20:30 +0000 UTC"
+  oke_time_created_rfc3398       = replace(replace(local.oke_metadata_time_created, " +0000 UTC", "Z", ), " ", "T") #"2021-05-21T16:20:30Z"
+  oke_metadata_is_private        = !local.cluster_data.endpoint_config[0].is_public_ip_enabled
+  oke_name                       = local.cluster_data.name
+  new_oci_la_cluster_entity_name = "${local.oke_name}_${local.oke_time_created_rfc3398}"
+  k8s_version                    = local.cluster_data.kubernetes_version
+
+  entity_metadata_list = [
+    { name : "cluster", value : local.new_oci_la_cluster_entity_name, type : "k8s_solution" },
+    { name : "cluster_name", value : local.oke_name, type : "k8s_solution" },
+    { name : "cluster_date", value : local.oke_time_created_rfc3398, type : "k8s_solution" },
+    { name : "cluster_ocid", value : var.oke_cluster_ocid, type : "k8s_solution" },
+    { name : "solution_type", value : "OKE", type : "k8s_solution" },
+    { name : "k8s_version", value : local.k8s_version, type : "k8s_solution" },
+    { name : "deployment_status", value : "ManualStackDeployment", type : "k8s_solution" },
+    { name : "metrics_namespace", value : "mgmtagent_kubernetes_metrics", type : "k8s_solution" },
+    { name : "onm_compartment", value : var.oci_onm_compartment_ocid, type : "k8s_solution" },
+    { name : "deployment_stack_ocid", value : "ManualStackDeployment", type : "k8s_solution" }
+  ]
+
   #   ## Module Controls are are final verdicts on if a module should be executed or not 
   #   ## Module dependencies should be included here as well so a module does not run when it's depenedent moudle is disabled
 
@@ -14,6 +41,10 @@ locals {
   module_controls_enable_mgmt_agent_module = alltrue([var.toggle_mgmt_agent_module])
   module_controls_enable_helm_module       = alltrue([var.toggle_helm_module, local.module_controls_enable_mgmt_agent_module, local.module_controls_enable_logan_module])
   module_controls_enable_dashboards_module = alltrue([var.toggle_dashboards_module, var.opt_import_dashboards])
+}
+
+data "oci_containerengine_clusters" "oke_clusters" {
+  compartment_id = var.oke_compartment_ocid
 }
 
 // Create Required Policies and Dynamic Group
@@ -42,9 +73,9 @@ module "logan" {
   region               = var.region
   compartment_ocid     = var.oci_onm_compartment_ocid
   new_logGroup_name    = local.new_logGroup_name
-  oke_cluster_ocid     = var.oke_cluster_ocid
-  oke_compartment_ocid = var.oke_compartment_ocid
-  entity_ocid          = var.user_provided_oke_cluster_entity_ocid
+  new_entity_name     = local.new_oci_la_cluster_entity_name
+  entity_metadata_list =  local.entity_metadata_list
+  existing_entity_ocid          = var.user_provided_oke_cluster_entity_ocid
   logGroup_ocid        = var.user_provided_oci_la_logGroup_ocid
 
   debug = var.debug
@@ -87,7 +118,7 @@ module "helm_release" {
 
   # values.yaml
   kubernetes_cluster_id          = var.kubernetes_cluster_id
-  kubernetes_cluster_name        = var.kubernetes_cluster_name
+  kubernetes_cluster_name        = local.oke_cluster_name_in_helm
   kubernetes_namespace           = var.kubernetes_namespace
   oci_la_logGroup_ocid           = module.logan[0].logGroup_ocid
   oci_la_namespace               = module.logan[0].oci_la_namespace

@@ -2,13 +2,10 @@
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 locals {
-  # OKE Cluster Metadata
-  all_clusters_in_compartment = data.oci_containerengine_clusters.oke_clusters.clusters
-  cluster_data                = [for c in local.all_clusters_in_compartment : c if c.id == var.oke_cluster_ocid][0]
-  oke_vcn_id                  = local.cluster_data.vcn_id
-  cluster_private_ip_port     = local.cluster_data.endpoints[0].private_endpoint
-  cluster_private_ip          = split(":", local.cluster_private_ip_port)[0]
-  cluster_private_port        = split(":", local.cluster_private_ip_port)[1]
+  # # OKE Cluster Metadata
+  # all_clusters_in_compartment = data.oci_containerengine_clusters.oke_clusters.clusters
+  # cluster_data                = [for c in local.all_clusters_in_compartment : c if c.id == var.oke_cluster_ocid][0]
+  # oke_vcn_id                  = local.cluster_data.vcn_id
 
   # RMS Private Endpoint
   use_rms_private_endpoint = var.connect_via_private_endpoint #TODO remove comment && local.deploy_helm
@@ -25,8 +22,8 @@ locals {
   oke_pe_ocid     = local.user_entered_pe_ocid ? var.oke_subnet_or_pe_ocid : null
 
   # OKE Cluster Name
-  oke_metadata_name = local.cluster_data.name
-  oke_cluster_name  = var.oke_cluster_name != null ? var.oke_cluster_name : local.oke_metadata_name
+  # oke_metadata_name = local.cluster_data.name
+  # oke_cluster_name = var.oke_cluster_name #!= null ? var.oke_cluster_name : local.oke_metadata_name # TODO: can acually fetch this from logan module output
 
   # # OCI LA Kubernetes Cluster Entity Name
   # oke_metadata_time_created      = local.cluster_data.metadata[0].time_created # "2021-05-21 16:20:30 +0000 UTC"
@@ -48,9 +45,9 @@ locals {
   helm_chart_version = var.helm_chart_version == "" ? null : var.helm_chart_version
 }
 
-data "oci_containerengine_clusters" "oke_clusters" {
-  compartment_id = var.oke_compartment_ocid
-}
+# data "oci_containerengine_clusters" "oke_clusters" {
+#   compartment_id = var.oke_compartment_ocid
+# }
 
 # This module either create a new private endpoint or uses an existing one 
 # and returns a reahable ip address to access private OKE cluster
@@ -58,12 +55,15 @@ module "rms_private_endpoint" {
   count  = local.use_rms_private_endpoint ? 1 : 0
   source = "./modules/rms_pe"
 
-  oke_vcn_ocid          = local.oke_vcn_id
   oke_subnet_ocid       = local.oke_subnet_ocid
   private_endpoint_ocid = local.oke_pe_ocid
   private_ip_address    = local.cluster_private_ip
   pe_compartmnet_ocid   = var.oci_onm_compartment_ocid
-  tags                  = var.tags
+  oke_compartment_ocid  = var.oke_compartment_ocid
+  oke_cluster_ocid      = var.oke_cluster_ocid
+
+  tags  = var.tags
+  debug = true
 }
 
 module "main" {
@@ -77,9 +77,6 @@ module "main" {
   oci_onm_compartment_ocid = var.oci_onm_compartment_ocid
   oke_compartment_ocid     = var.oke_compartment_ocid
   oke_cluster_ocid         = var.oke_cluster_ocid
-
-  # # OKE
-  # connect_via_private_endpoint = var.connect_via_private_endpoint
 
   # tags
   tags = var.tags
@@ -103,7 +100,7 @@ module "main" {
   opt_deploy_metric_server     = var.opt_deploy_metric_server
   fluentd_baseDir_path         = var.fluentd_baseDir_path
   kubernetes_cluster_id        = var.oke_cluster_ocid
-  kubernetes_cluster_name      = local.oke_cluster_name
+  kubernetes_cluster_name      = var.oke_cluster_name
   path_to_local_onm_helm_chart = "../../../charts/oci-onm/"
 
   providers = {
