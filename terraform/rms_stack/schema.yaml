@@ -217,19 +217,37 @@ variables:
 
   # OKE Cluster OCID
   oke_cluster_entity_ocid:
-    type: string
-    title: "Enter OCI Logging Analytics Kubernetes Cluster entity OCID"
+    type: oci:logan:logentity:id
+    title: "Select OCI Logging Analytics Kubernetes Cluster entity OCID"
     # default: "null"
     description: |-
       Note: This must be a valid Logging Analytics entity of type - "Kubernetes Cluster".
-    required: false #TODO does this need to be required?
-    pattern: "^(ocid1\\.loganalyticsentity\\.\\S+)$|^$"
+    required: true #TODO does this need to be required?
+    # pattern: "^(ocid1\\.loganalyticsentity\\.\\S+)$|^$"
     # maxLength: 93 # Don't set as realm ID is part of OCID
     # minLength: 93 # Don't add minLength to support optional field
+    dependsOn:
+      compartmentId: ${oci_onm_compartment_ocid}
     visible:
       and:
         - not: 
           - ${opt_create_new_la_entity}
+
+  # # OKE Cluster OCID
+  # oke_cluster_entity_ocid:
+  #   type: string
+  #   title: "Enter OCI Logging Analytics Kubernetes Cluster entity OCID"
+  #   # default: "null"
+  #   description: |-
+  #     Note: This must be a valid Logging Analytics entity of type - "Kubernetes Cluster".
+  #   required: false #TODO does this need to be required?
+  #   pattern: "^(ocid1\\.loganalyticsentity\\.\\S+)$|^$"
+  #   # maxLength: 93 # Don't set as realm ID is part of OCID
+  #   # minLength: 93 # Don't add minLength to support optional field
+  #   visible:
+  #     and:
+  #       - not: 
+  #         - ${opt_create_new_la_entity}
 
   # Option to create Dynamic Group and Policies
   opt_import_dashboards:
