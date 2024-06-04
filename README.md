@@ -73,6 +73,7 @@ It does extensive enrichment of logs, metrics and object information to enable c
 
 | Deployment Method | Supported Environments | Collection Automation | Dashboards | Customzations |
 | ----| :----:| :----:| :---: | ---|
+|UI Workflow | OKE | :heavy_check_mark: | No | Full Control (Recommended) |
 | Helm | All* | :heavy_check_mark:  | Manual| Full Control (Recommended)
 | OCI Resource Manager | OKE | :heavy_check_mark:| :heavy_check_mark: | Partial Control
 | Terraform | OKE | :heavy_check_mark: | :heavy_check_mark: | Partial Control
