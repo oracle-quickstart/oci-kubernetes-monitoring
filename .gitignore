@@ -70,3 +70,6 @@ releases/
 
 # vscode
 .vscode
+
+# debug files
+tf-debug/

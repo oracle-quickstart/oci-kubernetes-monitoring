@@ -20,3 +20,15 @@ variable "oke_compartment_ocid" {
 variable "oke_cluster_ocid" {
   type = string
 }
+
+# Save data resources in local_file for debug purposes
+variable "debug" {
+  type    = bool
+  default = false
+}
+
+# OCI Tags
+variable "tags" {
+  type    = object({ freeformTags = map(string), definedTags = map(string) })
+  default = { "freeformTags" = {}, "definedTags" = {} }
+}

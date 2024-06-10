@@ -10,3 +10,9 @@ variable "uniquifier" {
 variable "compartment_ocid" {
   type = string
 }
+
+# Save data resources in local_file for debug purposes
+variable "debug" {
+  type    = bool
+  default = false
+}

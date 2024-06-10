@@ -28,7 +28,14 @@ resource "oci_identity_dynamic_group" "oke_dynamic_group" {
   description    = local.dynamic_group_desc
   compartment_id = var.root_compartment_ocid
   matching_rule  = local.complied_dynamic_group_rules
-  #provider       = oci.home_region
+
+  #tags
+  defined_tags  = var.tags.definedTags
+  freeform_tags = var.tags.freeformTags
+
+  lifecycle {
+    ignore_changes = [defined_tags, freeform_tags]
+  }
 }
 
 # Policy
@@ -37,7 +44,37 @@ resource "oci_identity_policy" "oke_monitoring_policy" {
   description    = local.policy_desc
   compartment_id = var.root_compartment_ocid
   statements     = local.compiled_policy_statements
-  #provider       = oci.home_region
+
+  #tags
+  defined_tags  = var.tags.definedTags
+  freeform_tags = var.tags.freeformTags
+
+  lifecycle {
+    ignore_changes = [defined_tags, freeform_tags]
+  }
 
   depends_on = [oci_identity_dynamic_group.oke_dynamic_group]
+
+  # lifecycle {
+  #   precondition {
+  #     condition     = length(data.oci_identity_policies.oke_monitoring_policy.policies) == 0
+  #     error_message = <<-EOT
+  #       A policy with name - "${local.policy_name}" already exists in root compartment.
+  #       You might be trying to monitor a cluster which is already being monitored by oke-kubernetes-monitoring solution.
+  #       EOT
+  #   }
+  # }
+}
+
+data "oci_identity_policies" "oke_monitoring_policy" {
+  #Required
+  compartment_id = var.root_compartment_ocid
+  #Optional
+  name = local.policy_name
+}
+
+resource "local_file" "oke_clusters" {
+  count    = var.debug ? 1 : 0
+  content  = jsonencode(data.oci_identity_policies.oke_monitoring_policy)
+  filename = "${path.module}/tf-debug/oci_containerengine_clusters.json"
 }
