@@ -1,5 +1,10 @@
 # Change Log
 
+## 2024-06-18
+### Changed
+- Fluentd collector container image uptake to 1.4.3 having OS and other dependency updates.
+- Dockerfile (supporting custom container image builds) changes to remove patch version dependency on ruby 3.1 and related packages.
+
 ## 2024-05-13
 ### Changed
 - Fluentd collector container image uptake to 1.4.2 having changes to uptake OCI 2.21.0. 

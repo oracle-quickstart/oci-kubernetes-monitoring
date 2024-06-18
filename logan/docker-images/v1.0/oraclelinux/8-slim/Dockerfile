@@ -22,9 +22,9 @@ COPY Gemfile* /fluentd/
 # Install ruby, ruby-libs along with rubygems and bundler.
 RUN microdnf -y module enable ruby:3.1 \
 # Install ruby and ruby-libs, disabling week dependencies
- && microdnf -y install --setopt=install_weak_deps=0 --nodocs ruby-3.1.2 ruby-libs-3.1.2 \
+ && microdnf -y install --setopt=install_weak_deps=0 --nodocs ruby ruby-libs \
 # Install rubygems (it's dependencies rubygem-openssl rubygem-psych), disabling week dependencies
- && microdnf -y install --setopt=install_weak_deps=0 --nodocs rubygems-3.3.7 \
+ && microdnf -y install --setopt=install_weak_deps=0 --nodocs rubygems \
  && gem install bundler -v 2.3.25 \
 # Install development dependent packages for gems native installation
  && microdnf --enablerepo ol8_codeready_builder -y install --nodocs gcc make redhat-rpm-config openssl ruby-devel gcc-c++ libtool libffi-devel bzip2 git libyaml-devel \
@@ -59,9 +59,9 @@ ENV FLUENTD_DISABLE_BUNDLER_INJECTION 1
 # Install ruby, ruby-libs along with rubygems and bundler.
 RUN microdnf -y module enable ruby:3.1 \
 # Install ruby and ruby-libs, disabling week dependencies
- && microdnf -y install --setopt=install_weak_deps=0 --nodocs ruby-3.1.2 ruby-libs-3.1.2 \ 
+ && microdnf -y install --setopt=install_weak_deps=0 --nodocs ruby ruby-libs \ 
 # Install rubygems (it's dependencies rubygem-openssl rubygem-psych), disabling week dependencies
- && microdnf -y install --setopt=install_weak_deps=0 --nodocs rubygems-3.3.7 \ 
+ && microdnf -y install --setopt=install_weak_deps=0 --nodocs rubygems \ 
  && gem install bundler -v 2.3.25 \
  && bundle config --local path /fluentd/vendor/bundle \
 # clear caches
