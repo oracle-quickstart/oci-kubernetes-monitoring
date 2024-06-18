@@ -96,11 +96,9 @@ variable "oke_cluster_name" {
   type    = string
   default = null
   validation {
-    condition = regexall("(^\\S+.*$)", var.oke_cluster_name) > 0
+    condition = var.oke_cluster_name == null ? true : length(regexall("(^\\S+.*$|^$)", var.oke_cluster_name)) > 0
     #TODO negative and positive test using API
-    error_message = <<-EOT
-      "Invalid input:oke_cluster_name | RegeEx Validation: (^\\S+.*$)"
-    EOT
+    error_message = "Invalid input:oke_cluster_name | RegeEx Validation: (^\\S+.*$)"
   }
 }
 
@@ -181,6 +179,11 @@ variable "opt_create_new_la_entity" {
 variable "oke_cluster_entity_ocid" {
   type    = string
   default = null
+
+  validation {
+    condition     = var.oke_cluster_entity_ocid == null ? true : length(regexall("^(ocid1\\.loganalyticsentity\\.\\S+)$", var.oke_cluster_entity_ocid)) > 0 ? true : false
+    error_message = "var.oke_cluster_entity_ocid must be set to a valid value."
+  }
 }
 
 # Option to import dashboards

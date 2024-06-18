@@ -58,7 +58,7 @@ variableGroups:
       - ${oci_la_logGroup_name}
       - ${opt_create_new_la_entity}
       - ${oke_cluster_entity_ocid}  
-      - $[opt_import_dashboards]
+      - ${opt_import_dashboards}
 
   - title: Advanced Configuration
     variables:
@@ -189,13 +189,13 @@ variables:
     visible:
       and:
         - ${opt_create_new_la_logGroup}
-    pattern: '^([a-zA-Z0-9]|[a-zA-Z0-9][\\ a-zA-Z0-9_\-]*[\\a-zA-Z\-0-9_])$|^$'  
+    pattern: '^([a-zA-Z0-9]|[a-zA-Z0-9][\\ a-zA-Z0-9_\-]*[\\a-zA-Z\-0-9_]$|^$)'  
 
   # Option to create a new OCI Logging Analytics Entity
   opt_create_new_la_entity:
     type: boolean
     title:  Select this check box if you want to create a new Kubernetes Cluster Entity for this cluster
-    description: ● Clear this check box if you want to use an existing Logging Analytics Entity
+    description: ● Clear this check box if you want to use an existing Logging Analytics Entity 
     default: true
 
   # User Provided OCI Logging Analytics Entity OCID
@@ -205,8 +205,8 @@ variables:
     # default: "null"
     description: |-
       ● Note: This must be a valid Logging Analytics entity of type - "Kubernetes Cluster".
-    required: false #TODO does this need to be required?
-    pattern: "^(ocid1\\.loganalyticsentity\\.\\S+)$|^$"
+    required: true
+    pattern: "^(ocid1\\.loganalyticsentity\\.\\S+$)"
     # maxLength: 93 # Don't set as realm ID is part of OCID
     # minLength: 93 # Don't add minLength to support optional field
     visible:

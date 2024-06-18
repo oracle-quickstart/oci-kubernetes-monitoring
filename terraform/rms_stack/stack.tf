@@ -6,6 +6,7 @@ locals {
   oke_cluster_entity_ocid = var.oke_cluster_entity_ocid == "" ? null : var.oke_cluster_entity_ocid
   helm_chart_version      = var.helm_chart_version == "" ? null : var.helm_chart_version
   oci_la_logGroup_name    = var.oci_la_logGroup_name == "" ? null : var.oci_la_logGroup_name
+  oke_cluster_name        = var.oke_cluster_name == "" ? null : var.oke_cluster_name
 
   # RMS Private Endpoint
   use_rms_private_endpoint = var.connect_via_private_endpoint && local.deploy_helm
@@ -69,7 +70,7 @@ module "main" {
   opt_import_dashboards = var.opt_import_dashboards
 
   # Logan
-  user_provided_oke_cluster_entity_ocid = local.oke_cluster_entity_ocid
+  user_provided_oke_cluster_entity_ocid = var.opt_create_new_la_entity ? null : local.oke_cluster_entity_ocid
   new_logGroup_name                     = var.opt_create_new_la_logGroup ? local.oci_la_logGroup_name : null
   user_provided_oci_la_logGroup_ocid    = var.opt_create_new_la_logGroup ? null : var.oci_la_logGroup_id
 
@@ -80,7 +81,7 @@ module "main" {
   opt_deploy_metric_server     = var.opt_deploy_metric_server
   fluentd_baseDir_path         = var.fluentd_baseDir_path
   kubernetes_cluster_id        = var.oke_cluster_ocid
-  kubernetes_cluster_name      = var.oke_cluster_name
+  kubernetes_cluster_name      = local.oke_cluster_name
   path_to_local_onm_helm_chart = "../../../charts/oci-onm/"
 
   providers = {

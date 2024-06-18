@@ -147,6 +147,11 @@ variable "fluentd_baseDir_path" {
 # OKE Cluster Entity OCID
 variable "user_provided_oke_cluster_entity_ocid" {
   type = string
+
+  validation {
+    condition     = var.user_provided_oke_cluster_entity_ocid == null ? true : length(regexall("^(ocid1\\.loganalyticsentity\\.\\S+)$", var.user_provided_oke_cluster_entity_ocid)) > 0 ? true : false
+    error_message = "user_provided_oke_cluster_entity_ocid must be set to a valid value."
+  }
 }
 
 # OCI Logging Analytics LogGroup OCID provided by user

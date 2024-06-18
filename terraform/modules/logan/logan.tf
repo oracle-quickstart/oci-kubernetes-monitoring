@@ -31,6 +31,14 @@ data "oci_log_analytics_log_analytics_entity" "user_provided_entity" {
 
   lifecycle {
     postcondition {
+      # Incorrect Entity OCID check
+      condition     = self.entity_type_name != null
+      error_message = <<-EOT
+        Incorrect entity OCID ERROR:
+        Entity: ${var.existing_entity_ocid} is not a vaid Entity OCID
+      EOT
+    }
+    postcondition {
       # Incorrect Entity Type check
       condition     = self.entity_type_name == local.k8s_entity_type
       error_message = <<-EOT
