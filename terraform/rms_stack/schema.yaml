@@ -140,8 +140,8 @@ variables:
         Create the dynamic group and policy before implementing the stack. 
         Reference: <a href="https://github.com/oracle-quickstart/oci-kubernetes-monitoring#pre-requisites" 
         target="_blank" rel="noopener noreferrer">oci-kubernetes-monitoring#pre-requisites</a>. 
-        If node pools and the OKE cluster are in different compartments, then create 
-        these resources manually or edit the created dynamic group.
+        If node pools and the OKE cluster are in different compartments, 
+        then manually create the dynamic group and policy or edit the dynamic group created by the stack.
     enum: # Any change in options string will need to reflect in local.create_dg_and_policy as well
       - "Create required IAM resources as part of the stack" # Setting enum as "True" fails to save input via stack UI
       - "I have already created the required IAM resources"
@@ -244,7 +244,7 @@ variables:
   stack_deployment_option:
     title: Deployment type
     description: |-
-        Select Only OCI Resources to skip helm chart installation on to your OKE cluster. 
+        Select "Only OCI Resources" to skip helm chart installation on to your OKE cluster. 
         Manually install the helm chart using the helm commands provided in the stack output.
     type: enum
     enum: # Dev Note - # Any change in following options must be refactored across schema.yaml
@@ -301,7 +301,7 @@ variables:
   # OCI tags
   tags:
     description: |-
-        Any change to the tags will not take effect in subsequent apply jobs. The tags that were created in the first run will be preserved.
+        The tag values will take effect only if the updates were made before the first run of the stack. The changes made to the tags after the first run will not take effect.
     type: oci:identity:tag:value
     title: "Tags"
     required: false
