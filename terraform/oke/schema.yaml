@@ -1,11 +1,10 @@
-# Copyright (c) 2023, Oracle and/or its affiliates.
+# Copyright (c) 2023, 2024, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 # yaml-language-server: $schema=./meta-schema.yaml
 
 title: OCI Kubernetes Monitoring Solution
-description: "Monitor, manage, and generate insights into your Kubernetes deployed in OCI, third party public clouds, private clouds, or on-premises including managed Kubernetes deployments. The solution utilizes the OCI services Logging Analytics, Monitoring, and Management Agent."
-informationalText: "Monitor, manage, and generate insights into your Kubernetes deployed in OCI, third party public clouds, private clouds, or on-premises including managed Kubernetes deployments. The solution utilizes the OCI services Logging Analytics, Monitoring, and Management Agent."
-#TODO: Do we want to change these two values? Check usage by referring to other templates
+description: "Monitor, manage, and generate insights into your Kubernetes deployed in OCI, third party public clouds, private clouds, or on-premises including managed Kubernetes deployments. The solution utilizes the following OCI services: Logging Analytics, Monitoring, and Management Agent."
+informationalText: "Monitor, manage, and generate insights into your Kubernetes deployed in OCI, third party public clouds, private clouds, or on-premises including managed Kubernetes deployments. The solution utilizes the following OCI services: Logging Analytics, Monitoring, and Management Agent."
 schemaVersion: 1.1.0
 version: "20221004"
 
@@ -31,13 +30,7 @@ variableGroups:
       - ${compartment_ocid}
       - ${current_user_ocid}
       - ${debug}
-    visible: false
-
-  # These inputs are hidden from RMS UI and will be removed in future versions
-  - title: "Depreciated inputs"
-    variables:
-      - ${oke_cluster_name} # Check on compatibility
-      # - ${opt_create_dynamicGroup_and_policies} #TODO We can just remove this option from new stack
+      - ${oke_cluster_name} 
     visible: false
 
   - title: Select an OKE cluster deployed in this region to start monitoring
@@ -49,15 +42,15 @@ variableGroups:
 
   - title: Create dynamic group and policy (tenancy level admin access required)
     variables:
-      - ${dropdown_create_dynamicGroup_and_policies}
+      - ${dropdown_create_dynamic_group_and_policies}
 
-  - title: Set up OCI Observability and Management services
+  - title: Create resources for OCI Observability and Management services
     variables:
       - ${oci_onm_compartment_ocid}
-      - ${opt_create_new_la_logGroup}
-      - ${oci_la_logGroup_id}
-      - ${oci_la_logGroup_name}
-      - ${opt_create_new_la_entity}
+      - ${opt_create_new_la_log_group}
+      - ${oci_la_log_group_ocid}
+      - ${oci_la_log_group_name}
+      - ${opt_create_oci_la_entity}
       - ${oke_cluster_entity_ocid}  
       - ${opt_import_dashboards}
 
@@ -67,7 +60,7 @@ variableGroups:
       - ${stack_deployment_option}
       - ${opt_deploy_metric_server}
       - ${helm_chart_version}
-      - ${fluentd_baseDir_path}
+      - ${fluentd_base_dir_path}
       - ${tags}
       - ${template_version}
 
@@ -108,17 +101,15 @@ variables:
     type: string
     title: OKE node subnet OCID / RMS private endpoint OCID
     description: |-
-      Stack connects to private OKE cluster through an 
-      <a href="https://docs.oracle.com/iaas/Content/ResourceManager/Tasks/private-endpoints.htm" target="_blank" 
-      rel="noopener noreferrer">RMS Private Endpoint</a>. 
-      If you provide subnet OCID, an RMS private endpoint resource is created. Alternatively, 
-      you can also provide OCID of an existing RMS private endpoint. 
-      The subnet's security list must allow egress connection to OKE cluster's API endpoint. 
-      Typically, this is oke-nodesubnet and not oke-k8sApiEndpoint-subnet.
+      Stack connects to private OKE cluster through an <a href="https://docs.oracle.com/iaas/Content/ResourceManager/Tasks/private-endpoints.htm" target="_blank" rel="noopener noreferrer">RMS Private Endpoint</a>.
+       If you provide subnet OCID, an RMS private endpoint resource is created.
+       Alternatively, you can also provide OCID of an existing RMS private endpoint.
+       The subnet's security list must allow egress connection to OKE cluster's API endpoint.
+       Typically, this is oke-nodesubnet and not oke-k8sApiEndpoint-subnet.
     required: true
     pattern: "^ocid1\\.(subnet|ormprivateendpoint)\\.\\S+$"
     # maxLength: 93 # Don't set as realm ID is part of OCID
-    minLength: 81 # mz char count in private endpoint ocid
+    # minLength: 81 # Do not set min length
     visible:
       and:
         - ${connect_via_private_endpoint}
@@ -131,17 +122,13 @@ variables:
   ####
 
   # Option to create Dynamic Group and Policies
-  dropdown_create_dynamicGroup_and_policies:
+  dropdown_create_dynamic_group_and_policies:
     type: enum
     title: " "
-    # title: "Choose if required IAM resources should be created as part of the stack" # Choose option to create OCI IAM dynamic group and policies which are required for the monitoring solution
-    #description: "Ref: https://github.com/oracle-quickstart/oci-kubernetes-monitoring#pre-requisites"
     description: |-
-        Create the dynamic group and policy before implementing the stack. 
-        Reference: <a href="https://github.com/oracle-quickstart/oci-kubernetes-monitoring#pre-requisites" 
-        target="_blank" rel="noopener noreferrer">oci-kubernetes-monitoring#pre-requisites</a>. 
-        If node pools and the OKE cluster are in different compartments, 
-        then manually create the dynamic group and policy or edit the dynamic group created by the stack.
+        Create the dynamic group and policy before creating the stack.
+         Reference: <a href="https://github.com/oracle-quickstart/oci-kubernetes-monitoring#pre-requisites" target="_blank" rel="noopener noreferrer">oci-kubernetes-monitoring#pre-requisites</a>.
+         If node pools and the OKE cluster are in different compartments, then manually create the dynamic group and policy or edit the dynamic group created by the stack.
     enum: # Any change in options string will need to reflect in local.create_dg_and_policy as well
       - "Create required IAM resources as part of the stack" # Setting enum as "True" fails to save input via stack UI
       - "I have already created the required IAM resources"
@@ -158,50 +145,48 @@ variables:
     required: true
     title: Compartment for resources of OCI services
     description: |-
-        This compartment is used for storing dashboards, log groups, entities, 
-        Management Agent keys, metric namespaces, and related resources.
-        For a full list of resources, see: <a href="https://github.com/oracle-quickstart/oci-kubernetes-monitoring" 
-        target="_blank" rel="noopener noreferrer">oci-kubernetes-monitoring</a>.
+        This is the compartment in which dashboards, log group, entity, Management Agent key, metric namespace, and other related OCI resources are created.
+         For the full list of resources, see <a href="https://github.com/oracle-quickstart/oci-kubernetes-monitoring" target="_blank" rel="noopener noreferrer">oci-kubernetes-monitoring</a>.
     default: ${compartment_ocid}
 
   # Option to create Logging Analytics
-  opt_create_new_la_logGroup: # change this to create new log group
+  opt_create_new_la_log_group: # change this to create new log group
     type: boolean
     title: Create a new log group
     default: false
 
   # OCI Logging Analytics LogGroup OCID of existing LogGroup
-  oci_la_logGroup_id:
+  oci_la_log_group_ocid:
     type: oci:logan:loggroup:id
     dependsOn:
       compartmentId: ${oci_onm_compartment_ocid}
     title: OCI Logging Analytics log group
-    description: Log groups are logical containers for log data. They provide access control for your data by using policies.
+    description: Log groups are logical containers for log data. They provide access control for your data by using IAM policies.
     required: true
     visible:
       not:
-        - ${opt_create_new_la_logGroup}
+        - ${opt_create_new_la_log_group}
 
   # New Log Group to collect Kubernetes data
-  oci_la_logGroup_name:
+  oci_la_log_group_name:
     type: string
-    maxLength: 255
+    maxLength: 100 #255
     #minLength: 1
     required: false
     title: OCI Logging Analytics log group name
     description: |-
-        To make the log group easy-to-find in Dashboards and Logs Explorer pages, provide a unique name related with your cluster name. 
-        If not provided, the stack creates a log group based on OKE cluster's name and creation date.
+        To make the log group easy-to-find in Dashboards and Log Explorer pages, provide a unique name related to your cluster name.
+         If not provided, the stack creates a log group based on OKE cluster's name and creation date.
     visible:
       and:
-        - ${opt_create_new_la_logGroup}
-    pattern: '^([a-zA-Z0-9]|[a-zA-Z0-9][\\ a-zA-Z0-9_\-]*[\\a-zA-Z\-0-9_]$|^$)'  
+        - ${opt_create_new_la_log_group}
+    pattern: '(^\S.*$|^$)'
 
   # Option to create a new OCI Logging Analytics Entity
-  opt_create_new_la_entity:
+  opt_create_oci_la_entity:
     type: boolean
     title: Create a new Logging Analytics entity for this cluster
-    description: Clear the check box if you want to use an existing Logging Analytics entity
+    description: Clear the check box if you want to use an existing Logging Analytics entity.
     default: true
 
   # User Provided OCI Logging Analytics Entity OCID
@@ -209,23 +194,21 @@ variables:
     type: string
     title: OCID of OCI Logging Analytics entity
     # default: "null"
-    description: |-
-        This must be a valid Logging Analytics entity of the type Kubernetes Cluster.
+    description: This must be a valid Logging Analytics entity of the type Kubernetes Cluster.
     required: true
-    pattern: "^(ocid1\\.loganalyticsentity\\.\\S+$)"
+    pattern: '^(ocid1\.loganalyticsentity\.\S+$)'
     # maxLength: 93 # Don't set as realm ID is part of OCID
     # minLength: 93 # Don't add minLength to support optional field
     visible:
       and:
         - not: 
-          - ${opt_create_new_la_entity}
+          - ${opt_create_oci_la_entity}
 
   # Option to import Kubernetes Dashboards
   opt_import_dashboards:
     type: boolean
     title: Import dashboards
-    description: |-
-        Ensure to manually delete the dashboards when you destroy the stack since the dashboards are not deleted automatically.
+    description: Ensure to manually delete the dashboards when you destroy the stack since the dashboards are not deleted automatically.
     default: true
 
   #### [Section]
@@ -244,8 +227,8 @@ variables:
   stack_deployment_option:
     title: Deployment type
     description: |-
-        Select "Only OCI Resources" to skip helm chart installation on to your OKE cluster. 
-        Manually install the helm chart using the helm commands provided in the stack output.
+        Select "Only OCI Resources" to skip helm chart installation on to your OKE cluster.
+         Manually install the helm chart using the helm commands provided in the stack output.
     type: enum
     enum: # Dev Note - # Any change in following options must be refactored across schema.yaml
     - "Full"
@@ -285,11 +268,11 @@ variables:
         - ${show_advanced_options}
 
   # Fluentd Base Directory
-  fluentd_baseDir_path:
+  fluentd_base_dir_path:
     type: string
     maxLength: 255
     minLength: 1
-    title: FluentD working directory
+    title: Fluentd working directory
     description: A directory on the node (with read and write permission) to use for storing data related to Fluentd
     default: /var/log
     required: true
@@ -301,7 +284,8 @@ variables:
   # OCI tags
   tags:
     description: |-
-        The tag values will take effect only if the updates were made before the first run of the stack. The changes made to the tags after the first run will not take effect.
+        The tag values will take effect only if the updates are made before the first run of the stack.
+         The changes made to the tags after the first run will not take effect.
     type: oci:identity:tag:value
     title: "Tags"
     required: false
@@ -311,14 +295,14 @@ variables:
       and:
         - ${show_advanced_options}
 
-  # Option to create Dynamic Group and Policies
+  # Template Version
+  # It's automatically set by version.auto.tfvars file and hence grayed out for users
+  # It's a no-op variable and used to identify the version of template from stack UI
   template_version:
-    type: enum
+    type: string
     title: Template version
-    description: Version of oke-monitoring-solution stack released as Resource Manager service quickStart template
-    enum:
-      - "0007" # TODO: Must Increment when a new version of template is released to RMS
-    required: false
+    description: |-
+      OCI Kubernetes Monitoring Solution stack template version in Resource Manager service
     visible:
       and:
         - ${show_advanced_options}

@@ -1,4 +1,4 @@
-# Copyright (c) 2023, Oracle and/or its affiliates.
+# Copyright (c) 2023, 2024, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 ####
@@ -93,8 +93,14 @@ variable "opt_import_dashboards" {
 ##  Logan Module
 ####
 
+# Option to create Logging Analytics
+variable "opt_create_new_la_log_group" {
+  type    = bool
+  default = false
+}
+
 # New Log Group to collect Kubernetes data
-variable "new_logGroup_name" {
+variable "log_group_name" {
   type = string
 }
 
@@ -139,23 +145,18 @@ variable "opt_deploy_metric_server" {
 }
 
 # Fluentd Base Directory
-variable "fluentd_baseDir_path" {
+variable "fluentd_base_dir_path" {
   type    = string
   default = "/var/log"
 }
 
 # OKE Cluster Entity OCID
-variable "user_provided_oke_cluster_entity_ocid" {
+variable "oke_cluster_entity_ocid" {
   type = string
-
-  validation {
-    condition     = var.user_provided_oke_cluster_entity_ocid == null ? true : length(regexall("^(ocid1\\.loganalyticsentity\\.\\S+)$", var.user_provided_oke_cluster_entity_ocid)) > 0 ? true : false
-    error_message = "user_provided_oke_cluster_entity_ocid must be set to a valid value."
-  }
 }
 
 # OCI Logging Analytics LogGroup OCID provided by user
-variable "user_provided_oci_la_logGroup_ocid" {
+variable "log_group_ocid" {
   type = string
 }
 

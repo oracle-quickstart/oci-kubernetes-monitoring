@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (c) 2023, Oracle and/or its affiliates.
+# Copyright (c) 2023, 2024, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 # Bash script to build OCI Resource Manager Stack or Marketplace app for OKE monitoring
@@ -40,13 +40,13 @@ BUILD_DIR="${UTIL_PATH}/temp"
 HELM_SOURCE="$BUILD_DIR/charts"
 MODULES_SOURCE="$BUILD_DIR/terraform/modules"
 
-STACK_BUILD_PATH="$BUILD_DIR/terraform/rms_stack"
+STACK_BUILD_PATH="$BUILD_DIR/terraform/oke"
 HELM_SYMLINK="$STACK_BUILD_PATH/charts"
 MODULES_SYMLINK="$STACK_BUILD_PATH/modules"
 
 # Usage Instructions
 usage="
-$(basename "$0") [-h][-n name][-l][-d][-s] -- program to build marketplace app from oracle-quickstart/oci-kubernetes-monitoring repo.
+$(basename "$0") [-h][-n name][-l][-d][-s] -- program to build OCI RMS stack zip file using oracle-quickstart/oci-kubernetes-monitoring repo.
 
 where:
     -h  show this help text

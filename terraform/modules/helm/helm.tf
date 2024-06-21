@@ -1,4 +1,4 @@
-# Copyright (c) 2023, Oracle and/or its affiliates.
+# Copyright (c) 2023, 2024, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 locals {
@@ -11,16 +11,18 @@ locals {
   repository = local.is_local_helm_chart ? null : local.remote_helm_repo
   version    = local.is_local_helm_chart ? null : var.helmchart_version
 
+  kubernetes_cluster_name = var.kubernetes_cluster_name
+
   helm_inputs = {
     # global
     "global.namespace"             = var.kubernetes_namespace
     "global.kubernetesClusterID"   = var.kubernetes_cluster_id
-    "global.kubernetesClusterName" = var.kubernetes_cluster_name
+    "global.kubernetesClusterName" = local.kubernetes_cluster_name
 
     # oci-onm-logan
     "oci-onm-logan.ociLANamespace"       = var.oci_la_namespace
-    "oci-onm-logan.ociLALogGroupID"      = var.oci_la_logGroup_ocid
-    "oci-onm-logan.fluentd.baseDir"      = var.fluentd_baseDir_path
+    "oci-onm-logan.ociLALogGroupID"      = var.oci_la_log_group_ocid
+    "oci-onm-logan.fluentd.baseDir"      = var.fluentd_base_dir_path
     "oci-onm-logan.ociLAClusterEntityID" = var.oci_la_cluster_entity_ocid
 
     # oci-onm-mgmt-agent

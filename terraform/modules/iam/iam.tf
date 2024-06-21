@@ -1,4 +1,4 @@
-# Copyright (c) 2023, Oracle and/or its affiliates.
+# Copyright (c) 2023, 2024, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 locals {
@@ -54,27 +54,5 @@ resource "oci_identity_policy" "oke_monitoring_policy" {
   }
 
   depends_on = [oci_identity_dynamic_group.oke_dynamic_group]
-
-  # lifecycle {
-  #   precondition {
-  #     condition     = length(data.oci_identity_policies.oke_monitoring_policy.policies) == 0
-  #     error_message = <<-EOT
-  #       A policy with name - "${local.policy_name}" already exists in root compartment.
-  #       You might be trying to monitor a cluster which is already being monitored by oke-kubernetes-monitoring solution.
-  #       EOT
-  #   }
-  # }
 }
 
-data "oci_identity_policies" "oke_monitoring_policy" {
-  #Required
-  compartment_id = var.root_compartment_ocid
-  #Optional
-  name = local.policy_name
-}
-
-resource "local_file" "oke_clusters" {
-  count    = var.debug ? 1 : 0
-  content  = jsonencode(data.oci_identity_policies.oke_monitoring_policy)
-  filename = "${path.module}/tf-debug/oci_containerengine_clusters.json"
-}

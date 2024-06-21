@@ -1,9 +1,11 @@
-# Copyright (c) 2023, Oracle and/or its affiliates.
+# Copyright (c) 2023, 2024, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 ##### Note #####
 ## Locals, resources and provider in this file should not depend on any other file
-## so that we can move providers.tf file to a main module when we want to run main module independent of the stack
+## so that we can move providers.tf file to a main module when it's required to run main module independent of the stack
+## TODO: Main module should be able to exeucte idependenlty of the stack.
+##          - This requirement is not met yet and is Work in progress.
 ##### Note #####
 
 locals {
@@ -42,7 +44,6 @@ data "oci_containerengine_cluster_kube_config" "oke" {
 }
 
 provider "oci" {
-  alias            = "target_region"
   tenancy_ocid     = var.boat_auth ? var.boat_tenancy_ocid : var.tenancy_ocid
   region           = var.region
   private_key_path = var.private_key_path
@@ -72,3 +73,5 @@ provider "helm" {
     insecure = local.kube_config.insecure
   }
 }
+
+provider "local" {}

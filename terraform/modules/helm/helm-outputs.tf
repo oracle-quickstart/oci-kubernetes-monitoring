@@ -1,4 +1,4 @@
-# Copyright (c) 2023, Oracle and/or its affiliates.
+# Copyright (c) 2023, 2024, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 locals {
@@ -9,8 +9,8 @@ locals {
     "helm install oci-kubernetes-monitoring oci-onm/oci-onm",
     "--set global.namespace=${var.kubernetes_namespace}",
     "--set global.kubernetesClusterID=${var.kubernetes_cluster_id}",
-    "--set global.kubernetesClusterName=${var.kubernetes_cluster_name}",
-    "--set oci-onm-logan.ociLALogGroupID=${var.oci_la_logGroup_ocid}",
+    "--set global.kubernetesClusterName=${local.kubernetes_cluster_name}",
+    "--set oci-onm-logan.ociLALogGroupID=${var.oci_la_log_group_ocid}",
     "--set oci-onm-logan.ociLANamespace=${var.oci_la_namespace}",
     "--set oci-onm-logan.ociLAClusterEntityID=${var.oci_la_cluster_entity_ocid}",
     "--set oci-onm-mgmt-agent.deployMetricServer=${var.opt_deploy_metric_server}",

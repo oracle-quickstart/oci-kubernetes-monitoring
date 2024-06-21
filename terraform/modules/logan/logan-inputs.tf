@@ -1,4 +1,4 @@
-# Copyright (c) 2023, Oracle and/or its affiliates.
+# Copyright (c) 2023, 2024, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 # tenancy OCID
@@ -16,28 +16,35 @@ variable "compartment_ocid" {
   type = string
 }
 
-# New Log Group to collect Kubernetes data
-variable "new_logGroup_name" {
+# Option to create Logging Analytics
+variable "opt_create_new_la_log_group" {
+  type = bool
+}
+
+# OCI Logging Analytics Log Group name (user input)
+variable "log_group_display_name" {
+  type = string
+}
+
+# OCI Logging Analytics LogGroup OCID (user input)
+variable "log_group_ocid" {
   type = string
 }
 
 # OKE Cluster Entity OCID
-variable "existing_entity_ocid" {
+variable "oke_entity_ocid" {
   type = string
 }
 
+# OKE Entity metadata
 variable "entity_metadata_list" {
   type = list(object({ name = string, type = string, value = string }))
 }
 
+# OKE Entity name
 variable "new_entity_name" {
   type    = string
   default = null
-}
-
-# OCI Logging Analytics LogGroup OCID provided by user
-variable "logGroup_ocid" {
-  type = string
 }
 
 # Save data resources in local_file for debug purposes

@@ -1,4 +1,4 @@
-# # Copyright (c) 2023, Oracle and/or its affiliates.
+# # Copyright (c) 2023, 2024, Oracle and/or its affiliates.
 # # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 ####
@@ -33,8 +33,8 @@ output "oci_la_namespace" {
   value = module.main.oci_la_namespace
 }
 
-output "oci_la_logGroup_ocid" {
-  value = module.main.oci_la_logGroup_ocid
+output "oci_la_log_group_ocid" {
+  value = module.main.oci_la_log_group_ocid
 }
 
 output "mgmt_agent_install_key" {

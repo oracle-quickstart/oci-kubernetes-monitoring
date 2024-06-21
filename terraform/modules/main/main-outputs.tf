@@ -1,4 +1,4 @@
-# # Copyright (c) 2023, Oracle and/or its affiliates.
+# # Copyright (c) 2023, 2024, Oracle and/or its affiliates.
 # # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 # ###
@@ -29,8 +29,8 @@ output "oci_la_namespace" {
   value = local.module_controls_enable_logan_module ? module.logan[0].oci_la_namespace : null
 }
 
-output "oci_la_logGroup_ocid" {
-  value = local.module_controls_enable_logan_module ? module.logan[0].logGroup_ocid : null
+output "oci_la_log_group_ocid" {
+  value = local.module_controls_enable_logan_module ? module.logan[0].log_group_ocid : null
 }
 
 output "oke_cluster_entity_ocid" {

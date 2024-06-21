@@ -1,4 +1,4 @@
-# Copyright (c) 2023, Oracle and/or its affiliates.
+# Copyright (c) 2023, 2024, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 resource "local_file" "tenant_details" {
@@ -17,4 +17,10 @@ resource "local_file" "kube_config" {
   count    = var.debug ? 1 : 0
   content  = yamlencode(yamldecode(data.oci_containerengine_cluster_kube_config.oke.content))
   filename = "${path.module}/tf-debug/kube_config.yaml"
+}
+
+resource "local_file" "oci_containerengine_clusters" {
+  count    = var.debug ? 1 : 0
+  content  = jsonencode(data.oci_containerengine_clusters.oke_clusters)
+  filename = "${path.module}/tf-debug/oci_containerengine_clusters.json"
 }

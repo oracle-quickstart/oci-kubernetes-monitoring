@@ -1,4 +1,4 @@
-# Copyright (c) 2023, Oracle and/or its affiliates.
+# Copyright (c) 2023, 2024, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 ####
@@ -53,7 +53,7 @@ variable "kubernetes_namespace" {
 ####
 
 # OCI Logging Analytics LogGroup OCID
-variable "oci_la_logGroup_ocid" {
+variable "oci_la_log_group_ocid" {
   type    = string
   default = ""
 }
@@ -73,7 +73,7 @@ variable "oci_la_cluster_entity_ocid" {
 ####
 
 # Fluentd Base Directory
-variable "fluentd_baseDir_path" {
+variable "fluentd_base_dir_path" {
   type    = string
   default = "/var/log"
 }

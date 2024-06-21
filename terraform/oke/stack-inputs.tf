@@ -1,4 +1,4 @@
-# Copyright (c) 2023, Oracle and/or its affiliates.
+# Copyright (c) 2023, 2024, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 # When defined in the Terraform configuration, the following variables automatically prepopulate with values on the Console pages used to create and edit the stack.
@@ -95,6 +95,7 @@ variable "debug" {
 variable "oke_cluster_name" {
   type    = string
   default = null
+  # User Facing Error
   validation {
     condition = var.oke_cluster_name == null ? true : length(regexall("(^\\S+.*$|^$)", var.oke_cluster_name)) > 0
     #TODO negative and positive test using API
@@ -127,6 +128,7 @@ variable "oke_subnet_or_pe_ocid" {
   type    = string
   default = null
 
+  # User Facing Error
   validation {
     condition     = var.oke_subnet_or_pe_ocid == null ? true : length(regexall("^ocid1\\.(subnet|ormprivateendpoint)\\.\\S+$", var.oke_subnet_or_pe_ocid)) > 0
     error_message = "Incorrect format: var.oke_subnet_or_pe_ocid"
@@ -138,7 +140,7 @@ variable "oke_subnet_or_pe_ocid" {
 ####
 
 # New Dropdown option for Dynamic Group and Policies
-variable "dropdown_create_dynamicGroup_and_policies" {
+variable "dropdown_create_dynamic_group_and_policies" {
   type = string
 }
 
@@ -152,25 +154,32 @@ variable "oci_onm_compartment_ocid" {
 }
 
 # Option to create Logging Analytics
-variable "opt_create_new_la_logGroup" {
+variable "opt_create_new_la_log_group" {
   type    = bool
   default = false
 }
 
 # OCI Logging Analytics LogGroup OCID
-variable "oci_la_logGroup_id" {
+variable "oci_la_log_group_ocid" {
   type    = string
   default = null
 }
 
 # New Log Group to collect Kubernetes data
-variable "oci_la_logGroup_name" {
+variable "oci_la_log_group_name" {
   type    = string
   default = null
+
+  # User Facing Error
+  validation {
+    condition = var.oci_la_log_group_name == null ? true : var.oci_la_log_group_name == "" || (
+    length(var.oci_la_log_group_name) < 100 && length(regexall("\\S", var.oci_la_log_group_name)) > 0)
+    error_message = "Invalid log group name."
+  }
 }
 
 # Option to create Logging Analytics
-variable "opt_create_new_la_entity" {
+variable "opt_create_oci_la_entity" {
   type    = bool
   default = true
 }
@@ -180,6 +189,7 @@ variable "oke_cluster_entity_ocid" {
   type    = string
   default = null
 
+  # User Facing Error
   validation {
     condition     = var.oke_cluster_entity_ocid == null ? true : length(regexall("^(ocid1\\.loganalyticsentity\\.\\S+)$", var.oke_cluster_entity_ocid)) > 0 ? true : false
     error_message = "var.oke_cluster_entity_ocid must be set to a valid value."
@@ -221,7 +231,7 @@ variable "opt_deploy_metric_server" {
 }
 
 # Fluentd Base Directory
-variable "fluentd_baseDir_path" {
+variable "fluentd_base_dir_path" {
   type    = string
   default = "/var/log"
 }

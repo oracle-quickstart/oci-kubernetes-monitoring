@@ -1,4 +1,4 @@
-# Copyright (c) 2023, Oracle and/or its affiliates.
+# Copyright (c) 2023, 2024, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 .DS_Store
@@ -32,7 +32,9 @@ crash.*.log
 # control as they are data points which are potentially sensitive and subject
 # to change depending on the environment.
 *.tfvars
+!*.auto.tfvars
 *.tfvars.json
+!*.auto.tfvars.json
 
 # Include sample tfvars
 !terraform-sample.tfvars
