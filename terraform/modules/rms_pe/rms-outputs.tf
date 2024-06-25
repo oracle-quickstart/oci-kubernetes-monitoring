@@ -2,5 +2,5 @@
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 output "private_endpoint_reachable_ip" {
-  value = data.oci_resourcemanager_private_endpoint_reachable_ip.rechable_ip.ip_address
+  value = data.oci_resourcemanager_private_endpoint_reachable_ip.reachable_ip.ip_address
 }

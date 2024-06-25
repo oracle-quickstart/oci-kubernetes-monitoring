@@ -29,7 +29,7 @@ variable "fingerprint" {
 }
 
 ####
-## Boat configuration - Used for internal developement purpose only.
+## Boat configuration - Used for internal development purpose only.
 ####
 
 # Option to enable BOAT authentication.
@@ -113,8 +113,8 @@ variable "install_helm_chart" {
   type = bool
 }
 
-# Option to use latest helmchart
-variable "helmchart_version" {
+# Option to use latest helm chart
+variable "helm_chart_version" {
   type = string
 }
 

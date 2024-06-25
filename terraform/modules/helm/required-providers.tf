@@ -6,11 +6,7 @@ terraform {
   required_providers {
     helm = {
       source  = "hashicorp/helm"
-      version = "~> 2.7.1"
+      version = "~> 2.7"
     }
-    # oci = {
-    #   source  = "oracle/oci"
-    #   version = "~> 5.46"
-    # }
   }
 }

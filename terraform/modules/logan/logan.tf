@@ -30,7 +30,7 @@ data "oci_log_analytics_log_analytics_entity" "oke_cluster_entity" {
       # Incorrect Entity OCID check
       condition     = self.entity_type_name != null
       error_message = <<-EOT
-        Invalid Entity OCID. Entity does not exist.
+        Authorization failed or requested resource not found.
       EOT
     }
 
@@ -38,9 +38,7 @@ data "oci_log_analytics_log_analytics_entity" "oke_cluster_entity" {
     postcondition {
       # Incorrect Entity Type check
       condition     = self.entity_type_name == local.k8s_entity_type
-      error_message = <<-EOT
-        Invalid Entity Type. Entity must be of type: Kubenetes Cluster.
-      EOT
+      error_message = "Invalid Entity Type. Entity must be of type: Kubernetes Cluster."
     }
   }
 }

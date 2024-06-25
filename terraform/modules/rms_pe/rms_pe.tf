@@ -7,7 +7,7 @@ locals {
 
 resource "oci_resourcemanager_private_endpoint" "rms_pe" {
   count          = var.private_endpoint_ocid == null ? 1 : 0
-  compartment_id = var.pe_compartmnet_ocid
+  compartment_id = var.pe_compartment_ocid
   display_name   = "oci-kubernetes-monitoring"
   vcn_id         = var.oke_vcn_ocid
   subnet_id      = var.oke_subnet_ocid
@@ -38,9 +38,7 @@ data "oci_core_subnet" "oke_subnet" {
     # User Facing Error     
     postcondition {
       condition     = self.vcn_id == var.oke_vcn_ocid
-      error_message = <<-EOT
-        Invalid Subnet. Subnet must be part of target OKE's VCN.
-      EOT
+      error_message = "Invalid Subnet. Subnet must be part of OKE cluster's VCN."
     }
   }
 }
@@ -53,14 +51,12 @@ data "oci_resourcemanager_private_endpoint" "rms_pe" {
     # User Facing Error
     postcondition {
       condition     = self.vcn_id == var.oke_vcn_ocid
-      error_message = <<-EOT
-        Invalid Private Endpoint. Private Endpoint must be configured with OKE's VCN.
-      EOT
+      error_message = "Invalid Subnet. Private Endpoint must be configured with OKE cluster's VCN."
     }
   }
 }
 
-data "oci_resourcemanager_private_endpoint_reachable_ip" "rechable_ip" {
+data "oci_resourcemanager_private_endpoint_reachable_ip" "reachable_ip" {
   private_endpoint_id = local.private_endpoint_ocid
   private_ip          = var.private_ip_address
 }

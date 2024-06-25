@@ -14,9 +14,7 @@ resource "null_resource" "private_oke_check" {
     # User Facing Error
     precondition {
       condition     = local.oke_cluster_is_private
-      error_message = <<-EOT
-        Invalid input. Using Private Endpoint with public OKE cluster is not allowed.
-      EOT
+      error_message = "Invalid input. Using Private Endpoint with public OKE cluster is not allowed."
     }
   }
 }
@@ -29,9 +27,7 @@ resource "null_resource" "public_oke_check" {
     # User Facing Error
     precondition {
       condition     = local.oke_cluster_is_public
-      error_message = <<-EOT
-        Missing Input. Check the "OKE cluster is private" checkbox to monitor a private OKE cluster.
-      EOT
+      error_message = "Missing Input. \"OKE cluster is private\" checkbox must be selected to monitor a private OKE cluster."
     }
   }
 }

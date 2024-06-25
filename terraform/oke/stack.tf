@@ -15,7 +15,7 @@ locals {
   user_entered_pe_ocid = var.oke_subnet_or_pe_ocid == null ? false : length(
   regexall("^ocid1\\.ormprivateendpoint\\.\\S+$", var.oke_subnet_or_pe_ocid)) > 0
 
-  # One of the following locals is expected to be null becuase of different regex checks
+  # One of the following locals is expected to be null because of different regex checks
   oke_subnet_ocid = local.user_entered_subnet_ocid ? var.oke_subnet_or_pe_ocid : null
   oke_pe_ocid     = local.user_entered_pe_ocid ? var.oke_subnet_or_pe_ocid : null
 
@@ -37,7 +37,7 @@ data "oci_containerengine_clusters" "oke_clusters" {
 }
 
 # Create a new private endpoint or uses an existing one 
-# Returns a reahable ip address to access private OKE cluster
+# Returns a reachable ip address to access private OKE cluster
 module "rms_private_endpoint" {
   count  = local.use_rms_private_endpoint ? 1 : 0
   source = "./modules/rms_pe"
@@ -45,7 +45,7 @@ module "rms_private_endpoint" {
   oke_subnet_ocid       = local.oke_subnet_ocid
   private_endpoint_ocid = local.oke_pe_ocid
   private_ip_address    = local.cluster_private_ip
-  pe_compartmnet_ocid   = var.oci_onm_compartment_ocid
+  pe_compartment_ocid   = var.oci_onm_compartment_ocid
   oke_vcn_ocid          = local.cluster_data.vcn_id
 
   tags  = var.tags
@@ -85,7 +85,7 @@ module "main" {
   # Helm
   # kubernetes_namespace                  = "oci-onm"
   install_helm_chart           = local.deploy_helm
-  helmchart_version            = local.helm_chart_version
+  helm_chart_version           = local.helm_chart_version
   opt_deploy_metric_server     = var.opt_deploy_metric_server
   fluentd_base_dir_path        = var.fluentd_base_dir_path
   kubernetes_cluster_id        = var.oke_cluster_ocid

@@ -13,7 +13,7 @@ locals {
   cluster_data                = [for c in local.all_clusters_in_compartment : c if c.id == var.oke_cluster_ocid][0]
 
   # OCI LA Kubernetes Cluster Entity Name
-  # OKE always responds with same time format string in UTC regarless or realm or region [Validated with OKE Team]
+  # OKE always responds with same time format string in UTC regardless or realm or region [Validated with OKE Team]
   oke_metadata_time_created = local.cluster_data.metadata[0].time_created                                      # "2021-05-21 16:20:30 +0000 UTC"
   oke_time_created_rfc3398  = replace(replace(local.oke_metadata_time_created, " +0000 UTC", "Z", ), " ", "T") #"2021-05-21T16:20:30Z"
   oke_metadata_is_private   = !local.cluster_data.endpoint_config[0].is_public_ip_enabled
@@ -38,7 +38,7 @@ locals {
   oke_cluster_name_in_helm = var.kubernetes_cluster_name == null ? local.new_oke_entity_name : var.kubernetes_cluster_name
 
   # Module Controls are are final verdicts on if a module should be executed or not 
-  # Module dependencies should be included here as well so a module does not run when it's depenedent moudle is disabled
+  # Module dependencies should be included here as well so a module does not run when it's dependent module is disabled
 
   module_controls_enable_iam_module        = alltrue([var.toggle_iam_module, var.opt_create_dynamicGroup_and_policies])
   module_controls_enable_logan_module      = alltrue([var.toggle_logan_module])
@@ -47,7 +47,7 @@ locals {
   module_controls_enable_dashboards_module = alltrue([var.toggle_dashboards_module, var.opt_import_dashboards])
 }
 
-# We are queriying all clusters in the compartment cause
+# We are querying all clusters in the compartment cause
 # OKE service does not support data resource for specific OKE Cluster
 data "oci_containerengine_clusters" "oke_clusters" {
   compartment_id = var.oke_compartment_ocid
@@ -70,7 +70,7 @@ module "iam" {
   }
 }
 
-# Create Logging Analytics Resorces
+# Create Logging Analytics Resources
 module "logan" {
   source = "../logan"
   count  = local.module_controls_enable_logan_module ? 1 : 0
@@ -114,8 +114,8 @@ module "helm_release" {
   deploy_mushop_config = false #var.livelab_switch
 
   # helm command
-  local_helm_chart  = local.local_helm_path
-  helmchart_version = var.helmchart_version
+  local_helm_chart   = local.local_helm_path
+  helm_chart_version = var.helm_chart_version
 
   # values.yaml
   kubernetes_cluster_id          = var.kubernetes_cluster_id
@@ -131,7 +131,7 @@ module "helm_release" {
 }
 
 # Import Kubernetes Dashboards
-module "import_kubernetes_dashbords" {
+module "import_kubernetes_dashboards" {
   source = "../dashboards"
   count  = local.module_controls_enable_dashboards_module ? 1 : 0
 

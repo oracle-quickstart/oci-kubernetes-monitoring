@@ -62,7 +62,7 @@ variableGroups:
       - ${helm_chart_version}
       - ${fluentd_base_dir_path}
       - ${tags}
-      - ${template_version}
+      - ${template_id}
 
 variables:
 
@@ -170,7 +170,7 @@ variables:
   # New Log Group to collect Kubernetes data
   oci_la_log_group_name:
     type: string
-    maxLength: 100 #255
+    # maxLength: 100 # Do not use maxLength
     #minLength: 1
     required: false
     title: OCI Logging Analytics log group name
@@ -180,7 +180,7 @@ variables:
     visible:
       and:
         - ${opt_create_new_la_log_group}
-    pattern: '(^\S.*$|^$)'
+    pattern: '(^\S.*\S$|^$)'
 
   # Option to create a new OCI Logging Analytics Entity
   opt_create_oci_la_entity:
@@ -295,12 +295,12 @@ variables:
       and:
         - ${show_advanced_options}
 
-  # Template Version
+  # Template ID
   # It's automatically set by version.auto.tfvars file and hence grayed out for users
   # It's a no-op variable and used to identify the version of template from stack UI
-  template_version:
+  template_id:
     type: string
-    title: Template version
+    title: Template id
     description: |-
       OCI Kubernetes Monitoring Solution stack template version in Resource Manager service
     visible:

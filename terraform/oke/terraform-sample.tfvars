@@ -2,8 +2,8 @@
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 ################################################################################
-#   Note:
-#        Comments that starts with "\\" are instruction
+#   About Comments:
+#        Comments that starts with "//" are instruction
 #        Comments that start with "#" are alternate input options
 #
 ################################################################################
@@ -12,12 +12,12 @@
 tenancy_ocid = "<Enter Tenancy OCID here>"
 region       = "<Enter Region Name here: ex: us-phoenix-1>"
 
-// Set follwoing inputs when not using instance pricipal authenitcation
+// Set following inputs when not using instance principal authentication
 # user_ocid    =
 # private_key_path = 
 # fingerprint = 
 
-oke_compartment_ocid = "<Enter OKE comparment OCID here>"
+oke_compartment_ocid = "<Enter OKE compartment OCID here>"
 oke_cluster_ocid     = "<Enter OKE Cluster OCID here>"
 
 dropdown_create_dynamic_group_and_policies = "Create required IAM resources as part of the stack"
@@ -25,7 +25,7 @@ dropdown_create_dynamic_group_and_policies = "Create required IAM resources as p
 
 // This is the compartment in which dashboards, log group, entity, Management Agent key, metric namespace, and other related OCI resources are created.
 // For the full list of resources, see https://github.com/oracle-quickstart/oci-kubernetes-monitoring
-oci_onm_compartment_ocid = "<Enter oci-onm comparment OCID here>"
+oci_onm_compartment_ocid = "<Enter oci-onm compartment OCID here>"
 
 opt_create_new_la_log_group = true
 oci_la_log_group_name       = "" # Optional: A LogGroup with ClusterName_ClusterCreationTimeStamp is auto created when empty sting is passed
@@ -50,8 +50,7 @@ opt_import_dashboards = false
 stack_deployment_option = "Full"
 # stack_deployment_option = "Only OCI Resources"
 
-// Example, 3.3.0. For the list of releases, see <a href="https://github.com/oracle-quickstart/oci-kubernetes-monitoring/releases" 
-// target="_blank" rel="noopener noreferrer">oci-kubernetes-monitoring/releases</a>. 
+// Example, 3.3.0. For the list of releases, see https://github.com/oracle-quickstart/oci-kubernetes-monitoring/releases
 // If not provided, then the latest oci-onm helm chart version is deployed. 
 // However, if you need to upgrade to a newer version, then you must provide a version number here.
 

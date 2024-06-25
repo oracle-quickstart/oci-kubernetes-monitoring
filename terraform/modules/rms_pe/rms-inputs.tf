@@ -22,7 +22,7 @@ variable "oke_subnet_ocid" {
 }
 
 # Compartment to host RMS private endpoint
-variable "pe_compartmnet_ocid" {
+variable "pe_compartment_ocid" {
   type = string
 }
 

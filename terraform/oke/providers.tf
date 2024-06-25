@@ -4,7 +4,7 @@
 ##### Note #####
 ## Locals, resources and provider in this file should not depend on any other file
 ## so that we can move providers.tf file to a main module when it's required to run main module independent of the stack
-## TODO: Main module should be able to exeucte idependenlty of the stack.
+## TODO: Main module should be able to execute idependenlty of the stack.
 ##          - This requirement is not met yet and is Work in progress.
 ##### Note #####
 

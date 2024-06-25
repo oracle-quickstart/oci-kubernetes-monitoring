@@ -24,8 +24,8 @@ variable "local_helm_chart" {
 ##  Helm chart
 ####
 
-# Option to use latest helmchart
-variable "helmchart_version" {
+# Option to use latest helm chart
+variable "helm_chart_version" {
   type = string
 }
 

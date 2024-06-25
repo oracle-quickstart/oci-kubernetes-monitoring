@@ -9,7 +9,7 @@ locals {
 
   chart      = local.is_local_helm_chart ? var.local_helm_chart : local.chart_name
   repository = local.is_local_helm_chart ? null : local.remote_helm_repo
-  version    = local.is_local_helm_chart ? null : var.helmchart_version
+  version    = local.is_local_helm_chart ? null : var.helm_chart_version
 
   kubernetes_cluster_name = var.kubernetes_cluster_name
 
@@ -45,7 +45,6 @@ resource "helm_release" "oci-kubernetes-monitoring" {
   version           = local.version
   wait              = true
   dependency_update = true
-  force_update      = true
   cleanup_on_fail   = true
   atomic            = true
 
@@ -73,7 +72,7 @@ resource "helm_release" "oci-kubernetes-monitoring" {
 # Create helm template
 data "helm_template" "oci-kubernetes-monitoring" {
   name = "oci-kubernetes-monitoring"
-  # default behaviour is to use remote helm repo | var.use_local_helm_chart = false
+  # default behavior is to use remote helm repo | var.use_local_helm_chart = false
   # the option to use local helm chart is for development purpose only
   repository        = local.repository
   chart             = local.chart

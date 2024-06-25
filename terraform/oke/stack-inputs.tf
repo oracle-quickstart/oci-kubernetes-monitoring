@@ -36,7 +36,7 @@ variable "fingerprint" {
 }
 
 ####
-## Boat configuration - Used for internal developement purpose only.
+## Boat configuration - Used for internal development purpose only.
 ####
 
 # Option to enable BOAT authentication.
@@ -52,16 +52,16 @@ variable "boat_tenancy_ocid" {
 }
 
 ####
-## Stack Variable - Auto-pupulated while running RM Stack
+## Stack Variable - Auto-populated while running RM Stack
 ####
 
-# Stack compartment - where marketplace app / Resoruce Manager stack is executed
+# Stack compartment - where marketplace app / Resource Manager stack is executed
 variable "compartment_ocid" {
   type    = string
   default = ""
 }
 
-# OCID of user running the marketplace app / Resoruce Manager stack
+# OCID of user running the marketplace app / Resource Manager stack
 variable "current_user_ocid" {
   type    = string
   default = ""
@@ -76,30 +76,15 @@ variable "debug" {
   default = false
 }
 
-# NOTE: This might be helpful with livelab support
-# Kubernetes Namespace
-# variable "kubernetes_namespace" {
-#   type    = string
-#   default = "oci-onm"
-# }
-
-# [Depretiated][Released][Hidden]
-# Option to create Dynamic Group and Policies
-# variable "opt_create_dynamicGroup_and_policies" {
-#   type    = bool
-#   default = false
-# }
-
-# [Released][Hidden] #TODO: Should we retire this input
+# [Hidden input] 
 # OKE Cluster Name
 variable "oke_cluster_name" {
   type    = string
   default = null
   # User Facing Error
   validation {
-    condition = var.oke_cluster_name == null ? true : length(regexall("(^\\S+.*$|^$)", var.oke_cluster_name)) > 0
-    #TODO negative and positive test using API
-    error_message = "Invalid input:oke_cluster_name | RegeEx Validation: (^\\S+.*$)"
+    condition     = var.oke_cluster_name == null ? true : length(regexall("(^\\S.*$|^$)", var.oke_cluster_name)) > 0
+    error_message = "Invalid oke_cluster_name"
   }
 }
 
@@ -131,7 +116,7 @@ variable "oke_subnet_or_pe_ocid" {
   # User Facing Error
   validation {
     condition     = var.oke_subnet_or_pe_ocid == null ? true : length(regexall("^ocid1\\.(subnet|ormprivateendpoint)\\.\\S+$", var.oke_subnet_or_pe_ocid)) > 0
-    error_message = "Incorrect format: var.oke_subnet_or_pe_ocid"
+    error_message = "Invalid subnet ocid or private endpoint ocid."
   }
 }
 
@@ -173,7 +158,7 @@ variable "oci_la_log_group_name" {
   # User Facing Error
   validation {
     condition = var.oci_la_log_group_name == null ? true : var.oci_la_log_group_name == "" || (
-    length(var.oci_la_log_group_name) < 100 && length(regexall("\\S", var.oci_la_log_group_name)) > 0)
+    length(regexall("^\\S.*\\S$", var.oci_la_log_group_name)) > 0)
     error_message = "Invalid log group name."
   }
 }
@@ -192,7 +177,7 @@ variable "oke_cluster_entity_ocid" {
   # User Facing Error
   validation {
     condition     = var.oke_cluster_entity_ocid == null ? true : length(regexall("^(ocid1\\.loganalyticsentity\\.\\S+)$", var.oke_cluster_entity_ocid)) > 0 ? true : false
-    error_message = "var.oke_cluster_entity_ocid must be set to a valid value."
+    error_message = "Invalid OCI Logging Analytics entity OCID"
   }
 }
 
@@ -244,7 +229,7 @@ variable "tags" {
 
 # This var is not used in stack
 # Purpose: to display stack version on UI without being able to execute it
-variable "template_version" {
+variable "template_id" {
   type    = string
   default = null
 }

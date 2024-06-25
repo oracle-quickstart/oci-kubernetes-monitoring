@@ -9,9 +9,7 @@ resource "null_resource" "user_opts_out_to_create_log_group_check" {
     # Check: User has provided an existing log group id
     precondition {
       condition     = var.log_group_ocid != null
-      error_message = <<-EOT
-        ERROR : var.log_group_ocid must not be "null" when var.opt_create_new_la_log_group is set as "false" 
-      EOT
+      error_message = "var.log_group_ocid must be set to a valid value when var.opt_create_new_la_log_group is false."
     }
   }
 }
