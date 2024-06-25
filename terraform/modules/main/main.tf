@@ -18,7 +18,7 @@ locals {
   oke_time_created_rfc3398  = replace(replace(local.oke_metadata_time_created, " +0000 UTC", "Z", ), " ", "T") #"2021-05-21T16:20:30Z"
   oke_metadata_is_private   = !local.cluster_data.endpoint_config[0].is_public_ip_enabled
   oke_name                  = local.cluster_data.name
-  new_oke_entity_name       = "${trimspace(local.oke_name)}_${local.oke_time_created_rfc3398}"
+  new_oke_entity_name       = "${local.oke_name}_${local.oke_time_created_rfc3398}"
   k8s_version               = local.cluster_data.kubernetes_version
 
   entity_metadata_list = [
