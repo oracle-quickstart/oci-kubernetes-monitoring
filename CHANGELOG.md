@@ -1,5 +1,9 @@
 # Change Log
 
+## 2024-06-26
+### Added
+- Option to disable JRE default security property for Agent.
+
 ## 2024-06-18
 ### Changed
 - Fluentd collector container image uptake to 1.4.3 having OS and other dependency updates.
