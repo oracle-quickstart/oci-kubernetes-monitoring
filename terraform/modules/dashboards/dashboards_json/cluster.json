@@ -599,8 +599,8 @@
                     "metadataVersion": "2.0",
                     "widgetTemplate": "jet-modules/dashboards/widgets/lxSavedSearchWidget.html",
                     "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget",
-                    "freeformTags": {},
-                    "definedTags": {},
+                    "freeformTags": ${freeform_tags}, 
+                    "definedTags": ${defined_tags},
                     "parametersConfig": [],
                     "drilldownConfig": []
                 },
@@ -676,8 +676,8 @@
                     "metadataVersion": "2.0",
                     "widgetTemplate": "visualizations/chartWidgetTemplate.html",
                     "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget",
-                    "freeformTags": {},
-                    "definedTags": {},
+                    "freeformTags": ${freeform_tags}, 
+                    "definedTags": ${defined_tags},
                     "parametersConfig": [
                         {
                             "name": "log-analytics-log-group-compartment",
@@ -815,8 +815,8 @@
                     "metadataVersion": "2.0",
                     "widgetTemplate": "visualizations/chartWidgetTemplate.html",
                     "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget",
-                    "freeformTags": {},
-                    "definedTags": {},
+                    "freeformTags": ${freeform_tags}, 
+                    "definedTags": ${defined_tags},
                     "parametersConfig": [
                         {
                             "name": "log-analytics-log-group-compartment",
@@ -1025,8 +1025,8 @@
                     "metadataVersion": "2.0",
                     "widgetTemplate": "jet-modules/dashboards/widgets/lxSavedSearchWidget.html",
                     "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget",
-                    "freeformTags": {},
-                    "definedTags": {},
+                    "freeformTags": ${freeform_tags}, 
+                    "definedTags": ${defined_tags},
                     "parametersConfig": [],
                     "drilldownConfig": []
                 },
@@ -1103,8 +1103,8 @@
                     "metadataVersion": "2.0",
                     "widgetTemplate": "jet-modules/dashboards/widgets/lxSavedSearchWidget.html",
                     "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget",
-                    "freeformTags": {},
-                    "definedTags": {},
+                    "freeformTags": ${freeform_tags}, 
+                    "definedTags": ${defined_tags},
                     "parametersConfig": [],
                     "drilldownConfig": []
                 },
@@ -1234,8 +1234,8 @@
                     "metadataVersion": "2.0",
                     "widgetTemplate": "jet-modules/dashboards/widgets/lxSavedSearchWidget.html",
                     "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget",
-                    "freeformTags": {},
-                    "definedTags": {},
+                    "freeformTags": ${freeform_tags}, 
+                    "definedTags": ${defined_tags},
                     "parametersConfig": [],
                     "drilldownConfig": []
                 },
@@ -1391,8 +1391,8 @@
                     "metadataVersion": "2.0",
                     "widgetTemplate": "jet-modules/dashboards/widgets/lxSavedSearchWidget.html",
                     "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget",
-                    "freeformTags": {},
-                    "definedTags": {},
+                    "freeformTags": ${freeform_tags}, 
+                    "definedTags": ${defined_tags},
                     "parametersConfig": [],
                     "drilldownConfig": []
                 },
@@ -1528,8 +1528,8 @@
                     "metadataVersion": "2.0",
                     "widgetTemplate": "visualizations/chartWidgetTemplate.html",
                     "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget",
-                    "freeformTags": {},
-                    "definedTags": {},
+                    "freeformTags": ${freeform_tags}, 
+                    "definedTags": ${defined_tags},
                     "parametersConfig": [
                         {
                             "name": "log-analytics-log-group-compartment",
@@ -1712,8 +1712,8 @@
                     "metadataVersion": "2.0",
                     "widgetTemplate": "visualizations/chartWidgetTemplate.html",
                     "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget",
-                    "freeformTags": {},
-                    "definedTags": {},
+                    "freeformTags": ${freeform_tags}, 
+                    "definedTags": ${defined_tags},
                     "parametersConfig": [
                         {
                             "name": "log-analytics-log-group-compartment",
@@ -1903,8 +1903,8 @@
                     "metadataVersion": "2.0",
                     "widgetTemplate": "visualizations/chartWidgetTemplate.html",
                     "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget",
-                    "freeformTags": {},
-                    "definedTags": {},
+                    "freeformTags": ${freeform_tags}, 
+                    "definedTags": ${defined_tags},
                     "parametersConfig": [
                         {
                             "name": "log-analytics-log-group-compartment",
@@ -2108,8 +2108,8 @@
                     "metadataVersion": "2.0",
                     "widgetTemplate": "jet-modules/dashboards/widgets/lxSavedSearchWidget.html",
                     "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget",
-                    "freeformTags": {},
-                    "definedTags": {},
+                    "freeformTags": ${freeform_tags}, 
+                    "definedTags": ${defined_tags},
                     "parametersConfig": [],
                     "drilldownConfig": []
                 },
@@ -2239,8 +2239,8 @@
                     "metadataVersion": "2.0",
                     "widgetTemplate": "visualizations/chartWidgetTemplate.html",
                     "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget",
-                    "freeformTags": {},
-                    "definedTags": {},
+                    "freeformTags": ${freeform_tags}, 
+                    "definedTags": ${defined_tags},
                     "parametersConfig": [
                         {
                             "name": "log-analytics-log-group-compartment",
@@ -2423,8 +2423,8 @@
                     "metadataVersion": "2.0",
                     "widgetTemplate": "visualizations/chartWidgetTemplate.html",
                     "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget",
-                    "freeformTags": {},
-                    "definedTags": {},
+                    "freeformTags": ${freeform_tags}, 
+                    "definedTags": ${defined_tags},
                     "parametersConfig": [
                         {
                             "name": "log-analytics-log-group-compartment",
@@ -2607,8 +2607,8 @@
                     "metadataVersion": "2.0",
                     "widgetTemplate": "visualizations/chartWidgetTemplate.html",
                     "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget",
-                    "freeformTags": {},
-                    "definedTags": {},
+                    "freeformTags": ${freeform_tags}, 
+                    "definedTags": ${defined_tags},
                     "parametersConfig": [
                         {
                             "name": "log-analytics-log-group-compartment",
@@ -2738,8 +2738,8 @@
                     "metadataVersion": "2.0",
                     "widgetTemplate": "visualizations/chartWidgetTemplate.html",
                     "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget",
-                    "freeformTags": {},
-                    "definedTags": {},
+                    "freeformTags": ${freeform_tags}, 
+                    "definedTags": ${defined_tags},
                     "parametersConfig": [
                         {
                             "name": "log-analytics-log-group-compartment",
@@ -2930,8 +2930,8 @@
                     "metadataVersion": "2.0",
                     "widgetTemplate": "visualizations/chartWidgetTemplate.html",
                     "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget",
-                    "freeformTags": {},
-                    "definedTags": {},
+                    "freeformTags": ${freeform_tags}, 
+                    "definedTags": ${defined_tags},
                     "parametersConfig": [
                         {
                             "name": "log-analytics-log-group-compartment",
@@ -3176,8 +3176,8 @@
                     "metadataVersion": "2.0",
                     "widgetTemplate": "visualizations/chartWidgetTemplate.html",
                     "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget",
-                    "freeformTags": {},
-                    "definedTags": {},
+                    "freeformTags": ${freeform_tags}, 
+                    "definedTags": ${defined_tags},
                     "parametersConfig": [
                         {
                             "name": "log-analytics-log-group-compartment",
@@ -3306,8 +3306,8 @@
                     "metadataVersion": "2.0",
                     "widgetTemplate": "visualizations/chartWidgetTemplate.html",
                     "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget",
-                    "freeformTags": {},
-                    "definedTags": {},
+                    "freeformTags": ${freeform_tags}, 
+                    "definedTags": ${defined_tags},
                     "parametersConfig": [
                         {
                             "name": "log-analytics-log-group-compartment",
@@ -3491,8 +3491,8 @@
                     "metadataVersion": "2.0",
                     "widgetTemplate": "visualizations/chartWidgetTemplate.html",
                     "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget",
-                    "freeformTags": {},
-                    "definedTags": {},
+                    "freeformTags": ${freeform_tags}, 
+                    "definedTags": ${defined_tags},
                     "parametersConfig": [
                         {
                             "name": "log-analytics-log-group-compartment",
@@ -3675,8 +3675,8 @@
                     "metadataVersion": "2.0",
                     "widgetTemplate": "visualizations/chartWidgetTemplate.html",
                     "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget",
-                    "freeformTags": {},
-                    "definedTags": {},
+                    "freeformTags": ${freeform_tags}, 
+                    "definedTags": ${defined_tags},
                     "parametersConfig": [
                         {
                             "name": "log-analytics-log-group-compartment",
@@ -3880,8 +3880,8 @@
                     "metadataVersion": "2.0",
                     "widgetTemplate": "visualizations/chartWidgetTemplate.html",
                     "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget",
-                    "freeformTags": {},
-                    "definedTags": {},
+                    "freeformTags": ${freeform_tags}, 
+                    "definedTags": ${defined_tags},
                     "parametersConfig": [
                         {
                             "name": "log-analytics-log-group-compartment",
@@ -3994,8 +3994,8 @@
                 }
             ],
             "drilldownConfig": [],
-            "freeformTags": {},
-            "definedTags": {}
+            "freeformTags": ${freeform_tags}, 
+            "definedTags": ${defined_tags}
         }
     ]
 }
