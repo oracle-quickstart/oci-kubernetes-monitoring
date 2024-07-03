@@ -22,6 +22,8 @@ spec:
         spec:
           restartPolicy: {{ .Values.k8sDiscovery.objects.restartPolicy }}
           serviceAccountName: {{ $serviceAccount }}
+          imagePullSecrets:
+          - name: {{ .Values.image.imagePullSecrets }}
           containers:
           - name: k8-discovery-job
             image: {{ .Values.image.url }}

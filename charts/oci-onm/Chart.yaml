@@ -32,10 +32,10 @@ dependencies:
   repository: "file://../common"
   condition: oci-onm-common.enabled
 - name: oci-onm-logan
-  version: "3.4.3"
+  version: "3.4.4"
   repository: "file://../logan"
   condition: oci-onm-logan.enabled
 - name: oci-onm-mgmt-agent
-  version: "3.0.2"
+  version: "3.0.3"
   repository: "file://../mgmt-agent"
   condition: oci-onm-mgmt-agent.enabled
