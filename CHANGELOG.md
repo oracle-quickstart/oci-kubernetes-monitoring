@@ -1,6 +1,6 @@
 # Change Log
 
-## 2024-07-03
+## 2024-07-08
 ### Added
 - Option to disable JRE default security property for Agent.
 - Quick fix to support ImagePullSecrets for discovery job. 
