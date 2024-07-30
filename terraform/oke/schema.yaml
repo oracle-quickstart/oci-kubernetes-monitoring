@@ -29,9 +29,15 @@ variableGroups:
       - ${boat_tenancy_ocid}
       - ${compartment_ocid}
       - ${current_user_ocid}
-      - ${debug}
       - ${oke_cluster_name} 
     visible: false
+
+  - title: "hidden dev inputs"
+    variables:
+      - ${CLIENT_HOST_OVERRIDES}
+      - ${ENVIRONMENT}
+      - ${debug}
+    visible: false    
 
   - title: Select an OKE cluster deployed in this region to start monitoring
     variables:
@@ -107,7 +113,7 @@ variables:
        The subnet's security list must allow egress connection to OKE cluster's API endpoint.
        Typically, this is oke-nodesubnet and not oke-k8sApiEndpoint-subnet.
     required: true
-    pattern: "^ocid1\\.(subnet|ormprivateendpoint)\\.\\S+$"
+    pattern: 'ocid1\.(subnet|ormprivateendpoint)\.[a-z,0-9]+\.[-a-z0-9]+\.[.a-z0-9]+$'
     # maxLength: 93 # Don't set as realm ID is part of OCID
     # minLength: 81 # Do not set min length
     visible:

@@ -71,11 +71,6 @@ variable "current_user_ocid" {
 ##  Hidden Inputs
 ####
 
-variable "debug" {
-  type    = bool
-  default = false
-}
-
 # [Hidden input] 
 # OKE Cluster Name
 variable "oke_cluster_name" {
@@ -115,7 +110,7 @@ variable "oke_subnet_or_pe_ocid" {
 
   # User Facing Error
   validation {
-    condition     = var.oke_subnet_or_pe_ocid == null ? true : length(regexall("^ocid1\\.(subnet|ormprivateendpoint)\\.\\S+$", var.oke_subnet_or_pe_ocid)) > 0
+    condition     = var.oke_subnet_or_pe_ocid == null ? true : length(regexall("^ocid1\\.(subnet|ormprivateendpoint)\\.[a-z,0-9]+\\.[-a-z0-9]+\\.[.a-z0-9]+$", var.oke_subnet_or_pe_ocid)) > 0
     error_message = "Invalid subnet ocid or private endpoint ocid."
   }
 }
@@ -232,4 +227,22 @@ variable "tags" {
 variable "template_id" {
   type    = string
   default = null
+}
+
+#### [Section]
+##  Development Options
+####
+
+# Ref - https://confluence.oci.oraclecorp.com/display/TERSI/FAQs#FAQs-Q.HowdoItestonPre-ProdenvironmentORHowdoImakeTerraformproviderpointtocustomControlPlane(CP)endpoint
+
+variable "CLIENT_HOST_OVERRIDES" {
+  description = "The client host overrides for the terraform provider with Object Storage endpoint overridden."
+  type        = string
+  default     = null
+}
+
+variable "debug" {
+  description = "Generate Debug Resources."
+  type        = bool
+  default     = false
 }

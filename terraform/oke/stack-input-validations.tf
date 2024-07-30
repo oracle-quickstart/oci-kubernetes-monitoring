@@ -6,9 +6,9 @@ locals {
   oke_cluster_is_private = !local.oke_cluster_is_public
 }
 
-# Case: User Opt to use private endpoint
+# Case: User Opt to use private endpoint and deployment option is Full i.e to install helm chart
 resource "null_resource" "private_oke_check" {
-  count = var.connect_via_private_endpoint ? 1 : 0
+  count = var.connect_via_private_endpoint && local.deploy_helm ? 1 : 0
   lifecycle {
     # Check: Target OKE cluster should be private
     # User Facing Error
@@ -19,9 +19,9 @@ resource "null_resource" "private_oke_check" {
   }
 }
 
-# Case: User Opt to NOT use private endpoint
+# Case: User Opt to NOT use private endpoint OR deployment option is "OCI Resource Only" i.e to not install helm chart
 resource "null_resource" "public_oke_check" {
-  count = !var.connect_via_private_endpoint ? 1 : 0
+  count = !var.connect_via_private_endpoint && local.deploy_helm ? 1 : 0
   lifecycle {
     # Check: Target OKE cluster is public
     # User Facing Error

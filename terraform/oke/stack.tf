@@ -61,7 +61,7 @@ module "main" {
   region       = var.region
 
   # shared inputs
-  # debug                    = var.debug # Do not allow debug mode from stack input
+  debug                    = var.debug
   oci_onm_compartment_ocid = var.oci_onm_compartment_ocid
   oke_compartment_ocid     = var.oke_compartment_ocid
   oke_cluster_ocid         = var.oke_cluster_ocid

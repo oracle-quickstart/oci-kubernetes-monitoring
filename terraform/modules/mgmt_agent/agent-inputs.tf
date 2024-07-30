@@ -16,3 +16,9 @@ variable "debug" {
   type    = bool
   default = false
 }
+
+# OCI Tags
+variable "tags" {
+  type    = object({ freeformTags = map(string), definedTags = map(string) })
+  default = { "freeformTags" = {}, "definedTags" = {} }
+}

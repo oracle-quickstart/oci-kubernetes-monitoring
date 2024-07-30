@@ -11,6 +11,8 @@ locals {
   management_agent_rule         = ["ALL {resource.type='managementagent', resource.compartment.id='${var.oci_onm_compartment_ocid}'}"]
   dynamic_group_matching_rules  = concat(local.instances_in_compartment_rule, local.management_agent_rule)
   complied_dynamic_group_rules  = "ANY {${join(",", local.dynamic_group_matching_rules)}}"
+  defined_namespaces            = join(",", [for namespace in module.tag_namespaces.namespaces : "target.tag-namespace.name='${namespace}'"])
+  tags_policy_where_clause      = length(var.tags.definedTags) == 0 ? "" : " where any {${local.defined_namespaces}}"
 
   # Policy
   policy_name                = "oci-kubernetes-monitoring-${local.cluster_ocid_md5}"
@@ -19,10 +21,11 @@ locals {
   mgmt_agent_stmt            = ["Allow dynamic-group ${local.dynamic_group_name} to use METRICS in ${local.policy_scope} WHERE target.metrics.namespace = 'mgmtagent_kubernetes_metrics'"]
   fluentd_agent_stmt         = ["Allow dynamic-group ${local.dynamic_group_name} to {LOG_ANALYTICS_LOG_GROUP_UPLOAD_LOGS} in ${local.policy_scope}"]
   discovery_api_stmt         = ["Allow dynamic-group ${local.dynamic_group_name} to {LOG_ANALYTICS_DISCOVERY_UPLOAD} in tenancy"]
-  compiled_policy_statements = concat(local.fluentd_agent_stmt, local.mgmt_agent_stmt, local.discovery_api_stmt)
+  tag_namespace_stmt         = ["Allow dynamic-group ${local.dynamic_group_name} to use tag-namespaces in tenancy${local.tags_policy_where_clause}"]
+  compiled_policy_statements = concat(local.fluentd_agent_stmt, local.mgmt_agent_stmt, local.tag_namespace_stmt, local.discovery_api_stmt)
 }
 
-# Dynamic Group
+# https://docs.oracle.com/en-us/iaas/api/#/en/identity/20160918/DynamicGroup/
 resource "oci_identity_dynamic_group" "oke_dynamic_group" {
   name           = local.dynamic_group_name
   description    = local.dynamic_group_desc
@@ -38,7 +41,7 @@ resource "oci_identity_dynamic_group" "oke_dynamic_group" {
   }
 }
 
-# Policy
+# https://docs.oracle.com/en-us/iaas/api/#/en/identity/20160918/Policy/
 resource "oci_identity_policy" "oke_monitoring_policy" {
   name           = local.policy_name
   description    = local.policy_desc
@@ -54,5 +57,11 @@ resource "oci_identity_policy" "oke_monitoring_policy" {
   }
 
   depends_on = [oci_identity_dynamic_group.oke_dynamic_group]
+}
+
+# Parse defined tags
+module "tag_namespaces" {
+  source      = "./parse_namespaces"
+  definedTags = var.tags.definedTags
 }
 

@@ -98,6 +98,7 @@ module "management_agent" {
 
   uniquifier       = md5(var.oke_cluster_ocid)
   compartment_ocid = var.oci_onm_compartment_ocid
+  tags             = var.tags
   debug            = var.debug
 }
 

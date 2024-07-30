@@ -5,6 +5,7 @@ locals {
   private_endpoint_ocid = var.private_endpoint_ocid == null ? oci_resourcemanager_private_endpoint.rms_pe[0].id : var.private_endpoint_ocid
 }
 
+# https://docs.oracle.com/en-us/iaas/api/#/en/resourcemanager/20180917/PrivateEndpoint/
 resource "oci_resourcemanager_private_endpoint" "rms_pe" {
   count          = var.private_endpoint_ocid == null ? 1 : 0
   compartment_id = var.pe_compartment_ocid
@@ -12,7 +13,7 @@ resource "oci_resourcemanager_private_endpoint" "rms_pe" {
   vcn_id         = var.oke_vcn_ocid
   subnet_id      = var.oke_subnet_ocid
 
-  #tags
+  # tags
   defined_tags  = var.tags.definedTags
   freeform_tags = var.tags.freeformTags
 

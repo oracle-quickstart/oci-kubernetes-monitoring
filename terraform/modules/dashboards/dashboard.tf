@@ -26,6 +26,10 @@ module "format_tags" {
 resource "oci_management_dashboard_management_dashboards_import" "multi_management_dashboards_import" {
   for_each       = toset(local.dashboards)
   import_details = templatefile(format("%s/%s/%s", "${path.module}", "dashboards_json", each.value), local.template_values)
+
+  lifecycle {
+    ignore_changes = [import_details]
+  }
 }
 
 resource "local_file" "dashboard_template" {
