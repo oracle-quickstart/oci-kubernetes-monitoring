@@ -32,10 +32,10 @@ variableGroups:
       - ${oke_cluster_name} 
     visible: false
 
+  # These variables are utilized for QA validation and testing. They are not meant to be used in production.
   - title: "hidden dev inputs"
     variables:
       - ${CLIENT_HOST_OVERRIDES}
-      - ${ENVIRONMENT}
       - ${debug}
     visible: false    
 

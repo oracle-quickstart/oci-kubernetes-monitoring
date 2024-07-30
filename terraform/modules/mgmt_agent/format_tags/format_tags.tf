@@ -88,14 +88,14 @@ output "freeform_tags_string" {
 #   value = local.defined_tags
 # }
 
-output "defined_tag_list_by_ns" {
-  value = local.defined_tag_list_by_ns
-}
+# output "defined_tag_list_by_ns" {
+#   value = local.defined_tag_list_by_ns
+# }
 
-output "defined_tags_by_ns" {
-  value = local.defined_tags_by_ns
-}
+# output "defined_tags_by_ns" {
+#   value = local.defined_tags_by_ns
+# }
 
-output "defined_tags_list" {
-  value = local.defined_tags_list
-}
+# output "defined_tags_list" {
+#   value = local.defined_tags_list
+# }
