@@ -27,9 +27,9 @@ GEM
       aws-eventstream (~> 1, >= 1.0.2)
     concurrent-ruby (1.2.3)
     cool.io (1.8.0)
-    event_stream_parser (1.0.0)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
+    event_stream_parser (1.0.0)
     ffi (1.15.5)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
@@ -128,13 +128,15 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    rexml (3.2.6)
+    rexml (3.3.3)
+      strscan
     rubyzip (2.3.2)
     serverengine (2.3.2)
       sigdump (~> 0.2.2)
     sigdump (0.2.5)
     stringio (3.1.0)
     strptime (0.2.5)
+    strscan (3.1.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     tzinfo-data (1.2023.3)
@@ -161,7 +163,7 @@ DEPENDENCIES
   json (= 2.7.1)
   oci-logging-analytics-kubernetes-discovery (= 1.0.1)
   oj (= 3.16.1)
-  rexml (= 3.2.6)
+  rexml (= 3.3.3)
 
 BUNDLED WITH
    2.3.25
