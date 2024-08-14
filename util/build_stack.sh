@@ -115,6 +115,7 @@ if test -z "${release_name}"; then
 fi
 
 RELEASE_ZIP="${RELEASE_PATH}/${release_name}.zip"
+BASE64_ARTIFACT="${RELEASE_PATH}/${release_name}.base64"
 
 # Disclaimer
 log "\nDisclaimers - \n"
@@ -140,8 +141,9 @@ if test ! -d "$RELEASE_PATH"; then
     log "Created release direcotory - \$PROJECT_HOME/releases"
 fi
 
-# Clean up old zip
-rm "${RELEASE_ZIP}" 2>/dev/null && log "Removed old stack - ${RELEASE_ZIP}"
+# Clean up old artifacts
+rm "${RELEASE_ZIP}" 2>/dev/null && log "Removed old zip artifact - ${RELEASE_ZIP}"
+rm "${BASE64_ARTIFACT}" 2>/dev/null && log "Removed old base64 artifact - ${BASE64_ARTIFACT}"
 
 # Switch to project's root for git archive
 cd "$ROOT_DIR" || error_and_exit "ERROR: cd $ROOT_DIR"
@@ -196,7 +198,6 @@ rm "$BUILD_ZIP" 2>/dev/null || error_and_exit "ERROR: rm $BUILD_ZIP"
 rm -rf "$BUILD_DIR" 2>/dev/null || error_and_exit "ERROR: rm -rf $BUILD_DIR"
 
 if [[ $GENERATE_BASE64_ARTIFACT = true ]]; then
-    BASE64_ARTIFACT="${RELEASE_PATH}/${release_name}.base64"
     base64 -i "$RELEASE_ZIP" > "$BASE64_ARTIFACT"
     log "Base64 Artifact - $BASE64_ARTIFACT" # stdout
 fi
