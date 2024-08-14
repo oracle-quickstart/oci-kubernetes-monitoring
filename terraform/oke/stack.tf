@@ -2,6 +2,11 @@
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 locals {
+  # OKE Status Check Script Params
+  oke_status_check = true
+  timeout          = 600
+  interval         = 60
+
   # Resolve Null string --> "" inputs
   oke_cluster_entity_ocid = var.oke_cluster_entity_ocid == "" ? null : var.oke_cluster_entity_ocid
   helm_chart_version      = var.helm_chart_version == "" ? null : var.helm_chart_version
@@ -36,6 +41,19 @@ data "oci_containerengine_clusters" "oke_clusters" {
   compartment_id = var.oke_compartment_ocid
 }
 
+resource "null_resource" "wait-for-oke-active-status" {
+  count = local.oke_status_check ? 1 : 0
+  provisioner "local-exec" {
+    command = "bash ${path.module}/resources/oke-status-check.sh"
+    environment = {
+      WAIT_TIME      = local.timeout
+      CHECK_INTERVAL = local.interval
+      OKE_OCID       = var.oke_cluster_ocid
+    }
+    working_dir = path.module
+  }
+}
+
 # Create a new private endpoint or uses an existing one 
 # Returns a reachable ip address to access private OKE cluster
 module "rms_private_endpoint" {
@@ -50,6 +68,8 @@ module "rms_private_endpoint" {
 
   tags  = var.tags
   debug = false
+
+  depends_on = [null_resource.wait-for-oke-active-status[0]]
 }
 
 # Create OCI resources for the helm chart
@@ -100,4 +120,6 @@ module "main" {
     local           = local
     helm            = helm
   }
+
+  depends_on = [null_resource.wait-for-oke-active-status[0]]
 }

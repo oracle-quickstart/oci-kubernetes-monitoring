@@ -41,6 +41,7 @@ data "oci_identity_regions" "region_map" {
 
 data "oci_containerengine_cluster_kube_config" "oke" {
   cluster_id = var.oke_cluster_ocid
+  depends_on = [null_resource.wait-for-oke-active-status[0]]
 }
 
 provider "oci" {
