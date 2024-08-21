@@ -222,6 +222,12 @@ variable "tags" {
   default = { "freeformTags" = {}, "definedTags" = {} }
 }
 
+# delay - adds wait (seconds) before creating resources
+variable "delay_in_seconds" {
+  type    = number
+  default = 0
+}
+
 # This var is not used in stack
 # Purpose: to display stack version on UI without being able to execute it
 variable "template_id" {

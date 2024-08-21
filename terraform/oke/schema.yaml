@@ -68,7 +68,9 @@ variableGroups:
       - ${helm_chart_version}
       - ${fluentd_base_dir_path}
       - ${tags}
+      - ${delay_in_seconds}
       - ${template_id}
+
 
 variables:
 
@@ -297,6 +299,16 @@ variables:
     required: false
     dependsOn:
       compartmentId: ${tenancy_ocid}
+    visible:
+      and:
+        - ${show_advanced_options}
+
+  # Delay in seconds
+  delay_in_seconds:
+    type: number
+    title: Delay in seconds
+    description: |-
+      Adds custom delay in seconds before creating resources
     visible:
       and:
         - ${show_advanced_options}

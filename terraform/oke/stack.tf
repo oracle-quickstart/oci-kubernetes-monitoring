@@ -54,6 +54,11 @@ resource "null_resource" "wait-for-oke-active-status" {
   }
 }
 
+resource "time_sleep" "wait" {
+  depends_on      = [null_resource.wait-for-oke-active-status]
+  create_duration = "${var.delay_in_seconds}s"
+}
+
 # Create a new private endpoint or uses an existing one 
 # Returns a reachable ip address to access private OKE cluster
 module "rms_private_endpoint" {
@@ -69,7 +74,7 @@ module "rms_private_endpoint" {
   tags  = var.tags
   debug = false
 
-  depends_on = [null_resource.wait-for-oke-active-status[0]]
+  depends_on = [time_sleep.wait]
 }
 
 # Create OCI resources for the helm chart
@@ -121,5 +126,5 @@ module "main" {
     helm            = helm
   }
 
-  depends_on = [null_resource.wait-for-oke-active-status[0]]
+  depends_on = [time_sleep.wait]
 }
