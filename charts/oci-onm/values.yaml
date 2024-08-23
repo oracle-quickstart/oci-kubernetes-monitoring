@@ -52,6 +52,6 @@ oci-onm-mgmt-agent:
     # Follow steps documented at https://github.com/oracle/docker-images/tree/main/OracleManagementAgent to build docker image.
     image:
       # Replace this value with actual docker image URL for Management Agent
-      url: container-registry.oracle.com/oci_observability_management/oci-management-agent:1.4.0
+      url: container-registry.oracle.com/oci_observability_management/oci-management-agent:1.5.0
       # Image secrets to use for pulling container image (base64 encoded content of ~/.docker/config.json file)
       secret:

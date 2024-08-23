@@ -32,6 +32,13 @@ mgmtagent:
       url:
       # -- Image secrets to use for pulling container image (base64 encoded content of ~/.docker/config.json file)
       secret:
+   # Please specify additional environment variables in name:value pairs
+   extraEnv:
+      # Openjdk on RHEL with FIPS requires the default security property to be disabled, 
+      # so that Management Agent can use its own bcfips security provider.
+      # Set this to true to disable, and pass disableJREDefaultSecurityPropertiesFile=true via the rsp file.
+      - name: DISABLE_JRE_DEFAULT_SECURITY_PROPERTIES_FILE
+        value: "false"
 
 # -- Kubernetes namespace to create and install this helm chart in
 namespace: "{{ .Values.global.namespace }}"
