@@ -15,7 +15,8 @@ It does extensive enrichment of logs, metrics and object information to enable c
 
 ## Solution UI
 
-Placeholder to insert some images of Solutions UX
+![Kuberenetes Solution - List Clusters View](logan/images/list-clusters.png)
+![Kuberenetes Solution - Cluster View](logan/images/cluster-view.png)
 
 ## Dashboards
 
