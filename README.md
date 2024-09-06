@@ -15,15 +15,15 @@ It does extensive enrichment of logs, metrics and object information to enable c
 
 ## Solution UI
 
-![Kuberenetes Solution - List Clusters View](logan/images/list-clusters.png)
-![Kuberenetes Solution - Cluster View](logan/images/cluster-view.png)
+![Kubernetes Solution - List Clusters View](logan/images/list-clusters.png)
+![Kubernetes Solution - Cluster View](logan/images/cluster-view.png)
 
 ## Dashboards
 
 ![Kubernetes Cluster Summary Dashboard](logan/images/kubernetes-cluster-summary-dashboard.png)
 
 <details>
-  <summary>Expand for more dasshboard screenshots</summary>
+  <summary>Expand for more dashboard screenshots</summary>
 
 ![Kubernetes Nodes Dashboard](logan/images/kubernetes-nodes-dashboard.png)
 
@@ -40,7 +40,7 @@ It does extensive enrichment of logs, metrics and object information to enable c
 
 ### Pre-requisites
 
-* OCI Logging Analytics service must be onboarded with the minumum required policies, in the OCI region where you want to monitor. Refer [Logging Analytics Quick Start](https://docs.oracle.com/en-us/iaas/logging-analytics/doc/quick-start.html) for details.
+* OCI Logging Analytics service must be onboarded with the minimum required policies, in the OCI region where you want to monitor. Refer [Logging Analytics Quick Start](https://docs.oracle.com/en-us/iaas/logging-analytics/doc/quick-start.html) for details.
 * Create OCI Logging Analytics LogGroup(s) if not done already. Refer [Create Log Group](https://docs.oracle.com/en-us/iaas/logging-analytics/doc/create-logging-analytics-resources.html#GUID-D1758CFB-861F-420D-B12F-34D1CC5E3E0E) for details.
 * OCI Dynamic Groups, User Group and Policies.
   <details>
@@ -56,7 +56,7 @@ It does extensive enrichment of logs, metrics and object information to enable c
     ```
     - **Note**: _This dynamic group is not required for non OKE or when you choose to use Config file based AuthZ for monitoring the logs._
   * Create a user and user group using which the logs to be published to OCI Logging Analytics. Refer [Managing Users](https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/managingusers.htm) and [Managing User Groups](https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/managinggroups.htm) for details.
-    - **Note**: _This is not required for OKE when you choose to use the default (Instance princiapal) AuthZ mechanism._
+    - **Note**: _This is not required for OKE when you choose to use the default (Instance principal) AuthZ mechanism._
   * Create a policy with following statements.
     * Policy Statement for providing necessary access to upload the metrics.
       ```
@@ -72,12 +72,12 @@ It does extensive enrichment of logs, metrics and object information to enable c
       Allow group <User Group> to {LOG_ANALYTICS_LOG_GROUP_UPLOAD_LOGS} in compartment <Compartment Name>
       Allow group <User Group> to {LOG_ANALYTICS_DISCOVERY_UPLOAD} in tenancy
       ```
-      - **Note**: _The policy defintion for LOG_ANALYTICS_DISCOVERY_UPLOAD permission only works at tenancy level and thereby it must be created at tenancy level._
+      - **Note**: _The policy definition for LOG_ANALYTICS_DISCOVERY_UPLOAD permission only works at tenancy level and thereby it must be created at tenancy level._
   </details>
 
 ### Installation instructions 
 
-#### Multiple methods of installation are avialble, with following differences:
+#### Multiple methods of installation are available, with following differences:
 
 | Deployment Method | Supported Environments | Solution UI | Dashboards | Customisations | Comments |
 | :----: | :----: | :----: | :----: | :----: | :----: |
@@ -91,7 +91,7 @@ It does extensive enrichment of logs, metrics and object information to enable c
 
 \** Solution UI experience including Topology and other visualisations are available for customers deploying the solution using methods other than `OCI Logging Analytics Connect Cluster`, only if some additional steps are followed as mentioned in their individual sections.
 
-\*** Connect cluster support for EKS and clusters other than OKE (paritally automated flow) would be available soon. Meanwhile, if you would like to experience the Solution for EKS, use [helm](#helm) or other deployment methods.
+\*** Connect cluster support for EKS and clusters other than OKE (partially automated flow) would be available soon. Meanwhile, if you would like to experience the Solution for EKS, use [helm](#helm) or other deployment methods.
 
 #### OCI Logging Analytics Connect Cluster
 
@@ -101,7 +101,7 @@ Customisations are possible through helm once deployed using `Logging Analytics 
 
 Refer [this doc](https://docs.oracle.com/en-us/iaas/logging-analytics/doc/kubernetes-solution.html) for complete instructions on using this approach. 
 
-:hourglass_flowing_sand: Connect cluster support for EKS and clusters other than OKE (paritally automated flow) would be available soon. Meanwhile, if you would like to experience the Solution for EKS, use [helm](#helm) or other deployment methods.
+:hourglass_flowing_sand: Connect cluster support for EKS and clusters other than OKE (partially automated flow) would be available soon. Meanwhile, if you would like to experience the Solution for EKS, use [helm](#helm) or other deployment methods.
 
 #### Helm
 
@@ -121,7 +121,7 @@ Refer [this doc](https://docs.oracle.com/en-us/iaas/logging-analytics/doc/kubern
     - <Cluster_Name> => Replace with Name of the Cluster.
     - <Cluster_Creation_Time> => Replace with Cluster's creation time in the format, YYYY-MM-DDTHH:MM:SSZ. It is used to distinguish 2 clusters with same name if exists.
     - <Unique_Identifier_of_Cluster> => Replace with OCID of OKE cluster OR ARN of EKS cluster, etc.
-    - <Kubernetes_Version> => Replace with verion of Kubernetes running on the cluster.
+    - <Kubernetes_Version> => Replace with version of Kubernetes running on the cluster.
     - <O&M_Compartment_OCID> => Replace with OCID of the compartment in which the `Logging Analytics LogGroup` exists. Note that for the Logging Analytics Solution UI to work properly, you must keep all your OCI resources like  `Logging Analytics LogGroup`, `Logging Analytics Entity`, `Management Agent Install Key` under the same compartment.
     - <Cluster_Type> => Replace with `OKE` for OKE cluster, `EKS` for Amazon EKS Cluster, etc.
 
@@ -200,7 +200,7 @@ Dashboards needs to be imported manually. Below is an example for importing Dash
 2. Find the **OCID** of the compartment, where the dashboards need to be imported.
 3. Download the dashboard JSONs from [here](terraform/modules/dashboards/dashboards_json/).
 4. **Replace** all the instances of the keyword - "`${compartment_ocid}`" in the JSONs with the **Compartment OCID** identified in previous step.
-    * Following command is for quick reference that can be used in a linux/cloud-shell envirnment :
+    * Following command is for quick reference that can be used in a linux/cloud-shell environment :
 
         ```
         sed -i "s/\${compartment_ocid}/<Replace-with-Compartment-OCID>/g" *.json
@@ -352,7 +352,7 @@ We recommend you to uninstall the release created using 2.x chart and follow the
 
 If you have modified values.yaml provided in helm chart directly, we recommend you to identify all the changes and move them to override_values.yaml and follow the instructions provided in install or upgrade sections under [this](#helm). We recommend you to use override_values.yaml for updating values for any variables or to incorporate any customisations on top of existing values.yaml.
   
-If you are already using a separate values.yaml for your customisations, you still need to compare 2.x vs 3.x variable heirarchy and make the necessary changes accordingly. 
+If you are already using a separate values.yaml for your customisations, you still need to compare 2.x vs 3.x variable hierarchy and make the necessary changes accordingly. 
   
 <details>
   <summary>Examples</summary>
