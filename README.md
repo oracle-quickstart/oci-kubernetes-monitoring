@@ -70,7 +70,7 @@ It does extensive enrichment of logs, metrics and object information to enable c
       OR
       ```
       Allow group <User Group> to {LOG_ANALYTICS_LOG_GROUP_UPLOAD_LOGS} in compartment <Compartment Name>
-      Allow dynamic-group <OKE Instances Dynamic Group> to {LOG_ANALYTICS_DISCOVERY_UPLOAD} in tenancy
+      Allow group <User Group> to {LOG_ANALYTICS_DISCOVERY_UPLOAD} in tenancy
       ```
       - **Note**: _The policy defintion for LOG_ANALYTICS_DISCOVERY_UPLOAD permission only works at tenancy level and thereby it must be created at tenancy level._
   </details>
@@ -79,25 +79,25 @@ It does extensive enrichment of logs, metrics and object information to enable c
 
 #### Multiple methods of installation are avialble, with following differences:
 
-| Deployment Method | Supported Environments | Solution UI | Dashboards | Customizations | Comments |
+| Deployment Method | Supported Environments | Solution UI | Dashboards | Customisations | Comments |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| OCI Logging Analytics Connect Cluster | OKE*** | :heavy_check_mark: | Manual | Partial Control (Recommended) | Customisations are possible through helm once deployed using Logging Analytics Connect Cluster flow using Console, applicable for both Automatic and Manual Deployment modes. We recommend choosing Manual Deployment mode for OKE clusters with Private API Server endpoint at present, as support for the automatic deployment for the same would be available soon. |
+| OCI Logging Analytics Connect Cluster | OKE*** | :heavy_check_mark: | Manual | Partial Control (Recommended) | Customisations are possible through `Helm` once deployed using `Logging Analytics Connect Cluster` flow from Console, which is applicable for both Automatic and Manual Deployment modes. We recommend choosing Manual Deployment mode for OKE clusters with Private API Server endpoint, as support for the automatic deployment for the same would be available soon. |
 | Helm | All* | :heavy_check_mark:**  | Manual| Full Control (Recommended) | |
-| OCI Resource Manager | OKE | :heavy_check_mark:** | :heavy_check_mark: | Partial Control | Customisations are possible through helm once deployed using OCI Resource Manager. | 
-| Terraform | OKE | :heavy_check_mark:** | :heavy_check_mark: | Partial Control | Customisations are possible through helm once deployed using Terraform. | 
+| OCI Resource Manager | OKE | :heavy_check_mark:** | :heavy_check_mark: | Partial Control | Customisations are possible through `Helm` once deployed using `OCI Resource Manager`. | 
+| Terraform | OKE | :heavy_check_mark:** | :heavy_check_mark: | Partial Control | Customisations are possible through `Helm` once deployed using `Terraform`. | 
 | kubectl | All* | :heavy_check_mark:** | Manual | Full Control (Not recommended) | |
 
 \* For some environments, modification of the configuration may be required.
 
-\** Solution UI experience including Topology and other visualisations are available for customers deploying the solution using methods other than `OCI Logging Analytics Connect Cluster`, only if some additional steps are followed as mentioned in the individual sections of the respective deployment methods.
+\** Solution UI experience including Topology and other visualisations are available for customers deploying the solution using methods other than `OCI Logging Analytics Connect Cluster`, only if some additional steps are followed as mentioned in their individual sections.
 
 \*** Connect cluster support for EKS and clusters other than OKE (paritally automated flow) would be available soon. Meanwhile, if you would like to experience the Solution for EKS, use [helm](#helm) or other deployment methods.
 
 #### OCI Logging Analytics Connect Cluster
 
-This newly launched UI based workflow from Logging Analytics Console is the recommended approach to start enabling Kubernetes Monitoring Solution for your OKE clusters. In this approach, you would go through a guided flow to enable the monitoring. It has support for both Automatic and Manual deployment modes to install helm charts onto your OKE clusters. The creation of various OCI resources like Logging Analytics LogGroup, Entity, Management Agent Install Key is automatically taken care in this approach irrespective of the deployment method that you choose. You may optionally enable creation of IAM Dynamic Group and Policies which are required for the collection of logs, metrics, objects discovery data into OCI. 
+This newly launched UI based workflow from Logging Analytics Console is the recommended approach to start enabling Kubernetes Monitoring Solution for your OKE clusters. In this approach, you would go through a guided flow to enable the monitoring. It has support for both Automatic and Manual deployment modes to install helm charts onto your OKE clusters. The creation of various OCI resources like Logging Analytics LogGroup, Entity, Management Agent Install Key is automatically taken care in this approach irrespective of the deployment method that you choose. The required IAM Dynamic Group and Policies for the collection of logs, metrics, objects discovery data into OCI, can be optionally enabled when using this flow. 
 
-Customisations are possible through helm once deployed using Logging Analytics Connect Cluster flow using Console, applicable for both Automatic and Manual Deployment modes. We recommend choosing Manual Deployment mode for OKE clusters with Private API Server endpoint at present, as support for the automatic deployment for the same would be available soon. 
+Customisations are possible through helm once deployed using `Logging Analytics Connect Cluster` flow from Console, which is applicable for both Automatic and Manual Deployment modes. We recommend choosing Manual Deployment mode for OKE clusters with Private API Server endpoint, as support for the automatic deployment for the same would be available soon. 
 
 Refer [this doc](https://docs.oracle.com/en-us/iaas/logging-analytics/doc/kubernetes-solution.html) for complete instructions on using this approach. 
 
