@@ -1077,7 +1077,7 @@
                   "compartmentId": "$(params.compartmentId)",
                   "endTime": "$(params.time.end)",
                   "maxDataPoints": "useIntervalExact",
-                  "mql": "nodeMemoryUsage[1m]{clusterName = \"onm3h-demo\"}.mean()",
+                  "mql": "nodeMemoryUsage[1m].mean()",
                   "namespace": "mgmtagent_kubernetes_metrics",
                   "regionName": "$(params.regionName)",
                   "startTime": "$(params.time.start)"
