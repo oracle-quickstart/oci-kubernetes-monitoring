@@ -35,7 +35,7 @@ GEM
     event_stream_parser (1.0.0)
     ffi (1.15.5)
     ffi-compiler (1.0.1)
-      ffi (>= 1.15.5)
+      ffi (>= 1.0.0)
       rake
     fluent-config-regexp-type (1.0.0)
       fluentd (> 1.0.0, < 2)
