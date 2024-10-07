@@ -110,6 +110,13 @@ data:
        {{- if eq $runtime "docker" }}
        message "${record['log']}"
        {{- end }}
+       {{- if $logDefinition.timezone }}
+       oci_la_timezone {{ $logDefinition.timezone }}
+       {{- else if $.Values.fluentd.kubernetesSystem.timezone }}
+       oci_la_timezone {{ $.Values.fluentd.kubernetesSystem.timezone }}
+       {{- else if $.Values.fluentd.timezone }}
+       oci_la_timezone {{ $.Values.fluentd.timezone }}
+       {{- end }}
        tag ${tag}
        </record>
     </filter>
@@ -208,6 +215,13 @@ data:
        {{- else }}
        oci_la_log_set "{{ $.Values.fluentd.linuxSystem.ociLALogSet | default $.Values.ociLALogSet }}"
        {{- end }}
+       {{- if $logDefinition.timezone }}
+       oci_la_timezone {{ $logDefinition.timezone }}
+       {{- else if $.Values.fluentd.linuxSystem.timezone }}
+       oci_la_timezone {{ $.Values.fluentd.linuxSystem.timezone }}
+       {{- else if $.Values.fluentd.timezone }}
+       oci_la_timezone {{ $.Values.fluentd.timezone }}
+       {{- end }}
        tag ${tag}
        </record>
     </filter>
@@ -292,6 +306,13 @@ data:
        {{- else }}
        oci_la_log_set "{{ $.Values.fluentd.linuxSystem.ociLALogSet | default $.Values.ociLALogSet }}"
        {{- end }}
+       {{- if $.Values.fluentd.linuxSystem.logs.kubeletlog.timezone }}
+       oci_la_timezone {{ $.Values.fluentd.linuxSystem.logs.kubeletlog.timezone }}
+       {{- else if $.Values.fluentd.linuxSystem.timezone }}
+       oci_la_timezone {{ $.Values.fluentd.linuxSystem.timezone }}
+       {{- else if $.Values.fluentd.timezone }}
+       oci_la_timezone {{ $.Values.fluentd.timezone }}
+       {{- end }}       
        tag ${tag}
        </record>
     </filter>
@@ -321,6 +342,13 @@ data:
        oci_la_log_set "{{ $.Values.fluentd.linuxSystem.logs.syslog.ociLALogSet }}"
        {{- else }}
        oci_la_log_set "{{ $.Values.fluentd.linuxSystem.ociLALogSet | default $.Values.ociLALogSet }}"
+       {{- end }}
+       {{- if $.Values.fluentd.linuxSystem.logs.syslog.timezone }}
+       oci_la_timezone {{ $.Values.fluentd.linuxSystem.logs.syslog }}
+       {{- else if $.Values.fluentd.linuxSystem.timezone }}
+       oci_la_timezone {{ $.Values.fluentd.linuxSystem.timezone }}
+       {{- else if $.Values.fluentd.timezone }}
+       oci_la_timezone {{ $.Values.fluentd.timezone }}
        {{- end }}
        tag ${tag}
        </record>
@@ -394,6 +422,13 @@ data:
        oci_la_log_set "{{ $logDefinition.ociLALogSet | default $.Values.ociLALogSet }}"
        {{- if and (ne "false" ($logDefinition.isContainerLog | toString)) (eq $runtime "docker") }}
        message "${record['log']}"
+       {{- end }}
+       {{- if $logDefinition.timezone }}
+       oci_la_timezone {{ $logDefinition.timezone }}
+       {{- else if $.Values.fluentd.customLogs.timezone }}
+       oci_la_timezone {{ $.Values.fluentd.customLogs.timezone }}
+       {{- else if $.Values.fluentd.timezone }}
+       oci_la_timezone {{ $.Values.fluentd.timezone }}
        {{- end }}
        tag ${tag}
        </record>
@@ -501,6 +536,11 @@ data:
        oci_la_log_set ${record.dig("kubernetes", "annotations", "oracle.com/oci_la_log_set") ? record.dig("kubernetes", "annotations", "oracle.com/oci_la_log_set") : "{{ $.Values.fluentd.genericContainerLogs.ociLALogSet | default $.Values.ociLALogSet }}"}
        {{- if eq $runtime "docker" }}
        message "${record['log']}"
+       {{- end }}
+       {{- if $.Values.fluentd.genericContainerLogs.timezone }}
+       oci_la_timezone {{ $.Values.fluentd.genericContainerLogs.timezone }}
+       {{- else if $.Values.fluentd.timezone }}
+       oci_la_timezone {{ $.Values.fluentd.timezone }}
        {{- end }}
        tag ${tag}
        </record>

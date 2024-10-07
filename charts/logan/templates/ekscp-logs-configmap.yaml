@@ -166,6 +166,13 @@ data:
        {{- else }}
        oci_la_log_set "{{ $.Values.fluentd.eksControlPlane.ociLALogSet | default $.Values.ociLALogSet }}"
        {{- end }}
+       {{- if $logDefinition.timezone }}
+       oci_la_timezone {{ $logDefinition.timezone }}
+       {{- else if $.Values.fluentd.eksControlPlane.timezone }}
+       oci_la_timezone {{ $.Values.fluentd.eksControlPlane.timezone }}
+       {{- else if $.Values.fluentd.timezone }}
+       oci_la_timezone {{ $.Values.fluentd.timezone }}
+       {{- end }}  
        message "${record['message']}"
        tag ${tag}
        </record>
@@ -241,6 +248,13 @@ data:
        oci_la_log_set "{{ $.Values.fluentd.eksControlPlane.ociLALogSet | default $.Values.ociLALogSet }}"
        {{- end }}
        message "${record['message']}"
+       {{- if $logDefinition.timezone }}
+       oci_la_timezone {{ $logDefinition.timezone }}
+       {{- else if $.Values.fluentd.eksControlPlane.timezone }}
+       oci_la_timezone {{ $.Values.fluentd.eksControlPlane.timezone }}
+       {{- else if $.Values.fluentd.timezone }}
+       oci_la_timezone {{ $.Values.fluentd.timezone }}
+       {{- end }}  
        tag ${tag}
        </record>
     </filter>
