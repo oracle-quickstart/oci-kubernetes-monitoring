@@ -164,7 +164,7 @@ fluentd:
    # -- To enable MultiProcessWorkers, set this to (> 0) the number of required workers. Defaults to 0.
    # -- Set corresponding workerId using worker field against each source/log. When enabled MultiProcessWorkers, the default worker would be 0 until unless set for each source/log.
    multiProcessWorkers: 0
-   # -- To set timezone for all logs collected via fluentd agent (applies only to log events without timezone identifiers)
+   # -- To set timezone override for all logs collected using this solution (applies only to log records without explicit timezone identifier in the record itself)
    timezone:
 
    # Configuration for oci-logging-analytics fluentd output plugin
@@ -246,8 +246,8 @@ fluentd:
       #encoding:
       # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
       #worker:
-      # -- To set timezone for all kubernetesSystem logs (applies only to log events without timezone identifiers)
-      # timezone:
+      # -- To set timezone override for all kubernetesSystem logs (applies only to log records without explicit timezone identifier in the record itself)
+      #timezone:
 
       logs:
          # -- Kube Proxy logs collection configuration
@@ -266,7 +266,7 @@ fluentd:
             #encoding:
             # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
             #worker:
-            # -- Override timezone for this source (applies only to log events without timezone identifiers)
+            # -- To set timezone override for kube-proxy logs (applies only to log records without explicit timezone identifier in the record itself)
             #timezone:
 
          # -- Kube Flannel logs collection configuration
@@ -277,8 +277,6 @@ fluentd:
             ociLALogSourceName: "Kubernetes Flannel Logs"
             # The regular expression pattern for the starting line in case of multi-line logs.
             multilineStartRegExp: /^\S\d{2}\d{2}\s+[^\:]+:[^\:]+:[^\.]+\.\d{0,3}/
-            # -- Override timezone for this source (applies only to log events without timezone identifiers)
-            #timezone:
 
          # -- Kubernetes DNS Autoscaler Logs collection configuration
          kube-dns-autoscaler:
@@ -287,8 +285,6 @@ fluentd:
             ociLALogSourceName: "Kubernetes DNS Autoscaler Logs"
             # The regular expression pattern for the starting line in case of multi-line logs.
             multilineStartRegExp: /^\S\d{2}\d{2}\s+[^\:]+:[^\:]+:[^\.]+\.\d{0,3}/
-            # -- Override timezone for this source (applies only to log events without timezone identifiers)
-            #timezone:
 
          # -- Kubernetes Core DNS Logs collection configuration
          coredns:
@@ -298,8 +294,6 @@ fluentd:
             ociLALogSourceName: "Kubernetes Core DNS Logs"
             # Regular expression pattern for the starting line in case of multi-line logs.
             multilineStartRegExp: /^\[[^\]]+\]\s+/
-            # -- Override timezone for this source (applies only to log events without timezone identifiers)
-            #timezone:
 
          # -- Kubernetes CSI Node Driver Logs collection configuration
          csinode:
@@ -307,8 +301,6 @@ fluentd:
             path: /var/log/containers/csi-oci-node-*.log,/var/log/containers/ebs-csi-node-*.log
             # Logging Analytics log source to use for parsing and processing Kubernetes CSI Node Driver Logs.
             ociLALogSourceName: "Kubernetes CSI Node Driver Logs"
-            # -- Override timezone for this source (applies only to log events without timezone identifiers)
-            #timezone:
 
          # -- Proxymux Client Logs collection configuration
          proxymux:
@@ -316,8 +308,6 @@ fluentd:
             path: /var/log/containers/proxymux-client-*.log
             # Logging Analytics log source to use for parsing and processing OKE Proxymux Client Logs.
             ociLALogSourceName: "OKE Proxymux Client Logs"
-            # -- Override timezone for this source (applies only to log events without timezone identifiers)
-            #timezone:
 
          # -- Kubernetes Autoscaler Logs collection configuration
          cluster-autoscaler:
@@ -327,8 +317,6 @@ fluentd:
             ociLALogSourceName: "Kubernetes Autoscaler Logs"
             #  The regular expression pattern for the starting line in case of multi-line logs.
             multilineStartRegExp: /^\S\d{2}\d{2}\s+[^\:]+:[^\:]+:[^\.]+\.\d{0,3}/
-            # -- Override timezone for this source (applies only to log events without timezone identifiers)
-            #timezone:
 
          # -- Kubernetes CSI Controller Logs collection configuration
          csi-controller:
@@ -336,8 +324,6 @@ fluentd:
             path: /var/log/containers/ebs-csi-controller-*.log
             # Logging Analytics log source to use for parsing and processing Kubernetes CSI Controller Logs.
             ociLALogSourceName: "Kubernetes CSI Controller Logs"
-            # -- Override timezone for this source (applies only to log events without timezone identifiers)
-            #timezone:
 
          # Config specific to API Server Logs Collection
          kube-apiserver:
@@ -347,8 +333,6 @@ fluentd:
             ociLALogSourceName: "Kubernetes API Server Logs"
             # The regular expression pattern for the starting line in case of multi-line logs.
             multilineStartRegExp: /^\S\d{2}\d{2}\s+[^\:]+:[^\:]+:[^\.]+\.\d{0,3}/
-            # -- Override timezone for this source (applies only to log events without timezone identifiers)
-            #timezone:
 
          # Config specific to etcd Logs Collection
          etcd:
@@ -356,8 +340,6 @@ fluentd:
             path: /var/log/containers/etcd-*.log
             # Logging Analytics log source to use for parsing and processing the logs: Kubernetes etcd Logs.
             ociLALogSourceName: "Kubernetes etcd Logs"
-            # -- Override timezone for this source (applies only to log events without timezone identifiers)
-            #timezone:
 
          # Config specific to kube-controller-manager Logs Collection
          kube-controller-manager:
@@ -367,8 +349,6 @@ fluentd:
             ociLALogSourceName: "Kubernetes Controller Manager Logs"
             # The regular expression pattern for the starting line in case of multi-line logs.
             multilineStartRegExp: /^\S\d{2}\d{2}\s+[^\:]+:[^\:]+:[^\.]+\.\d{0,3}/
-            # -- Override timezone for this source (applies only to log events without timezone identifiers)
-            #timezone:
 
          # Config specific to kube-scheduler Logs Collection
          kube-scheduler:
@@ -378,8 +358,6 @@ fluentd:
             ociLALogSourceName: "Kubernetes Scheduler Logs"
             # The regular expression pattern for the starting line in case of multi-line logs.
             multilineStartRegExp: /^\S\d{2}\d{2}\s+[^\:]+:[^\:]+:[^\.]+\.\d{0,3}/
-            # -- Override timezone for this source (applies only to log events without timezone identifiers)
-            #timezone:
 
          # Config specific to Kubernetes Audit Logs Collection
          kube-audit:
@@ -387,8 +365,6 @@ fluentd:
             path: /var/log/kubernetes/audit/audit*
             # Logging Analytics log source to use for parsing and processing the logs: Kubernetes Audit Logs.
             ociLALogSourceName: "Kubernetes Audit Logs"
-            # -- Override timezone for this source (applies only to log events without timezone identifiers)
-            #timezone:
 
    # Configuration for Linux System specific logs like CronLogs and SecureLogs
    linuxSystem:
@@ -401,8 +377,9 @@ fluentd:
       #encoding:
       # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
       #worker:
-      # -- Override timezone for all linuxSystem logs (applies only to log events without timezone identifiers) for linuxSystem logs
-      # timezone:
+      # -- To set timezone override for all linuxSystem logs (applies only to log records without explicit timezone identifier in the record itself)
+      #timezone:
+
       logs:
          # -- Linux CRON logs collection configuration
          cronlog:
@@ -412,7 +389,7 @@ fluentd:
             ociLALogSourceName: "Linux Cron Logs"
             #  The regular expression pattern for the starting line in case of multi-line logs.
             multilineStartRegExp: /^(?:(?:\d+\s+)?<([^>]*)>(?:\d+\s+)?)?\S+\s+\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2}\s+/
-            # -- Override timezone for this source (applies only to log events without timezone identifiers)
+            # -- To set timezone override for cronlog (applies only to log records without explicit timezone identifier in the record itself)
             #timezone:
 
          # -- Linux CRON logs collection configuration
@@ -423,15 +400,11 @@ fluentd:
             ociLALogSourceName: "Linux Secure Logs"
             #  The regular expression pattern for the starting line in case of multi-line logs.
             multilineStartRegExp: /^(?:(?:\d+\s+)?<([^>]*)>(?:\d+\s+)?)?\S+\s+\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2}\s+/
-            # -- Override timezone for this source (applies only to log events without timezone identifiers)
-            #timezone:
 
          # -- kubelet logs collection configuration
          kubeletlog:
             # Logging Analytics log source to use for parsing and processing Kubernetes Kubelet Logs.
             ociLALogSourceName: "Kubernetes Kubelet Logs"
-            # -- Override timezone for this source (applies only to log events without timezone identifiers)
-            #timezone:
 
          # -- Linux syslog  collection configuration
          syslog:
@@ -441,8 +414,6 @@ fluentd:
             ociLALogSourceName: "Linux Syslog Logs"
             #  The regular expression pattern for the starting line in case of multi-line logs.
             multilineStartRegExp: /^(?:(?:\d+\s+)?<([^>]*)>(?:\d+\s+)?)?\S+\s+\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2}\s+/
-            # -- Override timezone for this source (applies only to log events without timezone identifiers)
-            #timezone:
 
          # -- Linux maillog collection configuration
          maillog:
@@ -452,8 +423,6 @@ fluentd:
             ociLALogSourceName: "Linux Mail Delivery Logs"
             #  The regular expression pattern for the starting line in case of multi-line logs.
             multilineStartRegExp: /^(?:(?:\d+\s+)?<([^>]*)>(?:\d+\s+)?)?\S+\s+\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2}\s+/
-            # -- Override timezone for this source (applies only to log events without timezone identifiers)
-            #timezone:
 
          # -- Linux audit logs collection configuration
          linuxauditlog:
@@ -461,8 +430,6 @@ fluentd:
             path: /var/log/audit/audit*
             #  Logging Analytics log source to use for parsing and processing Linux Audit Logs.
             ociLALogSourceName: "Linux Audit Logs"
-            # -- Override timezone for this source (applies only to log events without timezone identifiers)
-            #timezone:
 
          # -- Linux uptrack logs collection configuration
          uptracklog:
@@ -472,8 +439,6 @@ fluentd:
             ociLALogSourceName: "Ksplice Logs"
             #  The regular expression pattern for the starting line in case of multi-line logs.
             multilineStartRegExp: /^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}/
-            # -- Override timezone for this source (applies only to log events without timezone identifiers)
-            #timezone:
 
          # -- Linux yum logs collection configuration
          yum:
@@ -481,8 +446,6 @@ fluentd:
             path: /var/log/yum.log*
             # Logging Analytics log source to use for parsing and processing Linux YUM Logs.
             ociLALogSourceName: "Linux YUM Logs"
-            # -- Override timezone for this source (applies only to log events without timezone identifiers)
-            #timezone:
 
    # Configuration for AWS EKS Control Plane logs like API Server, Audit, Authenticator etc.
    eksControlPlane:
@@ -511,7 +474,7 @@ fluentd:
          #"Third Key": "Third Value"
       # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
       #worker:
-      # -- Override timezone for all EKS Control Plane logs (applies only to log events without timezone identifiers)
+      # -- To set timezone override for all eksControlPlane logs (applies only to log records without explicit timezone identifier in the record itself)
       #timezone:
 
       logs:
@@ -534,7 +497,7 @@ fluentd:
             #ociLALogGroupID:
             # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
             #worker:
-            # -- Override timezone for this source (applies only to log events without timezone identifiers)
+            # -- To set timezone override for apiserver logs (applies only to log records without explicit timezone identifier in the record itself)
             #timezone:
 
          audit:
@@ -549,8 +512,6 @@ fluentd:
                #"Third Key": "Third Value"
             #ociLALogGroupID:
             #worker:
-            # -- Override timezone for this source (applies only to log events without timezone identifiers)
-            #timezone:
 
          authenticator:
             cwLogStreamName: "authenticator"
@@ -566,8 +527,6 @@ fluentd:
                #"Third Key": "Third Value"
             #ociLALogGroupID:
             #worker:
-            # -- Override timezone for this source (applies only to log events without timezone identifiers)
-            #timezone:
 
          kubecontrollermanager:
             cwLogStreamName: "kube-controller-manager"
@@ -583,8 +542,6 @@ fluentd:
                #"Third Key": "Third Value"
             #ociLALogGroupID:
             #worker:
-            # -- Override timezone for this source (applies only to log events without timezone identifiers)
-            #timezone:
 
          cloudcontrollermanager:
             cwLogStreamName: "cloud-controller-manager"
@@ -600,8 +557,6 @@ fluentd:
                #"Third Key": "Third Value"
             #ociLALogGroupID:
             #worker:
-            # -- Override timezone for this source (applies only to log events without timezone identifiers)
-            #timezone:
 
          scheduler:
             cwLogStreamName: "kube-scheduler"
@@ -617,8 +572,7 @@ fluentd:
                #"Third Key": "Third Value"
             #ociLALogGroupID:
             #worker:
-            # -- Override timezone for this source (applies only to log events without timezone identifiers)
-            #timezone:
+
 
    # Generic configuration for all container/pod logs
    genericContainerLogs:
@@ -643,8 +597,8 @@ fluentd:
          - '"/var/log/containers/kube-scheduler-*.log"'
       # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
       #worker: 1
-      # -- Override timezone for all generic container logs (applies only to log events without timezone identifiers)
-      # timezone:
+      # -- To set timezone override for genericContainerLogs (applies only to log records without explicit timezone identifier in the record itself)
+      #timezone:
 
    # -- Configuration for any custom logs which are not part of the default configuration defined in this file.
    # All the pod/container logs will be collected as per "genericContainerLogs" section.
@@ -669,7 +623,7 @@ fluentd:
          #encoding:
          # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
          #worker:
-         # -- Override timezone for this source (applies only to log events without timezone identifiers) for customLogs
+         # -- To set timezone override for "custom-id1" (applies only to log records without explicit timezone identifier in the record itself)
          #timezone:
       #custom-id2:
          #path: /var/log/custom/*.log
@@ -679,8 +633,6 @@ fluentd:
          #multilineStartRegExp:
          # Set isContainerLog to false if the log is not a container log (/var/log/containers/*.log). Default value is true.
          #isContainerLog: false
-         # -- Override timezone for this source (applies only to log events without timezone identifiers) for customLogs
-         #timezone:
 
    #  -- Alternative approach to define the configuration for any custom logs which are not part of the default configuration defined in this file.
    # Provide the Fluentd configuration with the source and filter sections for your custom logs in this section. Exclude the match section. It would be used without any modification.

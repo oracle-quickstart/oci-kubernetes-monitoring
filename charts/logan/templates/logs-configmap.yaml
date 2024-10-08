@@ -425,8 +425,6 @@ data:
        {{- end }}
        {{- if $logDefinition.timezone }}
        oci_la_timezone {{ $logDefinition.timezone }}
-       {{- else if $.Values.fluentd.customLogs.timezone }}
-       oci_la_timezone {{ $.Values.fluentd.customLogs.timezone }}
        {{- else if $.Values.fluentd.timezone }}
        oci_la_timezone {{ $.Values.fluentd.timezone }}
        {{- end }}
@@ -606,6 +604,7 @@ data:
           enable_ruby               true
           namespace                 "{{ $.Values.ociLANamespace }}"
           endpoint                  "{{ $.Values.fluentd.ociLoggingAnalyticsOutputPlugin.endpoint }}"
+          collection_source         "kubernetes_solution"
           {{- if eq $authtype "config" }}
           config_file_location      {{ $.Values.oci.path }}/{{ $.Values.oci.file }}
           profile_name              "{{ $.Values.fluentd.ociLoggingAnalyticsOutputPlugin.profile_name }}"
