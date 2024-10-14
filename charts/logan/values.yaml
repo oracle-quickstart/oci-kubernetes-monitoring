@@ -48,7 +48,7 @@ image:
    # Image pull secrets for. Secret must be in the namespace defined by namespace
    imagePullSecrets:
    # -- Replace this value with actual docker image url
-   url: container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.5.0
+   url: container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.5.1
    # -- Image pull policy
    imagePullPolicy: Always
 
@@ -164,6 +164,8 @@ fluentd:
    # -- To enable MultiProcessWorkers, set this to (> 0) the number of required workers. Defaults to 0.
    # -- Set corresponding workerId using worker field against each source/log. When enabled MultiProcessWorkers, the default worker would be 0 until unless set for each source/log.
    multiProcessWorkers: 0
+   # -- To set timezone override for all logs collected using this solution (applies only to log records without explicit timezone identifier in the record itself)
+   timezone:
 
    # Configuration for oci-logging-analytics fluentd output plugin
    ociLoggingAnalyticsOutputPlugin:
@@ -244,6 +246,8 @@ fluentd:
       #encoding:
       # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
       #worker:
+      # -- To set timezone override for all kubernetesSystem logs (applies only to log records without explicit timezone identifier in the record itself)
+      #timezone:
 
       logs:
          # -- Kube Proxy logs collection configuration
@@ -261,7 +265,9 @@ fluentd:
             #ociLALogGroupID:
             #encoding:
             # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
-           #worker:
+            #worker:
+            # -- To set timezone override for kube-proxy logs (applies only to log records without explicit timezone identifier in the record itself)
+            #timezone:
 
          # -- Kube Flannel logs collection configuration
          kube-flannel:
@@ -371,6 +377,9 @@ fluentd:
       #encoding:
       # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
       #worker:
+      # -- To set timezone override for all linuxSystem logs (applies only to log records without explicit timezone identifier in the record itself)
+      #timezone:
+
       logs:
          # -- Linux CRON logs collection configuration
          cronlog:
@@ -380,6 +389,8 @@ fluentd:
             ociLALogSourceName: "Linux Cron Logs"
             #  The regular expression pattern for the starting line in case of multi-line logs.
             multilineStartRegExp: /^(?:(?:\d+\s+)?<([^>]*)>(?:\d+\s+)?)?\S+\s+\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2}\s+/
+            # -- To set timezone override for cronlog (applies only to log records without explicit timezone identifier in the record itself)
+            #timezone:
 
          # -- Linux CRON logs collection configuration
          securelog:
@@ -403,6 +414,7 @@ fluentd:
             ociLALogSourceName: "Linux Syslog Logs"
             #  The regular expression pattern for the starting line in case of multi-line logs.
             multilineStartRegExp: /^(?:(?:\d+\s+)?<([^>]*)>(?:\d+\s+)?)?\S+\s+\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2}\s+/
+
          # -- Linux maillog collection configuration
          maillog:
             #  maillog file path
@@ -462,6 +474,9 @@ fluentd:
          #"Third Key": "Third Value"
       # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
       #worker:
+      # -- To set timezone override for all eksControlPlane logs (applies only to log records without explicit timezone identifier in the record itself)
+      #timezone:
+
       logs:
          # If using cloudwatch collection mechanism, apiserver and audit logs need to be part of the same worker as they share the same log stream name prefix.
          # Thus "worker" variable is only picked up from "apiserver" section.
@@ -482,6 +497,9 @@ fluentd:
             #ociLALogGroupID:
             # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
             #worker:
+            # -- To set timezone override for apiserver logs (applies only to log records without explicit timezone identifier in the record itself)
+            #timezone:
+
          audit:
             sqsQueue: "audit"
             # S3 object key
@@ -494,6 +512,7 @@ fluentd:
                #"Third Key": "Third Value"
             #ociLALogGroupID:
             #worker:
+
          authenticator:
             cwLogStreamName: "authenticator"
             sqsQueue: "authenticator"
@@ -508,6 +527,7 @@ fluentd:
                #"Third Key": "Third Value"
             #ociLALogGroupID:
             #worker:
+
          kubecontrollermanager:
             cwLogStreamName: "kube-controller-manager"
             sqsQueue: "kube-controller-manager"
@@ -522,6 +542,7 @@ fluentd:
                #"Third Key": "Third Value"
             #ociLALogGroupID:
             #worker:
+
          cloudcontrollermanager:
             cwLogStreamName: "cloud-controller-manager"
             sqsQueue: "cloud-controller-manager"
@@ -536,6 +557,7 @@ fluentd:
                #"Third Key": "Third Value"
             #ociLALogGroupID:
             #worker:
+
          scheduler:
             cwLogStreamName: "kube-scheduler"
             sqsQueue: "scheduler"
@@ -550,6 +572,7 @@ fluentd:
                #"Third Key": "Third Value"
             #ociLALogGroupID:
             #worker:
+
 
    # Generic configuration for all container/pod logs
    genericContainerLogs:
@@ -574,6 +597,8 @@ fluentd:
          - '"/var/log/containers/kube-scheduler-*.log"'
       # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
       #worker: 1
+      # -- To set timezone override for genericContainerLogs (applies only to log records without explicit timezone identifier in the record itself)
+      #timezone:
 
    # -- Configuration for any custom logs which are not part of the default configuration defined in this file.
    # All the pod/container logs will be collected as per "genericContainerLogs" section.
@@ -598,6 +623,8 @@ fluentd:
          #encoding:
          # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
          #worker:
+         # -- To set timezone override for "custom-id1" (applies only to log records without explicit timezone identifier in the record itself)
+         #timezone:
       #custom-id2:
          #path: /var/log/custom/*.log
          # Logging Analytics log source to use for parsing and processing the logs:
