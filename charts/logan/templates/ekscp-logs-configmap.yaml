@@ -166,6 +166,13 @@ data:
        {{- else }}
        oci_la_log_set "{{ $.Values.fluentd.eksControlPlane.ociLALogSet | default $.Values.ociLALogSet }}"
        {{- end }}
+       {{- if $logDefinition.timezone }}
+       oci_la_timezone "{{ $logDefinition.timezone }}"
+       {{- else if $.Values.fluentd.eksControlPlane.timezone }}
+       oci_la_timezone "{{ $.Values.fluentd.eksControlPlane.timezone }}"
+       {{- else if $.Values.fluentd.timezone }}
+       oci_la_timezone "{{ $.Values.fluentd.timezone }}"
+       {{- end }}  
        message "${record['message']}"
        tag ${tag}
        </record>
@@ -241,6 +248,13 @@ data:
        oci_la_log_set "{{ $.Values.fluentd.eksControlPlane.ociLALogSet | default $.Values.ociLALogSet }}"
        {{- end }}
        message "${record['message']}"
+       {{- if $logDefinition.timezone }}
+       oci_la_timezone "{{ $logDefinition.timezone }}"
+       {{- else if $.Values.fluentd.eksControlPlane.timezone }}
+       oci_la_timezone "{{ $.Values.fluentd.eksControlPlane.timezone }}"
+       {{- else if $.Values.fluentd.timezone }}
+       oci_la_timezone "{{ $.Values.fluentd.timezone }}"
+       {{- end }}  
        tag ${tag}
        </record>
     </filter>
@@ -270,6 +284,7 @@ data:
           @type oci-logging-analytics
           enable_ruby               true
           namespace                 "{{ $.Values.ociLANamespace }}"
+          collection_source         "kubernetes_solution"
           endpoint                  "{{ $.Values.fluentd.ociLoggingAnalyticsOutputPlugin.endpoint }}"
           {{- if eq $authtype "config" }}
           config_file_location      {{ $.Values.oci.path }}/{{ $.Values.oci.file }}
