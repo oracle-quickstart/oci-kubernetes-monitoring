@@ -13,7 +13,8 @@
             "shared": false
           }
         },
-        "freeformTags": {},
+        "freeformTags": ${freeform_tags}, 
+        "definedTags": ${defined_tags},
         "id": "ocid1.managementdashboard.oc1..aaaaaaaa7tmp6wlxgpkjavvyeuvdn3eevm32pmski2z4m22w3jxhtq32h6rq",
         "isFavorite": false,
         "isOobDashboard": false,
@@ -159,7 +160,8 @@
                 "shared": false
               }
             },
-            "freeformTags": {},
+            "freeformTags": ${freeform_tags}, 
+        "definedTags": ${defined_tags},
             "id": "ocid1.managementsavedsearch.oc1..aaaaaaaa76smhssp5m56wt4eehroipemhm2tzhwtg7znrsjt43vhqrbwsaia",
             "isOobSavedSearch": false,
             "lifecycleState": "ACTIVE",
@@ -367,7 +369,8 @@
                 "shared": false
               }
             },
-            "freeformTags": {},
+            "freeformTags": ${freeform_tags}, 
+        "definedTags": ${defined_tags},
             "id": "ocid1.managementsavedsearch.oc1..aaaaaaaa7zwdwtcluaapibq7pkw3d5mbrnvkulkz5ovgb2bs6ntxfqd7fj7a",
             "isOobSavedSearch": false,
             "lifecycleState": "ACTIVE",
@@ -590,7 +593,8 @@
                 "shared": false
               }
             },
-            "freeformTags": {},
+            "freeformTags": ${freeform_tags}, 
+        "definedTags": ${defined_tags},
             "id": "ocid1.managementsavedsearch.oc1..aaaaaaaa3pqjk76dbx4sa2633flzikbg76bjuhaxrcmgy2ul6ayznkr7uxma",
             "isOobSavedSearch": false,
             "lifecycleState": "ACTIVE",
@@ -871,7 +875,8 @@
                 "shared": false
               }
             },
-            "freeformTags": {},
+            "freeformTags": ${freeform_tags}, 
+        "definedTags": ${defined_tags},
             "id": "ocid1.managementsavedsearch.oc1..aaaaaaaakhx6idmt4r6tkl4ev5fijc5ojr7mgpgc3cluggh7oarmennj63zq",
             "isOobSavedSearch": false,
             "lifecycleState": "ACTIVE",
@@ -1093,7 +1098,8 @@
                 "shared": false
               }
             },
-            "freeformTags": {},
+            "freeformTags": ${freeform_tags}, 
+        "definedTags": ${defined_tags},
             "id": "ocid1.managementsavedsearch.oc1..aaaaaaaa2ctxqgooubu2oqvz6p2u7tnrlbr6davpwt5fxdmqg3hafktdtk4a",
             "isOobSavedSearch": false,
             "lifecycleState": "ACTIVE",
@@ -1201,7 +1207,8 @@
                 "shared": false
               }
             },
-            "freeformTags": {},
+            "freeformTags": ${freeform_tags}, 
+        "definedTags": ${defined_tags},
             "id": "ocid1.managementsavedsearch.oc1..aaaaaaaao66kcpdxkzv7euzz2nolnheoztvhjj4ireqfkalgzvg27xtb3wqa",
             "isOobSavedSearch": false,
             "lifecycleState": "ACTIVE",
@@ -1295,7 +1302,8 @@
                 "shared": true
               }
             },
-            "freeformTags": {},
+            "freeformTags": ${freeform_tags}, 
+        "definedTags": ${defined_tags},
             "id": "ocid1.managementsavedsearch.oc1..aaaaaaaamzjz6demzwue2rr2whhgiml3wrf3oe5vlln6avfwdtjjjfwarjba",
             "isOobSavedSearch": false,
             "lifecycleState": "ACTIVE",
@@ -1526,7 +1534,8 @@
                 "shared": false
               }
             },
-            "freeformTags": {},
+            "freeformTags": ${freeform_tags}, 
+        "definedTags": ${defined_tags},
             "id": "ocid1.managementsavedsearch.oc1..aaaaaaaanonr7kl5v3cycwxl45h4n5ybz76meoudfgpc5gbsggtxf3djduqa",
             "isOobSavedSearch": false,
             "lifecycleState": "ACTIVE",
@@ -1821,7 +1830,8 @@
                 "shared": false
               }
             },
-            "freeformTags": {},
+            "freeformTags": ${freeform_tags}, 
+        "definedTags": ${defined_tags},
             "id": "ocid1.managementsavedsearch.oc1..aaaaaaaaijqkcnwvt4fpevll6y5aa5xkhz27suolsc35t5m7ri4a2sth6cqq",
             "isOobSavedSearch": false,
             "lifecycleState": "ACTIVE",
@@ -1876,7 +1886,8 @@
                 "shared": false
               }
             },
-            "freeformTags": {},
+            "freeformTags": ${freeform_tags}, 
+        "definedTags": ${defined_tags},
             "id": "ocid1.managementsavedsearch.oc1..aaaaaaaanuh7tdxvj52bx5th2iqnndjzfr3i6mejbqiziil24v7xmwuvwxmq",
             "isOobSavedSearch": false,
             "lifecycleState": "ACTIVE",
@@ -1990,7 +2001,8 @@
                 "shared": false
               }
             },
-            "freeformTags": {},
+            "freeformTags": ${freeform_tags}, 
+        "definedTags": ${defined_tags},
             "id": "ocid1.managementsavedsearch.oc1..aaaaaaaakzhn2cfwz2cz6btwvfk5b6vt4jcr2djfmrc5sz6pyxbjuuwgb22a",
             "isOobSavedSearch": false,
             "lifecycleState": "ACTIVE",
@@ -2262,7 +2274,8 @@
                 "shared": true
               }
             },
-            "freeformTags": {},
+            "freeformTags": ${freeform_tags}, 
+        "definedTags": ${defined_tags},
             "id": "ocid1.managementsavedsearch.oc1..aaaaaaaau76opbz75ozaotvdpne4g76z267pm6djgehamu2paiutwff5uwna",
             "isOobSavedSearch": false,
             "lifecycleState": "ACTIVE",
