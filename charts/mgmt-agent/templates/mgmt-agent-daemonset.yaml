@@ -69,6 +69,18 @@ spec:
           securityContext:
            allowPrivilegeEscalation: false
            readOnlyRootFilesystem: true
+      {{- if .Values.deployment.daemonSet.overrideOwnership }}
+      initContainers:
+        - name: change-ownership-container
+          image: container-registry.oracle.com/os/oraclelinux:8-slim
+          command: ["/bin/sh", "-c", "chmod 750 /opt/oracle && chown -R {{ .Values.deployment.security.runAsUser }}:{{ .Values.deployment.security.runAsGroup }} /opt/oracle"]
+          securityContext:
+            runAsUser: 0
+            privileged: true
+          volumeMounts:
+          - name: mgmtagent-hostpath
+            mountPath: /opt/oracle
+      {{- end }}
       volumes:
         - name: mgmtagent-secret
           secret:
@@ -84,7 +96,7 @@ spec:
             name: {{ include "mgmt-agent.resourceNamePrefix" . }}-agent
         - name: mgmtagent-hostpath
           hostPath: 
-            path: {{ required "deployment.daemonSet.hostPath is required" .Values.deployment.daemonSet.hostPath }}
+            path: "{{ required "deployment.daemonSet.hostPath is required" .Values.deployment.daemonSet.hostPath }}/daemonset-mgmtagent-container"
         - emptyDir: {}
           name: tmp
 {{- end }}

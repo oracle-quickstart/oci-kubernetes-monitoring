@@ -1,10 +1,5 @@
 # Change Log
 
-## 2024-08-23
-### Changed
-- Management Agent docker image has been updated to version 1.5.0
-- Extra environment (extraEnv) added to Management Agent. 
-
 ## 2024-07-08
 ### Added
 - Option to disable JRE default security property for Agent.
