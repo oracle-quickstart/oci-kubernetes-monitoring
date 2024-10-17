@@ -1,5 +1,10 @@
 # Change Log
 
+## 2024-09-19
+### Changed
+- Fluentd collector container image uptake to 1.5.0 having OS update, Ruby 3.3.1 upgrade and other dependency gem updates.
+  - Similar updates to build files (Dockerfile, Gemfile) that helps building custom container image.
+
 ## 2024-07-08
 ### Added
 - Option to disable JRE default security property for Agent.
