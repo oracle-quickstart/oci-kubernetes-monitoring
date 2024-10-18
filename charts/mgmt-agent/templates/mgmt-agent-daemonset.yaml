@@ -96,7 +96,10 @@ spec:
             name: {{ include "mgmt-agent.resourceNamePrefix" . }}-agent
         - name: mgmtagent-hostpath
           hostPath: 
-            path: "{{ required "deployment.daemonSet.hostPath is required" .Values.deployment.daemonSet.hostPath }}/daemonset-mgmtagent-container"
+            path: "{{ required "deployment.daemonSet.hostPath is required" .Values.deployment.daemonSet.hostPath }}"
+            {{- if regexMatch "^/opt/oracle/*$" .Values.deployment.daemonSet.hostPath }}
+            {{- fail "Error: deployment.daemonSet.hostPath cannot be /opt/oracle. Please provide another location or create a sub-directory under /opt/oracle and use that as hostPath" }}
+            {{- end }}
         - emptyDir: {}
           name: tmp
 {{- end }}
