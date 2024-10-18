@@ -39,6 +39,13 @@ spec:
           envFrom:
           - configMapRef:
               name: {{ include "mgmt-agent.resourceNamePrefix" . }}-env
+          env:
+            {{- if .Values.mgmtagent.extraEnv }}
+            {{- range .Values.mgmtagent.extraEnv }}
+            - name: {{ .name }}
+              value: {{ .value | quote }}
+            {{- end }}
+            {{- end }}
           resources:
             requests:
               cpu: {{ .Values.deployment.resource.request.cpuCore }}
