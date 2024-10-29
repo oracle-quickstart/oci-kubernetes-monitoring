@@ -1,14 +1,119 @@
 ## FAQ
 
-### Can I use kubectl do deploy the solution?
+### What are the offerings of OCI Kubernetes Monitoring Solution ? 
 
-Helm is the recommended method of deployment. kubectl based deployment can be done by generating individual templates using helm. Refer [this](README.md#kubectl) for details.
+OCI Kubernetes Monitoring Solution is a turn-key Kubernetes monitoring and management package based on OCI Logging Analytics cloud service, OCI Monitoring, OCI Management Agent and Fluentd. It helps collecting various telemetry data (logs, metrics, Kubernetes objects state) from your Kubernetes cluster into OCI Logging Analytics and OCI Monitoring). It also provides rich visual experience using the collected information through Kubernetes Solution UX and pre-defined set of Dashboards. 
+
+### What are the supported methods of installation ? 
+
+Refer [here](../README.md#installation-instructions).
+
+### In what namespace the resources would be installed onto the Kubernetes cluster ?
+
+`oci-onm` is the default namespace in which all the resources would be installed. However, there is a provision to choose a different namespace as required by overriding the `global.namespace` helm variable. You could also use an existing namespace by setting the namespace using `global.namespace` and overriding the `oci-onm-common.createNamespace` to `false`.  
+
+### What resources would be created onto the Kubernetes cluster ? 
+
+| Resource | Scope | Default Name | Description | Additional Notes |
+| :----: | :----: | :----: | :----: | :----: | 
+| Namespace |	All |	oci-onm	| Namespace in which all the resources would be installed. | There is a provision to choose pre-created namespace or to create a different namespace and then use it. |
+| DaemonSet	| Logs | oci-onm-logan | Responsible for log collection. | |
+| CronJob	| Discovery, Kubernetes Objects State |	oci-onm-discovery |	Responsible for Kubernetes discovery and objects state collection. | |	
+| StatefulSet |	Metrics	| oci-onm-mgmt-agent | Responsible for metrics collection. | |
+| ConfigMap |	Logs | oci-onm-logs |	Contains Fluentd configuration aiding log collection. | |	
+| ConfigMap |	Discovery, Kubernetes Objects State |	oci-onm-discovery-state-tracker |	To Tack the Kubernetes discovery state. | |
+| ServiceAccount | All | oci-onm | Service Account mapped to DaemonSet, StatefulSet and CronJob. |	There is a provision to provide a customer owned/pre-created Service Account. |
+| ClusterRole |	All |	oci-onm	| Contains pre-defined set of required rules/permissions at cluster level for the solution to work. |	There is a provision to use a customer owned/pre-created cluster role by defining/creating a customer own Service Account and binding it to the customer owned/created cluster role. |
+| ClusterRoleBinding | All | oci-onm | Binding between ClusterRole and ServiceAccount. | There is a provision to use a customer owned/pre-created cluster role by defining/creating a customer own Service Account and binding it to the customer owned/created cluster role. | 
+| Role | Discovery, Kubernetes Objects State | oci-onm | Contains pre-defined set of required rules/permissions at namespace level for the solution to work. |	|
+| RoleBinding |	Discovery, Kubernetes Objects State |	oci-onm |	Binding between Role and ServiceAccount. | |
+| Secret | Logs, Discovery, Kubernetes Objects State | oci-onm-oci-config |	To store OCI config credentials. | Created only when configfile based auth chosen over default auth, instancePrincipal. |
+| Deployment | Logs |	oci-onm	| Responsible for control plane log collection for EKS. | Created only when installing on EKS. |
+| ConfigMap |	Logs | oci-onm-ekscp-logs |	Contains Fluentd configuration aiding EKS control plane log collection. |	Created only when installing on EKS. |
+| Service |	Metrics |	oci-onm-mgmt-agent | Kubernetes Service for Mgmt Agent Pods. | |	
+| ConfigMap |	Metrics |	oci-onm-metrics |	Configuration aiding Mgmt Agent Pods. | | 	
+| PersistentVolume | Metrics | N/A | To aid persistent storage requirements of Mgmt Agent Pods. |	|
+| PersistentVolumeClaim |	Metrics |	mgmtagent-pvc-oci-onm-mgmt-agent-0 | To aid persistent storage requirements of Mgmt Agent Pods. |	|
+
+_Additionally, metrics-server deployment and related resources would be installed to support the metrics collection. There is a proviosion to disable the metric service installation if it is already installed onto the cluster._
+
+_Additionally, the following volumes of type hostPath would be created and mounted to specific pods._ 
+
+| Volume | Volume Mount |	Type | Resource Scope |	Default Mount Path |	Default Host Path |	Description |	Additional Notes |
+| :----: | :----: | :----: | :----: | :----: | :----: | :----: | :----: |
+| varlog | varlog |	readOnly | oci-onm DaemonSet | /var/log |	/var/log | To access Pod logs on node from /var/log/pods. | |	
+| dockercontainerlogdirectory |	dockercontainerlogdirectory |	readOnly | oci-onm DaemonSet | /var/log/pods | /var/log/pods | To access Pod logs on node from /var/log/pods. |	There is a provision to modify this if the logs are being written in different directory. |
+| dockercontainerdatadirectory | dockercontainerdatadirectory |	readOnly | oci-onm DaemonSet | /u01/data/docker/containers |	/u01/data/docker/containers |	To access Pod logs on node from /var/log/pods linked to /u01/data/docker/containers. | There is a provision to modify this if the logs are being written in different directory. |
+| baseDir |	baseDir |	readwrite |	oci-onm DaemonSet, oci-onm Deployment |	/var/log | /var/log |	To store Fluentd buffer and other information that helps tracking the state like tail plugin pos files. | There is a provision to use different dir than /var/log for this purpose if req. | 
+
+### What telemetry data is collected by the Solution ? 
+
+#### Logs
+
+The solutions offers collection of various logs of from the Kubernetes cluster into OCI Logging Analytics and offer rich analytics on top of the collected logs. Users may choose to customise the log collection by modifying the out of the box configuration that it provides.
+
+* Kubernetes System/Service Logs
+    * The following logs are configured to be collected by default under this category. 
+        * Kube Proxy
+        * Kube Flannel
+        * Kubelet
+        * CoreDNS
+        * CSI Node Driver
+        * DNS Autoscaler
+        * Cluster Autoscaler
+        * Proxymux Client
+* Linux System Logs
+    * The following Linux system logs are configured to be collected by default.
+        * Syslog
+        * Secure logs
+        * Cron logs
+        * Mail logs
+        * Audit logs
+        * Ksplice Uptrack logs
+        * Yum logs
+* Pod/Container (Application) Logs
+All the container logs available under `/var/log/containers/` on each worker nodes would be collected by default and processed using a generic Log Source named `Kubernetes Container Generic Logs`. However, users have ability to process different container logs using different Parsers/Sources at Logging Analytics. Refer [this](#custom-logs.md) section to learn on how to perform the customisations. 
+
+#### Metrics
+
+The solution collects the following metrics by default.
+
+* API Server metrics (using /metrics endpoint)
+* Node/Kubelet metrics (using /api/v1/nodes/<node_name>/proxy/metrics/resource endpoint)
+* cAdvisor metrics (using /api/v1/nodes/<node_name>/proxy/metrics/cadvisor endpoint)
+* Few additional custom metrics computed at cluster level (like cpuUsage, memoryUsage)
+
+#### Kubernetes Objects
+
+"Kubernetes objects are persistent entities in the Kubernetes system. Kubernetes uses these entities to represent the state of your cluster. Specifically, they can describe:
+  * What containerized applications are running (and on which nodes)
+  * The resources available to those applications
+  * The policies around how those applications behave, such as restart policies, upgrades, and fault-tolerance."
+
+The following are the list of objects supported at present and stored in the form of logs.
+  * Nodes
+  * Namespaces
+  * Pods
+  * DaemonSets
+  * Deployments
+  * ReplicaSets
+  * Jobs
+  * CronJobs
+  * Events
+  * Services
+  * EndpointSlices
+  * PersistentVolumes
+  * PersistentVolumeClaims
+
+### What methods of Auth/AuthZ are supported ? 
+
+The solution supports OCI Instance Principal and User Principal (OCI Config file) based Auth/AuthZ for logs and Kubernetes discovery data collection, and defaults to Instance Principal which is the recommended approach when deploying the solution on OKE. Refer [this](#how-to-use-configfile-based-authz-user-principal-instead-of-default-authz-instance-principal-) for the details on how to switch to configFile based Auth/AuthZ from the default Instance Principal based Auth/AuthZ. 
+
+For metrics collection, it uses the OCI Resource Principal based Auth/AuthZ.
 
 ### Can I use my own ServiceAccount ?
 
-**Note**: This is supported only through the helm chart based deployment.
-
-By default, a cluster role, cluster role binding and serviceaccount will be created for the Fluentd and Management Agent pods to access (readonly) various Kubernetes Objects within the cluster for supporting logs, objects and metrics collection. However, if you want to use your own serviceaccount, you can do the same by setting the "oci-onm-common.createServiceAccount" variable to false and providing your own serviceaccount in the "oci-onm-common.serviceAccount" variable. Ensure that the serviceaccount should be in the same namespace as the namespace used for the whole deployment. The namespace for the whole deployment can be set using the "oci-onm-common.namespace" variable, whose default value is "oci-onm".
+By default, a cluster role, cluster role binding and serviceaccount will be created for the Fluentd and Management Agent pods to access (readonly) various Kubernetes Objects within the cluster for supporting logs, objects and metrics collection. However, if you want to use your own serviceaccount, you can do the same by setting the `oci-onm-common.createServiceAccount` variable to `false` and providing your own serviceaccount in the `oci-onm-common.serviceAccount` variable. Ensure that the serviceaccount is in the same namespace as the namespace used for the whole deployment. The namespace for the whole deployment can be set using the `oci-onm-common.namespace` variable, which defaults to `oci-onm`.
 
 The serviceaccount must be binded to a cluster role defined in your cluster, which allows access to various objects metadata. The following sample is a recommended minimalistic role definition as of chart version 3.0.0.
 
@@ -57,6 +162,29 @@ subjects:
     name: <ServiceAccountName>
     namespace: <Namespace>
 ```
+
+### How to customise resource names created by the solution ?
+
+By default most of the Kubernetes resources created by the solution have prefix `oci-onm`. You may modify the same by overriding the helm variable, `global.resourceNamePrefix`.
+
+### How to use custom container images ? 
+
+Refer [this](custom-images.md) for instructions to build custom container images. 
+
+Use the following helm variables to override the default Image location :
+
+[`oci-onm-logan.image.url`](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/charts/oci-onm/values.yaml#L33)
+[`oci-onm-mgmt-agent.mgmtagent.image.url`](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/charts/oci-onm/values.yaml#L55)
+
+Optionally, you may set the ImagePullSecret to pull the images using the following helm variables :
+
+`oci-onm-logan.image.imagePullSecrets`
+`oci-onm-mgmt-agent.mgmtagent.image.secret`
+
+
+### Can I use kubectl to deploy the solution?
+
+Helm is the recommended method of deployment. kubectl based deployment can be done by generating individual templates using helm. Refer [this](../README.md#kubectl) for details.
 
 ### How to set encoding for logs ?
 
