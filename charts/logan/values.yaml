@@ -716,6 +716,15 @@ k8sDiscovery:
       collect_warning_events_only: false
       # backoffLimit: Specify the number of retries before considering a Job as failed
       backoffLimit: 2
+   # infra: defines inputs for k8s infrastructure discovery and rms stack (service log creation and collection)
+   infra:
+      tenancy_ocid:
+      # rms_template_base64_encoded: Base64 encoded zip file of rms template
+      rms_template_base64_encoded:
+      # enable_service_log: Flag to enable or disable the creation of a stack for service log collection
+      enable_service_log: false
+      # probe_all_compartments: Flag that determines whether to iterate through all compartments or only the cluster compartment while discovering node pools
+      probe_all_compartments: true
    # kubernetes: kubernetes cluster related inputs for kubernetes disocvery job
    kubeClientOptions:
       # kubernetes_url: Kubernetes API server URL.
