@@ -217,7 +217,7 @@ Refer [here](custom-logs.md).
 
 ### How to enable Fluentd’s multi-process worker configuration ?
 
-We recommend tuning the default Fluentd configuration provided by this solution for clusters having high traffic/log volume. Often, you should be able to match the log collection throughput to incoming log volume by adjusting the flush thread count as mentioned [here](). However, if that is not suffice, you can enable multi-process worker configuration to split the log collection across multiple fluentd processes where each process works against set of logs. 
+We recommend tuning the default Fluentd configuration provided by this solution for clusters having high traffic/log volume. Often, you should be able to match the log collection throughput to incoming log volume by adjusting the flush thread count as mentioned [here](#how-to-tune-the-various-parameters-that-can-effect-logs-collection-according-to-the-log-volume-). However, if that is not suffice, you can enable multi-process worker configuration to split the log collection across multiple fluentd processes where each process works against set of logs. 
 
 * First, enable the multi-process worker mode by setting the following helm variable to number of workers you intend to configure : 
     * [`oci-onm-logan.fluentd.multiProcessWorkers`](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/charts/logan/values.yaml#L166)
