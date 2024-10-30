@@ -178,9 +178,53 @@ Use the following helm variables to override the default Image location :
 
 Optionally, you may set the ImagePullSecret to pull the images using the following helm variables :
 
-`oci-onm-logan.image.imagePullSecrets`
-`oci-onm-mgmt-agent.mgmtagent.image.secret`
+[`oci-onm-logan.image.imagePullSecrets`](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/charts/logan/values.yaml#L49)
+[`oci-onm-mgmt-agent.mgmtagent.image.secret`](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/charts/mgmt-agent/values.yaml#L34)
 
+### How to customise the resource limits and requests for various monitoring pods ? 
+
+By default pods deployed through `oci-onm-logan` daemonset and `oci-onm-discovery` cronjob (responsible for logs and discovery collection) are limited to `500Mi` memory with requests set to `250Mi` memory and `100m` cpu. While these default limits work for most of the moderate environments; depending on the environment, log volume and other relevant factors, you can modify them. 
+
+Use the helm variables under the following variable to override the defaults : 
+
+[`oci-onm-logan.resources`](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/charts/logan/values.yaml#L96)
+
+Similarly, you can modify the resource limits for pods deployed through oci-onm-mgmt-agent statefulset (responsible for metrics collection) using the following helm variables : 
+
+[`oci-onm-mgmt-agent.deployment.resource`](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/charts/mgmt-agent/values.yaml#L84)
+
+### How to modify the readwrite volume mount’s default hostPath ?
+
+By default /var/log of underlying Kubernetes Node is mounted to oci-onm-logan daemonset pods in readwrite mode, to store Fluentd’s buffer and other relevant information that helps tracking the state like Fluentd tail plugin’s pos files etc. You can modify this to any other writetable path on the node by using the following helm variable : 
+
+[`oci-onm-logan.fluentd.baseDir`](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/charts/logan/values.yaml#L163)
+
+### How to tune the various parameters that can effect logs collection, according to the log volume ? 
+
+* Flush thread count
+    * By default, Fluentd pods responsible for logs collection uses single flush thread. Though this works for most of the moderate log volumes, this can be tuned by using the following helm variable : 
+        * [`oci-onm-logan.fluentd.ociLoggingAnalyticsOutputPlugin.buffer.flush_thread_count`](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/charts/logan/values.yaml#L183)
+* Buffer size
+    * By default, the solution uses Fluentd’s file buffer with is size set to 5GB as default buffer size, which is used for buffering of chunks in-case of delays in sending the data to OCI Logging Analytics and/or to handle outages at OCI without data loss. We recommend to modify/tune this to a size (to a higher or lower value) based on your environment and importance of data and other relevant factors. Use the following helm variable to modify the same : 
+        * [`oci-onm-logan.fluentd.ociLoggingAnalyticsOutputPlugin.buffer.total_limit_size`](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/charts/logan/values.yaml#L186)
+* Read from Head
+    * By default, the solution tries to collect all the pod logs available on the nodes since beginning. Use the following helm variable to alter the behaviour if you wish to collect only new logs after the installation of the solution : 
+        * [`oci-onm-logan.fluentd.tailPlugin.readFromHead`](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/charts/logan/values.yaml#L227)
+
+### How to collect pod logs using custom OCI Logging Analytics Source instead of using Kubernetes Container Generic Logs Source ?
+
+Refer [here](custom-logs.md). 
+
+### How to enable Fluentd’s multi-process worker configuration ?
+
+We recommend tuning the default Fluentd configuration provided by this solution for clusters having high traffic/log volume. Often, you should be able to match the log collection throughput to incoming log volume by adjusting the flush thread count as mentioned [here](). However, if that is not suffice, you can enable multi-process worker configuration to split the log collection across multiple fluentd processes where each process works against set of logs. 
+
+* First, enable the multi-process worker mode by setting the following helm variable to number of workers you intend to configure : 
+    * [`oci-onm-logan.fluentd.multiProcessWorkers`](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/charts/logan/values.yaml#L166)
+* Then, you can configure the worker id either at each of the individual log or log type level according to the needs by using the following helm variables : 
+    * [`oci-onm-logan.fluentd.kubernetesSystem.worker`](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/charts/logan/values.yaml#L248) (to set at log type level, say for all KubernetesSystem logs)
+    * [`oci-onm-logan.fluentd.kubernetesSystem.logs.kube-proxy.worker`](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/charts/logan/values.yaml#L268) (to set at individual log level, say Kube Proxy logs)
+* By default all logs would be mapped to `worker id 0` if not explicitly specified in multi-process worker mode.  
 
 ### Can I use kubectl to deploy the solution?
 
