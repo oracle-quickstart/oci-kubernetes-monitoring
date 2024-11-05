@@ -85,7 +85,8 @@ deployment:
    
    daemonSet:
       # Provide the host path if Agent is deployed as DaemonSet. Management Agent Pod should have read-write access to it.
-      # Note: The hostPath cannot point to /opt/oracle, please provide another location or create a sub-directory under /opt/oracle and use that as hostPath 
+      # Note: The hostPath cannot point to /opt/oracle, please provide another location or create a sub-directory under /opt/oracle and use that as hostPath.
+      # The Management Agent helm chart will attempt to change ownership and permissions on the host path provided here.
       hostPath:
       # Override the ownership and permissions on the hostPath. The hostPath will be owned by the runAsUser and runAsGroup provided under security context above and the permission as 750. 
       # Note: This requires oraclelinux:8-slim image
