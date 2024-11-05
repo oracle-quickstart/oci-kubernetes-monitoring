@@ -1,5 +1,13 @@
 # Change Log
 
+## 2024-11-05
+### Added
+- Support of extraEnv for Management Agent
+- Option to override hostPath permission for Management Agent DaemonSet deployment
+### Changed
+- Management Agent docker image has been updated to version 1.6.0
+- Default metrics-server has been updated to version 0.7.2
+
 ## 2024-09-19
 ### Changed
 - Fluentd collector container image uptake to 1.5.0 having OS update, Ruby 3.3.1 upgrade and other dependency gem updates.
