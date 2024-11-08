@@ -35,10 +35,17 @@ locals {
 
   all_clusters_in_compartment = data.oci_containerengine_clusters.oke_clusters.clusters
   cluster_data                = [for c in local.all_clusters_in_compartment : c if c.id == var.oke_cluster_ocid][0]
+
+  domain     = data.external.metadata.result.realmDomainComponent
+  oci_domain = "${var.region}.oci.${local.domain}"
 }
 
 data "oci_containerengine_clusters" "oke_clusters" {
   compartment_id = var.oke_compartment_ocid
+}
+
+data "external" "metadata" {
+  program = ["bash", "${path.module}/resources/metadata.sh"]
 }
 
 resource "null_resource" "wait-for-oke-active-status" {
@@ -115,7 +122,9 @@ module "main" {
   fluentd_base_dir_path        = var.fluentd_base_dir_path
   kubernetes_cluster_id        = var.oke_cluster_ocid
   kubernetes_cluster_name      = local.oke_cluster_name
-  path_to_local_onm_helm_chart = "../../../charts/oci-onm/"
+  path_to_local_onm_helm_chart = "${path.module}/charts/oci-onm/"
+  oci_domain                   = local.oci_domain
+  toggle_use_local_helm_chart  = var.toggle_use_local_helm_chart
 
   # As two sets of OCI providers are required in child module (main), we must pass all providers explicitly
   # Ref - https://developer.hashicorp.com/terraform/language/modules/develop/providers#passing-providers-explicitly

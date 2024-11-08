@@ -76,3 +76,5 @@ provider "helm" {
 }
 
 provider "local" {}
+
+provider "external" {}

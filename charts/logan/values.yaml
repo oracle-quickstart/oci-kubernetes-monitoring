@@ -35,6 +35,11 @@ runtime: cri
 # -- Allowed values: InstancePrincipal, config
 authtype: InstancePrincipal
 
+# This parameter is required only for realms where the OCI Ruby SDK is not supported.
+# Format: <oci-region>.oci.<oci_domain>
+# Example: us-ashburn-1.oci.oraclecloud.com
+ociDomain:
+
 # -- Kubernetes Namespace for deploying monitoring resources deployed by this chart.
 namespace: "{{ .Values.global.namespace }}"
 

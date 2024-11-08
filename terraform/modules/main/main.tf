@@ -128,7 +128,7 @@ module "helm_release" {
   mgmt_agent_install_key_content = module.management_agent[0].mgmt_agent_install_key_content
   opt_deploy_metric_server       = var.opt_deploy_metric_server
   fluentd_base_dir_path          = var.fluentd_base_dir_path
-  # livelab_service_account        = local.livelab_service_account
+  oci_domain                     = var.oci_domain
 }
 
 # Import Kubernetes Dashboards
@@ -140,18 +140,3 @@ module "import_kubernetes_dashboards" {
   debug            = var.debug
   tags             = var.tags
 }
-
-# // Only execute for livelab stack
-# // livelab module only supports local users
-# // it will error out when an identity domain user is used and livelab_switch is set as true
-# module "livelab" {
-#   source            = "./modules/livelab"
-#   current_user_ocid = var.current_user_ocid
-#   debug             = var.debug
-
-#   count = local.module_controls_enable_livelab_module ? 1 : 0
-
-#   /* providers = {
-#     oci = oci.home_region
-#   } */
-# }

@@ -110,6 +110,16 @@ variable "livelab_service_account" {
 }
 
 ####
+##  OCI Client Config
+####
+
+# OCI domain
+variable "oci_domain" {
+  type    = string
+  default = null
+}
+
+####
 ##  Others
 ####
 
