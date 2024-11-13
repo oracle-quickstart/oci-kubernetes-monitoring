@@ -36,8 +36,10 @@ locals {
   all_clusters_in_compartment = data.oci_containerengine_clusters.oke_clusters.clusters
   cluster_data                = [for c in local.all_clusters_in_compartment : c if c.id == var.oke_cluster_ocid][0]
 
-  domain     = data.external.metadata.result.realmDomainComponent
-  oci_domain = "${var.region}.oci.${local.domain}"
+  is_ruby_sdk_supported = contains(local.ruby_sdk_supported_regions, var.region)
+
+  domain     = local.is_ruby_sdk_supported ? null : data.external.metadata[0].result.realmDomainComponent
+  oci_domain = local.is_ruby_sdk_supported ? null : "${var.region}.oci.${local.domain}"
 }
 
 data "oci_containerengine_clusters" "oke_clusters" {
@@ -45,6 +47,7 @@ data "oci_containerengine_clusters" "oke_clusters" {
 }
 
 data "external" "metadata" {
+  count   = local.is_ruby_sdk_supported ? 0 : 1
   program = ["bash", "${path.module}/resources/metadata.sh"]
 }
 
