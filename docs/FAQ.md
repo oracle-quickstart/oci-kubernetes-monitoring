@@ -2,17 +2,17 @@
 
 ### What are the offerings of OCI Kubernetes Monitoring Solution ? 
 
-OCI Kubernetes Monitoring Solution is a turn-key Kubernetes monitoring and management package based on OCI Logging Analytics cloud service, OCI Monitoring, OCI Management Agent and Fluentd. It helps collecting various telemetry data (logs, metrics, Kubernetes objects state) from your Kubernetes cluster into OCI Logging Analytics and OCI Monitoring). It also provides rich visual experience using the collected information through Kubernetes Solution UX and pre-defined set of Dashboards. 
+OCI Kubernetes Monitoring Solution is a turn-key Kubernetes monitoring and management package based on OCI Logging Analytics cloud service, OCI Monitoring, OCI Management Agent and Fluentd. It helps collecting various telemetry data (logs, metrics, Kubernetes objects state) from your Kubernetes cluster into OCI Logging Analytics and OCI Monitoring). It also provides rich visual experiences using the collected information through Kubernetes Solution UX and pre-defined set of Dashboards. 
 
 ### What are the supported methods of installation ? 
 
 Refer [here](../README.md#installation-instructions).
 
-### In what namespace the resources would be installed onto the Kubernetes cluster ?
+### In which namespace would the resources be installed on the Kubernetes cluster ?
 
-`oci-onm` is the default namespace in which all the resources would be installed. However, there is a provision to choose a different namespace as required by overriding the `global.namespace` helm variable. You could also use an existing namespace by setting the namespace using `global.namespace` and overriding the `oci-onm-common.createNamespace` to `false`.  
+`oci-onm` is the default namespace in which all the resources would be installed. However, there is a provision to choose a different namespace as required by overriding the `global.namespace` helm variable. You could also use an existing namespace by setting the namespace using `global.namespace` helm varaible and overriding the `oci-onm-common.createNamespace` to `false`.  
 
-### What resources would be created onto the Kubernetes cluster ? 
+### What resources would be created on the Kubernetes cluster ? 
 
 | Resource | Scope | Default Name | Description | Additional Notes |
 | :----: | :----: | :----: | :----: | :----: | 
@@ -20,31 +20,31 @@ Refer [here](../README.md#installation-instructions).
 | DaemonSet	| Logs | oci-onm-logan | Responsible for log collection. | |
 | CronJob	| Discovery, Kubernetes Objects State |	oci-onm-discovery |	Responsible for Kubernetes discovery and objects state collection. | |	
 | StatefulSet |	Metrics	| oci-onm-mgmt-agent | Responsible for metrics collection. | |
-| ConfigMap |	Logs | oci-onm-logs |	Contains Fluentd configuration aiding log collection. | |	
-| ConfigMap |	Discovery, Kubernetes Objects State |	oci-onm-discovery-state-tracker |	To Tack the Kubernetes discovery state. | |
-| ServiceAccount | All | oci-onm | Service Account mapped to DaemonSet, StatefulSet and CronJob. |	There is a provision to provide a customer owned/pre-created Service Account. |
-| ClusterRole |	All |	oci-onm	| Contains pre-defined set of required rules/permissions at cluster level for the solution to work. |	There is a provision to use a customer owned/pre-created cluster role by defining/creating a customer own Service Account and binding it to the customer owned/created cluster role. |
-| ClusterRoleBinding | All | oci-onm | Binding between ClusterRole and ServiceAccount. | There is a provision to use a customer owned/pre-created cluster role by defining/creating a customer own Service Account and binding it to the customer owned/created cluster role. | 
+| ConfigMap |	Logs | oci-onm-logs |	Contains Fluentd configuration aiding the log collection. | |	
+| ConfigMap |	Discovery, Kubernetes Objects State |	oci-onm-discovery-state-tracker |	To track the Kubernetes discovery state. | |
+| ServiceAccount | All | oci-onm | Service Account mapped to DaemonSet, StatefulSet and CronJob. |	There is a provision to provide an existing Service Account. |
+| ClusterRole |	All |	oci-onm	| Contains pre-defined set of required rules/permissions at cluster level for the solution to work. |	There is a provision to use an existing cluster role/binding by binding it to the custom ServiceAccount. |
+| ClusterRoleBinding | All | oci-onm | Binding between ClusterRole and ServiceAccount. | There is a provision to use an existing cluster role/binding by binding it to the custom ServiceAccount. | 
 | Role | Discovery, Kubernetes Objects State | oci-onm | Contains pre-defined set of required rules/permissions at namespace level for the solution to work. |	|
 | RoleBinding |	Discovery, Kubernetes Objects State |	oci-onm |	Binding between Role and ServiceAccount. | |
-| Secret | Logs, Discovery, Kubernetes Objects State | oci-onm-oci-config |	To store OCI config credentials. | Created only when configfile based auth chosen over default auth, instancePrincipal. |
-| Deployment | Logs |	oci-onm	| Responsible for control plane log collection for EKS. | Created only when installing on EKS. |
-| ConfigMap |	Logs | oci-onm-ekscp-logs |	Contains Fluentd configuration aiding EKS control plane log collection. |	Created only when installing on EKS. |
+| Secret | Logs, Discovery, Kubernetes Objects State | oci-onm-oci-config |	To store OCI config credentials. | Created only when configfile based auth is chosen over the default instancePrincipal based auth. |
+| Deployment | Logs |	oci-onm	| Responsible for the collection of EKS control plane logs. | Created only when installing on EKS and setting `oci-onm-logan.enableEKSControlPlaneLogs` helm variable set to true. |
+| ConfigMap |	Logs | oci-onm-ekscp-logs |	Contains Fluentd configuration aiding EKS control plane log collection. |	Created only when installing on EKS and setting `oci-onm-logan.enableEKSControlPlaneLogs` helm variable set to true. |
 | Service |	Metrics |	oci-onm-mgmt-agent | Kubernetes Service for Mgmt Agent Pods. | |	
 | ConfigMap |	Metrics |	oci-onm-metrics |	Configuration aiding Mgmt Agent Pods. | | 	
 | PersistentVolume | Metrics | N/A | To aid persistent storage requirements of Mgmt Agent Pods. |	|
 | PersistentVolumeClaim |	Metrics |	mgmtagent-pvc-oci-onm-mgmt-agent-0 | To aid persistent storage requirements of Mgmt Agent Pods. |	|
 
-_Additionally, metrics-server deployment and related resources would be installed to support the metrics collection. There is a proviosion to disable the metric service installation if it is already installed onto the cluster._
+_Additionally, metrics-server and related resources would be installed to support the metrics collection. There is a proviosion to disable the metric service installation if it is already installed onto the cluster by overrding the `mgmt-agent.deployMetricServer` to `false`._
 
 _Additionally, the following volumes of type hostPath would be created and mounted to specific pods._ 
 
 | Volume | Volume Mount |	Type | Resource Scope |	Default Mount Path |	Default Host Path |	Description |	Additional Notes |
 | :----: | :----: | :----: | :----: | :----: | :----: | :----: | :----: |
-| varlog | varlog |	readOnly | oci-onm DaemonSet | /var/log |	/var/log | To access Pod logs on node from /var/log/pods. | |	
-| dockercontainerlogdirectory |	dockercontainerlogdirectory |	readOnly | oci-onm DaemonSet | /var/log/pods | /var/log/pods | To access Pod logs on node from /var/log/pods. |	There is a provision to modify this if the logs are being written in different directory. |
-| dockercontainerdatadirectory | dockercontainerdatadirectory |	readOnly | oci-onm DaemonSet | /u01/data/docker/containers |	/u01/data/docker/containers |	To access Pod logs on node from /var/log/pods linked to /u01/data/docker/containers. | There is a provision to modify this if the logs are being written in different directory. |
-| baseDir |	baseDir |	readwrite |	oci-onm DaemonSet, oci-onm Deployment |	/var/log | /var/log |	To store Fluentd buffer and other information that helps tracking the state like tail plugin pos files. | There is a provision to use different dir than /var/log for this purpose if req. | 
+| varlog | varlog |	readOnly | oci-onm DaemonSet | /var/log |	/var/log | To access the pod logs on the node from /var/log/pods. | |	
+| dockercontainerlogdirectory |	dockercontainerlogdirectory |	readOnly | oci-onm DaemonSet | /var/log/pods | /var/log/pods | To access the pod logs on the node from /var/log/pods. |	There is a provision to modify this if the logs are being written in a different directory. |
+| dockercontainerdatadirectory | dockercontainerdatadirectory |	readOnly | oci-onm DaemonSet | /u01/data/docker/containers |	/u01/data/docker/containers |	To access the pod logs on the node from /var/log/pods linked to /u01/data/docker/containers. | There is a provision to modify this if the logs are being written in a different directory. |
+| baseDir |	baseDir |	readwrite |	oci-onm DaemonSet, oci-onm Deployment |	/var/log | /var/log |	To store Fluentd buffer, and other information that helps tracking the state like tail plugin pos files. | There is a provision to use different dir than /var/log for this purpose as required by overriding the `oci-onm-logan.fluentd.baseDir` helm variable. | 
 
 ### What telemetry data is collected by the Solution ? 
 
@@ -72,7 +72,7 @@ The solutions offers collection of various logs of from the Kubernetes cluster i
         * Ksplice Uptrack logs
         * Yum logs
 * Pod/Container (Application) Logs
-All the container logs available under `/var/log/containers/` on each worker nodes would be collected by default and processed using a generic Log Source named `Kubernetes Container Generic Logs`. However, users have ability to process different container logs using different Parsers/Sources at Logging Analytics. Refer [this](#custom-logs.md) section to learn on how to perform the customisations. 
+    * All the container logs available under `/var/log/containers/` on each worker nodes would be collected by default and processed using a generic Log Source named `Kubernetes Container Generic Logs`. However, users have ability to process different container logs using different Parsers/Sources at Logging Analytics. Refer [this](#custom-logs.md) section to learn on how to perform the customisations. 
 
 #### Metrics
 
@@ -174,16 +174,18 @@ Refer [this](custom-images.md) for instructions to build custom container images
 Use the following helm variables to override the default Image location :
 
 [`oci-onm-logan.image.url`](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/charts/oci-onm/values.yaml#L33)
+
 [`oci-onm-mgmt-agent.mgmtagent.image.url`](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/charts/oci-onm/values.yaml#L55)
 
 Optionally, you may set the ImagePullSecret to pull the images using the following helm variables :
 
 [`oci-onm-logan.image.imagePullSecrets`](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/charts/logan/values.yaml#L49)
+
 [`oci-onm-mgmt-agent.mgmtagent.image.secret`](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/charts/mgmt-agent/values.yaml#L34)
 
 ### How to customise the resource limits and requests for various monitoring pods ? 
 
-By default pods deployed through `oci-onm-logan` daemonset and `oci-onm-discovery` cronjob (responsible for logs and discovery collection) are limited to `500Mi` memory with requests set to `250Mi` memory and `100m` cpu. While these default limits work for most of the moderate environments; depending on the environment, log volume and other relevant factors, you can modify them. 
+By default pods deployed through `oci-onm-logan` daemonset and `oci-onm-discovery` cronjob (responsible for logs and discovery collection) are limited to `500Mi` memory with requests set to `250Mi` memory and `100m` cpu. While these default limits work for most of the moderate environments; depending on the environment, log volume and other relevant factors, these limits can be tuned. 
 
 Use the helm variables under the following variable to override the defaults : 
 
@@ -195,7 +197,7 @@ Similarly, you can modify the resource limits for pods deployed through oci-onm-
 
 ### How to modify the readwrite volume mount’s default hostPath ?
 
-By default /var/log of underlying Kubernetes Node is mounted to oci-onm-logan daemonset pods in readwrite mode, to store Fluentd’s buffer and other relevant information that helps tracking the state like Fluentd tail plugin’s pos files etc. You can modify this to any other writetable path on the node by using the following helm variable : 
+By default `/var/log` of underlying Kubernetes Node is mounted to `oci-onm-logan` daemonset pods in readwrite mode, to store Fluentd’s buffer and other relevant information that helps tracking the state like Fluentd tail plugin’s pos files etc. You can modify this to any other writable path on the node by using the following helm variable : 
 
 [`oci-onm-logan.fluentd.baseDir`](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/charts/logan/values.yaml#L163)
 
@@ -205,7 +207,7 @@ By default /var/log of underlying Kubernetes Node is mounted to oci-onm-logan da
     * By default, Fluentd pods responsible for logs collection uses single flush thread. Though this works for most of the moderate log volumes, this can be tuned by using the following helm variable : 
         * [`oci-onm-logan.fluentd.ociLoggingAnalyticsOutputPlugin.buffer.flush_thread_count`](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/charts/logan/values.yaml#L183)
 * Buffer size
-    * By default, the solution uses Fluentd’s file buffer with is size set to 5GB as default buffer size, which is used for buffering of chunks in-case of delays in sending the data to OCI Logging Analytics and/or to handle outages at OCI without data loss. We recommend to modify/tune this to a size (to a higher or lower value) based on your environment and importance of data and other relevant factors. Use the following helm variable to modify the same : 
+    * By default, the solution uses Fluentd’s file buffer with size set to 5GB as default buffer size, which is used for buffering of chunks in-case of delays in sending the data to OCI Logging Analytics and/or to handle outages at OCI without data loss. **We recommend** to modify/tune this to a size (to a higher or lower value) based on your environment and importance of data and other relevant factors. Use the following helm variable to modify the same : 
         * [`oci-onm-logan.fluentd.ociLoggingAnalyticsOutputPlugin.buffer.total_limit_size`](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/charts/logan/values.yaml#L186)
 * Read from Head
     * By default, the solution tries to collect all the pod logs available on the nodes since beginning. Use the following helm variable to alter the behaviour if you wish to collect only new logs after the installation of the solution : 
@@ -217,11 +219,11 @@ Refer [here](custom-logs.md).
 
 ### How to enable Fluentd’s multi-process worker configuration ?
 
-We recommend tuning the default Fluentd configuration provided by this solution for clusters having high traffic/log volume. Often, you should be able to match the log collection throughput to incoming log volume by adjusting the flush thread count as mentioned [here](#how-to-tune-the-various-parameters-that-can-effect-logs-collection-according-to-the-log-volume-). However, if that is not suffice, you can enable multi-process worker configuration to split the log collection across multiple fluentd processes where each process works against set of logs. 
+We recommend tuning the default Fluentd configuration provided by this solution for clusters having high traffic/log volume. Often, you should be able to match the log collection throughput to incoming log volume by adjusting the flush thread count as mentioned [here](#how-to-tune-the-various-parameters-that-can-effect-logs-collection-according-to-the-log-volume-). However, if that is not sufficient, you can enable multi-process worker configuration to split the log collection across multiple fluentd processes where each process works against a set of logs. 
 
 * First, enable the multi-process worker mode by setting the following helm variable to number of workers you intend to configure : 
     * [`oci-onm-logan.fluentd.multiProcessWorkers`](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/charts/logan/values.yaml#L166)
-* Then, you can configure the worker id either at each of the individual log or log type level according to the needs by using the following helm variables : 
+* Next you can configure the worker id, either at each of the individual log or log type level according to the need, by using the following helm variables : 
     * [`oci-onm-logan.fluentd.kubernetesSystem.worker`](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/charts/logan/values.yaml#L248) (to set at log type level, say for all KubernetesSystem logs)
     * [`oci-onm-logan.fluentd.kubernetesSystem.logs.kube-proxy.worker`](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/charts/logan/values.yaml#L268) (to set at individual log level, say Kube Proxy logs)
 * By default all logs would be mapped to `worker id 0` if not explicitly specified in multi-process worker mode.
@@ -272,11 +274,11 @@ oci-onm-logan:
         ...
         ...
         kube-proxy:
-        ...
-        ...
-        worker: 2
-        ...
-        ...
+          ...
+          ...
+          worker: 2
+          ...
+          ...
     ...
     ...
     linuxSystem:
