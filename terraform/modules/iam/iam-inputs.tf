@@ -1,4 +1,4 @@
-# Copyright (c) 2023, Oracle and/or its affiliates.
+# Copyright (c) 2023, 2024, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 # tenancy ocid
@@ -19,4 +19,16 @@ variable "oke_compartment_ocid" {
 # OKE Cluster OCID
 variable "oke_cluster_ocid" {
   type = string
+}
+
+# Save data resources in local_file for debug purposes
+variable "debug" {
+  type    = bool
+  default = false
+}
+
+# OCI Tags
+variable "tags" {
+  type    = object({ freeformTags = map(string), definedTags = map(string) })
+  default = { "freeformTags" = {}, "definedTags" = {} }
 }

@@ -1,4 +1,4 @@
-# Copyright (c) 2023, Oracle and/or its affiliates.
+# Copyright (c) 2023, 2024, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 ####
@@ -10,50 +10,37 @@ variable "generate_helm_template" {
   default = false
 }
 
-variable "install_helm" {
+variable "install_helm_chart" {
   type    = bool
   default = true
 }
 
-variable "use_local_helm_chart" {
-  type    = bool
-  default = false
+variable "local_helm_chart" {
+  type    = string
+  default = null
 }
 
 ####
 ##  Helm chart
 ####
 
-# Used for local testing
-# Absoulte path to helm chart directory
-variable "helm_abs_path" {
-  type    = string
-  default = "optional"
+# Option to use latest helm chart
+variable "helm_chart_version" {
+  type = string
 }
 
 ####
-##  OKE Cluster Information
+##  Kubernetes Cluster Information
 ####
 
-# OKE Cluster Compartment
-variable "oke_compartment_ocid" {
+# Kubernetes Cluster OCID
+variable "kubernetes_cluster_id" {
   type = string
 }
 
-# OKE Cluster OCID
-variable "oke_cluster_ocid" {
+# Kubernetes Cluster Name
+variable "kubernetes_cluster_name" {
   type = string
-}
-
-# OKE Cluster Name
-variable "oke_cluster_name" {
-  type = string
-}
-
-# OKE Cluster Entity OCID
-variable "oke_cluster_entity_ocid" {
-  type    = string
-  default = "DEFAULT" # Keep default as DEFAULT
 }
 
 # Kubernetes Namespace
@@ -66,13 +53,18 @@ variable "kubernetes_namespace" {
 ####
 
 # OCI Logging Analytics LogGroup OCID
-variable "oci_la_logGroup_id" {
+variable "oci_la_log_group_ocid" {
   type    = string
   default = ""
 }
 
-# Log Analytics Namespace
+# OCI Log Analytics Namespace
 variable "oci_la_namespace" {
+  type = string
+}
+
+# OCI Logging Analytics Kubernetes Cluster Entity OCID
+variable "oci_la_cluster_entity_ocid" {
   type = string
 }
 
@@ -81,7 +73,7 @@ variable "oci_la_namespace" {
 ####
 
 # Fluentd Base Directory
-variable "fluentd_baseDir_path" {
+variable "fluentd_base_dir_path" {
   type    = string
   default = "/var/log"
 }
@@ -90,6 +82,7 @@ variable "fluentd_baseDir_path" {
 ##  Management Agent Configuration
 ####
 
+# Management Agent Key
 variable "mgmt_agent_install_key_content" {
   type = string
 }
@@ -114,4 +107,14 @@ variable "deploy_mushop_config" {
 variable "livelab_service_account" {
   type    = string
   default = ""
+}
+
+####
+##  Others
+####
+
+# Save data resources in local_file for debug purposes
+variable "debug" {
+  type    = bool
+  default = false
 }
