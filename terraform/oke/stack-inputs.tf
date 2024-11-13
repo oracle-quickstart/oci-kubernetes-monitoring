@@ -241,7 +241,7 @@ variable "template_id" {
 
 variable "toggle_use_local_helm_chart" {
   type    = string
-  default = false
+  default = true # revert to false before merging to master
 }
 
 # Ref - https://confluence.oci.oraclecorp.com/display/TERSI/FAQs#FAQs-Q.HowdoItestonPre-ProdenvironmentORHowdoImakeTerraformproviderpointtocustomControlPlane(CP)endpoint
