@@ -154,6 +154,65 @@ oci-onm-logan:
           encoding: <ENCODING-VALUE>
 ```
 
+### How to set timezone override ?
+
+If a log record contains a timezone identifier, the **Logging Analytics service** will use that timezone. However, if there is no timezone information, the service defaults to **UTC**.
+
+To override this default, use the `timezone` parameter in your `values.yaml` file. This parameter can be configured at different levels.
+
+#### timezone override
+
+**Note:** If a log record already has a timezone identifier, this setting may not be applicable.
+
+* Setting `oci-onm-logan.fluentd.timezone` to **PST** applies PST as the default timezone for all logs collected via the Fluentd agent.
+* Setting `oci-onm-logan.fluentd.genericContainerLogs.timezone` to **IST** applies IST as the default timezone specifically for generic container logs.
+
+
+```
+..
+..
+oci-onm-logan:
+  fluentd:
+    timezone: <Set default timezone for all logs collected via fluentd agent>
+    ...
+    ...
+    
+    kubernetesSystem:
+      timezone: <Set default timezone for all Kubernetes System logs>
+      logs:
+        kube-proxy:
+          timezone: <Set default timezone for kube-proxy logs>
+        ...
+        ...
+    
+    linuxSystem:
+      logs:
+        cronlog:
+          timezone: <Set default timezone for cron logs>
+        ...
+        ...
+    
+    eksControlPlane:
+      logs:
+        apiserver:
+          timezone: <Set default timezone for EKS API server logs>
+        ...
+        ...
+
+    
+    genericContainerLogs:
+      timezone: <Set default timezone for generic container logs>
+      ...
+      ...
+    
+    customLogs:
+      custom-log-1:
+        timezone: <Set default timezone for custom logs>
+        ...
+        ...
+```
+
+#### Specific log level
 ### How to use Configfile based AuthZ (User Principal) instead of default AuthZ (Instance Principal) ?
 
 **Note**: This is supported only through the helm chart based deployment.

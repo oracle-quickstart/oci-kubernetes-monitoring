@@ -13,12 +13,17 @@ across their entire environment - using Logs, Metrics, and Object metadata.
 
 It does extensive enrichment of logs, metrics and object information to enable cross correlation across entities from different tiers in OCI Logging Analytics. A collection of dashboards is provided to get users started quickly.
 
+## Solution UI
+
+![Kubernetes Solution - List Clusters View](logan/images/list-clusters.png)
+![Kubernetes Solution - Cluster View](logan/images/cluster-view.png)
+
 ## Dashboards
 
 ![Kubernetes Cluster Summary Dashboard](logan/images/kubernetes-cluster-summary-dashboard.png)
 
 <details>
-  <summary>Expand for more dasshboard screenshots</summary>
+  <summary>Expand for more dashboard screenshots</summary>
 
 ![Kubernetes Nodes Dashboard](logan/images/kubernetes-nodes-dashboard.png)
 
@@ -35,7 +40,7 @@ It does extensive enrichment of logs, metrics and object information to enable c
 
 ### Pre-requisites
 
-* OCI Logging Analytics service must be onboarded with the minumum required policies, in the OCI region where you want to monitor. Refer [Logging Analytics Quick Start](https://docs.oracle.com/en-us/iaas/logging-analytics/doc/quick-start.html) for details.
+* OCI Logging Analytics service must be onboarded with the minimum required policies, in the OCI region where you want to monitor. Refer [Logging Analytics Quick Start](https://docs.oracle.com/en-us/iaas/logging-analytics/doc/quick-start.html) for details.
 * Create OCI Logging Analytics LogGroup(s) if not done already. Refer [Create Log Group](https://docs.oracle.com/en-us/iaas/logging-analytics/doc/create-logging-analytics-resources.html#GUID-D1758CFB-861F-420D-B12F-34D1CC5E3E0E) for details.
 * OCI Dynamic Groups, User Group and Policies.
   <details>
@@ -47,11 +52,11 @@ It does extensive enrichment of logs, metrics and object information to enable c
     ```
   * Create a dynamic group with following sample rule for OKE Instances. 
     ```
-    ALL {instance.compartment.id='OCI Management Agent Compartment OCID'}
+    ALL {instance.compartment.id='OKE Cluster Compartment OCID'}
     ```
     - **Note**: _This dynamic group is not required for non OKE or when you choose to use Config file based AuthZ for monitoring the logs._
   * Create a user and user group using which the logs to be published to OCI Logging Analytics. Refer [Managing Users](https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/managingusers.htm) and [Managing User Groups](https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/managinggroups.htm) for details.
-    - **Note**: _This is not required for OKE when you choose to use the default (Instance princiapal) AuthZ mechanism._
+    - **Note**: _This is not required for OKE when you choose to use the default (Instance principal) AuthZ mechanism._
   * Create a policy with following statements.
     * Policy Statement for providing necessary access to upload the metrics.
       ```
@@ -60,25 +65,43 @@ It does extensive enrichment of logs, metrics and object information to enable c
     * Policy Statement for providing necessary access to upload the logs and objects data.
       ```
       Allow dynamic-group <OKE Instances Dynamic Group> to {LOG_ANALYTICS_LOG_GROUP_UPLOAD_LOGS} in compartment <Compartment Name>
+      Allow dynamic-group <OKE Instances Dynamic Group> to {LOG_ANALYTICS_DISCOVERY_UPLOAD} in tenancy
       ```
       OR
       ```
       Allow group <User Group> to {LOG_ANALYTICS_LOG_GROUP_UPLOAD_LOGS} in compartment <Compartment Name>
+      Allow group <User Group> to {LOG_ANALYTICS_DISCOVERY_UPLOAD} in tenancy
       ```
+      - **Note**: _The policy definition for LOG_ANALYTICS_DISCOVERY_UPLOAD permission only works at tenancy level and thereby it must be created at tenancy level._
   </details>
 
 ### Installation instructions 
 
-#### Multiple methods of installation are avialble, with following differences:
+#### Multiple methods of installation are available, with following differences:
 
-| Deployment Method | Supported Environments | Collection Automation | Dashboards | Customzations |
-| ----| :----:| :----:| :---: | ---|
-| Helm | All* | :heavy_check_mark:  | Manual| Full Control (Recommended)
-| OCI Resource Manager | OKE | :heavy_check_mark:| :heavy_check_mark: | Partial Control
-| Terraform | OKE | :heavy_check_mark: | :heavy_check_mark: | Partial Control
-| kubectl | All* | Manual | Manual | Full Control (Not recommended)
+| Deployment Method | Supported Environments | Solution UI | Dashboards | Customisations | Comments |
+| :----: | :----: | :----: | :----: | :----: | :----: |
+| OCI Logging Analytics Connect Cluster | OKE*** | :heavy_check_mark: | Manual | Partial Control (Recommended) | Customisations are possible through `Helm` once deployed using `Logging Analytics Connect Cluster` flow from Console, which is applicable for both Automatic and Manual Deployment modes. We recommend choosing Manual Deployment mode for OKE clusters with Private API Server endpoint, as support for the automatic deployment for the same would be available soon. |
+| Helm | All* | :heavy_check_mark:**  | Manual| Full Control (Recommended) | |
+| OCI Resource Manager | OKE | :heavy_check_mark:** | :heavy_check_mark: | Partial Control | Customisations are possible through `Helm` once deployed using `OCI Resource Manager`. | 
+| Terraform | OKE | :heavy_check_mark:** | :heavy_check_mark: | Partial Control | Customisations are possible through `Helm` once deployed using `Terraform`. | 
+| kubectl | All* | :heavy_check_mark:** | Manual | Full Control (Not recommended) | |
 
 \* For some environments, modification of the configuration may be required.
+
+\** Solution UI experience including Topology and other visualisations are available for customers deploying the solution using methods other than `OCI Logging Analytics Connect Cluster`, only if some additional steps are followed as mentioned in their individual sections.
+
+\*** Connect cluster support for EKS and clusters other than OKE (partially automated flow) would be available soon. Meanwhile, if you would like to experience the Solution for EKS, use [helm](#helm) or other deployment methods.
+
+#### OCI Logging Analytics Connect Cluster
+
+This newly launched UI based workflow from Logging Analytics Console is the recommended approach to start enabling Kubernetes Monitoring Solution for your OKE clusters. In this approach, you would go through a guided flow to enable the monitoring. It has support for both Automatic and Manual deployment modes to install helm charts onto your OKE clusters. The creation of various OCI resources like Logging Analytics LogGroup, Entity, Management Agent Install Key is automatically taken care in this approach irrespective of the deployment method that you choose. The required IAM Dynamic Group and Policies for the collection of logs, metrics, objects discovery data into OCI, can be optionally enabled when using this flow. 
+
+Customisations are possible through helm once deployed using `Logging Analytics Connect Cluster` flow from Console, which is applicable for both Automatic and Manual Deployment modes. We recommend choosing Manual Deployment mode for OKE clusters with Private API Server endpoint, as support for the automatic deployment for the same would be available soon. 
+
+Refer [this doc](https://docs.oracle.com/en-us/iaas/logging-analytics/doc/kubernetes-solution.html) for complete instructions on using this approach. 
+
+:hourglass_flowing_sand: Connect cluster support for EKS and clusters other than OKE (partially automated flow) would be available soon. Meanwhile, if you would like to experience the Solution for EKS, use [helm](#helm) or other deployment methods.
 
 #### Helm
 
@@ -86,13 +109,41 @@ It does extensive enrichment of logs, metrics and object information to enable c
 
 * Workstation or OCI Cloud Shell with access configured to the target k8s cluster.
 * Helm ([Installation instructions](https://helm.sh/docs/intro/install/)).
+* [OCI CLI](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/cliconcepts.htm)
 
-##### 1 Download helm chart
+##### 1 Create Logging Analytics Entity of type Kubernetes Cluster
+
+* Prepate Entity metadata which represents Kubernetes Cluster's details.
+  - Sample entity_metadata.json
+    ```
+    {"items":[{"name":"cluster","value":"<Cluster_Name>_<Cluster_Creation_Time>","type":"k8s_solution"},{"name":"cluster_date","value":"<Cluster_Creation_Time>","type":"k8s_solution"},{"name":"cluster_name","value":"<Cluster_Name>","type":"k8s_solution"},{"name":"cluster_ocid","value":"<Unique_Identifier_of_Cluster>","type":"k8s_solution"},{"name":"deployment_stack_ocid","value":"NA","type":"k8s_solution"},{"name":"deployment_status","value":"NA","type":"k8s_solution"},{"name":"k8s_version","value":"<Kubernetes_Version>","type":"k8s_solution"},{"name":"metrics_namespace","value":"mgmtagent_kubernetes_metrics","type":"k8s_solution"},{"name":"name","value":"<Cluster_Name>_<Cluster_Creation_Time>","type":"k8s_solution"},{"name":"onm_compartment","value":"<O&M_Compartment_OCID>","type":"k8s_solution"},{"name":"solution_type","value":"<Cluster_Type>","type":"k8s_solution"}]}
+    ```
+    - <Cluster_Name> => Replace with Name of the Cluster.
+    - <Cluster_Creation_Time> => Replace with Cluster's creation time in the format, YYYY-MM-DDTHH:MM:SSZ. It is used to distinguish 2 clusters with same name if exists.
+    - <Unique_Identifier_of_Cluster> => Replace with OCID of OKE cluster OR ARN of EKS cluster, etc.
+    - <Kubernetes_Version> => Replace with version of Kubernetes running on the cluster.
+    - <O&M_Compartment_OCID> => Replace with OCID of the compartment in which the `Logging Analytics LogGroup` exists. Note that for the Logging Analytics Solution UI to work properly, you must keep all your OCI resources like  `Logging Analytics LogGroup`, `Logging Analytics Entity`, `Management Agent Install Key` under the same compartment.
+    - <Cluster_Type> => Replace with `OKE` for OKE cluster, `EKS` for Amazon EKS Cluster, etc.
+
+* Create Logging Analytics Entity of type Kubernetes Cluster using above created metadata.
+  - Sample command to create entity using OCI CLI
+    ```
+    oci log-analytics entity create --name <Cluster_Name>_<Cluster_Creation_Time>  --namespace-name <Tenancy_Namespace> --compartment-id <O&M_Compartment_OCID> --entity-type-name omc_kubernetes_cluster --metadata file://entity_metadata.json
+    ```
+    - <Tenancy_Namespace> => Namespace of the tenancy in which the Logging Analytics is subscribed. You find it by `Go to OCI Logging Analytics Administration, click Service Details, and note the namespace value.`
+
+##### 2 Create Logging Analytics LogGroup
+
+Create OCI Logging Analytics LogGroup(s) if not done already. Refer [Create Log Group](https://docs.oracle.com/en-us/iaas/logging-analytics/doc/create-logging-analytics-resources.html#GUID-D1758CFB-861F-420D-B12F-34D1CC5E3E0E) for details.
+
+##### 3 Download helm chart
 
 * [latest](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/releases/latest/download/helm-chart.tgz)
 * Go to [releases](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/releases) for a specific version.
 
-##### 2 Update values.yaml
+##### 4 Update values.yaml
+
+**Note** that for the Logging Analytics Solution UI to work properly, you must keep all your OCI resources like  `Logging Analytics LogGroup`, `Logging Analytics Entity`, `Management Agent Install Key` under the same compartment.
 
 * Create override_values.yaml, to override the minimum required variables in values.yaml.
   - override_values.yaml
@@ -108,7 +159,9 @@ It does extensive enrichment of logs, metrics and object information to enable c
       ociLANamespace:
       # OCI Logging Analytics Log Group OCID
       ociLALogGroupID:
-  
+      # OCI Logging Analytics Entity (of Kubernetes Cluster Type) OCID.
+      ociLAClusterEntityID:
+     
     oci-onm-mgmt-agent:
       mgmtagent:
         # Provide the base64 encoded content of the Management Agent Install Key file
@@ -116,15 +169,15 @@ It does extensive enrichment of logs, metrics and object information to enable c
     ```
 * **Refer to the oci-onm chart and sub-charts values.yaml for customising or modifying any other configuration.** It is recommended to not modify the values.yaml provided with the charts, instead use override_values.yaml to achieve the same.    
   
-##### 3.a Install helm release
+##### 5.a Install helm release
 
-Use the following `helm install` command to the install the chart. Provide a desired release name, path to override_values.yaml and path to helm chart.
+Use the following `helm install` command to the install the chart. Provide a desired release name, path to override_values.yaml and path to helm chart (oci-onm chart).
 ```
 helm install <release-name> --values <path-to-override-values.yaml> <path-to-helm-chart>
 ```
 Refer [this](https://helm.sh/docs/helm/helm_install/) for further details on `helm install`.
 
-##### 3.b Upgrade helm release
+##### 5.b Upgrade helm release
 
 Use the following `helm upgrade` command if any further changes to override_values.yaml needs to be applied or a new chart version needs to be deployed. 
 ```
@@ -132,7 +185,14 @@ helm upgrade <release-name> --values <path-to-override-values.yaml> <path-to-hel
 ```
 Refer [this](https://helm.sh/docs/helm/helm_upgrade/) for further details on `helm upgrade`.
 
-##### 3.c Import Dashboards
+**Note** : If you have lost the override_values.yaml that was used while installing the helm (OR) you need to get the default one that was used while installing using other approaches like `OCI Logging Analytics Connect Cluster`, `OCI Resource Manager` etc., then run the following command to generate the same. 
+
+```
+helm get values <release-name> > override_values.yaml
+```
+\<release-name> => Replace with release name. The default release name used while installing through `OCI Logging Analytics Connect Cluster` is `oci-kubernetes-monitoring`.
+
+##### 5.c (Optional) Import Dashboards
 
 Dashboards needs to be imported manually. Below is an example for importing Dashboards using OCI CLI.
 
@@ -140,7 +200,7 @@ Dashboards needs to be imported manually. Below is an example for importing Dash
 2. Find the **OCID** of the compartment, where the dashboards need to be imported.
 3. Download the dashboard JSONs from [here](terraform/modules/dashboards/dashboards_json/).
 4. **Replace** all the instances of the keyword - "`${compartment_ocid}`" in the JSONs with the **Compartment OCID** identified in previous step.
-    * Following command is for quick reference that can be used in a linux/cloud-shell envirnment :
+    * Following command is for quick reference that can be used in a linux/cloud-shell environment :
 
         ```
         sed -i "s/\${compartment_ocid}/<Replace-with-Compartment-OCID>/g" *.json
@@ -156,7 +216,7 @@ Dashboards needs to be imported manually. Below is an example for importing Dash
     oci management-dashboard dashboard import --from-json file://service-type-lb.json
     ```
 
-##### 4 Uninstall
+##### Uninstall
 
 Use the following `helm uninstall` command to uninstall the chart. Provide the release name used when creating the chart.
 ```
@@ -191,25 +251,34 @@ Launch OCI Resource Manager Stack in OCI Tenancy and Region of the OKE Cluster, 
 
 * Workstation or OCI Cloud Shell with access configured to the target k8s cluster.
 * Helm ([Installation instructions](https://helm.sh/docs/intro/install/)).
-* Kubectl ([Installation instructions](https://kubernetes.io/docs/tasks/tools/#kubectl)). 
+* Kubectl ([Installation instructions](https://kubernetes.io/docs/tasks/tools/#kubectl)).
+* [OCI CLI](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/cliconcepts.htm)
 
-##### 1 Download helm chart
+##### 1 Create Logging Analytics Entity of type Kubernetes Cluster
 
-Refer [here](#1-download-helm-chart).
+Refer [here](1-create-logging-analytics-entity-of-type-kubernetes-cluster)
 
-##### 2 Update values.yaml
+##### 2 Create Logging Analytics LogGroup
 
-Refer [here](#2-update-valuesyaml).
+Refer [here](2-create-logging-analytics-loggroup)
+
+##### 3 Download helm chart
+
+Refer [here](#3-download-helm-chart).
+
+##### 4 Update values.yaml
+
+Refer [here](#4-update-valuesyaml).
   
-##### 3.a Generate yamls 
+##### 5.a Generate yamls 
 
-Use the following `helm template` command to generate the resource yaml files. Provide path to override_values.yaml, path to helm chart and path to a dir where the yaml files to be generated.
+Use the following `helm template` command to generate the resource yaml files. Provide path to override_values.yaml, path to helm chart (oci-onm chart) and path to a dir where the yaml files to be generated.
 ```
 helm template --values <path-to-override-values.yaml> <path-to-helm-chart> --output-dir <path-to-dir-to-store-the-yamls>
 ```
 Refer [this](https://helm.sh/docs/helm/helm_template/) for further details on `helm template`.
   
-##### 3.b Install
+##### 5.b Install
 
 Use `kubectl` tool to apply the yaml files generated in the previous step in the following order. 
 
@@ -237,7 +306,7 @@ Use `kubectl` tool to apply the yaml files generated in the previous step in the
   kubectl apply -f metric_server.yaml
   ```
 
-##### 3.c Import Dashboards
+##### 5.c (Optional) Import Dashboards
 
 Refer [here](#3c-import-dashboards).
   
@@ -283,7 +352,7 @@ We recommend you to uninstall the release created using 2.x chart and follow the
 
 If you have modified values.yaml provided in helm chart directly, we recommend you to identify all the changes and move them to override_values.yaml and follow the instructions provided in install or upgrade sections under [this](#helm). We recommend you to use override_values.yaml for updating values for any variables or to incorporate any customisations on top of existing values.yaml.
   
-If you are already using a separate values.yaml for your customisations, you still need to compare 2.x vs 3.x variable heirarchy and make the necessary changes accordingly. 
+If you are already using a separate values.yaml for your customisations, you still need to compare 2.x vs 3.x variable hierarchy and make the necessary changes accordingly. 
   
 <details>
   <summary>Examples</summary>

@@ -29,6 +29,7 @@ A Helm chart for collecting Kubernetes Metrics using OCI Management Agent into O
 | mgmtagent.image.url | string | `nil` | Replace this value with actual docker image URL for Management Agent |
 | mgmtagent.installKey | string | `"resources/input.rsp"` | Copy the downloaded Management Agent Install Key file under root helm directory as resources/input.rsp |
 | mgmtagent.installKeyFileContent | string | `nil` | Provide the base64 encoded content of the Management Agent Install Key file (e.g. `cat input.rsp \| base64 -w 0`) |
+| mgmtagent.extraEnv | string | `nil` | Please specify additional environment variables in name:value pairs |
 | namespace | string | `"{{ .Values.global.namespace }}"` | Kubernetes namespace to create and install this helm chart in |
 | oci-onm-common.createNamespace | bool | `true` | If createNamespace is set to true, it tries to create the namespace defined in 'namespace' variable. |
 | oci-onm-common.createServiceAccount | bool | `true` | By default, a cluster role, cluster role binding and serviceaccount will be created for the monitoring pods to be able to (readonly) access various objects within the cluster, to support collection of various telemetry data. You may set this to false and provide your own serviceaccount (in the parent chart(s)) which has the necessary cluster role(s) binded to it. Refer, README for the cluster role definition and other details. |
@@ -42,6 +43,7 @@ A Helm chart for collecting Kubernetes Metrics using OCI Management Agent into O
 | deployment.cleanupEpochTime | integer | `nil` | Please provide the current epoch time in seconds (Eg: Executing the following command in a bash shell will provide the epoch time: "date +%s") to clean up the agent installation directory from previous deployment |
 | deployment.daemonSetDeployment | bool | `false` | Setting the daemonset deployment to true, will deploy the Management Agents as a daemonset in addition to deploying the Management Agent as a statefulset. This is done to to distribute the node metrics collection to agents running on the node |
 | deployment.daemonSet.hostPath | string | `nil` |  The host path to store data, if Agent is deployed as DaemonSet. Management Agent Pod should have read-write access to it |
+| deployment.daemonSet.overrideOwnership | bool | `true` |  Override the ownership and permissions on the hostPath. The hostPath will be owned by the runAsUser and runAsGroup provided under security context and the permission as 750. </br>Note: This requires oraclelinux:8-slim image </br></br>Setting overrideOwnership to false will disable the ownership change. |
 | deployment.resource.request.cpuCore | string | `200m` | Minimum CPU cores(millicore) for each agent instance |
 | deployment.resource.request.memory | string | `500Mi` | Minimum memory(mebibytes) for each agent instance |
 | deployment.resource.request.storage | string | `2Gi` | Minimum storage(gibibyte) for StatefulSet's PVC |

@@ -15,6 +15,3 @@ data:
   {{- if .Values.deployment.cleanupEpochTime }}
   POD_CLEANUP_ID: "{{ .Values.deployment.cleanupEpochTime }}"
   {{- end }}
-
-  # Modifiable properties
-  # Add new or change the below existing properties as required

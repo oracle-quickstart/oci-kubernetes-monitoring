@@ -1,5 +1,28 @@
 # Change Log
 
+## 2024-11-05
+### Added
+- Support of extraEnv for Management Agent
+- Option to override hostPath permission for Management Agent DaemonSet deployment
+### Changed
+- Management Agent docker image has been updated to version 1.6.0
+- Default metrics-server has been updated to version 0.7.2
+
+## 2024-09-19
+### Changed
+- Fluentd collector container image uptake to 1.5.0 having OS update, Ruby 3.3.1 upgrade and other dependency gem updates.
+  - Similar updates to build files (Dockerfile, Gemfile) that helps building custom container image.
+
+## 2024-07-08
+### Added
+- Option to disable JRE default security property for Agent.
+- Quick fix to support ImagePullSecrets for discovery job. 
+
+## 2024-06-18
+### Changed
+- Fluentd collector container image uptake to 1.4.3 having OS and other dependency updates.
+- Dockerfile (supporting custom container image builds) changes to remove patch version dependency on ruby 3.1 and related packages.
+
 ## 2024-05-13
 ### Changed
 - Fluentd collector container image uptake to 1.4.2 having changes to uptake OCI 2.21.0. 
