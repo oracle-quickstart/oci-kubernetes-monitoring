@@ -24,7 +24,7 @@ locals {
     "oci-onm-logan.ociLALogGroupID"      = var.oci_la_log_group_ocid
     "oci-onm-logan.fluentd.baseDir"      = var.fluentd_base_dir_path
     "oci-onm-logan.ociLAClusterEntityID" = var.oci_la_cluster_entity_ocid
-    "oci-onm-logan.ociDomain"            = var.oci_domain
+    "oci-onm-logan.ociDomain"            = var.oci_domain == null ? " " : var.oci_domain # empty space required to render null value
 
     # oci-onm-mgmt-agent
     "oci-onm-mgmt-agent.mgmtagent.installKeyFileContent" = var.mgmt_agent_install_key_content
