@@ -47,12 +47,11 @@ MODULES_SYMLINK="$STACK_BUILD_PATH/modules"
 
 # Usage Instructions
 usage="
-$(basename "$0") [-h][-n name][-l][-d][-s][-b] -- program to build OCI RMS stack zip file using oracle-quickstart/oci-kubernetes-monitoring repo.
+$(basename "$0") [-h][-n name][-d][-s][-b] -- program to build OCI RMS stack zip file using oracle-quickstart/oci-kubernetes-monitoring repo.
 
 where:
     -h  show this help text
     -n  name of output zip file without extention (Optional)
-    -l  flag to generate livelab build; otherwise oke build is generated
     -d  flag to generate dev build; contains local helm chart
     -s  flag to turn-off output; only final build file path is printed to stdout
     -b  flag to generate additional base64 string of stack
@@ -61,14 +60,11 @@ The zip artifacts shall be stored at -
      $RELEASE_PATH"
 
 # Parse inputs
-while getopts "hn:ldsb" option; do
+while getopts "hn:dsb" option; do
     case $option in
         h) # display Help
             echo "$usage"
             exit
-            ;;
-        l) #livelab-build
-            LIVE_LAB_BUILD=true
             ;;
         n)  
             release_name=$OPTARG
@@ -95,11 +91,7 @@ done
 
 # Decide on final zip name
 if test -z "${release_name}"; then
-    if [ -n "$LIVE_LAB_BUILD" ]; then
-        PREFIX="livelab"; 
-    else 
-        PREFIX="oke"; 
-    fi
+    PREFIX="oke";
 
     if [ -n "$INCLUDE_LOCAL_HELM" ]; then
         HELM_MODE="local-helm"
@@ -123,9 +115,6 @@ if [ -n "$INCLUDE_LOCAL_HELM" ]; then
     log "\t-d option passed - local helm-chart files will be part of stack zip"
 else
     log "\t-d option NOT passed - local helm-chart files will NOT be part of stack zip"
-fi
-if [ -n "$LIVE_LAB_BUILD" ]; then
-    log "\t-l option passed - livelab specific zip will be created"
 fi
 
 # Start
@@ -176,12 +165,6 @@ log "Copied terraform modules at - $STACK_BUILD_PATH"
 
 # Switch back to stack dir
 cd "$STACK_BUILD_PATH" || error_and_exit "ERROR: cd $STACK_BUILD_PATH"
-
-# Update livelab switch input to true
-if [ -n "$LIVE_LAB_BUILD" ]; then
-    sed "s/false/true/g" -i livelab_switch.tf  || error_and_exit "ERROR: sed \"s/false/true/g\" -i livelab_switch.tf"
-    log "Enabled livelab switch in $STACK_BUILD_PATH/livelab_switch.tf"
-fi
 
 # Create final stack zip
 zip -r "${RELEASE_ZIP}" . >/dev/null  || error_and_exit "ERROR: zip -r ${RELEASE_ZIP} ."

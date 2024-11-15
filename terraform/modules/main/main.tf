@@ -112,8 +112,6 @@ module "helm_release" {
   generate_helm_template = var.toggle_generate_helm_template
   debug                  = var.debug
 
-  deploy_mushop_config = false #var.livelab_switch
-
   # helm command
   local_helm_chart   = local.local_helm_path
   helm_chart_version = var.helm_chart_version
