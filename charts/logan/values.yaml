@@ -695,7 +695,7 @@ k8sDiscovery:
       # restartPolicy: "Never" or "OnFailure"
       # Failed containers will be removed by job in case restartPolicy is not set as Never
       # Ref - https://github.com/kubernetes/kubernetes/issues/74848
-      restartPolicy: "Never"
+      # restartPolicy: "Never"
       # successfulJobsHistoryLimit: specify how many completed jobs should be kept
       successfulJobsHistoryLimit: 3
       # failedJobsHistoryLimit: specify how many failed jobs should be kept
@@ -720,7 +720,7 @@ k8sDiscovery:
       # Default: All logs are collected and sent to OCI logging analytics for processing
       collect_warning_events_only: false
       # backoffLimit: Specify the number of retries before considering a Job as failed
-      backoffLimit: 2
+      # backoffLimit: 1
    # kubernetes: kubernetes cluster related inputs for kubernetes disocvery job
    kubeClientOptions:
       # kubernetes_url: Kubernetes API server URL.

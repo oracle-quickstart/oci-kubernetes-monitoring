@@ -12,15 +12,19 @@ metadata:
 spec:
   schedule: {{ .Values.k8sDiscovery.objects.cronSchedule | quote }}
   startingDeadlineSeconds: 120
-  concurrencyPolicy: Replace
+  concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: {{ .Values.k8sDiscovery.objects.successfulJobsHistoryLimit }}
   failedJobsHistoryLimit: {{ .Values.k8sDiscovery.objects.failedJobsHistoryLimit }}
   jobTemplate:
     spec:
-      backoffLimit: {{ .Values.k8sDiscovery.objects.backoffLimit }}
+      backoffLimit: 0 #{{ .Values.k8sDiscovery.objects.backoffLimit }} #TODO: should we hardcode to 0 now; current default is 2
+      # Specifies the number of retries before marking this job failed. Defaults to 6
+      activeDeadlineSeconds: 590 # TODO: Max time to finish a job: ~10 minutes; 10 seconds buffer for K8s to kill the job before next one is ready to start
+      # Specifies the duration in seconds relative to the startTime that the job may be continuously active before the system tries to terminate it; value must be positive integer. 
+      # If a Job is suspended (at creation or through an update), this timer will effectively be stopped and reset when the Job is resumed again.
       template:
         spec:
-          restartPolicy: {{ .Values.k8sDiscovery.objects.restartPolicy }}
+          restartPolicy: "Never" #{{ .Values.k8sDiscovery.objects.restartPolicy }} #TODO: Should hardcode to never
           serviceAccountName: {{ $serviceAccount }}
           {{- if .Values.image.imagePullSecrets }}
           imagePullSecrets:
