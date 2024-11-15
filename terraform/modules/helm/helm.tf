@@ -24,17 +24,10 @@ locals {
     "oci-onm-logan.ociLALogGroupID"      = var.oci_la_log_group_ocid
     "oci-onm-logan.fluentd.baseDir"      = var.fluentd_base_dir_path
     "oci-onm-logan.ociLAClusterEntityID" = var.oci_la_cluster_entity_ocid
-    "oci-onm-logan.ociDomain"            = var.oci_domain == null ? " " : var.oci_domain # empty space required to render null value
 
     # oci-onm-mgmt-agent
     "oci-onm-mgmt-agent.mgmtagent.installKeyFileContent" = var.mgmt_agent_install_key_content
     "oci-onm-mgmt-agent.deployMetricServer"              = var.opt_deploy_metric_server
-  }
-
-  mushop_helm_inputs = {
-    # oci-onm-logan
-    "createServiceAccount" = false
-    "serviceAccount"       = var.livelab_service_account
   }
 }
 
@@ -60,7 +53,7 @@ resource "helm_release" "oci-kubernetes-monitoring" {
   }
 
   dynamic "set" {
-    for_each = var.deploy_mushop_config ? local.mushop_helm_inputs : {}
+    for_each = var.oci_domain == null ? {} : { "oci-onm-logan.ociDomain" = var.oci_domain }
     content {
       name  = set.key
       value = set.value
@@ -91,7 +84,7 @@ data "helm_template" "oci-kubernetes-monitoring" {
   }
 
   dynamic "set" {
-    for_each = var.deploy_mushop_config ? local.mushop_helm_inputs : {}
+    for_each = var.oci_domain == null ? {} : { "oci-onm-logan.ociDomain" = var.oci_domain }
     content {
       name  = set.key
       value = set.value
