@@ -1,5 +1,11 @@
 # Change Log
 
+## Next Release Date
+### Added
+- adds custom domain input to support realms with no or pending ruby-sdk release
+- Stack: checks for OKE status before installing helm chart
+- Stack: option to provide a static delay before installing helm chart
+
 ## 2024-11-05
 ### Added
 - Support of extraEnv for Management Agent
