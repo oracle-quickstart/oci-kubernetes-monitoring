@@ -38,6 +38,10 @@ oci-onm-logan:
   ociLALogGroupID:
   # OCI Logging Analytics Entity OCID representing the target cluster
   ociLAClusterEntityID:
+  # This parameter is required only for realms where the OCI Ruby SDK is not supported.
+  # Format: <oci-region>.oci.<oci_domain>
+  # Example: us-ashburn-1.oci.oraclecloud.com
+  ociDomain:
 
 oci-onm-mgmt-agent:
   oci-onm-common:

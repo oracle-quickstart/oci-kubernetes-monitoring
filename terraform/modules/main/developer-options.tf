@@ -6,12 +6,6 @@
 ## Leave it to default for production use
 ####
 
-# Enable/Disable livelab module
-variable "toggle_livelab_module" {
-  type    = bool
-  default = true
-}
-
 # Enable/Disable helm module
 variable "toggle_helm_module" {
   type    = bool
