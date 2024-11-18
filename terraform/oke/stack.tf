@@ -37,9 +37,9 @@ locals {
   cluster_data                = [for c in local.all_clusters_in_compartment : c if c.id == var.oke_cluster_ocid][0]
 
   # Dev Only Input; Keep it - false in production
-  always_query_metadata = true #TODO
+  ruby_sdk_not_available_test = false #TODO
 
-  is_ruby_sdk_supported = local.always_query_metadata ? true : contains(local.ruby_sdk_supported_regions, var.region)
+  is_ruby_sdk_supported = local.ruby_sdk_not_available_test ? false : contains(local.ruby_sdk_supported_regions, var.region)
 
   domain     = local.is_ruby_sdk_supported ? null : data.external.metadata[0].result.realmDomainComponent
   oci_domain = local.is_ruby_sdk_supported ? null : "${var.region}.oci.${local.domain}"
