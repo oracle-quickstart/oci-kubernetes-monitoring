@@ -17,7 +17,7 @@ locals {
     "--set oci-onm-mgmt-agent.mgmtagent.installKeyFileContent=${var.mgmt_agent_install_key_content}"
   ])
 
-  cmd_3_layer_1 = var.oci_domain == null ? local.cmd_3_layer_0 : "${local.cmd_3_layer_0} oci-onm-logan.ociDomain=${var.oci_domain}"
+  cmd_3_layer_1 = var.oci_domain == null ? local.cmd_3_layer_0 : "${local.cmd_3_layer_0} --set oci-onm-logan.ociDomain=${var.oci_domain}"
 
   cmd_3_helm_install = local.cmd_3_layer_1
 }
