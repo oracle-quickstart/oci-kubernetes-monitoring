@@ -1,10 +1,10 @@
 # Change Log
 
-## Next Release Date
+## 2024-11-20
 ### Added
-- adds custom domain input to support realms with no or pending ruby-sdk release
-- Stack: checks for OKE status before installing helm chart
-- Stack: option to provide a static delay before installing helm chart
+- Support for new OCI Regions which are not yet supported through OCI Ruby SDK by default.
+- Status check for OKE lifecycle state to be active before installing helm chart, when installed using RMS.
+- An option to apply a static delay before installing helm chart, when installed using RMS.
 
 ## 2024-11-05
 ### Added
