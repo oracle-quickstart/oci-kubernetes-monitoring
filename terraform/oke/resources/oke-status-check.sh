@@ -47,10 +47,4 @@ do
     fi
 done
 
-# echo -e "Total wait time: $timer"
-
-# Temp static sleep for 15 minutes
-# echo -e "Sleeping for seconds: 900"
-# sleep 900
-
 exit 0
