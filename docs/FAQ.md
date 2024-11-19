@@ -10,7 +10,7 @@ Refer [here](../README.md#installation-instructions).
 
 ### In which namespace would the resources be installed on the Kubernetes cluster ?
 
-`oci-onm` is the default namespace in which all the resources would be installed. However, there is a provision to choose a different namespace as required by overriding the `global.namespace` helm variable. You could also use an existing namespace by setting the namespace using `global.namespace` helm varaible and overriding the `oci-onm-common.createNamespace` to `false`.  
+`oci-onm` is the default namespace in which all the resources would be installed. However, there is a provision to choose a different namespace as required by overriding the `global.namespace` helm variable. You could also use an existing namespace by setting the namespace using `global.namespace` helm variable and overriding the `oci-onm-common.createNamespace` to `false`.  
 
 ### What resources would be created on the Kubernetes cluster ? 
 
@@ -27,7 +27,7 @@ Refer [here](../README.md#installation-instructions).
 | ClusterRoleBinding | All | oci-onm | Binding between ClusterRole and ServiceAccount. | There is a provision to use an existing cluster role/binding by binding it to the custom ServiceAccount. | 
 | Role | Discovery, Kubernetes Objects State | oci-onm | Contains pre-defined set of required rules/permissions at namespace level for the solution to work. |	|
 | RoleBinding |	Discovery, Kubernetes Objects State |	oci-onm |	Binding between Role and ServiceAccount. | |
-| Secret | Logs, Discovery, Kubernetes Objects State | oci-onm-oci-config |	To store OCI config credentials. | Created only when configfile based auth is chosen over the default instancePrincipal based auth. |
+| Secret | Logs, Discovery, Kubernetes Objects State | oci-onm-oci-config |	To store OCI config credentials. | Created only when configFile based auth is chosen over the default instancePrincipal based auth. |
 | Deployment | Logs |	oci-onm	| Responsible for the collection of EKS control plane logs. | Created only when installing on EKS and setting `oci-onm-logan.enableEKSControlPlaneLogs` helm variable set to true. |
 | ConfigMap |	Logs | oci-onm-ekscp-logs |	Contains Fluentd configuration aiding EKS control plane log collection. |	Created only when installing on EKS and setting `oci-onm-logan.enableEKSControlPlaneLogs` helm variable set to true. |
 | Service |	Metrics |	oci-onm-mgmt-agent | Kubernetes Service for Mgmt Agent Pods. | |	
@@ -35,7 +35,7 @@ Refer [here](../README.md#installation-instructions).
 | PersistentVolume | Metrics | N/A | To aid persistent storage requirements of Mgmt Agent Pods. |	|
 | PersistentVolumeClaim |	Metrics |	mgmtagent-pvc-oci-onm-mgmt-agent-0 | To aid persistent storage requirements of Mgmt Agent Pods. |	|
 
-_Additionally, metrics-server and related resources would be installed to support the metrics collection. There is a proviosion to disable the metric service installation if it is already installed onto the cluster by overrding the `mgmt-agent.deployMetricServer` to `false`._
+_Additionally, metrics-server and related resources would be installed to support the metrics collection. There is a provision to disable the metric service installation if it is already installed onto the cluster by overriding the `mgmt-agent.deployMetricServer` to `false`._
 
 _Additionally, the following volumes of type hostPath would be created and mounted to specific pods._ 
 
@@ -309,7 +309,7 @@ Helm is the recommended method of deployment. kubectl based deployment can be do
 
 **Note**: This is supported only through the helm chart based deployment.
 
-By default Fluentd tail plugin that is being used to collect various logs has default encoding set to ASCII-8BIT. To overrided the default encoding, use one of the following approaches.
+By default Fluentd tail plugin that is being used to collect various logs has default encoding set to ASCII-8BIT. To override the default encoding, use one of the following approaches.
 
 #### Global level
 
@@ -332,7 +332,7 @@ oci-onm-logan:
 
 #### Specific log type level
 
-The encoding can be set at invidivual log types like kubernetesSystem, linuxSystem, genericContainerLogs, which applies to all the logs under the specific log type.
+The encoding can be set at individual log types like kubernetesSystem, linuxSystem, genericContainerLogs, which applies to all the logs under the specific log type.
 
 ```
 ..
@@ -465,7 +465,7 @@ oci-onm-logan:
 
 The default AuthZ configuration for connecting to OCI Services from the monitoring pods running in the Kubernetes clusters is `InstancePrincipal` and it is the recommended approach for OKE. If you are trying to monitor Kubernetes clusters other than OKE, you need to use `config` file based AuthZ instead.
 
-First you need to have a OCI local user (preferrably a dedicated user created only for this use-case so that you can restrict the policies accordingly) and OCI user group. Then you need to generate API Signing key and policies. 
+First you need to have a OCI local user (preferably a dedicated user created only for this use-case so that you can restrict the policies accordingly) and OCI user group. Then you need to generate API Signing key and policies. 
 
   * Refer [OCI API Signing Key](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/apisigningkey.htm) for instructions on how to generate API Signing key for a given user.
   * Refer [this](README.md#pre-requisites) for creating required policies.
@@ -588,7 +588,7 @@ oci-onm-logan:
 ```
 
 #### How to collect EKS control plane logs from S3?
-If you run into [CloudWatch service quotas](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/cloudwatch_limits_cwl.html), you can alternatively route the logs to S3 and collect them. The control plane logs in S3 need to be in a specific format for the default log collection to work. Please refer [EKS CP Logs Streaming to S3](./eks-cp-logs.md) for instructions on how to configure streaming of Control Plane logs to S3 and subsequenty collect them in OCI Logging Analytics. Once the streaming of logs is setup, modify your override_values.yaml to add the following EKS specific variables. Various other variables are available in the values.yaml file and can be updated as necessary.
+If you run into [CloudWatch service quotas](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/cloudwatch_limits_cwl.html), you can alternatively route the logs to S3 and collect them. The control plane logs in S3 need to be in a specific format for the default log collection to work. Please refer [EKS CP Logs Streaming to S3](./eks-cp-logs.md) for instructions on how to configure streaming of Control Plane logs to S3 and subsequently collect them in OCI Logging Analytics. Once the streaming of logs is setup, modify your override_values.yaml to add the following EKS specific variables. Various other variables are available in the values.yaml file and can be updated as necessary.
 
 ```      
 ..       
