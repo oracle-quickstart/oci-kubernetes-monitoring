@@ -87,7 +87,7 @@ resource "oci_log_analytics_log_analytics_entity" "oke_entity" {
   freeform_tags = var.tags.freeformTags
 
   lifecycle {
-    ignore_changes = [name, metadata, defined_tags, freeform_tags, ]
+    ignore_changes = [name, metadata, defined_tags, freeform_tags]
     # Not a User Facing Error 
     precondition {
       condition     = !(var.new_entity_name == null && var.oke_entity_ocid == null)

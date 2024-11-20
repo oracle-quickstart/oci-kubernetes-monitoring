@@ -16,5 +16,13 @@ terraform {
       source  = "hashicorp/local"
       version = "~> 2.5.1"
     }
+    time = {
+      source  = "hashicorp/time"
+      version = "0.12.0"
+    }
+    external = {
+      source  = "hashicorp/external"
+      version = "2.3.4"
+    }
   }
 }

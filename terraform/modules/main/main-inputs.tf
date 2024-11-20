@@ -124,6 +124,12 @@ variable "kubernetes_namespace" {
   default = "oci-onm"
 }
 
+# OCI domain
+variable "oci_domain" {
+  type    = string
+  default = null
+}
+
 # Kubernetes Cluster OCID
 variable "kubernetes_cluster_id" {
   type = string

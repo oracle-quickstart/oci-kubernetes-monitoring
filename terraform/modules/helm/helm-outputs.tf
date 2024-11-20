@@ -5,7 +5,7 @@ locals {
   cmd_1_helm_repo_add    = "helm repo add oci-onm https://oracle-quickstart.github.io/oci-kubernetes-monitoring"
   cmd_2_helm_repo_update = "helm repo update"
 
-  cmd_3_helm_install = join(" ", [
+  cmd_3_layer_0 = join(" ", [
     "helm install oci-kubernetes-monitoring oci-onm/oci-onm",
     "--set global.namespace=${var.kubernetes_namespace}",
     "--set global.kubernetesClusterID=${var.kubernetes_cluster_id}",
@@ -16,6 +16,10 @@ locals {
     "--set oci-onm-mgmt-agent.deployMetricServer=${var.opt_deploy_metric_server}",
     "--set oci-onm-mgmt-agent.mgmtagent.installKeyFileContent=${var.mgmt_agent_install_key_content}"
   ])
+
+  cmd_3_layer_1 = var.oci_domain == null ? local.cmd_3_layer_0 : "${local.cmd_3_layer_0} --set oci-onm-logan.ociDomain=${var.oci_domain}"
+
+  cmd_3_helm_install = local.cmd_3_layer_1
 }
 
 # Helm release artifacts for local testing and validation.

@@ -2,6 +2,11 @@
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 locals {
+  # OKE Status Check Script Params
+  oke_status_check = true
+  timeout          = 600
+  interval         = 60
+
   # Resolve Null string --> "" inputs
   oke_cluster_entity_ocid = var.oke_cluster_entity_ocid == "" ? null : var.oke_cluster_entity_ocid
   helm_chart_version      = var.helm_chart_version == "" ? null : var.helm_chart_version
@@ -30,10 +35,41 @@ locals {
 
   all_clusters_in_compartment = data.oci_containerengine_clusters.oke_clusters.clusters
   cluster_data                = [for c in local.all_clusters_in_compartment : c if c.id == var.oke_cluster_ocid][0]
+
+  # Dev Only Input; Keep it - false in production
+  ruby_sdk_not_available_test = false
+
+  is_ruby_sdk_supported = local.ruby_sdk_not_available_test ? false : contains(local.ruby_sdk_supported_regions, var.region)
+
+  domain     = local.is_ruby_sdk_supported ? null : data.external.metadata[0].result.realmDomainComponent
+  oci_domain = local.is_ruby_sdk_supported ? null : "${var.region}.oci.${local.domain}"
 }
 
 data "oci_containerengine_clusters" "oke_clusters" {
   compartment_id = var.oke_compartment_ocid
+}
+
+data "external" "metadata" {
+  count   = local.is_ruby_sdk_supported ? 0 : 1
+  program = ["bash", "${path.module}/resources/metadata.sh"]
+}
+
+resource "null_resource" "wait-for-oke-active-status" {
+  count = local.oke_status_check ? 1 : 0
+  provisioner "local-exec" {
+    command = "bash ${path.module}/resources/oke-status-check.sh"
+    environment = {
+      WAIT_TIME      = local.timeout
+      CHECK_INTERVAL = local.interval
+      OKE_OCID       = var.oke_cluster_ocid
+    }
+    working_dir = path.module
+  }
+}
+
+resource "time_sleep" "wait" {
+  depends_on      = [null_resource.wait-for-oke-active-status]
+  create_duration = "${floor(var.delay_in_seconds)}s"
 }
 
 # Create a new private endpoint or uses an existing one 
@@ -50,6 +86,8 @@ module "rms_private_endpoint" {
 
   tags  = var.tags
   debug = false
+
+  depends_on = [time_sleep.wait]
 }
 
 # Create OCI resources for the helm chart
@@ -90,7 +128,9 @@ module "main" {
   fluentd_base_dir_path        = var.fluentd_base_dir_path
   kubernetes_cluster_id        = var.oke_cluster_ocid
   kubernetes_cluster_name      = local.oke_cluster_name
-  path_to_local_onm_helm_chart = "../../../charts/oci-onm/"
+  path_to_local_onm_helm_chart = "${path.module}/charts/oci-onm/"
+  oci_domain                   = local.oci_domain
+  toggle_use_local_helm_chart  = var.toggle_use_local_helm_chart
 
   # As two sets of OCI providers are required in child module (main), we must pass all providers explicitly
   # Ref - https://developer.hashicorp.com/terraform/language/modules/develop/providers#passing-providers-explicitly
@@ -100,4 +140,6 @@ module "main" {
     local           = local
     helm            = helm
   }
+
+  depends_on = [time_sleep.wait]
 }

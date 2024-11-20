@@ -71,11 +71,17 @@ spec:
             {{- end }}
             {{- end }}
             {{- /* optional discovery job configuration */}}
-            {{- if and .Values.ociLAClusterEntityID $resourceNamePrefix }}
+            {{- if .Values.ociLAClusterEntityID }}
               - --oci_la_cluster_entity_id
               - {{ .Values.ociLAClusterEntityID  }}
+            {{- end }}
+            {{- if $resourceNamePrefix }}
               - --kubernetes_resourcename_prefix
               - {{ $resourceNamePrefix }}
+            {{- end }}
+            {{- if .Values.ociDomain }}
+              - --oci_domain
+              - {{ .Values.ociDomain }}
             {{- end }}
             {{- if .Values.k8sDiscovery.objects.discoveryMode }}
               - --discovery

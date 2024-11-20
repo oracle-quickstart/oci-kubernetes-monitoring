@@ -222,6 +222,12 @@ variable "tags" {
   default = { "freeformTags" = {}, "definedTags" = {} }
 }
 
+# delay - adds wait (seconds) before creating resources
+variable "delay_in_seconds" {
+  type    = number
+  default = 0
+}
+
 # This var is not used in stack
 # Purpose: to display stack version on UI without being able to execute it
 variable "template_id" {
@@ -232,6 +238,11 @@ variable "template_id" {
 #### [Section]
 ##  Development Options
 ####
+
+variable "toggle_use_local_helm_chart" {
+  type    = string
+  default = false
+}
 
 # Ref - https://confluence.oci.oraclecorp.com/display/TERSI/FAQs#FAQs-Q.HowdoItestonPre-ProdenvironmentORHowdoImakeTerraformproviderpointtocustomControlPlane(CP)endpoint
 

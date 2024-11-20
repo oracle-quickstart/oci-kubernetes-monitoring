@@ -290,6 +290,9 @@ data:
           config_file_location      {{ $.Values.oci.path }}/{{ $.Values.oci.file }}
           profile_name              "{{ $.Values.fluentd.ociLoggingAnalyticsOutputPlugin.profile_name }}"
           {{- end }}
+          {{- if $.Values.ociDomain }}
+          oci_domain                "{{ $.Values.ociDomain }}"
+          {{- end }}
           plugin_log_location       "{{ $.Values.fluentd.baseDir }}"
           plugin_log_level          "{{ $.Values.fluentd.ociLoggingAnalyticsOutputPlugin.plugin_log_level }}"
           plugin_log_file_size      "{{ $.Values.fluentd.ociLoggingAnalyticsOutputPlugin.plugin_log_file_size }}"

@@ -29,7 +29,8 @@ variableGroups:
       - ${boat_tenancy_ocid}
       - ${compartment_ocid}
       - ${current_user_ocid}
-      - ${oke_cluster_name} 
+      - ${oke_cluster_name}
+      - ${toggle_use_local_helm_chart}
     visible: false
 
   # These variables are utilized for QA validation and testing. They are not meant to be used in production.
@@ -67,8 +68,10 @@ variableGroups:
       - ${opt_deploy_metric_server}
       - ${helm_chart_version}
       - ${fluentd_base_dir_path}
+      - ${delay_in_seconds}
       - ${tags}
       - ${template_id}
+
 
 variables:
 
@@ -283,6 +286,16 @@ variables:
     default: /var/log
     required: true
     pattern: '^/[\w- /]*$'
+    visible:
+      and:
+        - ${show_advanced_options}
+
+  # Delay in seconds
+  delay_in_seconds:
+    type: number
+    title: Delay in seconds
+    description: |-
+      Adds custom delay in seconds before creating resources
     visible:
       and:
         - ${show_advanced_options}

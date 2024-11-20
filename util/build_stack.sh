@@ -8,6 +8,7 @@
 set -e
 
 SILENT_MODE=false
+GENERATE_BASE64_ARTIFACT=false
 
 function log {
     if [ "$SILENT_MODE" = false ]; then
@@ -46,7 +47,7 @@ MODULES_SYMLINK="$STACK_BUILD_PATH/modules"
 
 # Usage Instructions
 usage="
-$(basename "$0") [-h][-n name][-l][-d][-s] -- program to build OCI RMS stack zip file using oracle-quickstart/oci-kubernetes-monitoring repo.
+$(basename "$0") [-h][-n name][-l][-d][-s][-b] -- program to build OCI RMS stack zip file using oracle-quickstart/oci-kubernetes-monitoring repo.
 
 where:
     -h  show this help text
@@ -54,12 +55,13 @@ where:
     -l  flag to generate livelab build; otherwise oke build is generated
     -d  flag to generate dev build; contains local helm chart
     -s  flag to turn-off output; only final build file path is printed to stdout
+    -b  flag to generate additional base64 string of stack
 
 The zip artifacts shall be stored at -
      $RELEASE_PATH"
 
 # Parse inputs
-while getopts "hn:lds" option; do
+while getopts "hn:ldsb" option; do
     case $option in
         h) # display Help
             echo "$usage"
@@ -76,6 +78,9 @@ while getopts "hn:lds" option; do
             ;;
         s) # Run SILENT_MODE
             SILENT_MODE=true
+            ;;
+        b) # Run SILENT_MODE
+            GENERATE_BASE64_ARTIFACT=true
             ;;
         :) printf "missing argument for -%s\n" "$OPTARG" >&2
             echo "$usage" >&2
@@ -110,6 +115,7 @@ if test -z "${release_name}"; then
 fi
 
 RELEASE_ZIP="${RELEASE_PATH}/${release_name}.zip"
+BASE64_ARTIFACT="${RELEASE_PATH}/${release_name}.base64"
 
 # Disclaimer
 log "\nDisclaimers - \n"
@@ -135,8 +141,9 @@ if test ! -d "$RELEASE_PATH"; then
     log "Created release direcotory - \$PROJECT_HOME/releases"
 fi
 
-# Clean up old zip
-rm "${RELEASE_ZIP}" 2>/dev/null && log "Removed old stack - ${RELEASE_ZIP}"
+# Clean up old artifacts
+rm "${RELEASE_ZIP}" 2>/dev/null && log "Removed old zip artifact - ${RELEASE_ZIP}"
+rm "${BASE64_ARTIFACT}" 2>/dev/null && log "Removed old base64 artifact - ${BASE64_ARTIFACT}"
 
 # Switch to project's root for git archive
 cd "$ROOT_DIR" || error_and_exit "ERROR: cd $ROOT_DIR"
@@ -189,6 +196,11 @@ cd "$RELEASE_PATH" || error_and_exit "ERROR: cd $RELEASE_PATH"
 # Clean up stale dirs and files
 rm "$BUILD_ZIP" 2>/dev/null || error_and_exit "ERROR: rm $BUILD_ZIP"
 rm -rf "$BUILD_DIR" 2>/dev/null || error_and_exit "ERROR: rm -rf $BUILD_DIR"
+
+if [[ $GENERATE_BASE64_ARTIFACT = true ]]; then
+    base64 -i "$RELEASE_ZIP" > "$BASE64_ARTIFACT"
+    log "Base64 Artifact - $BASE64_ARTIFACT" # stdout
+fi
 
 if [[ $SILENT_MODE = true ]]; then
     echo "$RELEASE_ZIP" # stdout
