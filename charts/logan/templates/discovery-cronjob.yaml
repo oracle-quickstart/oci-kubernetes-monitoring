@@ -111,6 +111,25 @@ spec:
             {{- if .Values.k8sDiscovery.objects.collect_warning_events_only }}
               - --collect_warning_events_only
             {{- end }}
+            {{- /* Infra Discovery */}}
+            {{- if  .Values.k8sDiscovery.infra.rms_template_base64_encoded }}
+              - --rms_template_base64_encoded
+              - {{ .Values.k8sDiscovery.infra.rms_template_base64_encoded }}
+            {{- end }}
+            {{- if  .Values.k8sDiscovery.infra.tenancy_ocid }}
+              - --tenancy_ocid
+              - {{ .Values.k8sDiscovery.infra.tenancy_ocid }}
+            {{- end }}
+            {{- if  .Values.k8sDiscovery.infra.enable_service_log }}
+              - --enable_service_log
+            {{- end }}
+            {{- if  .Values.k8sDiscovery.infra.probe_all_compartments }}
+              - --probe_all_compartments
+            {{- end }}
+            {{- if  .Values.k8sDiscovery.infra.stack_tags_data }}
+              - --stack_tags_data
+              - {{ .Values.k8sDiscovery.infra.stack_tags_data }}
+            {{- end }}
             {{- /* optional kubernetes cluster configuration */}}
             {{- if .Values.k8sDiscovery.kubeClientOptions.kubernetes_url }}
               - --kubernetes_url
