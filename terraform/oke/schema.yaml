@@ -68,8 +68,8 @@ variableGroups:
       - ${opt_deploy_metric_server}
       - ${helm_chart_version}
       - ${fluentd_base_dir_path}
-      - ${tags}
       - ${delay_in_seconds}
+      - ${tags}
       - ${template_id}
 
 
@@ -290,6 +290,16 @@ variables:
       and:
         - ${show_advanced_options}
 
+  # Delay in seconds
+  delay_in_seconds:
+    type: number
+    title: Delay in seconds
+    description: |-
+      Adds custom delay in seconds before creating resources
+    visible:
+      and:
+        - ${show_advanced_options}
+
   # OCI tags
   tags:
     description: |-
@@ -300,16 +310,6 @@ variables:
     required: false
     dependsOn:
       compartmentId: ${tenancy_ocid}
-    visible:
-      and:
-        - ${show_advanced_options}
-
-  # Delay in seconds
-  delay_in_seconds:
-    type: number
-    title: Delay in seconds
-    description: |-
-      Adds custom delay in seconds before creating resources
     visible:
       and:
         - ${show_advanced_options}
