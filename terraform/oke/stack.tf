@@ -37,7 +37,7 @@ locals {
   cluster_data                = [for c in local.all_clusters_in_compartment : c if c.id == var.oke_cluster_ocid][0]
 
   # Dev Only Input; Keep it - false in production
-  ruby_sdk_not_available_test = false #TODO
+  ruby_sdk_not_available_test = false
 
   is_ruby_sdk_supported = local.ruby_sdk_not_available_test ? false : contains(local.ruby_sdk_supported_regions, var.region)
 
