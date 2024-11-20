@@ -87,10 +87,10 @@ spec:
               - --oci_domain
               - {{ .Values.ociDomain }}
             {{- end }}
-            {{- if .Values.k8sDiscovery.objects.discoveryMode }}
-              - --discovery
-              - {{ .Values.k8sDiscovery.objects.discoveryMode }}
-            {{- end }}
+            # {{- if .Values.k8sDiscovery.objects.discoveryMode }}
+            #   - --discovery
+            #   - {{ .Values.k8sDiscovery.objects.discoveryMode }}
+            # {{- end }}
             {{- if .Values.k8sDiscovery.objects.log_format }}
               - --log_format
               - {{ .Values.k8sDiscovery.objects.log_format }}
