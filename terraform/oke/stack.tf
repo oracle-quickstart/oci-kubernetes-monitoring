@@ -69,7 +69,7 @@ resource "null_resource" "wait-for-oke-active-status" {
 
 resource "time_sleep" "wait" {
   depends_on      = [null_resource.wait-for-oke-active-status]
-  create_duration = "${var.delay_in_seconds}s"
+  create_duration = "${floor(var.delay_in_seconds)}s"
 }
 
 # Create a new private endpoint or uses an existing one 
