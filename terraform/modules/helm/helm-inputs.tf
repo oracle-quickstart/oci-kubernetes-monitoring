@@ -104,6 +104,16 @@ variable "oci_domain" {
 }
 
 ####
+##  OCI Client Config
+####
+
+# OCI domain
+variable "oci_domain" {
+  type    = string
+  default = null
+}
+
+####
 ##  Others
 ####
 

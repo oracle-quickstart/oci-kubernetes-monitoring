@@ -57,7 +57,7 @@ where:
     -b  flag to generate additional base64 string of stack
 
 The zip artifacts shall be stored at -
-     $RELEASE_PATH"
+    $RELEASE_PATH"
 
 # Parse inputs
 while getopts "hn:dsb" option; do
@@ -144,7 +144,7 @@ log "Created git archive - $BUILD_ZIP"
 # Unzip the temp.zip file
 unzip -d "$BUILD_DIR" "$BUILD_ZIP" >/dev/null || error_and_exit "ERROR: unzip -d $BUILD_DIR $BUILD_ZIP"
 log "Unzipped git archive - $BUILD_DIR"
- 
+
 # Remove the helm-chart symlink
 rm "$HELM_SYMLINK" || error_and_exit "ERROR: rm $HELM_SYMLINK"
 log "Removed helm-chart symlink - $HELM_SYMLINK"
