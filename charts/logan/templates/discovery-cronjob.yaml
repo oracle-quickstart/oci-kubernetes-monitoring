@@ -111,10 +111,14 @@ spec:
             {{- /* Infra Discovery */}}
             {{- if eq .Values.k8sDiscovery.infra.enable_service_log true }}
               - --enable_service_log
-            {{- if and (eq .Values.k8sDiscovery.infra.probe_all_compartments true) .Values.k8sDiscovery.infra.tenancy_ocid }}
-              - --enable_service_log
+            {{- if eq .Values.k8sDiscovery.infra.probe_all_compartments true }}
+            {{- if .Values.k8sDiscovery.infra.tenancy_ocid }}
+              - --probe_all_compartments
               - --tenancy_ocid
-              - {{- .Values.k8sDiscovery.infra.tenancy_ocid }}
+              - {{ .Values.k8sDiscovery.infra.tenancy_ocid }}
+            {{- else -}}
+                {{- required "tenancy ocid must be set when probe_all_compartments is set as true" .Values.k8sDiscovery.infra.tenancy_ocid }}
+            {{- end }}
             {{- end }}
             {{- if .Values.k8sDiscovery.infra.oci_tags }}
               - --oci_tags
@@ -123,13 +127,6 @@ spec:
             {{- if  .Values.k8sDiscovery.infra.rms_template_base64_encoded }}
               - --rms_template_base64_encoded
               - {{ .Values.k8sDiscovery.infra.rms_template_base64_encoded }}
-            {{- end }}
-            {{- if  .Values.k8sDiscovery.infra.tenancy_ocid }}
-              - --tenancy_ocid
-              - {{ .Values.k8sDiscovery.infra.tenancy_ocid }}
-            {{- end }}
-            {{- if  .Values.k8sDiscovery.infra.probe_all_compartments }}
-              - --probe_all_compartments
             {{- end }}
             {{- end }}
             {{- /* optional kubernetes cluster configuration */}}
