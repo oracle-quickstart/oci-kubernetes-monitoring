@@ -63,6 +63,7 @@ module "iam" {
   oci_onm_compartment_ocid = var.oci_onm_compartment_ocid
   oke_compartment_ocid     = var.oke_compartment_ocid
   oke_cluster_ocid         = var.oke_cluster_ocid
+  oci_la_log_group_ocid    = module.logan[0].log_group_ocid
   tags                     = var.tags
 
   providers = {

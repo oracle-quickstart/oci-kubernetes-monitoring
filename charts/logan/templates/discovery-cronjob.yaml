@@ -22,6 +22,7 @@ spec:
       activeDeadlineSeconds: 590 # TODO: Max time to finish a job: ~10 minutes; 10 seconds buffer for K8s to kill the job before next one is ready to start
       # Specifies the duration in seconds relative to the startTime that the job may be continuously active before the system tries to terminate it; value must be positive integer. 
       # If a Job is suspended (at creation or through an update), this timer will effectively be stopped and reset when the Job is resumed again.
+      ttlSecondsAfterFinished: 3600 # TODO: Check if this helps in avoiding deletion of timed out pods
       template:
         spec:
           restartPolicy: "Never" #{{ .Values.k8sDiscovery.objects.restartPolicy }} #TODO: Should hardcode to never
@@ -87,6 +88,9 @@ spec:
               - --oci_domain
               - {{ .Values.ociDomain }}
             {{- end }}
+            # TODO: Is there a use case where customer uses latest helm chart but old image from external values.yaml
+            # We are not backward compatible in that case if we remove following
+            # Or may be we are as --discovery was always an optional flag; confirm
             # {{- if .Values.k8sDiscovery.objects.discoveryMode }}
             #   - --discovery
             #   - {{ .Values.k8sDiscovery.objects.discoveryMode }}
@@ -111,7 +115,11 @@ spec:
             {{- if .Values.k8sDiscovery.objects.collect_warning_events_only }}
               - --collect_warning_events_only
             {{- end }}
-            {{- /* Infra Discovery */}}
+            {{- /* Infra Discovery */ }}
+            {{- if .Values.k8sDiscovery.objects.collect_warning_events_only }}
+              - --oci_tags
+              - {{- .Values.k8sDiscovery.infra.oci_tags }}
+            {{- end }}
             {{- if  .Values.k8sDiscovery.infra.rms_template_base64_encoded }}
               - --rms_template_base64_encoded
               - {{ .Values.k8sDiscovery.infra.rms_template_base64_encoded }}
@@ -125,10 +133,6 @@ spec:
             {{- end }}
             {{- if  .Values.k8sDiscovery.infra.probe_all_compartments }}
               - --probe_all_compartments
-            {{- end }}
-            {{- if  .Values.k8sDiscovery.infra.stack_tags_data }}
-              - --stack_tags_data
-              - {{ .Values.k8sDiscovery.infra.stack_tags_data }}
             {{- end }}
             {{- /* optional kubernetes cluster configuration */}}
             {{- if .Values.k8sDiscovery.kubeClientOptions.kubernetes_url }}

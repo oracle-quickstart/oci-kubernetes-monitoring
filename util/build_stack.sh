@@ -28,7 +28,7 @@ function abspath    {
     pwd
 }
 
-# define directoriews
+# define dir
 UTIL_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 ROOT_DIR="$UTIL_DIR/.."
 ROOT_DIR=$(abspath "$ROOT_DIR") # Convert to absolute path
