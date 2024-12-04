@@ -94,22 +94,6 @@ variable "opt_deploy_metric_server" {
 }
 
 ####
-##  livelab
-####
-
-# Option to deploy mushop specific values.yaml (inputs)
-variable "deploy_mushop_config" {
-  type    = bool
-  default = false
-}
-
-# Service Account to be used when working on livelab cluster
-variable "livelab_service_account" {
-  type    = string
-  default = ""
-}
-
-####
 ##  OCI Client Config
 ####
 

@@ -42,8 +42,6 @@ resource "helm_release" "oci-kubernetes-monitoring" {
   cleanup_on_fail   = true
   atomic            = true
 
-  values = var.deploy_mushop_config ? ["${file("${path.module}/mushop_values.yaml")}"] : null
-
   dynamic "set" {
     for_each = local.helm_inputs
     content {
@@ -72,8 +70,6 @@ data "helm_template" "oci-kubernetes-monitoring" {
   chart             = local.chart
   version           = local.version
   dependency_update = true
-
-  values = var.deploy_mushop_config ? ["${file("${path.module}/mushop_values.yaml")}"] : null
 
   dynamic "set" {
     for_each = local.helm_inputs

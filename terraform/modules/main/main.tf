@@ -63,6 +63,7 @@ module "iam" {
   oci_onm_compartment_ocid = var.oci_onm_compartment_ocid
   oke_compartment_ocid     = var.oke_compartment_ocid
   oke_cluster_ocid         = var.oke_cluster_ocid
+  oci_la_log_group_ocid    = module.logan[0].log_group_ocid
   tags                     = var.tags
 
   providers = {
@@ -111,8 +112,6 @@ module "helm_release" {
   install_helm_chart     = var.install_helm_chart && var.toggle_install_helm
   generate_helm_template = var.toggle_generate_helm_template
   debug                  = var.debug
-
-  deploy_mushop_config = false #var.livelab_switch
 
   # helm command
   local_helm_chart   = local.local_helm_path
