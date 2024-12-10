@@ -166,6 +166,12 @@ variable "log_group_ocid" {
   type = string
 }
 
+# Enable service logs collection for OKE infra components
+variable "enable_service_log" {
+  type    = bool
+  default = false
+}
+
 ####
 ##  Developer Options
 ####

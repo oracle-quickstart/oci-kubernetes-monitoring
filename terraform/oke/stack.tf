@@ -131,6 +131,7 @@ module "main" {
   path_to_local_onm_helm_chart = "${path.module}/charts/oci-onm/"
   oci_domain                   = local.oci_domain
   toggle_use_local_helm_chart  = var.toggle_use_local_helm_chart
+  enable_service_log           = var.enable_service_log
 
   # As two sets of OCI providers are required in child module (main), we must pass all providers explicitly
   # Ref - https://developer.hashicorp.com/terraform/language/modules/develop/providers#passing-providers-explicitly

@@ -12,15 +12,20 @@ metadata:
 spec:
   schedule: {{ .Values.k8sDiscovery.objects.cronSchedule | quote }}
   startingDeadlineSeconds: 120
-  concurrencyPolicy: Replace
+  concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: {{ .Values.k8sDiscovery.objects.successfulJobsHistoryLimit }}
   failedJobsHistoryLimit: {{ .Values.k8sDiscovery.objects.failedJobsHistoryLimit }}
   jobTemplate:
     spec:
-      backoffLimit: {{ .Values.k8sDiscovery.objects.backoffLimit }}
+      backoffLimit: 0 #{{ .Values.k8sDiscovery.objects.backoffLimit }} #TODO: should we hardcode to 0 now; current default is 2
+      # Specifies the number of retries before marking this job failed. Defaults to 6
+      activeDeadlineSeconds: 590 # TODO: Max time to finish a job: ~10 minutes; 10 seconds buffer for K8s to kill the job before next one is ready to start
+      # Specifies the duration in seconds relative to the startTime that the job may be continuously active before the system tries to terminate it; value must be positive integer. 
+      # If a Job is suspended (at creation or through an update), this timer will effectively be stopped and reset when the Job is resumed again.
+      ttlSecondsAfterFinished: 3600 # TODO: Check if this helps in avoiding deletion of timed out pods
       template:
         spec:
-          restartPolicy: {{ .Values.k8sDiscovery.objects.restartPolicy }}
+          restartPolicy: "Never" #{{ .Values.k8sDiscovery.objects.restartPolicy }} #TODO: Should hardcode to never
           serviceAccountName: {{ $serviceAccount }}
           {{- if .Values.image.imagePullSecrets }}
           imagePullSecrets:
@@ -83,10 +88,6 @@ spec:
               - --oci_domain
               - {{ .Values.ociDomain }}
             {{- end }}
-            {{- if .Values.k8sDiscovery.objects.discoveryMode }}
-              - --discovery
-              - {{ .Values.k8sDiscovery.objects.discoveryMode }}
-            {{- end }}
             {{- if .Values.k8sDiscovery.objects.log_format }}
               - --log_format
               - {{ .Values.k8sDiscovery.objects.log_format }}
@@ -107,6 +108,31 @@ spec:
             {{- if .Values.k8sDiscovery.objects.collect_warning_events_only }}
               - --collect_warning_events_only
             {{- end }}
+            {{- /* Infra Discovery */}}
+          {{- if eq .Values.k8sDiscovery.infra.enable_service_log true }}
+              - --enable_service_log
+            {{- if eq .Values.k8sDiscovery.infra.probe_all_compartments true }}
+              {{- if .Values.k8sDiscovery.infra.tenancy_ocid }}
+              - --probe_all_compartments
+              - --tenancy_ocid
+              - {{ .Values.k8sDiscovery.infra.tenancy_ocid | quote }}
+              {{- else -}}
+                {{- required "tenancy ocid must be set when probe_all_compartments is set as true" .Values.k8sDiscovery.infra.tenancy_ocid }}
+              {{- end }}
+            {{- end }}
+            {{- if .Values.k8sDiscovery.infra.oci_tags_base64 }}
+              - --oci_tags_base64
+              - {{ .Values.k8sDiscovery.infra.oci_tags_base64 }}
+            {{- end }}
+            {{- if  .Values.k8sDiscovery.infra.rms_template_base64_encoded }}
+              - --rms_template_base64_encoded
+              - {{ .Values.k8sDiscovery.infra.rms_template_base64_encoded }}
+            {{- end }}
+            {{- if  .Values.k8sDiscovery.infra.stack_operation_timeout }}
+              - --stack_operation_timeout
+              - {{ .Values.k8sDiscovery.infra.stack_operation_timeout | quote }}
+            {{- end }}
+          {{- end }}
             {{- /* optional kubernetes cluster configuration */}}
             {{- if .Values.k8sDiscovery.kubeClientOptions.kubernetes_url }}
               - --kubernetes_url

@@ -13,6 +13,10 @@ locals {
 
   kubernetes_cluster_name = var.kubernetes_cluster_name
 
+
+  # freeformTags_as_String = "join(",", [for key, value in var.tags.freeformTags : "\"${key}\" = \"${value}\""])"
+  # tags_as_string = "{${join(",", [for key, value in var.tags : "\"${key}\" = \"${value}\""])}}"
+
   helm_inputs = {
     # global
     "global.namespace"             = var.kubernetes_namespace
@@ -25,11 +29,21 @@ locals {
     "oci-onm-logan.fluentd.baseDir"      = var.fluentd_base_dir_path
     "oci-onm-logan.ociLAClusterEntityID" = var.oci_la_cluster_entity_ocid
 
+    # discovery
+    "oci-onm-logan.k8sDiscovery.infra.enable_service_log" = var.enable_service_log
+    "oci-onm-logan.k8sDiscovery.infra.oci_tags_base64"    = base64encode(jsonencode(var.tags))
+
     # oci-onm-mgmt-agent
     "oci-onm-mgmt-agent.mgmtagent.installKeyFileContent" = var.mgmt_agent_install_key_content
     "oci-onm-mgmt-agent.deployMetricServer"              = var.opt_deploy_metric_server
   }
 }
+
+# format tags; as required in helm input
+# module "format_tags" {
+#   source = "./format_tags"
+#   tags   = var.tags
+# }
 
 # Create helm release
 resource "helm_release" "oci-kubernetes-monitoring" {
@@ -41,8 +55,6 @@ resource "helm_release" "oci-kubernetes-monitoring" {
   dependency_update = true
   cleanup_on_fail   = true
   atomic            = true
-
-  values = var.deploy_mushop_config ? ["${file("${path.module}/mushop_values.yaml")}"] : null
 
   dynamic "set" {
     for_each = local.helm_inputs
@@ -60,6 +72,14 @@ resource "helm_release" "oci-kubernetes-monitoring" {
     }
   }
 
+  # TODO: Review
+  # Run Helm Apply every time terraform apply job is executed
+  # Check if this will pick up the latest helm chart as well
+  set {
+    name  = "HelmApplyOnEveryTerraformApply"
+    value = timestamp()
+  }
+
   count = var.install_helm_chart ? 1 : 0
 }
 
@@ -72,8 +92,6 @@ data "helm_template" "oci-kubernetes-monitoring" {
   chart             = local.chart
   version           = local.version
   dependency_update = true
-
-  values = var.deploy_mushop_config ? ["${file("${path.module}/mushop_values.yaml")}"] : null
 
   dynamic "set" {
     for_each = local.helm_inputs
