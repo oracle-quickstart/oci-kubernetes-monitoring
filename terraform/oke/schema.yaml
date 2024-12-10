@@ -65,6 +65,7 @@ variableGroups:
     variables:
       - ${show_advanced_options}
       - ${stack_deployment_option}
+      - ${enable_service_log}
       - ${opt_deploy_metric_server}
       - ${helm_chart_version}
       - ${fluentd_base_dir_path}
@@ -244,6 +245,16 @@ variables:
     - "Only OCI Resources"
     required: true
     default: "Full"
+    visible:
+      and:
+        - ${show_advanced_options}
+
+  # Option to enable/disable service logs collection for OKE infra components
+  enable_service_log:
+    type: boolean
+    title: Enable service logs collection
+    description: Clear this check box if do not want to collect logs from OKE infra components
+    default: true
     visible:
       and:
         - ${show_advanced_options}

@@ -94,22 +94,6 @@ variable "opt_deploy_metric_server" {
 }
 
 ####
-##  livelab
-####
-
-# Option to deploy mushop specific values.yaml (inputs)
-variable "deploy_mushop_config" {
-  type    = bool
-  default = false
-}
-
-# Service Account to be used when working on livelab cluster
-variable "livelab_service_account" {
-  type    = string
-  default = ""
-}
-
-####
 ##  OCI Client Config
 ####
 
@@ -117,6 +101,22 @@ variable "livelab_service_account" {
 variable "oci_domain" {
   type    = string
   default = null
+}
+
+####
+##  Discovery Configuration
+####
+
+# Enable service logs collection for OKE infra components
+variable "enable_service_log" {
+  type    = bool
+  default = false
+}
+
+# OCI Tags
+variable "tags" {
+  type    = object({ freeformTags = map(string), definedTags = map(string) })
+  default = { "freeformTags" = {}, "definedTags" = {} }
 }
 
 ####
