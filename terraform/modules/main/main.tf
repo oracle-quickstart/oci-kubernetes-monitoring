@@ -59,11 +59,13 @@ module "iam" {
   source = "../iam"
   count  = local.module_controls_enable_iam_module ? 1 : 0
 
-  root_compartment_ocid    = var.tenancy_ocid
-  oci_onm_compartment_ocid = var.oci_onm_compartment_ocid
-  oke_compartment_ocid     = var.oke_compartment_ocid
-  oke_cluster_ocid         = var.oke_cluster_ocid
-  tags                     = var.tags
+  root_compartment_ocid             = var.tenancy_ocid
+  oci_onm_compartment_ocid          = var.oci_onm_compartment_ocid
+  oke_compartment_ocid              = var.oke_compartment_ocid
+  oke_cluster_ocid                  = var.oke_cluster_ocid
+  create_service_discovery_policies = var.enable_service_log
+  oci_la_log_group_ocid             = module.logan[0].log_group_ocid
+  tags                              = var.tags
 
   providers = {
     oci = oci.home_region
@@ -112,8 +114,6 @@ module "helm_release" {
   generate_helm_template = var.toggle_generate_helm_template
   debug                  = var.debug
 
-  deploy_mushop_config = false #var.livelab_switch
-
   # helm command
   local_helm_chart   = local.local_helm_path
   helm_chart_version = var.helm_chart_version
@@ -129,6 +129,9 @@ module "helm_release" {
   opt_deploy_metric_server       = var.opt_deploy_metric_server
   fluentd_base_dir_path          = var.fluentd_base_dir_path
   oci_domain                     = var.oci_domain
+  enable_service_log             = var.enable_service_log
+  LOGAN_ENDPOINT                 = var.LOGAN_ENDPOINT
+  tags                           = var.tags
 }
 
 # Import Kubernetes Dashboards

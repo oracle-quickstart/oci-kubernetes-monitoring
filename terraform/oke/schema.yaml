@@ -33,10 +33,15 @@ variableGroups:
       - ${toggle_use_local_helm_chart}
     visible: false
 
+  - title: Dev configuration [ DO NOT USE IN PRODUCTION ]
+    variables:
+      - ${CLIENT_HOST_OVERRIDES}
+      - ${LOGAN_ENDPOINT}
+    visible: false
+
   # These variables are utilized for QA validation and testing. They are not meant to be used in production.
   - title: "hidden dev inputs"
     variables:
-      - ${CLIENT_HOST_OVERRIDES}
       - ${debug}
     visible: false    
 
@@ -65,6 +70,7 @@ variableGroups:
     variables:
       - ${show_advanced_options}
       - ${stack_deployment_option}
+      - ${enable_service_log}
       - ${opt_deploy_metric_server}
       - ${helm_chart_version}
       - ${fluentd_base_dir_path}
@@ -74,6 +80,22 @@ variableGroups:
 
 
 variables:
+
+  #### [Section]
+  ##  Dev configuration [ DO NOT USE IN PRODUCTION ]
+  ####
+
+  # Override terraform provider endpoint
+  CLIENT_HOST_OVERRIDES:
+      type: string
+      title: CLIENT_HOST_OVERRIDES [ Do not use in Production ]
+      # default: add default values here for env override
+
+  # Override logan endpoint for discovery and fluentd collection
+  LOGAN_ENDPOINT:
+      type: string
+      title: Logging Analytics Endpoint. [ Do not use in Production ]
+      # default: add default values here for env override
 
   #### [Section]
   ##  Select an OKE cluster deployed in this region to start monitoring
@@ -244,6 +266,16 @@ variables:
     - "Only OCI Resources"
     required: true
     default: "Full"
+    visible:
+      and:
+        - ${show_advanced_options}
+
+  # Option to enable/disable service logs collection for OKE infra components
+  enable_service_log:
+    type: boolean
+    title: Enable service logs collection
+    description: Clear this check box if do not want to collect logs from OKE infra components
+    default: false
     visible:
       and:
         - ${show_advanced_options}
