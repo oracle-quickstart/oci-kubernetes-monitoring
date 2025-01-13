@@ -13,7 +13,10 @@ locals {
 
   kubernetes_cluster_name = var.kubernetes_cluster_name
 
-  helm_inputs = {
+  # freeformTags_as_String = "join(",", [for key, value in var.tags.freeformTags : "\"${key}\" = \"${value}\""])"
+  # tags_as_string = "{${join(",", [for key, value in var.tags : "\"${key}\" = \"${value}\""])}}"
+
+  helm_inputs_base = {
     # global
     "global.namespace"             = var.kubernetes_namespace
     "global.kubernetesClusterID"   = var.kubernetes_cluster_id
@@ -25,10 +28,21 @@ locals {
     "oci-onm-logan.fluentd.baseDir"      = var.fluentd_base_dir_path
     "oci-onm-logan.ociLAClusterEntityID" = var.oci_la_cluster_entity_ocid
 
+    # discovery
+    "oci-onm-logan.k8sDiscovery.infra.enable_service_log" = var.enable_service_log
+    "oci-onm-logan.k8sDiscovery.infra.oci_tags_base64"    = base64encode(jsonencode(var.tags))
+    # Note - we do not support probe all compartment input via stack
+
     # oci-onm-mgmt-agent
     "oci-onm-mgmt-agent.mgmtagent.installKeyFileContent" = var.mgmt_agent_install_key_content
     "oci-onm-mgmt-agent.deployMetricServer"              = var.opt_deploy_metric_server
   }
+
+  helm_input_domain     = var.oci_domain == null ? {} : { "oci-onm-logan.ociDomain" = var.oci_domain }
+  discovery_la_endpoint = var.LOGAN_ENDPOINT == null ? {} : { "oci-onm-logan.ociLAEndpoint" = "${var.LOGAN_ENDPOINT}" }
+  fluentd_la_endpoint   = var.LOGAN_ENDPOINT == null ? {} : { "oci-onm-logan.fluentd.ociLoggingAnalyticsOutputPlugin.endpoint" = "${var.LOGAN_ENDPOINT}" }
+
+  helm_inputs = merge(local.helm_inputs_base, local.helm_input_domain, local.discovery_la_endpoint, local.fluentd_la_endpoint)
 }
 
 # Create helm release
@@ -42,8 +56,6 @@ resource "helm_release" "oci-kubernetes-monitoring" {
   cleanup_on_fail   = true
   atomic            = true
 
-  values = var.deploy_mushop_config ? ["${file("${path.module}/mushop_values.yaml")}"] : null
-
   dynamic "set" {
     for_each = local.helm_inputs
     content {
@@ -52,13 +64,13 @@ resource "helm_release" "oci-kubernetes-monitoring" {
     }
   }
 
-  dynamic "set" {
-    for_each = var.oci_domain == null ? {} : { "oci-onm-logan.ociDomain" = var.oci_domain }
-    content {
-      name  = set.key
-      value = set.value
-    }
-  }
+  # To be released in future; if required
+  # Run Helm Apply every time terraform apply job is executed
+  # Check if this will pick up the latest helm chart as well
+  # set {
+  #   name  = "HelmApplyOnEveryTerraformApply"
+  #   value = timestamp()
+  # }
 
   count = var.install_helm_chart ? 1 : 0
 }
@@ -73,18 +85,8 @@ data "helm_template" "oci-kubernetes-monitoring" {
   version           = local.version
   dependency_update = true
 
-  values = var.deploy_mushop_config ? ["${file("${path.module}/mushop_values.yaml")}"] : null
-
   dynamic "set" {
     for_each = local.helm_inputs
-    content {
-      name  = set.key
-      value = set.value
-    }
-  }
-
-  dynamic "set" {
-    for_each = var.oci_domain == null ? {} : { "oci-onm-logan.ociDomain" = var.oci_domain }
     content {
       name  = set.key
       value = set.value

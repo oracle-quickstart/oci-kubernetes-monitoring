@@ -647,45 +647,6 @@ fluentd:
       # In case of container log (/var/log/containers/*.log), exclude the corresponding log path in "genericContainerLogs" section.
    customFluentdConf: |
 
-   # -- Configuration for collecting Kubernetes Object information.
-   # Supported objects are Node, Pod, Namespace, Event, DaemonSet, ReplicaSet, Deployment, StatefulSet, Job, CronJob
-   kubernetesObjects:
-      #metadata:
-         #"Client Host Region": "America"
-         #"Environment": "Production"
-         #"Third Key": "Third Value"
-      #ociLALogGroupID:
-      objectsList:
-         nodes:
-            #api_version: v1
-            api_endpoint: ""
-         pods:
-            api_endpoint: ""
-         namespaces:
-            api_endpoint: ""
-         services:
-            api_endpoint: ""
-         events:
-            api_endpoint: ""
-         persistent_volumes:
-            api_endpoint: ""
-         persistent_volume_claims:
-            api_endpoint: ""
-         daemon_sets:
-            api_endpoint: apis/apps
-         replica_sets:
-            api_endpoint: apis/apps
-         deployments:
-            api_endpoint: apis/apps
-         stateful_sets:
-            api_endpoint: apis/apps
-         jobs:
-            api_endpoint: apis/batch
-         cron_jobs:
-            api_endpoint: apis/batch
-         endpoint_slices:
-            api_endpoint: apis/discovery.k8s.io
-
 # k8sDiscovery: defines properties that affect kubernetes objects discovery
 k8sDiscovery:
    # objects: defines inputs for K8s objects discovery
@@ -720,8 +681,25 @@ k8sDiscovery:
       # Default: All logs are collected and sent to OCI logging analytics for processing
       collect_warning_events_only: false
       # backoffLimit: Specify the number of retries before considering a Job as failed
-      backoffLimit: 2
-   # kubernetes: kubernetes cluster related inputs for kubernetes disocvery job
+      backoffLimit: 0
+   infra:
+      # Enable Logs collection for OKE's OCI infra components - LB, OKE Cluster control plane, Subnet logs etc
+      # Not supported for Non OKE clusters
+      enable_service_log: false
+      # Discovers OKE Node Pools in all compartments of tenant
+      # when false, Node Pools present in OKE's compartment are discovered
+      probe_all_compartments: false
+      # tenancy ocid - must be provided if probe_all_compartments is set as true
+      tenancy_ocid:
+      # Base64 encoded string of OCI freeform and defined tags
+      # expected/example format: {"definedTags":{"Oracle-Recommended-Tags.ResourceOwner":"testOwner","Oracle-Recommended-Tags.ResourceUsage":"testUsage","test.key":"testOwner"},"freeformTags":{"project":"logan","test_number":"1"}}
+      oci_tags_base64:
+      # This is a helper stack which is used to enable service logs collection by creating a Service connector and Enable Logging for discovered OCI service components
+      # [Users are usually not expected to alter this]
+      rms_template_base64_encoded: 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
+      # Maximum amount of time (in seconds) the job should wait while checking the status of stack APPLY operation. Default: 300
+      stack_operation_timeout: 300
+   # kubernetes: kubernetes cluster related inputs for kubernetes discovery job
    kubeClientOptions:
       # kubernetes_url: Kubernetes API server URL.
       kubernetes_url:
