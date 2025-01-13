@@ -15,3 +15,4 @@ data:
   {{- if .Values.deployment.cleanupEpochTime }}
   POD_CLEANUP_ID: "{{ .Values.deployment.cleanupEpochTime }}"
   {{- end }}
+  ENABLE_AUTOMATIC_PROMETHEUSEMITTERS: "{{ .Values.kubernetesCluster.enableAutomaticPrometheusEmitterCollection }}"

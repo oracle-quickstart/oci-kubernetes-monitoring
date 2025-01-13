@@ -131,11 +131,16 @@
                           "type": "null"
                         }
                     ]
+                },
+                "enableAutomaticPrometheusEmitterCollection":
+                {
+                    "type": "boolean"
                 }
             },
             "required":
             [
-                "namespace"
+                "namespace",
+                "enableAutomaticPrometheusEmitterCollection"
             ]
         },
         "deployment":

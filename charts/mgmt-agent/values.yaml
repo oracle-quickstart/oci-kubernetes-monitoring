@@ -67,6 +67,10 @@ kubernetesCluster:
    overrideAllowMetricsKubelet:
    # -- Provide the specific list of comma separated metric names for Node (/api/v1/nodes/<node_name>/proxy/metrics/resource, /api/v1/nodes/<node_name>/proxy/metrics/cadvisor) metrics to be collected.
    overrideAllowMetricsNode:
+   # Setting this to true will enable automatic PrometheusEmitter metrics collection from eligible pods.
+   # Add pod specific configuration to ./resources/prometheus-scrape-config.json
+   # Check ./resources/prometheus-scrape-config-json-readme.md for more information.
+   enableAutomaticPrometheusEmitterCollection: false
 
 deployment:
    security:
