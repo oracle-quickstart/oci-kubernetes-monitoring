@@ -12,12 +12,13 @@ metadata:
 spec:
   schedule: {{ .Values.k8sDiscovery.objects.cronSchedule | quote }}
   startingDeadlineSeconds: 120
-  concurrencyPolicy: Replace
+  concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: {{ .Values.k8sDiscovery.objects.successfulJobsHistoryLimit }}
   failedJobsHistoryLimit: {{ .Values.k8sDiscovery.objects.failedJobsHistoryLimit }}
   jobTemplate:
     spec:
       backoffLimit: {{ .Values.k8sDiscovery.objects.backoffLimit }}
+      activeDeadlineSeconds: 600
       template:
         spec:
           restartPolicy: {{ .Values.k8sDiscovery.objects.restartPolicy }}
@@ -83,10 +84,6 @@ spec:
               - --oci_domain
               - {{ .Values.ociDomain }}
             {{- end }}
-            {{- if .Values.k8sDiscovery.objects.discoveryMode }}
-              - --discovery
-              - {{ .Values.k8sDiscovery.objects.discoveryMode }}
-            {{- end }}
             {{- if .Values.k8sDiscovery.objects.log_format }}
               - --log_format
               - {{ .Values.k8sDiscovery.objects.log_format }}
@@ -107,6 +104,33 @@ spec:
             {{- if .Values.k8sDiscovery.objects.collect_warning_events_only }}
               - --collect_warning_events_only
             {{- end }}
+            {{- /* Infra Discovery */}}
+          {{- if eq .Values.k8sDiscovery.infra.enable_service_log true }}
+              - --enable_service_log
+            {{- if eq .Values.k8sDiscovery.infra.probe_all_compartments true }}
+              {{- if .Values.k8sDiscovery.infra.tenancy_ocid }}
+              - --probe_all_compartments
+              - --tenancy_ocid
+              - {{ .Values.k8sDiscovery.infra.tenancy_ocid | quote }}
+              {{- else -}}
+                {{- required "tenancy ocid must be set when probe_all_compartments is set as true" .Values.k8sDiscovery.infra.tenancy_ocid }}
+              {{- end }}
+            {{- end }}
+            {{- if .Values.k8sDiscovery.infra.oci_tags_base64 }}
+              - --oci_tags_base64
+              - {{ .Values.k8sDiscovery.infra.oci_tags_base64 }}
+            {{- end }}
+            {{- if  .Values.k8sDiscovery.infra.rms_template_base64_encoded }}
+              - --rms_template_base64_encoded
+              - {{ .Values.k8sDiscovery.infra.rms_template_base64_encoded }}
+            {{- else }}
+                {{- required "rms_template_base64_encoded is required" .Values.k8sDiscovery.infra.rms_template_base64_encoded }}
+            {{- end }}
+            {{- if  .Values.k8sDiscovery.infra.stack_operation_timeout }}
+              - --stack_operation_timeout
+              - {{ .Values.k8sDiscovery.infra.stack_operation_timeout | quote }}
+            {{- end }}
+          {{- end }}
             {{- /* optional kubernetes cluster configuration */}}
             {{- if .Values.k8sDiscovery.kubeClientOptions.kubernetes_url }}
               - --kubernetes_url

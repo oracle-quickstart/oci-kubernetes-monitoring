@@ -166,9 +166,21 @@ variable "log_group_ocid" {
   type = string
 }
 
+# Enable service logs collection for OKE infra components
+variable "enable_service_log" {
+  type    = bool
+  default = false
+}
+
 ####
 ##  Developer Options
 ####
+
+variable "LOGAN_ENDPOINT" {
+  description = "Logging Analytics Endpoint."
+  type        = string
+  default     = null
+}
 
 # Save data resources in local_file for debug purposes
 variable "debug" {

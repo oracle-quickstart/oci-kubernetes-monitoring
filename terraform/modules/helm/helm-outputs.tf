@@ -14,7 +14,9 @@ locals {
     "--set oci-onm-logan.ociLANamespace=${var.oci_la_namespace}",
     "--set oci-onm-logan.ociLAClusterEntityID=${var.oci_la_cluster_entity_ocid}",
     "--set oci-onm-mgmt-agent.deployMetricServer=${var.opt_deploy_metric_server}",
-    "--set oci-onm-mgmt-agent.mgmtagent.installKeyFileContent=${var.mgmt_agent_install_key_content}"
+    "--set oci-onm-mgmt-agent.mgmtagent.installKeyFileContent=${var.mgmt_agent_install_key_content}",
+    "--set oci-onm-logan.k8sDiscovery.infra.enable_service_log=${var.enable_service_log}",
+    "--set oci-onm-logan.k8sDiscovery.infra.oci_tags_base64=${base64encode(jsonencode(var.tags))}"
   ])
 
   cmd_3_layer_1 = var.oci_domain == null ? local.cmd_3_layer_0 : "${local.cmd_3_layer_0} --set oci-onm-logan.ociDomain=${var.oci_domain}"
