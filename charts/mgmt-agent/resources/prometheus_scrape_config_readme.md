@@ -49,22 +49,22 @@ Json takes highest precedence and overrides other types (annotation and out of t
 ```
 
 ### 2.3.2 First class members
-| member | required | Description |
+| member | required | description |
 |--------|----------|-------------|
 | podMatcher | yes | Elements used to match pods |
 | config | no | Collection configuration for PrometheusEmitter data source of the matching pod. This is optional, if disable is set to `true` |
 | disable | no | This is optional and defaults to `false`. If set to `true`, then podMatcher is used to restrict matching pods from collecting PrometheusEmitter metrics |
 
 ### 2.3.3 podMatcher
-| member | required | type | Description |
+| member | required | type | description |
 |--------|----------|----- | ------------|
 | namespace | yes | `string` | Pod's namespace |
 | podNameRegex | yes | `string`  | Complete regular expression to match pod name |
 
 ### 2.3.4 config
-| member | required | type | default | Description |
+| member | required | type | default | description |
 |--------|----------|----- | ------- | ----------- |
-| path | no | `string` | `/metrics` | Path on which metrics are being emitted, e.g. /metrics  |
+| path | no | `string` | /metrics | Path on which metrics are being emitted, e.g. /metrics  |
 | port | yes | `int` | NA | Port on which metrics are being emitted |
 | namespace | no | `string` | pod_prometheus_emitters | OCI namespace to which metrics are pushed |
 | allowMetrics | no | `string` | * | Comma separated metrics allowed to be collected. Defaults to *, which means all |
