@@ -1,14 +1,18 @@
 # 1. Introduction
 Automatic PrometheusEmitter collection is a feature that allows the Agent to automatically find and identify metrics emitting pods to monitor, eliminating the need to manually create the PrometheusEmitter configuration to collect metrics.
 
-# 2. Identification of configuration
+# 2. Identification of metric collection configuration
 
 ## 2.1 Out of the box
+Management Agent has capabilities to detect metrics emitting pods, without making any custom configuration changes.
+
+### 2.1.1 Pod' ports specification
 Management Agent will look for pod port spec with port name as `metrics` and port protocol as `TCP`.</br>
 Once found, the configuration is build using default path as `/metrics`. The rest of the configuration is set to default as well.
 
-## 2.2 Prometheus.io Annotation
-The out of the box path and port configuration can be modified using the standardized prometheus.io annotations.</br>
+### 2.1.2 Prometheus.io Annotation
+Deployments using industry standard prometheus.io annotations to enable scrapping, will be automatically detected out of the box by agent.</br>
+The pod's ports specification configuration can be modified using the standardized prometheus.io annotations.</br>
 
 ### Sample annotation
 ```
@@ -20,11 +24,11 @@ The out of the box path and port configuration can be modified using the standar
 Agent will only scrape if `prometheus.io/scrape` is set to `true`.</br> 
 The `prometheus.io/path` is optional, if not set, then it will default to `/metrics`. The rest of the configuration is set to default as well.
 
-## 2.3. prometheus scrape config json
+## 2.2. prometheus scrape config json
 The configuration can be fine tuned by providing custom json in [prometheus-scrape-config.json](./prometheus-scrape-config.json). This exposes all available PrometheusEmitter parameters.</br>
 Json takes highest precedence and overrides other types (annotation and out of the box)
 
-### 2.3.1  Sample JSON with all supported parameters (including optional)
+### 2.2.1  Sample JSON with all supported parameters (including optional)
 ```
 [
     {
@@ -48,20 +52,20 @@ Json takes highest precedence and overrides other types (annotation and out of t
 ]
 ```
 
-### 2.3.2 First class members
+### 2.2.2 First class members
 | member | required | description |
 |--------|----------|-------------|
 | podMatcher | yes | Elements used to match pods |
 | config | no | Collection configuration for PrometheusEmitter data source of the matching pod. This is optional, if disable is set to `true` |
 | disable | no | This is optional and defaults to `false`. If set to `true`, then podMatcher is used to restrict matching pods from collecting PrometheusEmitter metrics |
 
-### 2.3.3 podMatcher
+### 2.2.3 podMatcher
 | member | required | type | description |
 |--------|----------|----- | ------------|
 | namespace | yes | `string` | Pod's namespace |
 | podNameRegex | yes | `string`  | Complete regular expression to match pod name |
 
-### 2.3.4 config
+### 2.2.4 config
 | member | required | type | default | description |
 |--------|----------|----- | ------- | ----------- |
 | path | no | `string` | /metrics | Path on which metrics are being emitted, e.g. /metrics  |
