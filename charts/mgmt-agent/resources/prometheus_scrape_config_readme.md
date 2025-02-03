@@ -34,7 +34,7 @@ Json takes highest precedence and overrides other types (annotation and out of t
     {
         "podMatcher":
         {
-            "namespace": "pod_namespace",
+            "namespaceRegex": "pod_namespace",
             "podNameRegex": "sample-pod.*"
         },
         "config":
@@ -62,8 +62,8 @@ Json takes highest precedence and overrides other types (annotation and out of t
 ### 2.2.3 podMatcher
 | member | required | type | description |
 |--------|----------|----- | ------------|
-| namespace | yes | `string` | Pod's namespace |
-| podNameRegex | yes | `string`  | Complete regular expression to match pod name |
+| namespaceRegex | yes | `string` | Complete regular expression to match pod's namespace |
+| podNameRegex | yes | `string`  | Complete regular expression to match pod's name |
 
 ### 2.2.4 config
 | member | required | type | default | description |
