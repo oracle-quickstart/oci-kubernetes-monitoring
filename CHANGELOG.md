@@ -1,6 +1,6 @@
 # Change Log
 
-## 2024-02-03
+## 2025-02-03
 ### Changed
 - Fluentd collector container image uptake to 1.5.3 having few gem updates related to vulnerability fixes.
   - Similar updates to build files (Dockerfile, Gemfile) that helps building custom container image.
