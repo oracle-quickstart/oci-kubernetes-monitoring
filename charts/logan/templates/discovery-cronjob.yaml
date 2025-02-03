@@ -4,150 +4,148 @@
 {{- $kubernetesClusterId := (include "logan.kubernetesClusterId" .) }}
 {{- $kubernetesNamespace := (include "logan.namespace" .) }}
 {{- $serviceAccount := (include "logan.serviceAccount" .) }}
-apiVersion: batch/v1
-kind: CronJob
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: {{ .Values.global.resourceNamePrefix }}-discovery
   namespace: {{ $kubernetesNamespace }}
 spec:
-  schedule: {{ .Values.k8sDiscovery.objects.cronSchedule | quote }}
-  startingDeadlineSeconds: 120
-  concurrencyPolicy: Replace
-  successfulJobsHistoryLimit: {{ .Values.k8sDiscovery.objects.successfulJobsHistoryLimit }}
-  failedJobsHistoryLimit: {{ .Values.k8sDiscovery.objects.failedJobsHistoryLimit }}
-  jobTemplate:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.global.resourceNamePrefix }}-discovery
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.global.resourceNamePrefix }}-discovery
     spec:
-      backoffLimit: {{ .Values.k8sDiscovery.objects.backoffLimit }}
-      template:
-        spec:
-          restartPolicy: {{ .Values.k8sDiscovery.objects.restartPolicy }}
-          serviceAccountName: {{ $serviceAccount }}
-          {{- if .Values.image.imagePullSecrets }}
-          imagePullSecrets:
-          - name: {{ .Values.image.imagePullSecrets }}
+      serviceAccountName: {{ $serviceAccount }}
+      {{- if .Values.image.imagePullSecrets }}
+      imagePullSecrets:
+      - name: {{ .Values.image.imagePullSecrets }}
+      {{- end }}
+      containers:
+      - name: k8-discovery-job
+        image: {{ .Values.image.url }}
+        {{- if eq $authtype "config" }}
+        volumeMounts:
+        - name: ociconfigdir
+          mountPath: {{ .Values.oci.path }}
+          readOnly: true
+        {{- end }}
+        command:
+        {{- /* object discovery script */}}
+          - bundle
+          - exec
+          - oci-loganalytics-kubernetes-discovery
+        {{- /* mandatory inputs */}}
+          - --kubernetes_cluster_id
+          - {{ $kubernetesClusterId }}
+          - --kubernetes_cluster_name
+          - {{ $kubernetesClusterName }}
+          - --kubernetes_cluster_namespace
+          - {{ $kubernetesNamespace }}
+          - --oci_la_namespace
+          {{- if  .Values.ociLANamespace }}
+          - {{ .Values.ociLANamespace }}
+          {{- else }}
+            {{-  required "ociLANamespace is required" .Values.ociLANamespace }}
           {{- end }}
-          containers:
-          - name: k8-discovery-job
-            image: {{ .Values.image.url }}
-            {{- if eq $authtype "config" }}
-            volumeMounts:
-            - name: ociconfigdir
-              mountPath: {{ .Values.oci.path }}
-              readOnly: true
-            {{- end }}
-            command:
-            {{- /* object discovery script */}}
-              - bundle
-              - exec
-              - oci-loganalytics-kubernetes-discovery
-            {{- /* mandatory inputs */}}
-              - --kubernetes_cluster_id
-              - {{ $kubernetesClusterId }}
-              - --kubernetes_cluster_name
-              - {{ $kubernetesClusterName }}
-              - --kubernetes_cluster_namespace
-              - {{ $kubernetesNamespace }}
-              - --oci_la_namespace
-              {{- if  .Values.ociLANamespace }}
-              - {{ .Values.ociLANamespace }}
-              {{- else }}
-                {{-  required "ociLANamespace is required" .Values.ociLANamespace }}
-              {{- end }}
-              - --oci_la_log_group_id
-              {{- if  .Values.k8sDiscovery.objects.ociLALogGroupID }}
-              - {{ .Values.k8sDiscovery.objects.ociLALogGroupID }}
-              {{- else if  .Values.ociLALogGroupID }}
-              - {{ .Values.ociLALogGroupID }}
-              {{- else }}
-                {{- required "ociLALogGroupID is required" .Values.ociLALogGroupID }}
-              {{- end }}
-            {{- /* mandatory inputs when authtype is set as config */}}
-            {{- if eq .Values.authtype "config" }}
-            {{- if and .Values.oci.path .Values.oci.file }}
-              - --config_file_location
-              - {{ .Values.oci.path -}}/{{ .Values.oci.file }}
-            {{- else }}
-                {{- required "{{ .Values.oci.path -}}/{{ .Values.oci.file }} is required" .Values.oci.path }}
-            {{- end }}
-            {{- end }}
-            {{- /* optional discovery job configuration */}}
-            {{- if .Values.ociLAClusterEntityID }}
-              - --oci_la_cluster_entity_id
-              - {{ .Values.ociLAClusterEntityID  }}
-            {{- end }}
-            {{- if $resourceNamePrefix }}
-              - --kubernetes_resourcename_prefix
-              - {{ $resourceNamePrefix }}
-            {{- end }}
-            {{- if .Values.ociDomain }}
-              - --oci_domain
-              - {{ .Values.ociDomain }}
-            {{- end }}
-            {{- if .Values.k8sDiscovery.objects.discoveryMode }}
-              - --discovery
-              - {{ .Values.k8sDiscovery.objects.discoveryMode }}
-            {{- end }}
-            {{- if .Values.k8sDiscovery.objects.log_format }}
-              - --log_format
-              - {{ .Values.k8sDiscovery.objects.log_format }}
-            {{- end }}
-            {{- if .Values.k8sDiscovery.objects.log_level }}
-              - --log_level
-              - {{ .Values.k8sDiscovery.objects.log_level }}
-            {{- end }}
-            {{- if and .Values.k8sDiscovery.objects.enable_threading .Values.k8sDiscovery.objects.thread_count }}
-              - --enable_threading
-              - --thread_count
-              - {{ .Values.k8sDiscovery.objects.thread_count | quote }}
-            {{- end }}
-            {{- if .Values.k8sDiscovery.objects.chunk_limit }}
-              - --chunk_limit
-              - {{ .Values.k8sDiscovery.objects.chunk_limit | quote }}
-            {{- end }}
-            {{- if .Values.k8sDiscovery.objects.collect_warning_events_only }}
-              - --collect_warning_events_only
-            {{- end }}
-            {{- /* optional kubernetes cluster configuration */}}
-            {{- if .Values.k8sDiscovery.kubeClientOptions.kubernetes_url }}
-              - --kubernetes_url
-              - {{ .Values.k8sDiscovery.kubeClientOptions.kubernetes_url }}
-            {{- end }}
-            {{- if .Values.k8sDiscovery.kubeClientOptions.client_cert }}
-              - --client_cert
-              - {{ .Values.k8sDiscovery.kubeClientOptions.client_cert }}
-            {{- end }}
-            {{- if .Values.k8sDiscovery.kubeClientOptions.client_key }}
-              - --client_key
-              - {{ .Values.k8sDiscovery.kubeClientOptions.client_key }}
-            {{- end }}
-            {{- if .Values.k8sDiscovery.kubeClientOptions.ca_file }}
-              - --ca_file
-              - {{ .Values.k8sDiscovery.kubeClientOptions.ca_file }}
-            {{- end }}
-            {{- if eq .Values.k8sDiscovery.kubeClientOptions.verify_ssl true }}
-              - --verify_ssl
-            {{- end }}
-            {{- if .Values.k8sDiscovery.kubeClientOptions.bearer_token_file }}
-              - --bearer_token_file
-              - {{ .Values.k8sDiscovery.kubeClientOptions.bearer_token_file }}
-            {{- end }}
-            {{- if .Values.k8sDiscovery.kubeClientOptions.secret_dir }}
-              - --secret_dir
-              - {{ .Values.k8sDiscovery.kubeClientOptions.secret_dir }}
-            {{- end }}
-            {{- /* developer options - optional */}}
-            {{- if .Values.k8sDiscovery.oci_la_endpoint }}
-              - --endpoint
-              - {{ .Values.k8sDiscovery.oci_la_endpoint }}
-            {{- else if .Values.ociLAEndpoint }}
-              - --endpoint
-              - {{ .Values.ociLAEndpoint }}
-            {{- end }}
-          {{- if eq $authtype "config" }}
-          volumes:
-          - name: ociconfigdir
-            projected:
-              sources:
-              - secret:
-                  name: {{ $resourceNamePrefix }}-oci-config
+          - --oci_la_log_group_id
+          {{- if  .Values.k8sDiscovery.objects.ociLALogGroupID }}
+          - {{ .Values.k8sDiscovery.objects.ociLALogGroupID }}
+          {{- else if  .Values.ociLALogGroupID }}
+          - {{ .Values.ociLALogGroupID }}
+          {{- else }}
+            {{- required "ociLALogGroupID is required" .Values.ociLALogGroupID }}
           {{- end }}
+        {{- /* mandatory inputs when authtype is set as config */}}
+        {{- if eq .Values.authtype "config" }}
+        {{- if and .Values.oci.path .Values.oci.file }}
+          - --config_file_location
+          - {{ .Values.oci.path -}}/{{ .Values.oci.file }}
+        {{- else }}
+            {{- required "{{ .Values.oci.path -}}/{{ .Values.oci.file }} is required" .Values.oci.path }}
+        {{- end }}
+        {{- end }}
+        {{- /* optional discovery job configuration */}}
+        {{- if .Values.ociLAClusterEntityID }}
+          - --oci_la_cluster_entity_id
+          - {{ .Values.ociLAClusterEntityID  }}
+        {{- end }}
+        {{- if $resourceNamePrefix }}
+          - --kubernetes_resourcename_prefix
+          - {{ $resourceNamePrefix }}
+        {{- end }}
+        {{- if .Values.ociDomain }}
+          - --oci_domain
+          - {{ .Values.ociDomain }}
+        {{- end }}
+        {{- if .Values.k8sDiscovery.objects.discoveryMode }}
+          - --discovery
+          - {{ .Values.k8sDiscovery.objects.discoveryMode }}
+        {{- end }}
+        {{- if .Values.k8sDiscovery.objects.log_format }}
+          - --log_format
+          - {{ .Values.k8sDiscovery.objects.log_format }}
+        {{- end }}
+        {{- if .Values.k8sDiscovery.objects.log_level }}
+          - --log_level
+          - {{ .Values.k8sDiscovery.objects.log_level }}
+        {{- end }}
+        {{- if and .Values.k8sDiscovery.objects.enable_threading .Values.k8sDiscovery.objects.thread_count }}
+          - --enable_threading
+          - --thread_count
+          - {{ .Values.k8sDiscovery.objects.thread_count | quote }}
+        {{- end }}
+        {{- if .Values.k8sDiscovery.objects.chunk_limit }}
+          - --chunk_limit
+          - {{ .Values.k8sDiscovery.objects.chunk_limit | quote }}
+        {{- end }}
+        {{- if .Values.k8sDiscovery.objects.collect_warning_events_only }}
+          - --collect_warning_events_only
+        {{- end }}
+        {{- /* optional kubernetes cluster configuration */}}
+        {{- if .Values.k8sDiscovery.kubeClientOptions.kubernetes_url }}
+          - --kubernetes_url
+          - {{ .Values.k8sDiscovery.kubeClientOptions.kubernetes_url }}
+        {{- end }}
+        {{- if .Values.k8sDiscovery.kubeClientOptions.client_cert }}
+          - --client_cert
+          - {{ .Values.k8sDiscovery.kubeClientOptions.client_cert }}
+        {{- end }}
+        {{- if .Values.k8sDiscovery.kubeClientOptions.client_key }}
+          - --client_key
+          - {{ .Values.k8sDiscovery.kubeClientOptions.client_key }}
+        {{- end }}
+        {{- if .Values.k8sDiscovery.kubeClientOptions.ca_file }}
+          - --ca_file
+          - {{ .Values.k8sDiscovery.kubeClientOptions.ca_file }}
+        {{- end }}
+        {{- if eq .Values.k8sDiscovery.kubeClientOptions.verify_ssl true }}
+          - --verify_ssl
+        {{- end }}
+        {{- if .Values.k8sDiscovery.kubeClientOptions.bearer_token_file }}
+          - --bearer_token_file
+          - {{ .Values.k8sDiscovery.kubeClientOptions.bearer_token_file }}
+        {{- end }}
+        {{- if .Values.k8sDiscovery.kubeClientOptions.secret_dir }}
+          - --secret_dir
+          - {{ .Values.k8sDiscovery.kubeClientOptions.secret_dir }}
+        {{- end }}
+        {{- /* developer options - optional */}}
+        {{- if .Values.k8sDiscovery.oci_la_endpoint }}
+          - --endpoint
+          - {{ .Values.k8sDiscovery.oci_la_endpoint }}
+        {{- else if .Values.ociLAEndpoint }}
+          - --endpoint
+          - {{ .Values.ociLAEndpoint }}
+        {{- end }}
+      {{- if eq $authtype "config" }}
+      volumes:
+      - name: ociconfigdir
+        projected:
+          sources:
+          - secret:
+              name: {{ $resourceNamePrefix }}-oci-config
+      {{- end }}
