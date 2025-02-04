@@ -152,7 +152,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    rexml (3.3.7)
+    rexml (3.4.0)
     rubyzip (2.3.2)
     rufus-scheduler (3.9.2)
       fugit (~> 1.1, >= 1.11.1)
@@ -165,7 +165,7 @@ GEM
       concurrent-ruby (~> 1.0)
     tzinfo-data (1.2024.1)
       tzinfo (>= 1.0.0)
-    webrick (1.8.1)
+    webrick (1.9.1)
     yajl-ruby (1.4.3)
 
 PLATFORMS
@@ -185,7 +185,7 @@ DEPENDENCIES
   json (= 2.7.2)
   oci-logging-analytics-kubernetes-discovery (= 1.2.0.2)!
   oj (= 3.16.4)
-  rexml (= 3.3.7)
+  rexml (= 3.4.0)
 
 BUNDLED WITH
    2.5.16

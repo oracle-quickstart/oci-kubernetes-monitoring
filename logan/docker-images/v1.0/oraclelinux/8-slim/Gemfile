@@ -15,4 +15,4 @@ gem "oci-logging-analytics-kubernetes-discovery", "1.2.0.2", source: "https://ar
 gem "fluent-plugin-record-modifier", "2.2.0"
 gem "fluent-plugin-cloudwatch-logs", "0.14.3"
 gem "fluent-plugin-s3", "1.7.2"
-gem "rexml", "3.3.7"
+gem "rexml", "3.4.0"
