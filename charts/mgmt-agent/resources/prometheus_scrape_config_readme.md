@@ -26,7 +26,8 @@ The `prometheus.io/path` is optional, if not set, then it will default to `/metr
 
 ## 2.2. prometheus scrape config json
 The configuration can be fine tuned by providing custom json in [prometheus-scrape-config.json](./prometheus-scrape-config.json). This exposes all available PrometheusEmitter parameters.</br>
-Json takes highest precedence and overrides other types (annotation and out of the box)
+Json takes highest precedence and overrides other types (annotation and out of the box)</br>
+If a pod matches multiple configs, then the last matching config will be applied.
 
 ### 2.2.1  Sample JSON with all supported parameters (including optional)
 ```
