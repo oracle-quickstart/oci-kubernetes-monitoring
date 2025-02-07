@@ -1,5 +1,9 @@
 # Change Log
 
+## 2025-02-07
+### Changed
+- Management Agent container image has been updated to version 1.7.0
+
 ## 2025-02-03
 ### Changed
 - Fluentd collector container image uptake to 1.5.3 having few gem updates related to vulnerability fixes.
