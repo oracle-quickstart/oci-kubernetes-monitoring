@@ -201,12 +201,20 @@ Dashboards needs to be imported manually. Below is an example for importing Dash
 3. Download the dashboard JSONs from [here](terraform/modules/dashboards/dashboards_json/).
 4. **Replace** all the instances of the keyword - "`${compartment_ocid}`" in the JSONs with the **Compartment OCID** identified in previous step.
     * Following command is for quick reference that can be used in a linux/cloud-shell environment :
-
         ```
         sed -i "s/\${compartment_ocid}/<Replace-with-Compartment-OCID>/g" *.json
         ```
+    * **Note:** Do not replace the keyword {compartment_ocid}. Replace only `<Replace-with-Compartment-OCID>` with your actual target compartment OCID.
 
-5. Run the following commands to import the dashboards.
+5.  **Replace** all the instances of the keywords - "`${freeform_tags}`" and "`${freeform_tags}`" with `{}`
+    * Following command is for quick reference that can be used in a linux/cloud-shell environment :
+
+        ```
+        sed -i "s/\${freeform_tags}/{}/g" *.json
+        sed -i "s/\${defined_tags}/{}/g" *.json
+        ```
+
+6. Run the following commands to import the dashboards.
 
     ```
     oci management-dashboard dashboard import --from-json file://cluster.json
