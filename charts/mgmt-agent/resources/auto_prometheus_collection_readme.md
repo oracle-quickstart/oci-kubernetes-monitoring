@@ -1,5 +1,5 @@
 # 1. Introduction
-Automatic PrometheusEmitter collection is a feature that allows the Agent to automatically find and identify metrics emitting pods to monitor, eliminating the need to manually create the PrometheusEmitter configuration to collect metrics.
+Automatic Prometheus collection is a feature that allows the Agent to automatically find and identify metrics emitting pods to monitor, eliminating the need to manually create the Prometheus configuration to collect metrics.
 
 # 2. Identification of metric collection configuration
 
@@ -35,7 +35,7 @@ If a pod matches multiple configs, then the last matching config will be applied
     {
         "podMatcher":
         {
-            "namespaceRegex": "pod_namespace",
+            "namespaceRegex": "pod_namespace.*",
             "podNameRegex": "sample-pod.*"
         },
         "config":

@@ -132,7 +132,7 @@
                         }
                     ]
                 },
-                "enableAutomaticPrometheusEmitterCollection":
+                "enableAutomaticPrometheusDetection":
                 {
                     "type": "boolean"
                 }
@@ -140,7 +140,7 @@
             "required":
             [
                 "namespace",
-                "enableAutomaticPrometheusEmitterCollection"
+                "enableAutomaticPrometheusDetection"
             ]
         },
         "deployment":
