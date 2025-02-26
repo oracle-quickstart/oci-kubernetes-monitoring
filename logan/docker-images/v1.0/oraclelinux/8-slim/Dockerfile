@@ -18,6 +18,8 @@ ENV GEM_HOME /fluentd/vendor/bundle/ruby/3.3
 ENV FLUENTD_DISABLE_BUNDLER_INJECTION 1
 
 COPY Gemfile* /fluentd/
+COPY tcpconnect.* /fluentd/
+COPY tcp-monitor /usr/local/bin/
 
 # Install ruby, ruby-libs along with rubygems and bundler.
 RUN microdnf -y module enable ruby:3.3 \
@@ -27,7 +29,7 @@ RUN microdnf -y module enable ruby:3.3 \
  && microdnf -y install --setopt=install_weak_deps=0 --nodocs rubygems \
  && gem install bundler -v 2.5.16 \
 # Install development dependent packages for gems native installation
- && microdnf --enablerepo ol8_codeready_builder -y install --nodocs gcc make redhat-rpm-config openssl ruby-devel gcc-c++ libtool libffi-devel bzip2 git libyaml-devel \
+ && microdnf --enablerepo ol8_codeready_builder -y install --nodocs gcc make redhat-rpm-config openssl ruby-devel gcc-c++ libtool libffi-devel bzip2 git libyaml-devel zlib elfutils-libelf-devel which clang llvm \
 # Install Fluentd, it's dependencies along with other run time dependencies for OCI Logging Analytics Solution
  && bundle config silence_root_warning true \ 
  && bundle config --local path /fluentd/vendor/bundle \
@@ -38,9 +40,16 @@ RUN microdnf -y module enable ruby:3.3 \
  && microdnf -y install --nodocs tini-0.19.0 \
 # Install jemalloc (custom make with no docs)
  && cd /tmp && ls /tmp \
- && git clone -b 5.3.0 https://github.com/jemalloc/jemalloc.git && cd jemalloc/ \  
+ && git clone --depth 1 -b 5.3.0 https://github.com/jemalloc/jemalloc.git && cd jemalloc/ \  
  && ./autogen.sh && make && make install_bin install_include install_lib \
- && mv lib/libjemalloc.so.2 /usr/lib
+ && mv lib/libjemalloc.so.2 /usr/lib \
+ # Install libbpf-tools from bcc
+ && cd /tmp && ls /tmp \
+ && git clone -b v0.29.1 --depth 1 https://github.com/iovisor/bcc.git && cd bcc/ && git submodule update --init --recursive \
+ && cd libbpf-tools/ && cp /fluentd/tcpconnect.* ./ && make  \
+ && mv ./tcpconnect /usr/bin/ \
+ && rm /fluentd/tcpconnect.* \
+ && cd /fluentd/
 
 ## To build the final docker image
 
@@ -62,17 +71,22 @@ RUN microdnf -y module enable ruby:3.3 \
  && microdnf -y install --setopt=install_weak_deps=0 --nodocs ruby ruby-libs \ 
 # Install rubygems (it's dependencies rubygem-openssl rubygem-psych), disabling week dependencies
  && microdnf -y install --setopt=install_weak_deps=0 --nodocs rubygems \ 
+# Install development packages needed for tcp_monitor
+# && microdnf --enablerepo ol8_codeready_builder -y install --nodocs gcc make redhat-rpm-config openssl ruby-devel gcc-c++ libtool libffi-devel bzip2 libyaml-devel zlib elfutils-libelf-devel which clang llvm \
  && gem install bundler -v 2.5.16 \
  && bundle config --local path /fluentd/vendor/bundle \
 # clear caches
  && microdnf clean all \
- && rm -rf /var/cache/dnf /tmp/* /var/tmp/* /usr/lib/ruby/gems/*/cache/*.gem     
+ && rm -rf /var/cache/dnf /tmp/* /var/tmp/* /usr/lib/ruby/gems/*/cache/*.gem  
 
 # Copy binaries (tini & jemallco) and rubygems bundler environment from build stage
 COPY --from=builder /fluentd /fluentd
 COPY --from=builder /usr/bin/tini /usr/bin/tini
 COPY --from=builder /usr/lib/libjemalloc.so.2 /usr/lib/libjemalloc.so.2
+COPY --from=builder /usr/bin/tcpconnect /usr/bin/tcpconnect
+COPY --from=builder /usr/local/bin /usr/local/bin
 
+RUN chmod +x /usr/local/bin/tcp-monitor
 RUN mkdir -p /fluentd/etc /fluentd/plugins \
  && touch /fluentd/etc/disable.conf
 

@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+ENV["BUNDLE_GEMFILE"] = "/fluentd/Gemfile"
+require "bundler/setup"
+load "/fluentd/vendor/bundle/ruby/3.3.0/gems/tcp_monitor-0.3.5/bin/tcp-monitor"
