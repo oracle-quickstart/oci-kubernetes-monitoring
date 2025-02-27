@@ -25,7 +25,7 @@ A Helm chart for collecting Kubernetes Metrics using OCI Management Agent into O
 | kubernetesCluster.overrideAllowMetricsCluster | string | `nil` | Provide the specific list of comma separated metric names for agent computed metrics to be collected |
 | kubernetesCluster.overrideAllowMetricsKubelet | string | `nil` | Provide the specific list of comma separated metric names for Kubelet (/api/v1/nodes/<node_name>/proxy/metrics) metrics to be collected |
 | kubernetesCluster.overrideAllowMetricsNode | string | `nil` | Provide the specific list of comma separated metric names for Node (/api/v1/nodes/<node_name>/proxy/metrics/resource, /api/v1/nodes/<node_name>/proxy/metrics/cadvisor) metrics to be collected |
-| kubernetesCluster.enableAutomaticPrometheusEmitterCollection | bool | `false` | Setting this to true will enable automatic PrometheusEmitter metrics collection from eligible pods |
+| kubernetesCluster.enableAutomaticPrometheusDetection | bool | `false` | Setting this to true will enable automatic PrometheusEmitter metrics collection from eligible pods |
 | mgmtagent.image.secret | string | `nil` | Image secrets to use for pulling container image (base64 encoded content of ~/.docker/config.json file) |
 | mgmtagent.image.url | string | `nil` | Replace this value with actual docker image URL for Management Agent |
 | mgmtagent.installKey | string | `"resources/input.rsp"` | Copy the downloaded Management Agent Install Key file under root helm directory as resources/input.rsp |
