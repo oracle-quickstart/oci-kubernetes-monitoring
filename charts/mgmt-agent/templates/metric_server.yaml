@@ -135,6 +135,9 @@ spec:
       labels:
         k8s-app: metrics-server
     spec:
+      {{- if include "mgmt-agent.tolerations" . }}
+      tolerations: {{- include "mgmt-agent.tolerations" . | trimAll "\n" | nindent 8 }}
+      {{- end }}
       containers:
       - args:
         - --cert-dir=/tmp

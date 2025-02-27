@@ -23,6 +23,9 @@ spec:
       labels:
         app: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent
     spec:
+      {{- if include "mgmt-agent.tolerations" . }}
+      tolerations: {{- include "mgmt-agent.tolerations" . | trimAll "\n" | nindent 8 }}
+      {{- end }}
       securityContext:
         runAsUser: {{ default 0 .Values.deployment.security.runAsUser }}
         runAsGroup: {{ default 0 .Values.deployment.security.runAsGroup }}

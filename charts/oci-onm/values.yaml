@@ -22,6 +22,8 @@ oci-onm-common:
   resourceNamePrefix: "{{ .Values.global.resourceNamePrefix }}"
   # -- Name of the Kubernetes ServiceAccount
   serviceAccount: "{{ .Values.global.resourceNamePrefix }}"
+  # Add custom Tolerations for resources
+  tolerations: "{{ .Values.global.tolerations }}"
 
 oci-onm-logan:
   oci-onm-common:
@@ -42,12 +44,16 @@ oci-onm-logan:
   # Format: <oci-region>.oci.<oci_domain>
   # Example: us-ashburn-1.oci.oraclecloud.com
   ociDomain:
+  # Add custom Tolerations for resources
+  tolerations: "{{ .Values.global.tolerations }}"
 
 oci-onm-mgmt-agent:
   oci-onm-common:
     enabled: false
   namespace: "{{ .Values.global.namespace }}"
   serviceAccount: "{{ .Values.global.resourceNamePrefix }}"
+  # Add custom Tolerations for resources
+  tolerations: "{{ .Values.global.tolerations }}"
   kubernetesCluster:
     name: "{{ .Values.global.kubernetesClusterName }}"
   mgmtagent:
