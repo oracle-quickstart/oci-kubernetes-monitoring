@@ -43,6 +43,7 @@ MODULES_SOURCE="$BUILD_DIR/terraform/modules"
 
 STACK_BUILD_PATH="$BUILD_DIR/terraform/oke"
 HELM_SYMLINK="$STACK_BUILD_PATH/charts"
+TEMPLATE_ID_FILE="$STACK_BUILD_PATH/version.auto.tfvars"
 MODULES_SYMLINK="$STACK_BUILD_PATH/modules"
 
 # Usage Instructions
@@ -164,6 +165,19 @@ log "Removed terraform modules symlink - $MODULES_SYMLINK"
 # Copy the modules
 cp -R "$MODULES_SOURCE" "$STACK_BUILD_PATH" || error_and_exit "ERROR: cp -R $MODULES_SOURCE $STACK_BUILD_PATH"
 log "Copied terraform modules at - $STACK_BUILD_PATH"
+
+# Update the version
+COMMIT_HASH=$(git rev-parse HEAD)
+
+# Detect OS
+if sed --version >/dev/null 2>&1; then
+    # Linux (GNU sed)
+    sed -i "s/COMMIT_ID_PLACEHOLDER/$COMMIT_HASH/g" "$TEMPLATE_ID_FILE" || error_and_exit "ERROR: sed -i \"s/COMMIT_ID_PLACEHOLDER/$COMMIT_HASH/g\" \"$TEMPLATE_ID_FILE\""
+else
+    # macOS (BSD sed)
+    sed -i "" "s/COMMIT_ID_PLACEHOLDER/$COMMIT_HASH/g" "$TEMPLATE_ID_FILE" || error_and_exit "ERROR: sed -i \"\" \"s/COMMIT_ID_PLACEHOLDER/$COMMIT_HASH/g\" \"$TEMPLATE_ID_FILE\""
+fi
+log "Updated template id - $COMMIT_HASH"
 
 # Switch back to stack dir
 cd "$STACK_BUILD_PATH" || error_and_exit "ERROR: cd $STACK_BUILD_PATH"
