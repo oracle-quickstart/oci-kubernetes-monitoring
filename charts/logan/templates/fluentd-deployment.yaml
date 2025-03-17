@@ -31,6 +31,10 @@ spec:
         version: v1
     spec:
       serviceAccountName: {{ include "logan.serviceAccount" . }}
+      {{- if .Values.tolerations }}
+      tolerations:
+        {{- toYaml .Values.tolerations | nindent 8 }}
+      {{- end }}
       {{- if $imagePullSecrets }}
       imagePullSecrets:
       - name: {{ .Values.image.imagePullSecrets }}

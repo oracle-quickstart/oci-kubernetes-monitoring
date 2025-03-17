@@ -49,6 +49,9 @@ serviceAccount: "{{ .Values.global.resourceNamePrefix }}"
 # -- By default, metric server will be deployed and used by Management Agent to collect metrics. You can set this to false if you already have metric server installed on your cluster
 deployMetricServer: true
 
+# Add custom Tolerations for resources
+tolerations: 
+
 # Kubernetes Cluster details to monitor
 kubernetesCluster:
    # -- OCI Compartment Id to push Kubernetes Monitoring metrics. If not specified default is same as Agent compartment

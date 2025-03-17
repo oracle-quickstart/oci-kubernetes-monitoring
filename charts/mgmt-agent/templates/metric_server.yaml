@@ -135,6 +135,10 @@ spec:
       labels:
         k8s-app: metrics-server
     spec:
+      {{- if .Values.tolerations }}
+      tolerations:
+        {{- toYaml .Values.tolerations | nindent 8 }}
+      {{- end }}
       containers:
       - args:
         - --cert-dir=/tmp

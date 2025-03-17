@@ -42,12 +42,16 @@ oci-onm-logan:
   # Format: <oci-region>.oci.<oci_domain>
   # Example: us-ashburn-1.oci.oraclecloud.com
   ociDomain:
+  # Add custom Tolerations for resources
+  tolerations: 
 
 oci-onm-mgmt-agent:
   oci-onm-common:
     enabled: false
   namespace: "{{ .Values.global.namespace }}"
   serviceAccount: "{{ .Values.global.resourceNamePrefix }}"
+  # Add custom Tolerations for resources
+  tolerations: 
   kubernetesCluster:
     name: "{{ .Values.global.kubernetesClusterName }}"
   mgmtagent:
