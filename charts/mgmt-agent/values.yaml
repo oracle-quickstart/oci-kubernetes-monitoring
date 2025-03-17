@@ -6,8 +6,6 @@ global:
   namespace: oci-onm
   # -- Prefix to be attached to resources created through this chart. Not all resources may have this prefix.
   resourceNamePrefix: oci-onm
-  # Add custom Tolerations for resources
-  tolerations:
 
 oci-onm-common:
   # -- By default, a cluster role, cluster role binding and serviceaccount will be created for the monitoring pods to be able to (readonly) access various objects within the cluster, to support collection of various telemetry data. You may set this to false and provide your own serviceaccount (in the parent chart(s)) which has the necessary cluster role(s) binded to it. Refer, README for the cluster role definition and other details.
@@ -20,8 +18,6 @@ oci-onm-common:
   resourceNamePrefix: "{{ .Values.global.resourceNamePrefix }}"
   # -- Name of the Kubernetes ServiceAccount
   serviceAccount: "{{ .Values.global.resourceNamePrefix }}"
-  # Add custom Tolerations for resources
-  tolerations: "{{ .Values.global.tolerations }}"
 
 mgmtagent:
    # Provide either installKeyFileContent or installKey as an install key. If both provided then installKeyFileContent will take higher precedence.
@@ -54,7 +50,7 @@ serviceAccount: "{{ .Values.global.resourceNamePrefix }}"
 deployMetricServer: true
 
 # Add custom Tolerations for resources
-tolerations: "{{ .Values.global.tolerations }}"
+tolerations: 
 
 # Kubernetes Cluster details to monitor
 kubernetesCluster:

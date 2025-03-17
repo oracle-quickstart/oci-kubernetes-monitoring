@@ -35,8 +35,8 @@ spec:
         effect: NoSchedule
       - key: node-role.kubernetes.io/control-plane
         effect: NoSchedule
-      {{- if include "logan.tolerations" . }}
-      {{- include "logan.tolerations" . | trimAll "\n" | nindent 6 }}
+      {{- if .Values.tolerations }}
+        {{- toYaml .Values.tolerations | nindent 6 }}
       {{- end }}
       {{- if $imagePullSecrets }}
       imagePullSecrets:

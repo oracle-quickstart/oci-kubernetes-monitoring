@@ -7,8 +7,6 @@ global:
   namespace: oci-onm
   # -- Resource names prefix used, where allowed.
   resourceNamePrefix: oci-onm
-  # Add custom Tolerations for resources
-  tolerations:
 
 oci-onm-common:
 # -- Automatically create, a readonly cluster role, cluster role binding and
@@ -28,9 +26,6 @@ oci-onm-common:
 
   # -- Kubernetes ServiceAccount name
   serviceAccount: "{{ .Values.global.resourceNamePrefix }}"
-
-  # Add custom Tolerations for resources
-  tolerations: "{{ .Values.global.tolerations }}"
 
 # -- Container runtime for Kubernetes Cluster. Requires fluentd configuration changes accordingly
 # Allowed values: docker, cri(for OKE 1.20 and above)
@@ -83,7 +78,7 @@ kubernetesClusterName:
 ociLAClusterEntityID:
 
 # Add custom Tolerations for resources
-tolerations: "{{ .Values.global.tolerations }}"
+tolerations: 
 
 # -- Kubernetes Security Context privileged flag
 # Default: 'false'. This is not a required for OKE clusters.
