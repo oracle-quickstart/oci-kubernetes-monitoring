@@ -68,7 +68,6 @@ variableGroups:
 
   - title: Advanced configuration
     variables:
-      - ${show_advanced_options}
       - ${stack_deployment_option}
       - ${enable_service_log}
       - ${opt_deploy_metric_server}
@@ -246,14 +245,6 @@ variables:
   ##  Advanced Configuration
   ####
 
-  # Option to enable/disable metric server installation during helm deployment
-  show_advanced_options:
-    title: Show advanced configuration
-    description: |-
-      Keep the check box enabled for the advanced options to take effect.
-    type: boolean
-    default: false
-
   #  Stack Deployment Options
   stack_deployment_option:
     title: Deployment type
@@ -266,19 +257,13 @@ variables:
     - "Only OCI Resources"
     required: true
     default: "Full"
-    visible:
-      and:
-        - ${show_advanced_options}
 
   # Option to enable/disable service logs collection for OKE infra components
   enable_service_log:
     type: boolean
     title: Enable service logs collection
-    description: Clear this check box if do not want to collect logs from OKE infra components
+    description: "Check the box to enable collection of following service logs: OKE control plane, Load balancers and Flow logs"
     default: false
-    visible:
-      and:
-        - ${show_advanced_options}
 
   helm_chart_version:
     type: string
@@ -294,9 +279,6 @@ variables:
     required: false
     # ref - https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
     pattern: '(^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$|^$)'
-    visible:
-      and:
-        - ${show_advanced_options}
 
   # Option to enable/disable metric server installation during helm deployment
   opt_deploy_metric_server:
@@ -304,9 +286,6 @@ variables:
     title: Enable metric server installation
     description: Clear this check box if the metric server is already installed in your cluster.
     default: true
-    visible:
-      and:
-        - ${show_advanced_options}
 
   # Fluentd Base Directory
   fluentd_base_dir_path:
@@ -318,9 +297,6 @@ variables:
     default: /var/log
     required: true
     pattern: '^/[\w- /]*$'
-    visible:
-      and:
-        - ${show_advanced_options}
 
   # Delay in seconds
   delay_in_seconds:
@@ -328,9 +304,6 @@ variables:
     title: Delay in seconds
     description: |-
       Adds custom delay in seconds before creating resources
-    visible:
-      and:
-        - ${show_advanced_options}
 
   # OCI tags
   tags:
@@ -342,9 +315,6 @@ variables:
     required: false
     dependsOn:
       compartmentId: ${tenancy_ocid}
-    visible:
-      and:
-        - ${show_advanced_options}
 
   # Template ID
   # It's automatically set by version.auto.tfvars file and hence grayed out for users
@@ -354,6 +324,3 @@ variables:
     title: Template id
     description: |-
       OCI Kubernetes Monitoring Solution Stack Unique Identifier
-    visible:
-      and:
-        - ${show_advanced_options}

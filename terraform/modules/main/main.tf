@@ -64,7 +64,6 @@ module "iam" {
   oke_compartment_ocid              = var.oke_compartment_ocid
   oke_cluster_ocid                  = var.oke_cluster_ocid
   create_service_discovery_policies = var.enable_service_log
-  oci_la_log_group_ocid             = module.logan[0].log_group_ocid
   tags                              = var.tags
 
   providers = {

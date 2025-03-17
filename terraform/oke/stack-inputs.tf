@@ -186,12 +186,6 @@ variable "opt_import_dashboards" {
 ##  Advanced Configuration
 ####
 
-# Option to hidden stack configuration
-variable "show_advanced_options" {
-  type    = bool
-  default = false
-}
-
 # Stack Deployment Options
 variable "stack_deployment_option" {
   type    = string

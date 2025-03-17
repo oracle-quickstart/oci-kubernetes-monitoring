@@ -607,25 +607,29 @@ oci-onm-logan:
       s3Bucket:<s3_bucket>
 ```
 
+### How to enable the discovery of node subnet and associated flow logs for when node pool subnet's compartment is different than OKE's compartment ?
 
-### Service Logs Collection
-
-#### How to Collect Logs for Node Pools in Different Compartments than the OKE Cluster's Compartment?
 By default, the discovery job only collects information from node pools that are in the same compartment as the OKE cluster. 
 
-To enable node pool discovery across all compartments in the tenancy, customers can set the following property in the Helm chart:
+To enable node pool discovery across all compartments in the tenancy, customers can set the following properties in the Helm chart:
 
 ```yaml
-oci-onm-logan.k8sDiscovery.infra.probe_all_compartments = true
+oci-onm-logan:
+  k8sDiscovery:
+    probe_all_compartments: true
+    tenancy_ocid: ${TENANT_OCID}
 ```
 
 #### Policies Required
 
-In addition to the configuration above, a few additional policies must be added. Validate if the following policy statements are sufficient:
+In addition to the configuration changes mentioned above, the following policies must be modified (if you have opted for the policy creation during the initial setup) or added either at tenancy level or for all relevant compartments in the scope.
 
 ```plaintext
 Allow dynamic-group ${OKE_DYNAMIC_GROUP} to inspect compartments in tenancy
-Allow dynamic-group ${OKE_DYNAMIC_GROUP} to read cluster-node-pools in tenancy
+Allow dynamic-group ${OKE_DYNAMIC_GROUP} to read cluster-node-pools in tenancy/compartment id ${COMPARTMENT_OCID}
+Allow dynamic-group ${OKE_DYNAMIC_GROUP} to inspect subnets in tenancy/compartment id ${COMPARTMENT_OCID}
+Allow dynamic-group ${OKE_DYNAMIC_GROUP} to use log-groups in tenancy/compartment id ${COMPARTMENT_OCID}
+Allow dynamic-group ${OKE_DYNAMIC_GROUP} to {SUBNET_UPDATE} in tenancy/compartment id ${COMPARTMENT_OCID}
+Allow dynamic-group ${OKE_DYNAMIC_GROUP} to read log-content in tenancy/compartment id ${COMPARTMENT_OCID}
+Allow service loganalytics to {VCN_READ,SUBNET_READ,LOAD_BALANCER_READ,CLUSTER_READ,VNIC_READ} in tenancy/compartment id ${COMPARTMENT_OCID}
 ```
-
-**TODO**: Confirm if these policy statements are adequate or if further policies are required.
