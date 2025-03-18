@@ -55,7 +55,7 @@ locals {
 
       # Required to create logging log-group
       "Allow dynamic-group ${local.dynamic_group_name} to manage log-groups in ${local.onm_compartment_scope}",
-      # Use is sufficient in case log-group us already created and part of OKE compartment
+      # Use is sufficient in case log-group is already created and part of OKE compartment
       "Allow dynamic-group ${local.dynamic_group_name} to use log-groups in ${local.oke_compartment_scope}",
 
       # Required for RMS resources
