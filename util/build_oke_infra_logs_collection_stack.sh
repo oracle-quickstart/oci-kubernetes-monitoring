@@ -23,7 +23,7 @@ function abspath    {
 UTIL_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 ROOT_DIR="$UTIL_DIR/.."
 ROOT_DIR=$(abspath "$ROOT_DIR") # Convert to absolute path
-STACK_DIR=$ROOT_DIR/service-discovery-stack
+STACK_DIR=$ROOT_DIR/oke-infra-logs-collection
 
 BUILD_DIR="$ROOT_DIR/releases"
 STACK_ZIP="$BUILD_DIR/service-connector.zip"

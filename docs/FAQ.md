@@ -615,9 +615,15 @@ To enable node pool discovery across all compartments in the tenancy, customers 
 
 ```yaml
 oci-onm-logan:
+  ..
+  .. 
   k8sDiscovery:
+    ..
+    .. 
     probe_all_compartments: true
     tenancy_ocid: <TENANT_OCID>
+    .. 
+    .. 
 ```
 
 #### Policies Required
@@ -631,4 +637,5 @@ Allow dynamic-group ${OKE_DYNAMIC_GROUP} to inspect subnets in tenancy
 Allow dynamic-group ${OKE_DYNAMIC_GROUP} to {SUBNET_UPDATE} in tenancy
 Allow dynamic-group ${OKE_DYNAMIC_GROUP} to use log-groups in tenancy
 Allow dynamic-group ${OKE_DYNAMIC_GROUP} to read log-content in tenancy
+Allow service loganalytics to {VCN_READ,SUBNET_READ,VNIC_READ} in tenancy
 ```

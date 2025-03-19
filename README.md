@@ -44,9 +44,9 @@ It does extensive enrichment of logs, metrics and object information to enable c
 * Create OCI Logging Analytics LogGroup(s) if not done already. Refer [Create Log Group](https://docs.oracle.com/en-us/iaas/logging-analytics/doc/create-logging-analytics-resources.html#GUID-D1758CFB-861F-420D-B12F-34D1CC5E3E0E) for details.
 
 * Compartments:
-  * OKE Compartment: where OKE cluster is hosted.
-    * Different OKE components such as Node Pools, VCN, Subnets, Load Balancers may be hosted in different compartments (other than OKE compartment)
-      * Take extra care while drafting the policies for such components in next section.
+  * OKE Compartment: where OKE and related infra resources are created.
+    * Different OKE components such as Node Pools, VCN, Subnets, Load Balancers may be hosted in different compartments (other than OKE compartment).
+    * You may need to modify the policy statements if any of the above resources are not created in same compartment as OKEs.
   * ONM Compartment: where Observability & Monitoring resources will be created.
     * OCI resources such as entities, management agent key, service connector, logging logs and logGroup, RMS stack and jobs will be created in this compartment.
     * It can be same as OKE compartment.
@@ -81,90 +81,40 @@ It does extensive enrichment of logs, metrics and object information to enable c
       ```
       OR
       ```
-      Allow group <User Group> to {LOG_ANALYTICS_LOG_GROUP_UPLOAD_LOGS} in compartment <ONM Compartment OCID>
+      Allow group <User Group> to {LOG_ANALYTICS_LOG_GROUP_UPLOAD_LOGS} in compartment id <ONM Compartment OCID>
       Allow group <User Group> to {LOG_ANALYTICS_DISCOVERY_UPLOAD} in tenancy
       ```
       - **Note**: _The policy definition for LOG_ANALYTICS_DISCOVERY_UPLOAD permission only works at tenancy level and thereby it must be created at tenancy level._
   
-
-
-    * Policy Statement to allow loganalytics service to create entities.
+    * Policy statements for providing necessary access to enable OKE infra discovery and service logs collection.
       ```
-      Allow service loganalytics to {VCN_READ,SUBNET_READ,LOAD_BALANCER_READ,CLUSTER_READ,VNIC_READ} in compartment <Compartment Name>
-      ```
-
-    * Policy Statement for discovery of OKE infra components: oke control plane, load balancers, subnets, node-pools.
-      ```
-      Allow dynamic-group <OKE Instances Dynamic Group> to read cluster-node-pools in compartment id <Node Pool Compartment OCID>
-      Allow dynamic-group <OKE Instances Dynamic Group> to inspect vcns in compartment id <VCN Compartment OCID>
-      Allow dynamic-group <OKE Instances Dynamic Group> to inspect subnets in compartment id <Subnet Compartment OCID>
-      Allow dynamic-group <OKE Instances Dynamic Group> to read load-balancers in compartment id <LB Compartment OCID>
       Allow dynamic-group <OKE Instances Dynamic Group> to {CLUSTER_READ} in compartment id <OKE Compartment OCID> where target.cluster.id='<OKE Cluster OCID>'
-      ```
-      OR
-      ```
-      Allow group <User Group> to read cluster-node-pools in compartment id <Node Pool Compartment OCID>
-      Allow group <User Group> to inspect vcns in compartment id <VCN Compartment OCID>
-      Allow group <User Group> to inspect subnets in compartment id <Subnet Compartment OCID>
-      Allow group <User Group> to read load-balancers in compartment id <LB Compartment OCID>
-      Allow group <User Group> to {CLUSTER_READ} in compartment id <OKE Compartment OCID> where target.cluster.id='<OKE Cluster OCID>'
-      ```
+      Allow dynamic-group <OKE Instances Dynamic Group> to read cluster-node-pools in compartment id <OKE Compartment OCID>
+      Allow dynamic-group <OKE Instances Dynamic Group> to inspect vcns in compartment id <OKE Compartment OCID>
+      Allow dynamic-group <OKE Instances Dynamic Group> to inspect subnets in compartment id <OKE Compartment OCID>
+      Allow dynamic-group <OKE Instances Dynamic Group> to read load-balancers in compartment id <OKE Compartment OCID>
 
-    * Policy Statement to allow logs collection via service connector.
-      ```
-      Allow any-user to {LOG_ANALYTICS_LOG_GROUP_UPLOAD_LOGS} in compartment id <Compartment OCID> where all {request.principal.type='serviceconnector', request.principal.compartment.id='<Compartment OCID>'}
-      ```
-      ```
-      Allow dynamic-group <OKE Instances Dynamic Group> to manage serviceconnectors in compartment id <ONM Compartment OCID>
-      ```
-      OR
-      ```
-      Allow group <User Group> to manage serviceconnectors in compartment id <ONM Compartment OCID>
-      ```
-
-    * Policy Statements to enable logging for OKE infra components
-      ```
+      Allow dynamic-group <OKE Instances Dynamic Group> to read loganalytics-entity in compartment id <ONM Compartment OCID>
       Allow dynamic-group <OKE Instances Dynamic Group> to manage orm-jobs in compartment id <ONM Compartment OCID>
       Allow dynamic-group <OKE Instances Dynamic Group> to manage orm-stacks in compartment id <ONM Compartment OCID>
-      Allow dynamic-group <OKE Instances Dynamic Group> to read loganalytics-entity in compartment id <ONM Compartment OCID>
-      
+
+      Allow dynamic-group <OKE Instances Dynamic Group> to use load-balancers in compartment id <OKE Compartment OCID>
+      Allow dynamic-group <OKE Instances Dynamic Group> to {SUBNET_UPDATE} in compartment id <OKE Compartment OCID>      
       Allow dynamic-group <OKE Instances Dynamic Group> to {CLUSTER_UPDATE} in compartment id <OKE Compartment OCID>
-      Allow dynamic-group <OKE Instances Dynamic Group> to manage log-groups in compartment id <OKE Compartment OCID>
       Allow dynamic-group <OKE Instances Dynamic Group> to read log-content in compartment id <OKE Compartment OCID>
+      Allow dynamic-group <OKE Instances Dynamic Group> to read log-content in compartment id <ONM Compartment OCID>
+      Allow dynamic-group <OKE Instances Dynamic Group> to use log-groups in compartment id <OKE Compartment OCID>
+      Allow dynamic-group <OKE Instances Dynamic Group> to manage log-groups in compartment id <ONM Compartment OCID>
 
-      Allow dynamic-group <OKE Instances Dynamic Group> to use load-balancers in compartment id <LB Compartment OCID>
-      Allow dynamic-group <OKE Instances Dynamic Group> to manage log-groups in compartment id <LB Compartment OCID>
-      Allow dynamic-group <OKE Instances Dynamic Group> to read log-content in compartment id <LB Compartment OCID>
+      Allow dynamic-group <OKE Instances Dynamic Group> to manage serviceconnectors in compartment id <ONM Compartment OCID>
+      Allow any-user to {LOG_ANALYTICS_LOG_GROUP_UPLOAD_LOGS} in compartment id <Compartment OCID> where all {request.principal.type='serviceconnector', request.principal.compartment.id='<Compartment OCID>'}
 
-      Allow dynamic-group <OKE Instances Dynamic Group> to {SUBNET_UPDATE} in compartment id <Subnet Compartment OCID>
-      Allow dynamic-group <OKE Instances Dynamic Group> to manage log-groups in compartment id <Subnet Compartment OCID>
-      Allow dynamic-group <OKE Instances Dynamic Group> to read log-content in compartment id <Subnet Compartment OCID>
+      Allow service loganalytics to {VCN_READ,SUBNET_READ,LOAD_BALANCER_READ,CLUSTER_READ,VNIC_READ} in compartment id <OKE Compartment OCID>
       ```
-      OR
-      ```
-      Allow group <User Group> to manage orm-jobs in compartment id <ONM Compartment OCID>
-      Allow group <User Group> to manage orm-stacks in compartment id <ONM Compartment OCID>
-      Allow group <User Group> to read loganalytics-entity in compartment id <ONM Compartment OCID>
 
-      Allow group <User Group> to {CLUSTER_UPDATE} in compartment id <OKE Compartment OCID>
-      Allow group <User Group> to manage log-groups in compartment id <OKE Compartment OCID>
-      Allow group <User Group> to read log-content in compartment id <OKE Compartment OCID>
-
-      Allow group <User Group> to use load-balancers in compartment id <LB Compartment OCID>
-      Allow group <User Group> to manage log-groups in compartment id <LB Compartment OCID>
-      Allow group <User Group> to read log-content in compartment id <LB Compartment OCID>
-
-      Allow group <User Group> to {SUBNET_UPDATE} in compartment id <Subnet Compartment OCID>
-      Allow group <User Group> to manage log-groups in compartment id <Subnet Compartment OCID>
-      Allow group <User Group> to read log-content in compartment id <Subnet Compartment OCID>
-      ```
-    * Policy Statement for using tag namespaces. (*_Only required if defined tags are used._)
+      * Policy Statement for using tag namespaces. (*_Only required if defined tags are used_)
       ```
       Allow dynamic-group <OKE Instances Dynamic Group> to use tag-namespaces in tenancy where any {target.tag-namespace.name='example-ns-1', target.tag-namespace.name='example-ns-2'}
-      ```
-      OR
-      ```
-      Allow group <User Group> to use tag-namespaces in tenancy where any {target.tag-namespace.name='example-ns-1', target.tag-namespace.name='example-ns-2'}
       ```
   </details>
 
