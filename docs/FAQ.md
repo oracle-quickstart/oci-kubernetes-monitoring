@@ -468,7 +468,7 @@ The default AuthZ configuration for connecting to OCI Services from the monitori
 First you need to have a OCI local user (preferably a dedicated user created only for this use-case so that you can restrict the policies accordingly) and OCI user group. Then you need to generate API Signing key and policies. 
 
   * Refer [OCI API Signing Key](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/apisigningkey.htm) for instructions on how to generate API Signing key for a given user.
-  * Refer [this](README.md#pre-requisites) for creating required policies.
+  * Refer [this](../README.md#pre-requisites) for creating required policies.
 
 #### Helm configuration
 
