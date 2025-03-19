@@ -87,6 +87,7 @@ It does extensive enrichment of logs, metrics and object information to enable c
       - **Note**: _The policy definition for LOG_ANALYTICS_DISCOVERY_UPLOAD permission only works at tenancy level and thereby it must be created at tenancy level._
   
     * Policy statements for providing necessary access to enable OKE infra discovery and service logs collection.
+        * Only required if service logs [collection is enabled](docs/FAQ.md#how-to-enable-oke-infra-discovery-and-corresponding-infra-services-log-collection)
       ```
       Allow dynamic-group <OKE Instances Dynamic Group> to {CLUSTER_READ} in compartment id <OKE Compartment OCID> where target.cluster.id='<OKE Cluster OCID>'
       Allow dynamic-group <OKE Instances Dynamic Group> to read cluster-node-pools in compartment id <OKE Compartment OCID>
