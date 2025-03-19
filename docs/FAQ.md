@@ -617,7 +617,7 @@ To enable node pool discovery across all compartments in the tenancy, customers 
 oci-onm-logan:
   k8sDiscovery:
     probe_all_compartments: true
-    tenancy_ocid: ${TENANT_OCID}
+    tenancy_ocid: <TENANT_OCID>
 ```
 
 #### Policies Required
@@ -626,10 +626,9 @@ In addition to the configuration changes mentioned above, the following policies
 
 ```plaintext
 Allow dynamic-group ${OKE_DYNAMIC_GROUP} to inspect compartments in tenancy
-Allow dynamic-group ${OKE_DYNAMIC_GROUP} to read cluster-node-pools in tenancy/compartment id ${COMPARTMENT_OCID}
-Allow dynamic-group ${OKE_DYNAMIC_GROUP} to inspect subnets in tenancy/compartment id ${COMPARTMENT_OCID}
-Allow dynamic-group ${OKE_DYNAMIC_GROUP} to use log-groups in tenancy/compartment id ${COMPARTMENT_OCID}
-Allow dynamic-group ${OKE_DYNAMIC_GROUP} to {SUBNET_UPDATE} in tenancy/compartment id ${COMPARTMENT_OCID}
-Allow dynamic-group ${OKE_DYNAMIC_GROUP} to read log-content in tenancy/compartment id ${COMPARTMENT_OCID}
-Allow service loganalytics to {VCN_READ,SUBNET_READ,LOAD_BALANCER_READ,CLUSTER_READ,VNIC_READ} in tenancy/compartment id ${COMPARTMENT_OCID}
+Allow dynamic-group ${OKE_DYNAMIC_GROUP} to read cluster-node-pools in tenancy
+Allow dynamic-group ${OKE_DYNAMIC_GROUP} to inspect subnets in tenancy
+Allow dynamic-group ${OKE_DYNAMIC_GROUP} to {SUBNET_UPDATE} in tenancy
+Allow dynamic-group ${OKE_DYNAMIC_GROUP} to use log-groups in tenancy
+Allow dynamic-group ${OKE_DYNAMIC_GROUP} to read log-content in tenancy
 ```
