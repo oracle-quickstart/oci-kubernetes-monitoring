@@ -186,16 +186,16 @@ variable "opt_import_dashboards" {
 ##  Advanced Configuration
 ####
 
-# Option to hidden stack configuration
-variable "show_advanced_options" {
-  type    = bool
-  default = false
-}
-
 # Stack Deployment Options
 variable "stack_deployment_option" {
   type    = string
   default = "Full"
+}
+
+# Enable service logs collection for OKE infra components
+variable "enable_service_log" {
+  type    = bool
+  default = false
 }
 
 # Helm Chart version to deploy
@@ -247,7 +247,13 @@ variable "toggle_use_local_helm_chart" {
 # Ref - https://confluence.oci.oraclecorp.com/display/TERSI/FAQs#FAQs-Q.HowdoItestonPre-ProdenvironmentORHowdoImakeTerraformproviderpointtocustomControlPlane(CP)endpoint
 
 variable "CLIENT_HOST_OVERRIDES" {
-  description = "The client host overrides for the terraform provider with Object Storage endpoint overridden."
+  description = "The client host overrides for the terraform provider."
+  type        = string
+  default     = null
+}
+
+variable "LOGAN_ENDPOINT" {
+  description = "Logging Analytics Endpoint."
   type        = string
   default     = null
 }

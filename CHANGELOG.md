@@ -1,5 +1,13 @@
 # Change Log
 
+
+## 2025-03-19
+### Added
+- OKE Infrastructure Discovery: Automatic detection of associated VCNs, subnets, and load balancers.
+- OKE Infrastructure Logs Collection: Enables log collection for infrastructure components associated with the OKE cluster.
+  - Disabled by default. Refer to the FAQs for steps to enable this feature.
+
+
 ## 2025-02-07
 ### Changed
 - Management Agent container image has been updated to version 1.7.0

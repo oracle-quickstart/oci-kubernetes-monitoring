@@ -21,6 +21,11 @@ variable "oke_cluster_ocid" {
   type = string
 }
 
+# Create policies for service logs discovery
+variable "create_service_discovery_policies" {
+  type = string
+}
+
 # Save data resources in local_file for debug purposes
 variable "debug" {
   type    = bool
