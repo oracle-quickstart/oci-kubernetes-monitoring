@@ -43,6 +43,15 @@
   {{- end -}}
 {{- end -}}
 
+#ociLAClusterEntityID
+{{- define "logan.ociLAClusterEntityID" -}}
+  {{- if .Values.ociLAClusterEntityID -}}
+    {{ include "common.tplvalues.render" ( dict "value" .Values.ociLAClusterEntityID "context" .) }}
+  {{- else -}}
+    {{- "UNDEFINED" -}}
+  {{- end -}}
+{{- end -}}
+
 #kubernetesClusterName
 {{- define "logan.kubernetesClusterName" -}}
   {{- if .Values.kubernetesClusterName -}}

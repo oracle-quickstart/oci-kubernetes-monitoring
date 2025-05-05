@@ -43,7 +43,7 @@ ociDomain:
 # -- Kubernetes Namespace for deploying monitoring resources deployed by this chart.
 namespace: "{{ .Values.global.namespace }}"
 
-# -- Resoure Name Prefix: Wherever allowed, this prefix will be used with all resources used by this chart
+# -- Resource Name Prefix: Wherever allowed, this prefix will be used with all resources used by this chart
 resourceNamePrefix: "{{ .Values.global.resourceNamePrefix }}"
 
 # --  Kubernetes ServiceAccount
@@ -53,7 +53,7 @@ image:
    # Image pull secrets for. Secret must be in the namespace defined by namespace
    imagePullSecrets:
    # -- Replace this value with actual docker image url
-   url: container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.6.0
+   url: container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.7.0
    # -- Image pull policy
    imagePullPolicy: Always
 
@@ -364,6 +364,15 @@ fluentd:
             # The regular expression pattern for the starting line in case of multi-line logs.
             multilineStartRegExp: /^\S\d{2}\d{2}\s+[^\:]+:[^\:]+:[^\.]+\.\d{0,3}/
 
+         # Config specific to EBPF TCPCONNECT Network logs collection
+         tcpconnect:
+            # The path to the source files.
+            path: /var/log/containers/*-tcpconnect*.log # TODO- Check if this will render as expected, suspecting it won't
+            # Logging Analytics log source to use for parsing and processing the logs: TCP CONNECT Logs
+            ociLALogSourceName: "Kubernetes TCP Connect Logs"
+            # Network logs Polling frequency in seconds
+            interval: 30
+
          # Config specific to Kubernetes Audit Logs Collection
          kube-audit:
             # The path to the source files.
@@ -600,6 +609,7 @@ fluentd:
          - '"/var/log/containers/etcd-*.log"'
          - '"/var/log/containers/kube-controller-manager-*.log"'
          - '"/var/log/containers/kube-scheduler-*.log"'
+         - '"/var/log/containers/*-tcpconnect-*.log"'
       # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
       #worker: 1
       # -- To set timezone override for genericContainerLogs (applies only to log records without explicit timezone identifier in the record itself)
