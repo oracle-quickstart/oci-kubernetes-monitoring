@@ -36,6 +36,9 @@ spec:
               mountPath: {{ .Values.oci.path }}
               readOnly: true
             {{- end }}
+            {{- if .Values.resources }}
+            resources: {{- toYaml .Values.resources | nindent 14 }}
+            {{- end }}
             command:
             {{- /* object discovery script */}}
               - bundle
