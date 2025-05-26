@@ -468,7 +468,7 @@ The default AuthZ configuration for connecting to OCI Services from the monitori
 First you need to have a OCI local user (preferably a dedicated user created only for this use-case so that you can restrict the policies accordingly) and OCI user group. Then you need to generate API Signing key and policies. 
 
   * Refer [OCI API Signing Key](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/apisigningkey.htm) for instructions on how to generate API Signing key for a given user.
-  * Refer [this](README.md#pre-requisites) for creating required policies.
+  * Refer [this](../README.md#pre-requisites) for creating required policies.
 
 #### Helm configuration
 
@@ -562,6 +562,64 @@ oci-onm-logan:
   volumes:
     ..
     containerdataHostPath: /var/lib/docker/containers
+```
+
+### OKE control plane and related infra components service logs collection
+
+#### How to enable OKE infra discovery and corresponding infra services log collection
+
+To enable the service logs (OKE control plane, load balancer and subnet flow logs) collection, set following helm variable to `true`.
+**In addition to the below configuration change, you must create the required policies as mentioned under** [prerequisite](/README.md#pre-requisites) **section in readme.**
+
+```yaml
+oci-onm-logan:
+  ..
+  ..
+  k8sDiscovery:
+  ..
+  ..
+    infra:
+      ..
+      .. 
+      enable_service_log: true
+      .. 
+      .. 
+```
+
+#### How to enable the discovery of node subnet and associated flow logs, when node pool subnet's compartment is different than OKE's compartment ?
+
+By default, the discovery job only collects information from node pools that are in the same compartment as the OKE cluster. 
+
+To enable node pool discovery across all compartments in the tenancy, customers can set the following properties in the Helm chart:
+
+```yaml
+oci-onm-logan:
+  ..
+  ..
+  k8sDiscovery:
+  ..
+  ..
+    infra:
+      ..
+      .. 
+      probe_all_compartments: true
+      tenancy_ocid: <TENANT_OCID>
+      .. 
+      .. 
+```
+
+##### Policies Required
+
+In addition to the configuration changes mentioned above, the following policies must be modified (if you have opted for the policy creation during the initial setup) or added either at tenancy level or for all relevant compartments in the scope.
+
+```plaintext
+Allow dynamic-group ${OKE_DYNAMIC_GROUP} to inspect compartments in tenancy
+Allow dynamic-group ${OKE_DYNAMIC_GROUP} to read cluster-node-pools in tenancy
+Allow dynamic-group ${OKE_DYNAMIC_GROUP} to inspect subnets in tenancy
+Allow dynamic-group ${OKE_DYNAMIC_GROUP} to {SUBNET_UPDATE} in tenancy
+Allow dynamic-group ${OKE_DYNAMIC_GROUP} to use log-groups in tenancy
+Allow dynamic-group ${OKE_DYNAMIC_GROUP} to read log-content in tenancy
+Allow service loganalytics to {VCN_READ,SUBNET_READ,VNIC_READ} in tenancy
 ```
 
 ### Control plane log collection for AWS EKS (Amazon Elastic Kubernetes Service)

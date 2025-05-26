@@ -1,5 +1,24 @@
 # Change Log
 
+
+## 2025-03-19
+### Added
+- OKE Infrastructure Discovery: Automatic detection of associated VCNs, subnets, and load balancers.
+- OKE Infrastructure Logs Collection: Enables log collection for infrastructure components associated with the OKE cluster.
+  - Disabled by default. Refer to the FAQs for steps to enable this feature.
+
+
+## 2025-02-07
+### Changed
+- Management Agent container image has been updated to version 1.7.0
+
+## 2025-02-03
+### Changed
+- Fluentd collector container image uptake to 1.5.3 having few gem updates related to vulnerability fixes.
+  - Similar updates to build files (Dockerfile, Gemfile) that helps building custom container image.
+### Removed
+- Removed the deprecated folders (debian-deprecated, oraclelinux/8-deprecated) and corresponding build files from docker-images/v1.    
+
 ## 2024-11-20
 ### Added
 - Support for new OCI Regions which are not yet supported through OCI Ruby SDK by default.
