@@ -9,7 +9,7 @@ global:
   # -- OKE OCID for an OKE cluster or an unique ID for other Kubernetes clusters.
   kubernetesClusterID:
   # -- Provide a unique name for the cluster. This would help uniquely identifying the logs and metrics data at OCI Logging Analytics and OCI Monitoring respectivelt, when moitoring multiple clustersa
-  kubernetesClusterName:
+  kubernetesClusterName: k8s_test_inventory
 
 oci-onm-common:
   # -- By default, a cluster role, cluster role binding and serviceaccount will be created for the monitoring pods to be able to (readonly) access various objects within the cluster, to support collection of various telemetry data. You may set this to false and provide your own serviceaccount which has the necessary cluster role(s) binded to it. Refer, README for the cluster role definition and other details.
@@ -24,6 +24,7 @@ oci-onm-common:
   serviceAccount: "{{ .Values.global.resourceNamePrefix }}"
 
 oci-onm-logan:
+  enabled: false
   oci-onm-common:
     enabled: false
   namespace: "{{ .Values.global.namespace }}"
@@ -56,6 +57,6 @@ oci-onm-mgmt-agent:
     # Follow steps documented at https://github.com/oracle/docker-images/tree/main/OracleManagementAgent to build docker image.
     image:
       # Replace this value with actual docker image URL for Management Agent
-      url: container-registry.oracle.com/oci_observability_management/oci-management-agent:1.6.0
+      url: container-registry.oracle.com/oci_observability_management/oci-management-agent:1.8.0
       # Image secrets to use for pulling container image (base64 encoded content of ~/.docker/config.json file)
       secret:
