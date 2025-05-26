@@ -1,5 +1,5 @@
 # 1. Introduction
-Automatic Prometheus collection is a feature that allows the Agent to automatically find and identify metrics emitting pods to monitor, eliminating the need to manually create the Prometheus configuration to collect metrics.
+Automatic Prometheus collection allows the Agent to automatically find and identify metrics emitting pods to monitor, eliminating the need to manually create the Prometheus configuration to collect metrics.
 
 # 2. Identification of metric collection configuration
 
