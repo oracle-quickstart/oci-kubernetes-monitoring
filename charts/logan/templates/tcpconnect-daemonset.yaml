@@ -8,20 +8,20 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: {{ $resourceNamePrefix }}-tcpconnect
+  name: {{ $resourceNamePrefix }}-logan-tcpconnect
   namespace: {{ include "logan.namespace" . }}
   labels:
-    app: {{ $resourceNamePrefix }}-tcpconnect
+    app: {{ $resourceNamePrefix }}-logan-tcpconnect
     version: v1
 spec:
   selector:
     matchLabels:
-      app: {{ $resourceNamePrefix }}-tcpconnect
+      app: {{ $resourceNamePrefix }}-logan-tcpconnect
       version: v1
   template:
     metadata:
       labels:
-        app: {{ $resourceNamePrefix }}-tcpconnect
+        app: {{ $resourceNamePrefix }}-logan-tcpconnect
         version: v1
     spec:
       serviceAccountName: {{ include "logan.serviceAccount" . }}
@@ -35,7 +35,7 @@ spec:
       - name: {{ .Values.image.imagePullSecrets }}
       {{- end}}
       containers:
-      - name: {{ $resourceNamePrefix }}-tcpconnect
+      - name: {{ $resourceNamePrefix }}-logan-tcpconnect
         image: {{ .Values.image.url }}
         command:
         - /bin/bash
@@ -50,10 +50,11 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: spec.nodeName
-        resources:
-          requests:
-            cpu: 50m
-            memory: 50Mi
+        {{- if .Values.resourceOverrides.tcpconnectDaemonset }}
+        resources: {{- toYaml .Values.resourceOverrides.tcpconnectDaemonset | nindent 10 }}
+        {{- else if .Values.resources }}
+        resources: {{- toYaml .Values.resources | nindent 10 }}
+        {{- end }}
         imagePullPolicy: {{ default "IfNotPresent" .Values.image.imagePullPolicy }}
         securityContext:
           capabilities:

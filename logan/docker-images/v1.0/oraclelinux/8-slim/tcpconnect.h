@@ -1,8 +1,8 @@
-// SPDX-License-Identifier: GPL-2.0
-// Copyright (c) 2020 Anton Protopopov
-//
 // Copyright (c) 2025, Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+//
+// SPDX-License-Identifier: GPL-2.0
+// Copyright (c) 2020 Anton Protopopov
 #ifndef __TCPCONNECT_H
 #define __TCPCONNECT_H
 

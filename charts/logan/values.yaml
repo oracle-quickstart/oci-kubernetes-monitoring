@@ -1,4 +1,4 @@
-# Copyright (c) 2023, 2024, Oracle and/or its affiliates.
+# Copyright (c) 2023, 2025, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 global:
@@ -97,7 +97,7 @@ enableEKSControlPlaneLogs: false
 #   value: ENV_VARIABLE_VALUE
 extraEnv: []
 
-# Requests and limits for Memory and CPU
+# Requests and limits for Memory and CPU [Defaults]
 resources:
    # -- Limits
    limits:
@@ -106,6 +106,30 @@ resources:
    requests:
       cpu: 100m
       memory: 250Mi
+
+# Requests and limits for Memory and CPU [Overrides]
+resourceOverrides:
+   tcpconnectDaemonset:
+      # -- Resource requests
+      requests:
+         cpu: 10m
+         memory: 50Mi
+   fluentdDaemonset:
+      # -- Limits
+      limits:
+         memory: 500Mi
+      # -- Resource requests
+      requests:
+         cpu: 100m
+         memory: 250Mi
+   fluentdDeployment:
+      # -- Limits
+      limits:
+         memory: 500Mi
+      # -- Resource requests
+      requests:
+         cpu: 100m
+         memory: 250Mi
 
 # -- @param extraVolumes Extra volumes.
 # Example:
@@ -367,7 +391,7 @@ fluentd:
          # Config specific to EBPF TCPCONNECT Network logs collection
          tcpconnect:
             # The path to the source files.
-            path: /var/log/containers/*-tcpconnect*.log # TODO- Check if this will render as expected, suspecting it won't
+            path: /var/log/containers/*-logan-tcpconnect*.log
             # Logging Analytics log source to use for parsing and processing the logs: TCP CONNECT Logs
             ociLALogSourceName: "Kubernetes TCP Connect Logs"
             # Network logs Polling frequency in seconds
@@ -609,7 +633,7 @@ fluentd:
          - '"/var/log/containers/etcd-*.log"'
          - '"/var/log/containers/kube-controller-manager-*.log"'
          - '"/var/log/containers/kube-scheduler-*.log"'
-         - '"/var/log/containers/*-tcpconnect-*.log"'
+         - '"/var/log/containers/*-logan-tcpconnect-*.log"'
       # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
       #worker: 1
       # -- To set timezone override for genericContainerLogs (applies only to log records without explicit timezone identifier in the record itself)

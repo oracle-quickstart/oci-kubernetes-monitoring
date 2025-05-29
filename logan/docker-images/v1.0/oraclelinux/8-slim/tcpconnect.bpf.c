@@ -1,10 +1,10 @@
+// Copyright (c) 2025, Oracle and/or its affiliates.
+// Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+//
 // SPDX-License-Identifier: GPL-2.0
 // Copyright (c) 2020 Anton Protopopov
 //
 // Based on tcpconnect(8) from BCC by Brendan Gregg
-//
-// Copyright (c) 2025, Oracle and/or its affiliates.
-// Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 #include <vmlinux.h>
 
 #include <bpf/bpf_helpers.h>
