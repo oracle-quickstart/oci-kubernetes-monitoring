@@ -82,6 +82,11 @@ ociLAClusterEntityID:
 # In Kubernetes environments where SELinux mode is enforced, set this flag to 'true' to allow fluentd pods to access log files.
 privileged: false
 
+# -- Enables collection of TCPConnect logs
+# Default: 'true'. 
+# This is required for automated discovery of workload <-> workload relationships in your cluster
+enableTCPConnectLogs: true
+
 # -- Enables collection of AWS EKS Control Plane logs through CloudWatch or S3 Fluentd plugin
 enableEKSControlPlaneLogs: false
 

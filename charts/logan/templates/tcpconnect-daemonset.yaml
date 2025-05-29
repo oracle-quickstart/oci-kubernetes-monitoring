@@ -2,6 +2,7 @@
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 ---
+{{- if .Values.enableTCPConnectLogs }}
 {{- $authtype := .Values.authtype | lower }}
 {{- $imagePullSecrets := .Values.image.imagePullSecrets }}
 {{- $resourceNamePrefix := (include "logan.resourceNamePrefix" .) }}
@@ -69,3 +70,4 @@ spec:
       schedulerName: default-scheduler
       securityContext: {}
       terminationGracePeriodSeconds: 30
+{{- end }}
