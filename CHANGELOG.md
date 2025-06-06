@@ -1,5 +1,25 @@
 # Change Log
 
+# 2025-06-09
+
+### Added
+- Introduced a new DaemonSet that uses eBPF (Extended Berkeley Packet Filter) to capture TCP connection logs, enabling visualization of application-level communication within the Kubernetes cluster.
+- OCI Console integration supporting new features:
+  - **Network View:** Dynamically discover and visualize workload-to-workload communication within the cluster.
+  - **Infrastructure View:** Visualize OKE infrastructure components such as Subnets, Load Balancers, Nodes, and their interactions.
+  - **Kubernetes Spec Change Detection (View Insights):** Monitor changes/diffs of 50+ key properties across primary Kubernetes workload types:
+    - DaemonSet
+    - Deployment
+    - ReplicaSet
+    - StatefulSet
+    - CronJob & Job
+    - Exclusion: Managed workloads (ex - A Job created via a CronJob) are not tracked
+
+  **Note:** Additional enhancements and features are available in the OCI Console beyond those listed here. Please refer to the OCI Log Analytics Release Notes for more details.
+
+### Changed
+- `kubernetesClusterID` (in the Helm chart) is now a mandatory field. *(This is not backward compatible.)*
+- Updated resource limits for Log Analytics pods and workloads.
 
 ## 2025-03-19
 ### Added

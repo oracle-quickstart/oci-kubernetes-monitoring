@@ -57,6 +57,8 @@ spec:
         resources: {{- toYaml .Values.resources | nindent 10 }}
         {{- end }}
         imagePullPolicy: {{ default "IfNotPresent" .Values.image.imagePullPolicy }}
+        # The container runs in privileged mode, but with only the CAP_BPF capability enabled. 
+        # This allows it to execute the required BPF programs while maintaining a minimal security footprint.
         securityContext:
           capabilities:
             add:

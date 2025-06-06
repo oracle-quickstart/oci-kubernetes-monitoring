@@ -82,9 +82,9 @@ ociLAClusterEntityID:
 # In Kubernetes environments where SELinux mode is enforced, set this flag to 'true' to allow fluentd pods to access log files.
 privileged: false
 
-# -- Enables collection of TCPConnect logs
-# Default: 'true'. 
-# This is required for automated discovery of workload <-> workload relationships in your cluster
+# -- Enables the collection of TCP connect logs.
+# Default: true
+# Warning: Disabling this will prevent automatic discovery of workload-to-workload communication within the cluster.
 enableTCPConnectLogs: true
 
 # -- Enables collection of AWS EKS Control Plane logs through CloudWatch or S3 Fluentd plugin
@@ -114,11 +114,13 @@ resources:
 
 # Requests and limits for Memory and CPU [Overrides]
 resourceOverrides:
+   # Responsible for TCP connection events collection.
    tcpconnectDaemonset:
       # -- Resource requests
       requests:
          cpu: 10m
          memory: 50Mi
+   # Responsible for log collection.
    fluentdDaemonset:
       # -- Limits
       limits:
@@ -127,6 +129,7 @@ resourceOverrides:
       requests:
          cpu: 100m
          memory: 250Mi
+   # Responsible for the collection of EKS control plane logs.
    fluentdDeployment:
       # -- Limits
       limits:

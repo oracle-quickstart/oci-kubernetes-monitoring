@@ -45,11 +45,7 @@
 
 #ociLAClusterEntityID
 {{- define "logan.ociLAClusterEntityID" -}}
-  {{- if .Values.ociLAClusterEntityID -}}
-    {{ include "common.tplvalues.render" ( dict "value" .Values.ociLAClusterEntityID "context" .) }}
-  {{- else -}}
-    {{- "UNDEFINED" -}}
-  {{- end -}}
+  {{ include "common.tplvalues.render" ( dict "value" .Values.ociLAClusterEntityID "context" .) }}
 {{- end -}}
 
 #kubernetesClusterName
