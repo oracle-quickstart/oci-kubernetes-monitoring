@@ -44,7 +44,7 @@ spec:
         - --
         args:
         - /usr/bin/tcpconnect -e
-        - -i {{ .Values.fluentd.kubernetesSystem.logs.tcpconnect.interval }}
+        - -i 30
         env:
         - name: K8S_NODE_NAME
           valueFrom:

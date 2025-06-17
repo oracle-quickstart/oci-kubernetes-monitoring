@@ -84,7 +84,7 @@ privileged: false
 
 # -- Enables the collection of TCP connect logs.
 # Default: true
-# Warning: Disabling this will prevent automatic discovery of workload-to-workload communication within the cluster.
+# Note: Disabling this will prevent automatic discovery of workload-to-workload communication within the cluster.
 enableTCPConnectLogs: true
 
 # -- Enables collection of AWS EKS Control Plane logs through CloudWatch or S3 Fluentd plugin
@@ -114,13 +114,13 @@ resources:
 
 # Requests and limits for Memory and CPU [Overrides]
 resourceOverrides:
-   # Responsible for TCP connection events collection.
+   # Responsible for TCP connect logs collection aiding discovery of workload to workload relationships.
    tcpconnectDaemonset:
       # -- Resource requests
       requests:
          cpu: 10m
          memory: 50Mi
-   # Responsible for log collection.
+   # Responsible for various logs collection.
    fluentdDaemonset:
       # -- Limits
       limits:
@@ -402,8 +402,6 @@ fluentd:
             path: /var/log/containers/*-logan-tcpconnect*.log
             # Logging Analytics log source to use for parsing and processing the logs: TCP CONNECT Logs
             ociLALogSourceName: "Kubernetes TCP Connect Logs"
-            # Network logs Polling frequency in seconds
-            interval: 30
 
          # Config specific to Kubernetes Audit Logs Collection
          kube-audit:
@@ -727,7 +725,7 @@ k8sDiscovery:
    infra:
       # Enable Logs collection for OKE's OCI infra components - LB, OKE Cluster control plane, Subnet logs etc
       # Not supported for Non OKE clusters
-      enable_service_log: false
+      enable_service_log: true
       # Discovers OKE Node Pools in all compartments of tenant
       # when false, Node Pools present in OKE's compartment are discovered
       probe_all_compartments: false

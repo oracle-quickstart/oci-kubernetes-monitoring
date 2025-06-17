@@ -18,7 +18,7 @@ Refer [here](../README.md#installation-instructions).
 | :----: | :----: | :----: | :----: | :----: | 
 | Namespace |	All |	oci-onm	| Namespace in which all the resources would be installed. | There is a provision to choose pre-created namespace or to create a different namespace and then use it. |
 | DaemonSet	| Logs | oci-onm-logan | Responsible for log collection. | |
-| DaemonSet	| Logs | oci-onm-logan-tcpconnect | Responsible for TCP connection events collection. | The pods in this DaemonSet run in privileged mode, but with only the CAP_BPF capability enabled. This allows them to execute the required BPF programs while maintaining a minimal security footprint. |
+| DaemonSet	| Logs | oci-onm-logan-tcpconnect | Responsible for TCP connect logs collection aiding discovery of workload to workload relationships. | The pods in this DaemonSet run in privileged mode, but with only the CAP_BPF capability which enables the pods to run the required eBPF program. |
 | CronJob	| Discovery, Kubernetes Objects State |	oci-onm-discovery |	Responsible for Kubernetes discovery and objects state collection. | |	
 | StatefulSet |	Metrics	| oci-onm-mgmt-agent | Responsible for metrics collection. | |
 | ConfigMap |	Logs | oci-onm-logs |	Contains Fluentd configuration aiding the log collection. | |	
@@ -625,11 +625,13 @@ Allow service loganalytics to {VCN_READ,SUBNET_READ,VNIC_READ} in tenancy
 
 ### Why does the TcpConnect DaemonSet use privileged mode? Can it be disabled?
 
-The tcpconnect DaemonSet runs an eBPF program to collect TCP connection events, which are essential for dynamically mapping communication between workloads in the cluster. These relationships are visualized in the network topology view.
+TcpConnect DaemonSet is responsible for TCP connect logs collection aiding discovery of workload to workload relationships.
 
-To enable the eBPF program, the DaemonSet requires privileged mode with the CAP_BPF capability.
+To be able to run the required eBPF program, the pods needs to run in privileged mode but restricting to CAP_BPF capability only.
 
-You can disable this feature by setting the following property to false:
+If you need to disable this feature, set the following property to false:
+
+> Note: Disabling this will prevent automatic discovery of workload-to-workload communication within the cluster, resulting in an empty network topology view in the OCI Console.
 
 ```yaml
 ...
@@ -641,8 +643,6 @@ oci-onm-logan:
   ..
   ..
 ```
-
-**Warning:** Warning: Disabling this will prevent automatic discovery of workload-to-workload communication within the cluster, resulting in an empty network topology view in the OCI Console.
 
 ### Control plane log collection for AWS EKS (Amazon Elastic Kubernetes Service)
 

@@ -1,25 +1,17 @@
 # Change Log
 
-# 2025-06-09
-
+# 2025-06-17
 ### Added
-- Introduced a new DaemonSet that uses eBPF (Extended Berkeley Packet Filter) to capture TCP connection logs, enabling visualization of application-level communication within the Kubernetes cluster.
+- Introduced a new DaemonSet that uses eBPF (Extended Berkeley Packet Filter) to capture TCP connection logs and builds application/network topology representing workload to workload relationships within the Kubernetes cluster.
+  - To be able to run the required eBPF program, the pods needs to run in privileged mode but restricting to CAP_BPF capability only.
+- New helm variable to control the resource limits at individual logan workloads.
+- Enables OKE infra discovery and service logs collection (default)
 - OCI Console integration supporting new features:
-  - **Network View:** Dynamically discover and visualize workload-to-workload communication within the cluster.
-  - **Infrastructure View:** Visualize OKE infrastructure components such as Subnets, Load Balancers, Nodes, and their interactions.
-  - **Kubernetes Spec Change Detection (View Insights):** Monitor changes/diffs of 50+ key properties across primary Kubernetes workload types:
-    - DaemonSet
-    - Deployment
-    - ReplicaSet
-    - StatefulSet
-    - CronJob & Job
-    - Exclusion: Managed workloads (ex - A Job created via a CronJob) are not tracked
-
-  **Note:** Additional enhancements and features are available in the OCI Console beyond those listed here. Please refer to the OCI Log Analytics Release Notes for more details.
+  - Topology : New Views (Infra and Network) along with Platform.
+  - View Insights for Workloads including capabilities to view the detailed spec of a workload, monitor the changes to the spec of a workload, create in-line labels for issues etc.
 
 ### Changed
 - `kubernetesClusterID` (in the Helm chart) is now a mandatory field. *(This is not backward compatible.)*
-- Updated resource limits for Log Analytics pods and workloads.
 
 ## 2025-03-19
 ### Added
