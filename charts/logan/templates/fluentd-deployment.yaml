@@ -1,4 +1,4 @@
-# Copyright (c) 2023, 2024, Oracle and/or its affiliates.
+# Copyright (c) 2023, 2025, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 ---
@@ -61,7 +61,9 @@ spec:
           {{- if .Values.extraEnv }}
           {{- toYaml .Values.extraEnv | nindent 10 }}
           {{- end }}
-        {{- if .Values.resources }}
+        {{- if .Values.resourceOverrides.fluentdDeployment }}
+        resources: {{- toYaml .Values.resourceOverrides.fluentdDeployment | nindent 10 }}
+        {{- else if .Values.resources }}
         resources: {{- toYaml .Values.resources | nindent 10 }}
         {{- end }}
         volumeMounts:

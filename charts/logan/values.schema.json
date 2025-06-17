@@ -7,7 +7,8 @@
     "image",
     "ociLANamespace",
     "ociLALogGroupID",
-    "fluentd"
+    "fluentd",
+    "ociLAClusterEntityID"
   ],
   "properties": {
     "image": {
@@ -64,6 +65,9 @@
       "type": "string",
       "minLength": 3,
       "maxLength": 63
+    },
+    "ociLAClusterEntityID": {
+      "type": "string"
     }
   }
 }

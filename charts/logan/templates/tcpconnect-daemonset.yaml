@@ -1,0 +1,75 @@
+# Copyright (c) 2025, Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
+
+---
+{{- if .Values.enableTCPConnectLogs }}
+{{- $authtype := .Values.authtype | lower }}
+{{- $imagePullSecrets := .Values.image.imagePullSecrets }}
+{{- $resourceNamePrefix := (include "logan.resourceNamePrefix" .) }}
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ $resourceNamePrefix }}-logan-tcpconnect
+  namespace: {{ include "logan.namespace" . }}
+  labels:
+    app: {{ $resourceNamePrefix }}-logan-tcpconnect
+    version: v1
+spec:
+  selector:
+    matchLabels:
+      app: {{ $resourceNamePrefix }}-logan-tcpconnect
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: {{ $resourceNamePrefix }}-logan-tcpconnect
+        version: v1
+    spec:
+      serviceAccountName: {{ include "logan.serviceAccount" . }}
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+      - key: node-role.kubernetes.io/control-plane
+        effect: NoSchedule
+      {{- if $imagePullSecrets }}
+      imagePullSecrets:
+      - name: {{ .Values.image.imagePullSecrets }}
+      {{- end}}
+      containers:
+      - name: {{ $resourceNamePrefix }}-logan-tcpconnect
+        image: {{ .Values.image.url }}
+        command:
+        - /bin/bash
+        - -c
+        - --
+        args:
+        - /usr/bin/tcpconnect -e
+        - -i 30
+        env:
+        - name: K8S_NODE_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: spec.nodeName
+        {{- if .Values.resourceOverrides.tcpconnectDaemonset }}
+        resources: {{- toYaml .Values.resourceOverrides.tcpconnectDaemonset | nindent 10 }}
+        {{- else if .Values.resources }}
+        resources: {{- toYaml .Values.resources | nindent 10 }}
+        {{- end }}
+        imagePullPolicy: {{ default "IfNotPresent" .Values.image.imagePullPolicy }}
+        # The container runs in privileged mode, but with only the CAP_BPF capability enabled. 
+        # This allows it to execute the required BPF programs while maintaining a minimal security footprint.
+        securityContext:
+          capabilities:
+            add:
+            - CAP_BPF
+          privileged: true
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        tty: true
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+{{- end }}

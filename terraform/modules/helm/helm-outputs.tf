@@ -9,7 +9,7 @@ locals {
     "helm install oci-kubernetes-monitoring oci-onm/oci-onm",
     "--set global.namespace=${var.kubernetes_namespace}",
     "--set global.kubernetesClusterID=${var.kubernetes_cluster_id}",
-    "--set global.kubernetesClusterName=${local.kubernetes_cluster_name}",
+    "--set global.kubernetesClusterName='${local.kubernetes_cluster_name}'",
     "--set oci-onm-logan.ociLALogGroupID=${var.oci_la_log_group_ocid}",
     "--set oci-onm-logan.ociLANamespace=${var.oci_la_namespace}",
     "--set oci-onm-logan.ociLAClusterEntityID=${var.oci_la_cluster_entity_ocid}",
