@@ -145,7 +145,7 @@
           }
         ],
         "providerId": "log-analytics",
-        "providerName": "Logging Analytics",
+        "providerName": "Log Analytics",
         "providerVersion": "3.0.0",
         "savedSearches": [
           {
@@ -222,7 +222,7 @@
               }
             ],
             "providerId": "log-analytics",
-            "providerName": "Logging Analytics",
+            "providerName": "Log Analytics",
             "providerVersion": "3.0.0",
             "screenImage": " ",
             "timeCreated": "2023-05-11T21:06:02.108Z",
@@ -431,7 +431,7 @@
               }
             ],
             "providerId": "log-analytics",
-            "providerName": "Logging Analytics",
+            "providerName": "Log Analytics",
             "providerVersion": "3.0.0",
             "screenImage": " ",
             "timeCreated": "2023-05-11T21:06:02.108Z",
@@ -655,7 +655,7 @@
               }
             ],
             "providerId": "log-analytics",
-            "providerName": "Logging Analytics",
+            "providerName": "Log Analytics",
             "providerVersion": "3.0.0",
             "screenImage": " ",
             "timeCreated": "2023-05-11T21:06:02.108Z",
@@ -937,7 +937,7 @@
               }
             ],
             "providerId": "log-analytics",
-            "providerName": "Logging Analytics",
+            "providerName": "Log Analytics",
             "providerVersion": "3.0.0",
             "screenImage": " ",
             "timeCreated": "2023-05-11T21:06:02.108Z",
@@ -1147,7 +1147,7 @@
               }
             ],
             "providerId": "log-analytics",
-            "providerName": "Logging Analytics",
+            "providerName": "Log Analytics",
             "providerVersion": "3.0.0",
             "screenImage": "...",
             "timeCreated": "2023-05-15T20:29:55.991Z",
@@ -1256,7 +1256,7 @@
               }
             ],
             "providerId": "log-analytics",
-            "providerName": "Logging Analytics",
+            "providerName": "Log Analytics",
             "providerVersion": "3.0.0",
             "screenImage": "...",
             "timeCreated": "2023-05-15T20:21:35.816Z",
@@ -1364,7 +1364,7 @@
               }
             ],
             "providerId": "log-analytics",
-            "providerName": "Logging Analytics",
+            "providerName": "Log Analytics",
             "providerVersion": "3.0.0",
             "screenImage": " ",
             "timeCreated": "2023-05-11T21:06:02.108Z",
@@ -1596,7 +1596,7 @@
               }
             ],
             "providerId": "log-analytics",
-            "providerName": "Logging Analytics",
+            "providerName": "Log Analytics",
             "providerVersion": "3.0.0",
             "screenImage": " ",
             "timeCreated": "2023-05-11T21:06:02.108Z",
@@ -1895,7 +1895,7 @@
             "nls": {},
             "parametersConfig": [],
             "providerId": "log-analytics",
-            "providerName": "Logging Analytics",
+            "providerName": "Log Analytics",
             "providerVersion": "2.0",
             "screenImage": " ",
             "timeCreated": "2023-05-11T21:06:02.108Z",
@@ -2063,7 +2063,7 @@
               }
             ],
             "providerId": "log-analytics",
-            "providerName": "Logging Analytics",
+            "providerName": "Log Analytics",
             "providerVersion": "3.0.0",
             "screenImage": " ",
             "timeCreated": "2023-05-11T21:06:02.108Z",
@@ -2336,7 +2336,7 @@
               }
             ],
             "providerId": "log-analytics",
-            "providerName": "Logging Analytics",
+            "providerName": "Log Analytics",
             "providerVersion": "3.0.0",
             "screenImage": " ",
             "timeCreated": "2023-05-11T21:06:02.108Z",

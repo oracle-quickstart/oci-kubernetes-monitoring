@@ -11,7 +11,7 @@ data:
   fluent.conf: |
     @include kubernetes.conf
 
-    # Match block to set info required for oci-logging-analytics fluentd outplugin
+    # Match block to set info required for oci-log-analytics fluentd outplugin
     <match k8s.**>
         @type oci-logging-analytics
         enable_ruby               true

@@ -71,7 +71,7 @@ module "iam" {
   }
 }
 
-# Create Logging Analytics Resources
+# Create Log Analytics Resources
 module "logan" {
   source = "../logan"
   count  = local.module_controls_enable_logan_module ? 1 : 0

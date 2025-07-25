@@ -2,7 +2,7 @@
 
 ### What are the offerings of OCI Kubernetes Monitoring Solution ? 
 
-OCI Kubernetes Monitoring Solution is a turn-key Kubernetes monitoring and management package based on OCI Logging Analytics cloud service, OCI Monitoring, OCI Management Agent and Fluentd. It helps collecting various telemetry data (logs, metrics, Kubernetes objects state) from your Kubernetes cluster into OCI Logging Analytics and OCI Monitoring). It also provides rich visual experiences using the collected information through Kubernetes Solution UX and pre-defined set of Dashboards. 
+OCI Kubernetes Monitoring Solution is a turn-key Kubernetes monitoring and management package based on OCI Log Analytics cloud service, OCI Monitoring, OCI Management Agent and Fluentd. It helps collecting various telemetry data (logs, metrics, Kubernetes objects state) from your Kubernetes cluster into OCI Log Analytics and OCI Monitoring). It also provides rich visual experiences using the collected information through Kubernetes Solution UX and pre-defined set of Dashboards. 
 
 ### What are the supported methods of installation ? 
 
@@ -50,7 +50,7 @@ _Additionally, the following volumes of type hostPath would be created and mount
 
 #### Logs
 
-The solutions offers collection of various logs of from the Kubernetes cluster into OCI Logging Analytics and offer rich analytics on top of the collected logs. Users may choose to customise the log collection by modifying the out of the box configuration that it provides.
+The solutions offers collection of various logs of from the Kubernetes cluster into OCI Log Analytics and offer rich analytics on top of the collected logs. Users may choose to customise the log collection by modifying the out of the box configuration that it provides.
 
 * Kubernetes System/Service Logs
     * The following logs are configured to be collected by default under this category. 
@@ -72,7 +72,7 @@ The solutions offers collection of various logs of from the Kubernetes cluster i
         * Ksplice Uptrack logs
         * Yum logs
 * Pod/Container (Application) Logs
-    * All the container logs available under `/var/log/containers/` on each worker nodes would be collected by default and processed using a generic Log Source named `Kubernetes Container Generic Logs`. However, users have ability to process different container logs using different Parsers/Sources at Logging Analytics. Refer [this](#custom-logs.md) section to learn on how to perform the customisations. 
+    * All the container logs available under `/var/log/containers/` on each worker nodes would be collected by default and processed using a generic Log Source named `Kubernetes Container Generic Logs`. However, users have ability to process different container logs using different Parsers/Sources at Log Analytics. Refer [this](#custom-logs.md) section to learn on how to perform the customisations. 
 
 #### Metrics
 
@@ -207,13 +207,13 @@ By default `/var/log` of underlying Kubernetes Node is mounted to `oci-onm-logan
     * By default, Fluentd pods responsible for logs collection uses single flush thread. Though this works for most of the moderate log volumes, this can be tuned by using the following helm variable : 
         * [`oci-onm-logan.fluentd.ociLoggingAnalyticsOutputPlugin.buffer.flush_thread_count`](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/charts/logan/values.yaml#L183)
 * Buffer size
-    * By default, the solution uses Fluentd’s file buffer with size set to 5GB as default buffer size, which is used for buffering of chunks in-case of delays in sending the data to OCI Logging Analytics and/or to handle outages at OCI without data loss. **We recommend** to modify/tune this to a size (to a higher or lower value) based on your environment and importance of data and other relevant factors. Use the following helm variable to modify the same : 
+    * By default, the solution uses Fluentd’s file buffer with size set to 5GB as default buffer size, which is used for buffering of chunks in-case of delays in sending the data to OCI Log Analytics and/or to handle outages at OCI without data loss. **We recommend** to modify/tune this to a size (to a higher or lower value) based on your environment and importance of data and other relevant factors. Use the following helm variable to modify the same : 
         * [`oci-onm-logan.fluentd.ociLoggingAnalyticsOutputPlugin.buffer.total_limit_size`](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/charts/logan/values.yaml#L186)
 * Read from Head
     * By default, the solution tries to collect all the pod logs available on the nodes since beginning. Use the following helm variable to alter the behaviour if you wish to collect only new logs after the installation of the solution : 
         * [`oci-onm-logan.fluentd.tailPlugin.readFromHead`](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/charts/logan/values.yaml#L227)
 
-### How to collect pod logs using custom OCI Logging Analytics Source instead of using Kubernetes Container Generic Logs Source ?
+### How to collect pod logs using custom OCI Log Analytics Source instead of using Kubernetes Container Generic Logs Source ?
 
 Refer [here](custom-logs.md). 
 
@@ -403,7 +403,7 @@ oci-onm-logan:
 
 ### How to set timezone override ?
 
-If a log record contains a timezone identifier, the **Logging Analytics service** will use that timezone. However, if there is no timezone information, the service defaults to **UTC**.
+If a log record contains a timezone identifier, the **Log Analytics service** will use that timezone. However, if there is no timezone information, the service defaults to **UTC**.
 
 To override this default, use the `timezone` parameter in your `values.yaml` file. This parameter can be configured at different levels.
 
@@ -513,7 +513,7 @@ Sample Error :
 E, [2023-08-07T10:17:13.710854 #18] ERROR -- : oci upload exception : Error while uploading the payload. { 'message': 'execution expired', 'status': 0, 'opc-request-id': 'D733ED0C244340748973D8A035068955', 'response-body': '' } 
 ```
 
-* Check if your OCNE setup configuration has `restrict-service-externalip` value set to `true` for kubernetes module. If yes, update it to false to allow access to Logging Analytics endpoint from containers. Refer [this](https://docs.oracle.com/en/operating-systems/olcne/1.3/orchestration/external-ips.html#8.4-Enabling-Access-to-all-externalIPs) for more details. If the issue is still not resolved,
+* Check if your OCNE setup configuration has `restrict-service-externalip` value set to `true` for kubernetes module. If yes, update it to false to allow access to Log Analytics endpoint from containers. Refer [this](https://docs.oracle.com/en/operating-systems/olcne/1.3/orchestration/external-ips.html#8.4-Enabling-Access-to-all-externalIPs) for more details. If the issue is still not resolved,
   * Check if your OCNE setup configuration has `selinux` value set to `enforcing` in globals section. If yes, you may need to start the fluentd containers in privileged mode. To achieve the same, set `privileged` to true in override_values.yaml.
 
 ```
@@ -625,7 +625,7 @@ Allow service loganalytics to {VCN_READ,SUBNET_READ,VNIC_READ} in tenancy
 ### Control plane log collection for AWS EKS (Amazon Elastic Kubernetes Service)
 
 AWS EKS control plane logs are available in CloudWatch. 
-Once the control plane log collection is enabled, the logs are directly pulled from CloudWatch and ingested into OCI Logging Analytics for further analysis. Alternatively, the logs can be routed over to S3 and pulled from there.
+Once the control plane log collection is enabled, the logs are directly pulled from CloudWatch and ingested into OCI Log Analytics for further analysis. Alternatively, the logs can be routed over to S3 and pulled from there.
 
 #### How to collect EKS control plane logs from CloudWatch?
 To collect the logs from CloudWatch directly, modify your override_values.yaml to add the following EKS specific variables. Various other variables are available in the values.yaml file and can be updated as necessary.
@@ -646,7 +646,7 @@ oci-onm-logan:
 ```
 
 #### How to collect EKS control plane logs from S3?
-If you run into [CloudWatch service quotas](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/cloudwatch_limits_cwl.html), you can alternatively route the logs to S3 and collect them. The control plane logs in S3 need to be in a specific format for the default log collection to work. Please refer [EKS CP Logs Streaming to S3](./eks-cp-logs.md) for instructions on how to configure streaming of Control Plane logs to S3 and subsequently collect them in OCI Logging Analytics. Once the streaming of logs is setup, modify your override_values.yaml to add the following EKS specific variables. Various other variables are available in the values.yaml file and can be updated as necessary.
+If you run into [CloudWatch service quotas](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/cloudwatch_limits_cwl.html), you can alternatively route the logs to S3 and collect them. The control plane logs in S3 need to be in a specific format for the default log collection to work. Please refer [EKS CP Logs Streaming to S3](./eks-cp-logs.md) for instructions on how to configure streaming of Control Plane logs to S3 and subsequently collect them in OCI Log Analytics. Once the streaming of logs is setup, modify your override_values.yaml to add the following EKS specific variables. Various other variables are available in the values.yaml file and can be updated as necessary.
 
 ```      
 ..       

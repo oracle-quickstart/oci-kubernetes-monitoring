@@ -68,7 +68,7 @@
 
 ## 2024-02-13
 ### Added
-- Changes to support Kubernetes Solution Pages Offering by OCI Logging Analytics.
+- Changes to support Kubernetes Solution Pages Offering by OCI Log Analytics.
   - A new role and role binding in the monitoring namespace (which defaults to oci-onm), to manage a ConfigMap.
   - A new CronJob to handle the Kubernetes Objects discovery and Objects Logs collection using oci-logging-analytics-kubernetes-discovery Gem.
 ### Changed
@@ -144,7 +144,7 @@
 ### Changed
 - Modified /var/log to mount as readonly by default, except when /var/log is set as baseDir (to store Fluentd state, buffer etc.,).
 ### Breaking Changes
-- Logging Analytics Fluentd Output plugin log location will be derived using baseDir instead using value of fluentd:ociLoggingAnalyticsOutputPlugin:plugin_log_location. The default value still remains unchanged and is a non breaking change except if it was modified to a different value.
+- Log Analytics Fluentd Output plugin log location will be derived using baseDir instead using value of fluentd:ociLoggingAnalyticsOutputPlugin:plugin_log_location. The default value still remains unchanged and is a non breaking change except if it was modified to a different value.
 
 ## 2022-08-30
 ### Added
@@ -159,7 +159,7 @@
 
 ## 2022-05-18
 ### Added
-- Metrics support from OCI Logging Analytics Fluentd Output Plugin.
+- Metrics support from OCI Log Analytics Fluentd Output Plugin.
 ### Security
 - fluent-plugin-kubernetes_metadata_filter version upgrade to 2.9.5 & fluent-plugin-kubernetes-objects version upgrade to 1.1.12, for kubeclient gem upgrade to ~4.9.3 containing security fixes.
 ### Breaking Changes
