@@ -18,6 +18,7 @@ Refer [here](../README.md#installation-instructions).
 | :----: | :----: | :----: | :----: | :----: | 
 | Namespace |	All |	oci-onm	| Namespace in which all the resources would be installed. | There is a provision to choose pre-created namespace or to create a different namespace and then use it. |
 | DaemonSet	| Logs | oci-onm-logan | Responsible for log collection. | |
+| DaemonSet	| Logs | oci-onm-logan-tcpconnect | Responsible for TCP connect logs collection aiding discovery of workload to workload relationships. | The pods in this DaemonSet run in privileged mode, but with only the CAP_BPF capability which enables the pods to run the required eBPF program. |
 | CronJob	| Discovery, Kubernetes Objects State |	oci-onm-discovery |	Responsible for Kubernetes discovery and objects state collection. | |	
 | StatefulSet |	Metrics	| oci-onm-mgmt-agent | Responsible for metrics collection. | |
 | ConfigMap |	Logs | oci-onm-logs |	Contains Fluentd configuration aiding the log collection. | |	
@@ -28,7 +29,7 @@ Refer [here](../README.md#installation-instructions).
 | Role | Discovery, Kubernetes Objects State | oci-onm | Contains pre-defined set of required rules/permissions at namespace level for the solution to work. |	|
 | RoleBinding |	Discovery, Kubernetes Objects State |	oci-onm |	Binding between Role and ServiceAccount. | |
 | Secret | Logs, Discovery, Kubernetes Objects State | oci-onm-oci-config |	To store OCI config credentials. | Created only when configFile based auth is chosen over the default instancePrincipal based auth. |
-| Deployment | Logs |	oci-onm	| Responsible for the collection of EKS control plane logs. | Created only when installing on EKS and setting `oci-onm-logan.enableEKSControlPlaneLogs` helm variable set to true. |
+| Deployment | Logs |	oci-onm-logan	| Responsible for the collection of EKS control plane logs. | Created only when installing on EKS and setting `oci-onm-logan.enableEKSControlPlaneLogs` helm variable set to true. |
 | ConfigMap |	Logs | oci-onm-ekscp-logs |	Contains Fluentd configuration aiding EKS control plane log collection. |	Created only when installing on EKS and setting `oci-onm-logan.enableEKSControlPlaneLogs` helm variable set to true. |
 | Service |	Metrics |	oci-onm-mgmt-agent | Kubernetes Service for Mgmt Agent Pods. | |	
 | ConfigMap |	Metrics |	oci-onm-metrics |	Configuration aiding Mgmt Agent Pods. | | 	
@@ -620,6 +621,27 @@ Allow dynamic-group ${OKE_DYNAMIC_GROUP} to {SUBNET_UPDATE} in tenancy
 Allow dynamic-group ${OKE_DYNAMIC_GROUP} to use log-groups in tenancy
 Allow dynamic-group ${OKE_DYNAMIC_GROUP} to read log-content in tenancy
 Allow service loganalytics to {VCN_READ,SUBNET_READ,VNIC_READ} in tenancy
+```
+
+### Why does the TcpConnect DaemonSet use privileged mode? Can it be disabled?
+
+TcpConnect DaemonSet is responsible for TCP connect logs collection aiding discovery of workload to workload relationships.
+
+To be able to run the required eBPF program, the pods needs to run in privileged mode but restricting to CAP_BPF capability only.
+
+If you need to disable this feature, set the following property to false:
+
+> Note: Disabling this will prevent automatic discovery of workload-to-workload communication within the cluster, resulting in an empty network topology view in the OCI Console.
+
+```yaml
+...
+...
+oci-onm-logan:
+  ..
+  ..
+  enableTCPConnectLogs: false
+  ..
+  ..
 ```
 
 ### Control plane log collection for AWS EKS (Amazon Elastic Kubernetes Service)

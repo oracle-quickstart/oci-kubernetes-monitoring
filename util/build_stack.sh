@@ -37,13 +37,14 @@ RELEASE_PATH="$ROOT_DIR/releases"
 UTIL_PATH="$ROOT_DIR/util"
 BUILD_ZIP="${UTIL_PATH}/temp.zip"
 BUILD_DIR="${UTIL_PATH}/temp"
+VERSION_FILE="$ROOT_DIR/terraform/oke/version.txt"
 
 HELM_SOURCE="$BUILD_DIR/charts"
 MODULES_SOURCE="$BUILD_DIR/terraform/modules"
 
 STACK_BUILD_PATH="$BUILD_DIR/terraform/oke"
 HELM_SYMLINK="$STACK_BUILD_PATH/charts"
-TEMPLATE_ID_FILE="$STACK_BUILD_PATH/version.auto.tfvars"
+TEMPLATE_ID_FILE="$STACK_BUILD_PATH/stack.auto.tfvars"
 MODULES_SYMLINK="$STACK_BUILD_PATH/modules"
 
 # Usage Instructions
@@ -52,8 +53,9 @@ $(basename "$0") [-h][-n name][-d][-s][-b] -- program to build OCI RMS stack zip
 
 where:
     -h  show this help text
-    -n  name of output zip file without extention (Optional)
-    -d  flag to generate dev build; contains local helm chart
+    -n  name of output zip file without extension (Optional)
+    -l  flag to generate build alongside local helm chart
+    -r  flag to generate release build; generates artefact with release name and version
     -s  flag to turn-off output; only final build file path is printed to stdout
     -b  flag to generate additional base64 string of stack
 
@@ -61,7 +63,7 @@ The zip artifacts shall be stored at -
     $RELEASE_PATH"
 
 # Parse inputs
-while getopts "hn:dsb" option; do
+while getopts "hn:lsbr" option; do
     case $option in
         h) # display Help
             echo "$usage"
@@ -70,7 +72,11 @@ while getopts "hn:dsb" option; do
         n)  
             release_name=$OPTARG
             ;;
-        d)
+        r)
+            VERSION="$(head -n 1 $VERSION_FILE)"
+            release_name="oci-kubernetes-monitoring-rms-template-$VERSION"
+            ;;
+        l)
             INCLUDE_LOCAL_HELM=true
             ;;
         s) # Run SILENT_MODE

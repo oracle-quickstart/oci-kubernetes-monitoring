@@ -1,8 +1,9 @@
-# Copyright (c) 2023, 2024, Oracle and/or its affiliates.
+# Copyright (c) 2023, 2025, Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
-
+---
 {{- $kubernetesClusterName := (include "logan.kubernetesClusterName" .) }}
 {{- $kubernetesClusterId := (include "logan.kubernetesClusterId" .) }}
+{{- $ociLAClusterEntityID := (include "logan.ociLAClusterEntityID" .) }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -86,12 +87,16 @@ data:
        @type record_transformer
        enable_ruby true
        <record>
+       {{- if eq $name "tcpconnect" }}
+       oci_la_metadata ${{"{{"}}"Kubernetes Cluster Name":"{{ $kubernetesClusterName }}", "Kubernetes Cluster ID": "{{ $kubernetesClusterId }}", "Kubernetes Cluster Entity ID": "{{ $ociLAClusterEntityID }}" {{- range $k, $v := $logDefinition.metadata }},{{ $k | quote }}: {{ $v | quote -}} {{- end }}{{"}}"}}
+       {{- else }}
        {{- if $logDefinition.metadata }}
        oci_la_metadata ${{"{{"}}"Kubernetes Cluster Name":"{{ $kubernetesClusterName }}", "Kubernetes Cluster ID": "{{ $kubernetesClusterId }}" {{- range $k, $v := $logDefinition.metadata }},{{ $k | quote }}: {{ $v | quote -}} {{- end }}{{"}}"}}
        {{- else if $.Values.fluentd.kubernetesSystem.metadata }}
        oci_la_metadata ${{"{{"}}"Kubernetes Cluster Name":"{{ $kubernetesClusterName }}", "Kubernetes Cluster ID": "{{ $kubernetesClusterId }}" {{- range $k, $v := $.Values.fluentd.kubernetesSystem.metadata }},{{ $k | quote }}: {{ $v | quote -}} {{- end }}{{"}}"}}
        {{- else }}
        oci_la_metadata ${{"{{"}}"Kubernetes Cluster Name":"{{ $kubernetesClusterName }}", "Kubernetes Cluster ID": "{{ $kubernetesClusterId }}" {{- range $k, $v := $.Values.metadata }},{{ $k | quote }}: {{ $v | quote -}} {{- end }}{{"}}"}}
+       {{- end -}}
        {{- end }}
        {{- if $logDefinition.ociLALogGroupID }}
        oci_la_log_group_id "{{ $logDefinition.ociLALogGroupID }}"

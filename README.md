@@ -36,7 +36,7 @@ It does extensive enrichment of logs, metrics and object information to enable c
 
 ## Get Started :rocket:
 
-:stop_sign: Upgrading to a major version (like 2.x to 3.x)? See [upgrade](#upgrading-to-a-major-version) section below for details. :warning:
+:stop_sign: Upgrading to a major version (like 3.x to 4.x)? See [upgrade](#upgrading-to-a-major-version) section below for details. :warning:
 
 ### Pre-requisites
 
@@ -196,6 +196,7 @@ Create OCI Logging Analytics LogGroup(s) if not done already. Refer [Create Log 
       # -- OCID for OKE cluster or a unique ID for other Kubernetes clusters.
       kubernetesClusterID:
       # -- Provide a unique name for the cluster. This would help in uniquely identifying the logs and metrics data at OCI Logging Analytics and OCI Monitoring respectively.
+      # -- Must follow the format '<Cluster_Name>_<Cluster_Creation_Time>' instead of just the cluster name.
       kubernetesClusterName:
 
     oci-onm-logan:
@@ -365,6 +366,34 @@ Refer [here](#3c-import-dashboards).
 </details>  
 
 ### Upgrading to a major version
+
+#### 3.6.0 to 4.0.0
+
+For changes in this release, refer to [CHANGELOG.md](CHANGELOG.md)
+
+##### Upgrade instructions
+
+1. Update IAM Policies:
+    * This version requires additional policy statements for infrastructure discovery.
+    * See the pre-requisites section in the [README](../README.md#0-pre-requisites) for details.
+
+1. As mentioned in the change log, this version introduces a new DaemonSet that uses eBPF (Extended Berkeley Packet Filter) to capture TCP connection logs and builds application/network topology representing workload to workload relationships within the Kubernetes cluster.
+    * To be able to run the required eBPF program, the pods needs to run in privileged mode but restricting to CAP_BPF capability only.
+    * In your environment, if you have any restrictions with respect to running pods in privileged mode, you may need to adjust your cluster configuration accordingly.
+
+2. Upgrade the Helm chart:
+
+      ```sh
+      # fetch latest (4.x) helm repo for oci
+      helm repo update oci-onm
+
+      # fetch the current release configuration
+      helm get values <release-name> -n <namespace> > override_values.yaml
+
+      # Upgrade the helm chart
+      helm upgrade <release-name> oci/oci-onm -n <namespace> -f override_values.yaml
+      ```
+
 
 #### 2.x to 3.x
 
