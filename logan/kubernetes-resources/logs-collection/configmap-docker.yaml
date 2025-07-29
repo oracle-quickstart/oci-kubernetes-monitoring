@@ -33,7 +33,7 @@ data:
       @label @NORMAL
     </match>
 
-    # Match block to set info required for oci-log-analytics fluentd outplugin
+    # Match block to set info required for oci-logging-analytics fluentd outplugin
     <label @NORMAL>
       <match oci.**>
           @type oci-logging-analytics

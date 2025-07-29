@@ -602,7 +602,7 @@ data:
        @label @NORMAL{{- ternary (print "." $currWorker) "" $multiWorkersEnabled }}
     </match>
 
-    # Match block to set info required for oci-log-analytics fluentd output plugin
+    # Match block to set info required for oci-logging-analytics fluentd output plugin
     <label @NORMAL{{- ternary (print "." $currWorker) "" $multiWorkersEnabled }}>
        <match oci{{- ternary (print "." $currWorker) "" $multiWorkersEnabled }}.**>
           @type oci-logging-analytics

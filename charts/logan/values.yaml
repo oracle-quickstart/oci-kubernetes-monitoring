@@ -204,7 +204,7 @@ fluentd:
    # -- To set timezone override for all logs collected using this solution (applies only to log records without explicit timezone identifier in the record itself)
    timezone:
 
-   # Configuration for oci-log-analytics fluentd output plugin
+   # Configuration for oci-logging-analytics fluentd output plugin
    ociLoggingAnalyticsOutputPlugin:
       # -- OCI API Key profile to use, if multiple profiles are found in the OCI API config file.
       profile_name: 'DEFAULT'
@@ -400,7 +400,7 @@ fluentd:
          tcpconnect:
             # The path to the source files.
             path: /var/log/containers/*-logan-tcpconnect*.log
-            # Logging Analytics log source to use for parsing and processing the logs: TCP CONNECT Logs
+            # Log Analytics log source to use for parsing and processing the logs: TCP CONNECT Logs
             ociLALogSourceName: "Kubernetes TCP Connect Logs"
 
          # Config specific to Kubernetes Audit Logs Collection

@@ -15,7 +15,7 @@ Charts for sending Kubernetes platform logs, compute logs, and Kubernetes Object
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | authtype | string | `"InstancePrincipal"` | Allowed values: InstancePrincipal, config |
-| extraEnv | list | `[]` | Use this to tag all the collected logs with one or more key:value pairs. Key must be a valid field in Log Analyticsadata: "Client Host Region": "PCT" "Environment": "Production" "Third key": "Third Value" @param extra environment variables. Example   name: ENV_VARIABLE_NAME   value: ENV_VARIABLE_VALUE |
+| extraEnv | list | `[]` | Use this to tag all the collected logs with one or more key:value pairs. Key must be a valid field in Log Analytics metadata: "Client Host Region": "PCT" "Environment": "Production" "Third key": "Third Value" @param extra environment variables. Example   name: ENV_VARIABLE_NAME   value: ENV_VARIABLE_VALUE |
 | extraVolumeMounts | list | `[]` | @param extraVolumeMounts Mount extra volume(s). Example:   - name: tmpDir     mountPath: /tmp |
 | extraVolumes | list | `[]` | @param extraVolumes Extra volumes. Example:   - name: tmpDir     hostPath:         path: /tmp log |
 | fluentd.baseDir | string | `"/var/log"` | Base directory on the node (with read write permission) for storing fluentd plugins related data. |

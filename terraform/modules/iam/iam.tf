@@ -33,7 +33,7 @@ locals {
     infra_discovery_stmt = [
       # Allows log analytics service to query OKE infra resources
       # TODO: check if CLUSTER_READ will lead to duplicate ENTITY creation via service connector flow
-      # Ref - https://docs.oracle.com/en-us/iaas/logging-analytics/doc/ingest-logs-other-oci-services-using-service-connector.html#LOGAN-GUID-3848C538-28AC-4F53-B217-90129278D84F
+      # Ref - https://docs.oracle.com/en-us/iaas/log-analytics/doc/ingest-logs-other-oci-services-using-service-connector.html#LOGAN-GUID-3848C538-28AC-4F53-B217-90129278D84F
       "Allow resource loganalyticsvrp LogAnalyticsVirtualResource to {VCN_READ,SUBNET_READ,LOAD_BALANCER_READ,CLUSTER_READ,VNIC_READ} in ${local.oke_compartment_scope}",
       # https://docs.oracle.com/en-us/iaas/Content/Identity/Reference/contengpolicyreference.htm
       "Allow dynamic-group ${local.dynamic_group_name} to {CLUSTER_READ} in ${local.oke_compartment_scope} where target.cluster.id='${var.oke_cluster_ocid}'",
