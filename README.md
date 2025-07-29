@@ -36,7 +36,7 @@ It does extensive enrichment of logs, metrics and object information to enable c
 
 ## Get Started :rocket:
 
-:stop_sign: Upgrading to a major version (like 2.x to 3.x)? See [upgrade](#upgrading-to-a-major-version) section below for details. :warning:
+:stop_sign: Upgrading to a major version (like 3.x to 4.x)? See [upgrade](#upgrading-to-a-major-version) section below for details. :warning:
 
 ### Pre-requisites
 
