@@ -4,12 +4,12 @@
 {
     "dashboards": [
         {
-            "dashboardId": "<LOG_ANALYTICS_DASHBOARD_OCID>",
+            "dashboardId": "<LOGGING_ANALYTICS_DASHBOARD_OCID>",
             "displayName": "Kubernetes Monitoring Sample Dashboard",
             "description": "Sample Dashboard",
-            "compartmentId": "<LOG_ANALYTICS_DASHBOARD_COMPARTMENT_OCID>",
+            "compartmentId": "<LOGGING_ANALYTICS_DASHBOARD_COMPARTMENT_OCID>",
             "providerId": "log-analytics",
-            "providerName": "Log Analytics",
+            "providerName": "Logging Analytics",
             "providerVersion": "3.0.0",
             "tiles": [
                 {
