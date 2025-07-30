@@ -15,7 +15,7 @@ variable "toggle_helm_module" {
 # when false, public helm repo is used for deployment
 variable "toggle_use_local_helm_chart" {
   type    = bool
-  default = false
+  default = true
 }
 
 # Enable/Disable helm template. When set as true,
