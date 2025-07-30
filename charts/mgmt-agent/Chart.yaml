@@ -28,6 +28,6 @@ appVersion: "1.16.0"
 
 dependencies:
 - name: oci-onm-common
-  version: "3.1.1"
+  version: "3.1.0"
   repository: "file://../common"
   condition: oci-onm-common.enabled
