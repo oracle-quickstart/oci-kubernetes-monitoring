@@ -1,5 +1,17 @@
 # Change Log
 
+# 2025-06-17
+### Added
+- Introduced a new DaemonSet that uses eBPF (Extended Berkeley Packet Filter) to capture TCP connection logs and builds application/network topology representing workload to workload relationships within the Kubernetes cluster.
+  - To be able to run the required eBPF program, the pods needs to run in privileged mode but restricting to CAP_BPF capability only.
+- New helm variable to control the resource limits at individual logan workloads.
+- Enables OKE infra discovery and service logs collection (default)
+- OCI Console integration supporting new features:
+  - Topology : New Views (Infra and Network) along with Platform.
+  - View Insights for Workloads including capabilities to view the detailed spec of a workload, monitor the changes to the spec of a workload, create in-line labels for issues etc.
+
+### Changed
+- `kubernetesClusterID` (in the Helm chart) is now a mandatory field. *(This is not backward compatible.)*
 
 ## 2025-03-19
 ### Added
