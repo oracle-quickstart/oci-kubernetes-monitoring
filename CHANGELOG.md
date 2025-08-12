@@ -1,5 +1,9 @@
 # Change Log
 
+# 2025-08-12
+### Changed
+- Fluentd collector container image has been updated to version 1.7.1
+
 # 2025-06-17
 ### Added
 - Introduced a new DaemonSet that uses eBPF (Extended Berkeley Packet Filter) to capture TCP connection logs and builds application/network topology representing workload to workload relationships within the Kubernetes cluster.
