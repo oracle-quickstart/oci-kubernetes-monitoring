@@ -366,6 +366,26 @@ Refer [here](#3c-import-dashboards).
 
 ### Upgrading to a major version
 
+#### 3.6.0 to 4.0.0
+For changes in this release, refer to [CHANGELOG.md](CHANGELOG.md)
+##### Upgrade instructions
+1. Update IAM Policies:
+    * This version requires additional policy statements for infrastructure discovery.
+    * See the pre-requisites section in the [README](../README.md#0-pre-requisites) for details.
+1. As mentioned in the change log, this version introduces a new DaemonSet that uses eBPF (Extended Berkeley Packet Filter) to capture TCP connection logs and builds application/network topology representing workload to workload relationships within the Kubernetes cluster.
+    * To be able to run the required eBPF program, the pods needs to run in privileged mode but restricting to CAP_BPF capability only.
+    * In your environment, if you have any restrictions with respect to running pods in privileged mode, you may need to adjust your cluster configuration accordingly.
+2. Upgrade the Helm chart:
+      ```sh
+      # fetch latest (4.x) helm repo for oci
+      helm repo update oci-onm
+      # fetch the current release configuration
+      helm get values <release-name> -n <namespace> > override_values.yaml
+      # Upgrade the helm chart
+      helm upgrade <release-name> oci/oci-onm -n <namespace> -f override_values.yaml
+      ```
+
+
 #### 2.x to 3.x
 
 One of the major changes introduced in 3.0.0 is refactoring of helm chart where major features of the solution got split into separate sub-charts. 2.x has only support for logs and objects collection using Fluentd and OCI Log Analytics and this is now moved into a separate chart oci-onm-logan and included as a sub-chart to the main chart oci-onm. This is a breaking change w.r.t the values.yaml and any customisations that you might have done on top of it. There is no breaking change w.r.t functionality offered in 2.x. For full list of changes in 3.x, refer to [changelog](CHANGELOG.md). 
