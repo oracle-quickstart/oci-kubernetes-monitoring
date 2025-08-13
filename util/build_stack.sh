@@ -49,18 +49,21 @@ MODULES_SYMLINK="$STACK_BUILD_PATH/modules"
 
 # Usage Instructions
 usage="
-$(basename "$0") [-h][-n name][-d][-s][-b] -- program to build OCI RMS stack zip file using oracle-quickstart/oci-kubernetes-monitoring repo.
+Usage: $(basename "$0") [options]
 
-where:
-    -h  show this help text
-    -n  name of output zip file without extension (Optional)
-    -l  flag to generate build alongside local helm chart
-    -r  flag to generate release build; generates artefact with release name and version
-    -s  flag to turn-off output; only final build file path is printed to stdout
-    -b  flag to generate additional base64 string of stack
+Program to build an OCI RMS stack zip file using the oracle-quickstart/oci-kubernetes-monitoring repository.
 
-The zip artifacts shall be stored at -
-    $RELEASE_PATH"
+Options:
+  -h            Show this help message and exit
+  -n <name>     Name of the output zip file (without extension) [Optional]
+  -l            Bundle the local Helm chart within the stack, instead of referencing the public Helm chart repository
+  -r            Create a release build (artifact will be named using the release name and version)
+  -s            Silent mode; suppress output except for the final build file path
+  -b            Generate an additional base64-encoded string of the stack
+
+Artifacts will be stored at:
+  $RELEASE_PATH
+"
 
 # Parse inputs
 while getopts "hn:lsbr" option; do
@@ -162,6 +165,23 @@ if [ -n "$INCLUDE_LOCAL_HELM" ]; then
     # copy the helm-chart
     cp -R "$HELM_SOURCE" "$STACK_BUILD_PATH" || error_and_exit "ERROR: cp -R $HELM_SOURCE $STACK_BUILD_PATH"
     log "Copied helm-chart at - $STACK_BUILD_PATH"
+
+    # Update stack variable (toggle_use_local_helm_chart) to use local charts
+    STACK_INPUTS_TF="$STACK_BUILD_PATH/stack-inputs.tf"
+    if awk '/variable[[:space:]]*"toggle_use_local_helm_chart"/,/\}/ {print}' $STACK_INPUTS_TF | \
+            grep -q 'default[[:space:]]*=[[:space:]]*false'; then
+        # Detect OS
+        if sed --version >/dev/null 2>&1; then
+            # Linux (GNU sed)
+            sed -i '/variable "toggle_use_local_helm_chart"/,/^}/ s/default[[:space:]]*=[[:space:]]*false/default = true/' "$STACK_INPUTS_TF"
+        else
+            # macOS (BSD sed)
+            sed -i '' '/variable "toggle_use_local_helm_chart"/,/^}/ s/default[[:space:]]*=[[:space:]]*false/default = true/' "$STACK_INPUTS_TF"
+        fi
+        log "Updated toggle_use_local_helm_chart to true - $STACK_INPUTS_TF"
+    else
+        error_and_exit "default value for toggle_use_local_helm_chart (false) not found. Nothing to update"
+    fi
 fi
 
 # Remove the terraform modules symlink
@@ -174,6 +194,8 @@ log "Copied terraform modules at - $STACK_BUILD_PATH"
 
 # Update the version
 COMMIT_HASH=$(git rev-parse HEAD)
+
+# Update commit hash
 
 # Detect OS
 if sed --version >/dev/null 2>&1; then
