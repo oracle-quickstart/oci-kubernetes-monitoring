@@ -718,7 +718,7 @@ k8sDiscovery:
       # chunk_limit: Max number of objects that can be fetched via K8s GET API call. Default: 1000
       chunk_limit:
       # collect_warning_events_only: flag to only collect warning event logs
-      # Default: All logs are collected and sent to OCI Log Analytics for processing
+      # Default: All logs are collected and sent to OCI log analytics for processing
       collect_warning_events_only: false
       # backoffLimit: Specify the number of retries before considering a Job as failed
       backoffLimit: 0
