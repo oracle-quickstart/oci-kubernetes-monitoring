@@ -37,31 +37,36 @@ RELEASE_PATH="$ROOT_DIR/releases"
 UTIL_PATH="$ROOT_DIR/util"
 BUILD_ZIP="${UTIL_PATH}/temp.zip"
 BUILD_DIR="${UTIL_PATH}/temp"
+VERSION_FILE="$ROOT_DIR/terraform/oke/version.txt"
 
 HELM_SOURCE="$BUILD_DIR/charts"
 MODULES_SOURCE="$BUILD_DIR/terraform/modules"
 
 STACK_BUILD_PATH="$BUILD_DIR/terraform/oke"
 HELM_SYMLINK="$STACK_BUILD_PATH/charts"
-TEMPLATE_ID_FILE="$STACK_BUILD_PATH/version.auto.tfvars"
+TEMPLATE_ID_FILE="$STACK_BUILD_PATH/stack.auto.tfvars"
 MODULES_SYMLINK="$STACK_BUILD_PATH/modules"
 
 # Usage Instructions
 usage="
-$(basename "$0") [-h][-n name][-d][-s][-b] -- program to build OCI RMS stack zip file using oracle-quickstart/oci-kubernetes-monitoring repo.
+Usage: $(basename "$0") [options]
 
-where:
-    -h  show this help text
-    -n  name of output zip file without extention (Optional)
-    -d  flag to generate dev build; contains local helm chart
-    -s  flag to turn-off output; only final build file path is printed to stdout
-    -b  flag to generate additional base64 string of stack
+Program to build an OCI RMS stack zip file using the oracle-quickstart/oci-kubernetes-monitoring repository.
 
-The zip artifacts shall be stored at -
-    $RELEASE_PATH"
+Options:
+  -h            Show this help message and exit
+  -n <name>     Name of the output zip file (without extension) [Optional]
+  -l            Bundle the local Helm chart within the stack, instead of referencing the public Helm chart repository
+  -r            Create a release build (artifact will be named using the release name and version)
+  -s            Silent mode; suppress output except for the final build file path
+  -b            Generate an additional base64-encoded string of the stack
+
+Artifacts will be stored at:
+  $RELEASE_PATH
+"
 
 # Parse inputs
-while getopts "hn:dsb" option; do
+while getopts "hn:lsbr" option; do
     case $option in
         h) # display Help
             echo "$usage"
@@ -70,7 +75,11 @@ while getopts "hn:dsb" option; do
         n)  
             release_name=$OPTARG
             ;;
-        d)
+        r)
+            VERSION="$(head -n 1 $VERSION_FILE)"
+            release_name="oci-kubernetes-monitoring-rms-template-$VERSION"
+            ;;
+        l)
             INCLUDE_LOCAL_HELM=true
             ;;
         s) # Run SILENT_MODE
@@ -156,6 +165,23 @@ if [ -n "$INCLUDE_LOCAL_HELM" ]; then
     # copy the helm-chart
     cp -R "$HELM_SOURCE" "$STACK_BUILD_PATH" || error_and_exit "ERROR: cp -R $HELM_SOURCE $STACK_BUILD_PATH"
     log "Copied helm-chart at - $STACK_BUILD_PATH"
+
+    # Update stack variable (toggle_use_local_helm_chart) to use local charts
+    STACK_INPUTS_TF="$STACK_BUILD_PATH/stack-inputs.tf"
+    if awk '/variable[[:space:]]*"toggle_use_local_helm_chart"/,/\}/ {print}' $STACK_INPUTS_TF | \
+            grep -q 'default[[:space:]]*=[[:space:]]*false'; then
+        # Detect OS
+        if sed --version >/dev/null 2>&1; then
+            # Linux (GNU sed)
+            sed -i '/variable "toggle_use_local_helm_chart"/,/^}/ s/default[[:space:]]*=[[:space:]]*false/default = true/' "$STACK_INPUTS_TF"
+        else
+            # macOS (BSD sed)
+            sed -i '' '/variable "toggle_use_local_helm_chart"/,/^}/ s/default[[:space:]]*=[[:space:]]*false/default = true/' "$STACK_INPUTS_TF"
+        fi
+        log "Updated toggle_use_local_helm_chart to true - $STACK_INPUTS_TF"
+    else
+        error_and_exit "default value for toggle_use_local_helm_chart (false) not found. Nothing to update"
+    fi
 fi
 
 # Remove the terraform modules symlink
@@ -168,6 +194,8 @@ log "Copied terraform modules at - $STACK_BUILD_PATH"
 
 # Update the version
 COMMIT_HASH=$(git rev-parse HEAD)
+
+# Update commit hash
 
 # Detect OS
 if sed --version >/dev/null 2>&1; then
