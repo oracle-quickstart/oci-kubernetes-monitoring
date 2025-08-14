@@ -83,10 +83,10 @@ spec:
             - name: FLUENTD_CONF
               value: "/var/opt/conf/fluent.conf"  # change as required
             - name: FLUENT_OCI_DEFAULT_LOGGROUP_ID
-              # Replace this value with actual logging analytics log group
-              value: <OCI_LOGGING_ANALYTICS_LOG_GROUP_ID>
+              # Replace this value with actual log analytics log group
+              value: <OCI_LOG_ANALYTICS_LOG_GROUP_ID>
             - name: FLUENT_OCI_NAMESPACE
-              # Replace this value with actual namespace of logging analytics
+              # Replace this value with actual namespace of log analytics
               value: <OCI_TENANCY_NAMESPACE>
             - name: FLUENT_OCI_KUBERNETES_CLUSTER_ID
               # Replace this value with Kubernetes Cluster ID
@@ -95,7 +95,7 @@ spec:
               # Replace this value with Kubernetes Cluster Name
               value: <KUBERNETES_CLUSTER_NAME>
             # Uncomment the following section if using config file base AuthZ instead of default InstancePrincipal based AuthZ.
-            # For OKE, recommended AuthZ approach to connect to OCI Logging Analytics APIs is InstancePrincipal.
+            # For OKE, recommended AuthZ approach to connect to OCI Log Analytics APIs is InstancePrincipal.
             #- name: FLUENT_OCI_CONFIG_LOCATION
               #value: "/var/opt/.oci/config"
           ## parameters to limit the memory and requests for the pods
@@ -114,7 +114,7 @@ spec:
               readOnly: true
             # Mount directory where oci config exists
             # Uncomment the following section if using config file base AuthZ instead of default InstancePrincipal based AuthZ.
-            # For OKE, recommended AuthZ approach to connect to OCI Logging Analytics APIs is InstancePrincipal.
+            # For OKE, recommended AuthZ approach to connect to OCI Log Analytics APIs is InstancePrincipal.
             #- name: ociconfigdir
               #mountPath: /var/opt/.oci
               #readOnly: true
@@ -130,7 +130,7 @@ spec:
             name: oci-la-fluentd-objects-configmap   # change as required
         # Mount directory where oci config exists
         # Uncomment the following section if using config file base AuthZ instead of default InstancePrincipal based AuthZ.
-        # For OKE, recommended AuthZ approach to connect to OCI Logging Analytics APIs is InstancePrincipal.
+        # For OKE, recommended AuthZ approach to connect to OCI Log Analytics APIs is InstancePrincipal.
         #- name: ociconfigdir
           #projected:
             #sources:

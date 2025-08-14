@@ -87,7 +87,7 @@ data:
        </parse>
     </source>
 
-    # Record transformer filter to apply Logging Analytics configuration to each record.
+    # Record transformer filter to apply Log Analytics configuration to each record.
     <filter oci.oke.kube-proxy.**>
        @type record_transformer
        enable_ruby true
@@ -137,7 +137,7 @@ data:
        </parse>
     </source>
 
-    # Record transformer filter to apply Logging Analytics configuration to each record.
+    # Record transformer filter to apply Log Analytics configuration to each record.
     <filter oci.oke.kube-flannel.**>
        @type record_transformer
        enable_ruby true
@@ -187,7 +187,7 @@ data:
        </parse>
     </source>
 
-    # Record transformer filter to apply Logging Analytics configuration to each record.
+    # Record transformer filter to apply Log Analytics configuration to each record.
     <filter oci.oke.kube-dns-autoscaler.**>
        @type record_transformer
        enable_ruby true
@@ -237,7 +237,7 @@ data:
        </parse>
     </source>
 
-    # Record transformer filter to apply Logging Analytics configuration to each record.
+    # Record transformer filter to apply Log Analytics configuration to each record.
     <filter oci.oke.kube.coredns.**>
        @type record_transformer
        enable_ruby true
@@ -287,7 +287,7 @@ data:
        </parse>
     </source>
 
-    # Record transformer filter to apply Logging Analytics configuration to each record.
+    # Record transformer filter to apply Log Analytics configuration to each record.
     <filter oci.oke.csinode.**>
        @type record_transformer
        enable_ruby true
@@ -327,7 +327,7 @@ data:
        </parse>
     </source>
 
-    # Record transformer filter to apply Logging Analytics configuration to each record.
+    # Record transformer filter to apply Log Analytics configuration to each record.
     <filter oci.oke.proxymux-client.**>
        @type record_transformer
        enable_ruby true
@@ -367,7 +367,7 @@ data:
        </parse>
     </source>
 
-    # Record transformer filter to apply Logging Analytics configuration to each record.
+    # Record transformer filter to apply Log Analytics configuration to each record.
     <filter oci.oke.cluster-autoscaler.**>
        @type record_transformer
        enable_ruby true
@@ -419,7 +419,7 @@ data:
        </parse>
     </source>
 
-    # Record transformer filter to apply Logging Analytics configuration to each record.
+    # Record transformer filter to apply Log Analytics configuration to each record.
     <filter oci.oke.syslog.cronlog.**>
        @type record_transformer
        enable_ruby true
@@ -449,7 +449,7 @@ data:
        </parse>
     </source>
 
-    # Record transformer filter to apply Logging Analytics configuration to each record.
+    # Record transformer filter to apply Log Analytics configuration to each record.
     <filter oci.oke.syslog.securelog.**>
        @type record_transformer
        enable_ruby true
@@ -495,7 +495,7 @@ data:
        </rule>
     </match>
 
-    # Record transformer filter to apply Logging Analytics configuration to each record.
+    # Record transformer filter to apply Log Analytics configuration to each record.
     <filter oci.oke.syslog.kubelet.**>
        @type record_transformer
        enable_ruby true
@@ -508,7 +508,7 @@ data:
        </record>
     </filter>
 
-    # Record transformer filter to apply Logging Analytics configuration to each record.
+    # Record transformer filter to apply Log Analytics configuration to each record.
     <filter oci.oke.syslog.syslog.**>
        @type record_transformer
        enable_ruby true
@@ -538,7 +538,7 @@ data:
        </parse>
     </source>
 
-    # Record transformer filter to apply Logging Analytics configuration to each record.
+    # Record transformer filter to apply Log Analytics configuration to each record.
     <filter oci.oke.syslog.maillog.**>
        @type record_transformer
        enable_ruby true
@@ -566,7 +566,7 @@ data:
        </parse>
     </source>
 
-    # Record transformer filter to apply Logging Analytics configuration to each record.
+    # Record transformer filter to apply Log Analytics configuration to each record.
     <filter oci.oke.syslog.linuxauditlog.**>
        @type record_transformer
        enable_ruby true
@@ -596,7 +596,7 @@ data:
        </parse>
     </source>
 
-    # Record transformer filter to apply Logging Analytics configuration to each record.
+    # Record transformer filter to apply Log Analytics configuration to each record.
     <filter oci.oke.syslog.uptracklog.**>
        @type record_transformer
        enable_ruby true
@@ -624,7 +624,7 @@ data:
        </parse>
     </source>
 
-    # Record transformer filter to apply Logging Analytics configuration to each record.
+    # Record transformer filter to apply Log Analytics configuration to each record.
     <filter oci.oke.syslog.yumlog.**>
        @type record_transformer
        enable_ruby true
@@ -670,7 +670,7 @@ data:
       annotation_match [ ".*" ]
     </filter>
 
-    # Record transformer filter to apply Logging Analytics configuration to each record.
+    # Record transformer filter to apply Log Analytics configuration to each record.
     <filter oci.oke.containerlogs.**>
        @type record_transformer
        enable_ruby true

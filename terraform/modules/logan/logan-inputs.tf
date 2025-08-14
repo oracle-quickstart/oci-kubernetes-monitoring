@@ -16,17 +16,17 @@ variable "compartment_ocid" {
   type = string
 }
 
-# Option to create Logging Analytics
+# Option to create Log Analytics
 variable "opt_create_new_la_log_group" {
   type = bool
 }
 
-# OCI Logging Analytics Log Group name (user input)
+# OCI Log Analytics Log Group name (user input)
 variable "log_group_display_name" {
   type = string
 }
 
-# OCI Logging Analytics LogGroup OCID (user input)
+# OCI Log Analytics LogGroup OCID (user input)
 variable "log_group_ocid" {
   type = string
 }

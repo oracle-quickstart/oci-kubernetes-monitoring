@@ -49,10 +49,10 @@ variable "kubernetes_namespace" {
 }
 
 ####
-##  OCI Logging Analytics Information
+##  OCI Log Analytics Information
 ####
 
-# OCI Logging Analytics LogGroup OCID
+# OCI Log Analytics LogGroup OCID
 variable "oci_la_log_group_ocid" {
   type    = string
   default = ""
@@ -63,7 +63,7 @@ variable "oci_la_namespace" {
   type = string
 }
 
-# OCI Logging Analytics Kubernetes Cluster Entity OCID
+# OCI Log Analytics Kubernetes Cluster Entity OCID
 variable "oci_la_cluster_entity_ocid" {
   type = string
 }
@@ -124,7 +124,7 @@ variable "tags" {
 ####
 
 variable "LOGAN_ENDPOINT" {
-  description = "Logging Analytics Endpoint."
+  description = "Log Analytics Endpoint."
   type        = string
   default     = null
 }

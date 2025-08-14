@@ -285,7 +285,7 @@ data:
        </rule>
     </match>
 
-    # Record transformer filter to apply Logging Analytics configuration to each record.
+    # Record transformer filter to apply Log Analytics configuration to each record.
     <filter oci{{- ternary (print "." $currWorker) "" $multiWorkersEnabled }}.oke.syslog.kubelet.**>
        @type record_transformer
        enable_ruby true
@@ -322,7 +322,7 @@ data:
        </record>
     </filter>
 
-    # Record transformer filter to apply Logging Analytics configuration to each record.
+    # Record transformer filter to apply Log Analytics configuration to each record.
     <filter oci{{- ternary (print "." $currWorker) "" $multiWorkersEnabled }}.oke.syslog.syslog.**>
        @type record_transformer
        enable_ruby true
@@ -407,7 +407,7 @@ data:
        {{- end }}
        </parse>
     </source>
-    # Record transformer filter to apply Logging Analytics configuration to each record.
+    # Record transformer filter to apply Log Analytics configuration to each record.
     <filter oci{{- ternary (print "." $currWorker) "" $multiWorkersEnabled }}.oke.{{ $name }}.**>
        @type record_transformer
        enable_ruby true
@@ -523,7 +523,7 @@ data:
        annotation_match [ ".*" ]
     </filter>
 
-    # Record transformer filter to apply Logging Analytics configuration to each record.
+    # Record transformer filter to apply Log Analytics configuration to each record.
     <filter oci{{- ternary (print "." $currWorker) "" $multiWorkersEnabled }}.oke.containerlogs.**>
        @type record_transformer
        enable_ruby true

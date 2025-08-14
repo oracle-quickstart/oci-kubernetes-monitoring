@@ -93,7 +93,7 @@ variable "opt_import_dashboards" {
 ##  Logan Module
 ####
 
-# Option to create Logging Analytics
+# Option to create Log Analytics
 variable "opt_create_new_la_log_group" {
   type    = bool
   default = false
@@ -161,7 +161,7 @@ variable "oke_cluster_entity_ocid" {
   type = string
 }
 
-# OCI Logging Analytics LogGroup OCID provided by user
+# OCI Log Analytics LogGroup OCID provided by user
 variable "log_group_ocid" {
   type = string
 }
@@ -177,7 +177,7 @@ variable "enable_service_log" {
 ####
 
 variable "LOGAN_ENDPOINT" {
-  description = "Logging Analytics Endpoint."
+  description = "Log Analytics Endpoint."
   type        = string
   default     = null
 }

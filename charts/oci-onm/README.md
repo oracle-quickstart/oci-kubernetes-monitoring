@@ -2,7 +2,7 @@
 
 ![Version: 3.0.0](https://img.shields.io/badge/Version-3.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 3.0.0](https://img.shields.io/badge/AppVersion-3.0.0-informational?style=flat-square)
 
-Helm chart for collecting Kubernetes logs & objects and metrics using Fluentd and ManagementAgent into OCI Logging Analytics and OCI Monitoring respectively.
+Helm chart for collecting Kubernetes logs & objects and metrics using Fluentd and ManagementAgent into OCI Log Analytics and OCI Monitoring respectively.
 
 ## Requirements
 
@@ -17,7 +17,7 @@ Helm chart for collecting Kubernetes logs & objects and metrics using Fluentd an
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | global.kubernetesClusterID | string | `nil` | OKE OCID for an OKE cluster or an unique ID for other Kubernetes clusters. |
-| global.kubernetesClusterName | string | `nil` | Provide a unique name for the cluster. This would help uniquely identifying the logs and metrics data at OCI Logging Analytics and OCI Monitoring respectivelt, when moitoring multiple clustersa |
+| global.kubernetesClusterName | string | `nil` | Provide a unique name for the cluster. This would help uniquely identifying the logs and metrics data at OCI Log Analytics and OCI Monitoring respectivelt, when moitoring multiple clustersa |
 | global.namespace | string | `"oci-onm"` | Kubernetes Namespace in which the resources to be created. Set oci-kubernetes-monitoring-common:createNamespace set to true, if the namespace doesn't exist. |
 | global.resourceNamePrefix | string | `"oci-onm"` | Prefix to be attached to resources created through this chart. Not all resources may have this prefix. |
 | oci-onm-common.createNamespace | bool | `true` | If createNamespace is set to true, it tries to create the namespace defined in 'namespace' variable. |

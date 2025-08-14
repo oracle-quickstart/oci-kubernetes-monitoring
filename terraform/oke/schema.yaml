@@ -3,8 +3,8 @@
 # yaml-language-server: $schema=./meta-schema.yaml
 
 title: OCI Kubernetes Monitoring Solution
-description: "Monitor, manage, and generate insights into your Kubernetes deployed in OCI, third party public clouds, private clouds, or on-premises including managed Kubernetes deployments. The solution utilizes the following OCI services: Logging Analytics, Monitoring, and Management Agent."
-informationalText: "Monitor, manage, and generate insights into your Kubernetes deployed in OCI, third party public clouds, private clouds, or on-premises including managed Kubernetes deployments. The solution utilizes the following OCI services: Logging Analytics, Monitoring, and Management Agent."
+description: "Monitor, manage, and generate insights into your Kubernetes deployed in OCI, third party public clouds, private clouds, or on-premises including managed Kubernetes deployments. The solution utilizes the following OCI services: Log Analytics, Monitoring, and Management Agent."
+informationalText: "Monitor, manage, and generate insights into your Kubernetes deployed in OCI, third party public clouds, private clouds, or on-premises including managed Kubernetes deployments. The solution utilizes the following OCI services: Log Analytics, Monitoring, and Management Agent."
 schemaVersion: 1.1.0
 version: "20221004"
 
@@ -93,7 +93,7 @@ variables:
   # Override logan endpoint for discovery and fluentd collection
   LOGAN_ENDPOINT:
       type: string
-      title: Logging Analytics Endpoint. [ Do not use in Production ]
+      title: Log Analytics Endpoint. [ Do not use in Production ]
       # default: add default values here for env override
 
   #### [Section]
@@ -179,18 +179,18 @@ variables:
          For the full list of resources, see <a href="https://github.com/oracle-quickstart/oci-kubernetes-monitoring" target="_blank" rel="noopener noreferrer">oci-kubernetes-monitoring</a>.
     default: ${compartment_ocid}
 
-  # Option to create Logging Analytics
+  # Option to create Log Analytics
   opt_create_new_la_log_group: # change this to create new log group
     type: boolean
     title: Create a new log group
     default: false
 
-  # OCI Logging Analytics LogGroup OCID of existing LogGroup
+  # OCI Log Analytics LogGroup OCID of existing LogGroup
   oci_la_log_group_ocid:
     type: oci:logan:loggroup:id
     dependsOn:
       compartmentId: ${oci_onm_compartment_ocid}
-    title: OCI Logging Analytics log group
+    title: OCI Log Analytics log group
     description: Log groups are logical containers for log data. They provide access control for your data by using IAM policies.
     required: true
     visible:
@@ -203,7 +203,7 @@ variables:
     # maxLength: 100 # Do not use maxLength
     #minLength: 1
     required: false
-    title: OCI Logging Analytics log group name
+    title: OCI Log Analytics log group name
     description: |-
         To make the log group easy-to-find in Dashboards and Log Explorer pages, provide a unique name related to your cluster name.
          If not provided, the stack creates a log group based on OKE cluster's name and creation date.
@@ -212,19 +212,19 @@ variables:
         - ${opt_create_new_la_log_group}
     pattern: '(^\S.*\S$|^$)'
 
-  # Option to create a new OCI Logging Analytics Entity
+  # Option to create a new OCI Log Analytics Entity
   opt_create_oci_la_entity:
     type: boolean
-    title: Create a new Logging Analytics entity for this cluster
-    description: Clear the check box if you want to use an existing Logging Analytics entity.
+    title: Create a new Log Analytics entity for this cluster
+    description: Clear the check box if you want to use an existing Log Analytics entity.
     default: true
 
-  # User Provided OCI Logging Analytics Entity OCID
+  # User Provided OCI Log Analytics Entity OCID
   oke_cluster_entity_ocid:
     type: string
-    title: OCID of OCI Logging Analytics entity
+    title: OCID of OCI Log Analytics entity
     # default: "null"
-    description: This must be a valid Logging Analytics entity of the type Kubernetes Cluster.
+    description: This must be a valid Log Analytics entity of the type Kubernetes Cluster.
     required: true
     pattern: '^(ocid1\.loganalyticsentity\.\S+$)'
     # maxLength: 93 # Don't set as realm ID is part of OCID

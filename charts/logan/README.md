@@ -2,7 +2,7 @@
 
 ![Version: 3.0.0](https://img.shields.io/badge/Version-3.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 3.0.0](https://img.shields.io/badge/AppVersion-3.0.0-informational?style=flat-square)
 
-Charts for sending Kubernetes platform logs, compute logs, and Kubernetes Objects information to OCI Logging Analytics.
+Charts for sending Kubernetes platform logs, compute logs, and Kubernetes Objects information to OCI Log Analytics.
 
 ## Requirements
 
@@ -15,15 +15,15 @@ Charts for sending Kubernetes platform logs, compute logs, and Kubernetes Object
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | authtype | string | `"InstancePrincipal"` | Allowed values: InstancePrincipal, config |
-| extraEnv | list | `[]` | Use this to tag all the collected logs with one or more key:value pairs. Key must be a valid field in Logging Analytics metadata: "Client Host Region": "PCT" "Environment": "Production" "Third key": "Third Value" @param extra environment variables. Example   name: ENV_VARIABLE_NAME   value: ENV_VARIABLE_VALUE |
+| extraEnv | list | `[]` | Use this to tag all the collected logs with one or more key:value pairs. Key must be a valid field in Log Analytics metadata: "Client Host Region": "PCT" "Environment": "Production" "Third key": "Third Value" @param extra environment variables. Example   name: ENV_VARIABLE_NAME   value: ENV_VARIABLE_VALUE |
 | extraVolumeMounts | list | `[]` | @param extraVolumeMounts Mount extra volume(s). Example:   - name: tmpDir     mountPath: /tmp |
 | extraVolumes | list | `[]` | @param extraVolumes Extra volumes. Example:   - name: tmpDir     hostPath:         path: /tmp log |
 | fluentd.baseDir | string | `"/var/log"` | Base directory on the node (with read write permission) for storing fluentd plugins related data. |
 | fluentd.customFluentdConf | string | `""` |  |
-| fluentd.customLogs | string | `nil` | Configuration for any custom logs which are not part of the default configuration defined in this file. All the pod/container logs will be collected as per "genericContainerLogs" section. Use this section to create a custom configuration for any of the container logs. Also, you can use this section to define configuration for any other log path existing on a Kubernetes worker node custom-id1: path: /var/log/containers/custom*.log Logging Analytics log source to use for parsing and processing the logs: ociLALogSourceName: "Custom1 Logs" The regular expression pattern for the starting line in case of multi-line logs. multilineStartRegExp: Set isContainerLog to false if the log is not a container log (/var/log/containers/*.log). Default value is true. isContainerLog: true |
+| fluentd.customLogs | string | `nil` | Configuration for any custom logs which are not part of the default configuration defined in this file. All the pod/container logs will be collected as per "genericContainerLogs" section. Use this section to create a custom configuration for any of the container logs. Also, you can use this section to define configuration for any other log path existing on a Kubernetes worker node custom-id1: path: /var/log/containers/custom*.log Log Analytics log source to use for parsing and processing the logs: ociLALogSourceName: "Custom1 Logs" The regular expression pattern for the starting line in case of multi-line logs. multilineStartRegExp: Set isContainerLog to false if the log is not a container log (/var/log/containers/*.log). Default value is true. isContainerLog: true |
 | fluentd.file | string | `"fluent.conf"` | Fluentd config file name |
 | fluentd.genericContainerLogs.exclude_path | list | `["\"/var/log/containers/kube-proxy-*.log\"","\"/var/log/containers/kube-flannel-*.log\"","\"/var/log/containers/kube-dns-autoscaler-*.log\"","\"/var/log/containers/coredns-*.log\"","\"/var/log/containers/csi-oci-node-*.log\"","\"/var/log/containers/proxymux-client-*.log\"","\"/var/log/containers/cluster-autoscaler-*.log\""]` | List of log paths to exclude that are already part of other specific configurations defined (like Kube Proxy, Kube Flannel) If you want to create a custom configuration for any of the container logs using the customLogs section, then exclude the corresponding log path here. |
-| fluentd.genericContainerLogs.ociLALogSourceName | string | `"Kubernetes Container Generic Logs"` | Default Logging Analytics log source to use for parsing and processing the logs: Kubernetes Container Generic Logs. |
+| fluentd.genericContainerLogs.ociLALogSourceName | string | `"Kubernetes Container Generic Logs"` | Default Log Analytics log source to use for parsing and processing the logs: Kubernetes Container Generic Logs. |
 | fluentd.genericContainerLogs.path | string | `"/var/log/containers/*.log"` |  |
 | fluentd.kubernetesMetadataFilter.ca_file | string | `nil` | Path to CA file for Kubernetes server certificate validation |
 | fluentd.kubernetesMetadataFilter.kubernetes_url | string | `nil` | Kubernetes API server URL. Alternatively, environment variables KUBERNETES_SERVICE_HOST and KUBERNETES_SERVICE_PORT can be used Environment variable are given preference. |
@@ -74,7 +74,7 @@ Charts for sending Kubernetes platform logs, compute logs, and Kubernetes Object
 | oci.configFiles.config | string | `"# Replace each of the below fields with actual values.\n[DEFAULT]\nuser=<user ocid>\nfingerprint=<fingerprint>\nkey_file=<key file path>\ntenancy=<tenancy ocid>\nregion=<region>"` | config file [data](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/sdkconfig.htm) Replace each of the below fields with actual values.   [DEFAULT]   user=<user ocid>   fingerprint=<fingerprint>   key_file=<key file path>   tenancy=<tenancy ocid>   region=<region> |
 | oci.file | string | `"config"` | Config file name |
 | oci.path | string | `"/var/opt/.oci"` | Path to the OCI API config file |
-| ociLALogGroupID | string | `nil` | OCID of Logging Analytics Log Group to send logs to. Can be overridden for individual log types. e.g. ocid1.loganalyticsloggroup.oc1.phx.amaaaaasdfaskriauucc55rlwlxe4ahe2vfmtuoqa6qsgu7mb6jugxacsk6a |
+| ociLALogGroupID | string | `nil` | OCID of Log Analytics Log Group to send logs to. Can be overridden for individual log types. e.g. ocid1.loganalyticsloggroup.oc1.phx.amaaaaasdfaskriauucc55rlwlxe4ahe2vfmtuoqa6qsgu7mb6jugxacsk6a |
 | ociLANamespace | string | `nil` |  |
 | resourceNamePrefix | string | `"{{ .Values.global.resourceNamePrefix }}"` | Resoure Name Prefix: Wherever allowed, this prefix will be used with all resources used by this chart |
 | resources.limits | object | `{"memory":"500Mi"}` | Limits |

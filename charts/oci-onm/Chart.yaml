@@ -3,7 +3,7 @@
 
 apiVersion: v2
 name: oci-onm
-description: Helm chart for collecting Kubernetes logs & objects and metrics using Fluentd and ManagementAgent into OCI Logging Analytics and OCI Monitoring respectively.
+description: Helm chart for collecting Kubernetes logs & objects and metrics using Fluentd and ManagementAgent into OCI Log Analytics and OCI Monitoring respectively.
 
 # A chart can be either an 'application' or a 'library' chart.
 #

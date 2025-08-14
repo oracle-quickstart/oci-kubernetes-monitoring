@@ -36,7 +36,7 @@ oci_la_log_group_name       = "" # Optional: A LogGroup with ClusterName_Cluster
 opt_create_oci_la_entity = true
 // Alternative option for Entity:
 # opt_create_oci_la_entity = false
-# oke_cluster_entity_ocid = "<Enter a valid Logging Analytics entity OCID of the type Kubernetes Cluster.>"
+# oke_cluster_entity_ocid = "<Enter a valid Log Analytics entity OCID of the type Kubernetes Cluster.>"
 
 // If you opt to import dashboards:
 // Ensure to manually delete the dashboards when you destroy the resources since the dashboards are not deleted automatically.
