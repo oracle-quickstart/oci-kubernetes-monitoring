@@ -131,11 +131,16 @@
                           "type": "null"
                         }
                     ]
+                },
+                "enableAutomaticPrometheusDetection":
+                {
+                    "type": "boolean"
                 }
             },
             "required":
             [
-                "namespace"
+                "namespace",
+                "enableAutomaticPrometheusDetection"
             ]
         },
         "deployment":

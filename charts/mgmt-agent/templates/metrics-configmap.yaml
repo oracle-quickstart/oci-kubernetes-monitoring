@@ -34,3 +34,5 @@ data:
     # list of comma separated metric names for Node (/api/v1/nodes/<node_name>/proxy/metrics/resource, /api/v1/nodes/<node_name>/proxy/metrics/cadvisor) metrics
     overrideAllowMetricsNode={{ .Values.kubernetesCluster.overrideAllowMetricsNode }}
     {{- end }}
+  prometheus-scrape-config.json: |
+{{ .Files.Get "resources/prometheus-scrape-config.json" | indent 4 }}
