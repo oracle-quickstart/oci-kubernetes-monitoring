@@ -1,6 +1,6 @@
 ## Streaming of Control Plane logs from CloudWatch to S3
 
-We can use a CloudWatch logs subscription to stream log data in near real-time to AWS S3. Once available in S3, the log data can be pulled and ingested into OCI Logging Analytics.
+We can use a CloudWatch logs subscription to stream log data in near real-time to AWS S3. Once available in S3, the log data can be pulled and ingested into OCI Log Analytics.
 
 The high level flow of CloudWatch logs to S3 looks as follows
 

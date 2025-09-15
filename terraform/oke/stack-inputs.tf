@@ -133,13 +133,13 @@ variable "oci_onm_compartment_ocid" {
   type = string
 }
 
-# Option to create Logging Analytics
+# Option to create Log Analytics
 variable "opt_create_new_la_log_group" {
   type    = bool
   default = false
 }
 
-# OCI Logging Analytics LogGroup OCID
+# OCI Log Analytics LogGroup OCID
 variable "oci_la_log_group_ocid" {
   type    = string
   default = null
@@ -158,7 +158,7 @@ variable "oci_la_log_group_name" {
   }
 }
 
-# Option to create Logging Analytics
+# Option to create Log Analytics
 variable "opt_create_oci_la_entity" {
   type    = bool
   default = true
@@ -172,7 +172,7 @@ variable "oke_cluster_entity_ocid" {
   # User Facing Error
   validation {
     condition     = var.oke_cluster_entity_ocid == null ? true : length(regexall("^(ocid1\\.loganalyticsentity\\.\\S+)$", var.oke_cluster_entity_ocid)) > 0 ? true : false
-    error_message = "Invalid OCI Logging Analytics entity OCID"
+    error_message = "Invalid OCI Log Analytics entity OCID"
   }
 }
 
@@ -253,7 +253,7 @@ variable "CLIENT_HOST_OVERRIDES" {
 }
 
 variable "LOGAN_ENDPOINT" {
-  description = "Logging Analytics Endpoint."
+  description = "Log Analytics Endpoint."
   type        = string
   default     = null
 }
