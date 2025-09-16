@@ -1,10 +1,11 @@
 # Change Log
 
-# 2025-09-12
+# 2025-09-16
 ### Changed
 - As per the recent service name change from `Logging Analytics` to `Log Analytics`, updated the relevant documentation and descriptions to reflect the name change.
   - This is a non-breaking change that maintains backward compatibility
   - Updated service references in documentation, description, and comments
+- Fluentd collector container image has been updated to version 1.7.2
 
 # 2025-08-13
 ### Added
