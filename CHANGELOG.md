@@ -1,11 +1,16 @@
 # Change Log
 
+# 2025-09-16
+### Changed
+- As per the recent service name change from `Logging Analytics` to `Log Analytics`, updated the relevant documentation and descriptions to reflect the name change.
+  - This is a non-breaking change that maintains backward compatibility
+  - Updated service references in documentation, description, and comments
+- Fluentd collector container image has been updated to version 1.7.2
 
 # 2025-08-13
 ### Added
 - New feature 'Automatic Prometheus Collection' in Management Agent. This enables agent to automatically find and identify metrics emitting pods to monitor, eliminating the need to manually create the Prometheus configuration to collect metrics.
-
-## Changed
+### Changed
 - Management Agent container image has been updated to version 1.9.0
 
 # 2025-08-12

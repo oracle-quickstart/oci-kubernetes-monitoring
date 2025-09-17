@@ -29,7 +29,7 @@ RUN microdnf -y module enable ruby:3.3 \
  && gem install bundler -v 2.5.16 \
 # Install development dependent packages for gems native installation
  && microdnf --enablerepo ol8_codeready_builder -y install --nodocs gcc make redhat-rpm-config openssl ruby-devel gcc-c++ libtool libffi-devel bzip2 git libyaml-devel which elfutils-libelf-devel clang llvm \
-# Install Fluentd, it's dependencies along with other run time dependencies for OCI Logging Analytics Solution
+# Install Fluentd, it's dependencies along with other run time dependencies for OCI Log Analytics Solution
  && bundle config silence_root_warning true \ 
  && bundle config --local path /fluentd/vendor/bundle \
  && bundle config --global jobs 9 \

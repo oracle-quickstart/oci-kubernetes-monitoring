@@ -8,7 +8,7 @@ global:
   resourceNamePrefix: oci-onm
   # -- OKE OCID for an OKE cluster or an unique ID for other Kubernetes clusters.
   kubernetesClusterID:
-  # -- Provide a unique name for the cluster. This would help uniquely identifying the logs and metrics data at OCI Logging Analytics and OCI Monitoring respectivelt, when moitoring multiple clustersa
+  # -- Provide a unique name for the cluster. This would help uniquely identifying the logs and metrics data at OCI Log Analytics and OCI Monitoring respectivelt, when moitoring multiple clustersa
   kubernetesClusterName:
 
 oci-onm-common:
@@ -31,12 +31,12 @@ oci-onm-logan:
   kubernetesClusterID: "{{ .Values.global.kubernetesClusterID }}"
   kubernetesClusterName: "{{ .Values.global.kubernetesClusterName }}"
   image:
-    url: container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.7.1
-  # Go to OCI Logging Analytics Administration, click Service Details, and note the namespace value.
+    url: container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.7.2
+  # Go to OCI Log Analytics Administration, click Service Details, and note the namespace value.
   ociLANamespace:
-  # OCI Logging Analytics Default Log Group OCID
+  # OCI Log Analytics Default Log Group OCID
   ociLALogGroupID:
-  # OCI Logging Analytics Entity OCID representing the target cluster
+  # OCI Log Analytics Entity OCID representing the target cluster
   ociLAClusterEntityID:
   # This parameter is required only for realms where the OCI Ruby SDK is not supported.
   # Format: <oci-region>.oci.<oci_domain>

@@ -14,7 +14,7 @@ data "oci_log_analytics_namespaces" "logan_namespaces" {
     # User Facing Error
     postcondition {
       condition     = !(self.namespace_collection == null)
-      error_message = "Tenancy is not on-boarded to OCI Logging Analytics service."
+      error_message = "Tenancy is not on-boarded to OCI Log Analytics service."
     }
   }
 }
