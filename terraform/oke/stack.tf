@@ -105,7 +105,8 @@ module "main" {
   oke_cluster_ocid         = var.oke_cluster_ocid
 
   # tags
-  tags = var.tags
+  tags              = var.tags
+  iam_resource_tags = var.opt_custom_tags_for_iam_compartment ? var.iam_resource_tags : var.tags
 
   # IAM
   opt_create_dynamicGroup_and_policies = local.create_dg_and_policy

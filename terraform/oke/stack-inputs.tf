@@ -222,6 +222,18 @@ variable "tags" {
   default = { "freeformTags" = {}, "definedTags" = {} }
 }
 
+# Option to deploy metric server
+variable "opt_custom_tags_for_iam_compartment" {
+  type    = bool
+  default = false
+}
+
+# root tags
+variable "iam_resource_tags" {
+  type    = object({ freeformTags = map(string), definedTags = map(string) })
+  default = null
+}
+
 # delay - adds wait (seconds) before creating resources
 variable "delay_in_seconds" {
   type    = number

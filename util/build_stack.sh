@@ -56,7 +56,7 @@ Program to build an OCI RMS stack zip file using the oracle-quickstart/oci-kuber
 Options:
   -h            Show this help message and exit
   -n <name>     Name of the output zip file (without extension) [Optional]
-  -l            Bundle the local Helm chart within the stack, instead of referencing the public Helm chart repository
+  -d            Bundle the local Helm chart within the stack, instead of referencing the public Helm chart repository
   -r            Create a release build (artifact will be named using the release name and version)
   -s            Silent mode; suppress output except for the final build file path
   -b            Generate an additional base64-encoded string of the stack
@@ -66,7 +66,7 @@ Artifacts will be stored at:
 "
 
 # Parse inputs
-while getopts "hn:lsbr" option; do
+while getopts "hn:dsbr" option; do
     case $option in
         h) # display Help
             echo "$usage"
@@ -79,7 +79,7 @@ while getopts "hn:lsbr" option; do
             VERSION="$(head -n 1 $VERSION_FILE)"
             release_name="oci-kubernetes-monitoring-rms-template-$VERSION"
             ;;
-        l)
+        d)
             INCLUDE_LOCAL_HELM=true
             ;;
         s) # Run SILENT_MODE

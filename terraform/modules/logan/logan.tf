@@ -80,7 +80,7 @@ resource "oci_log_analytics_log_analytics_entity" "oke_entity" {
   }
 
   # Optional
-  # cloud_resource_id = null #TODO
+  # cloud_resource_id = null
 
   # Tags
   defined_tags  = var.tags.definedTags

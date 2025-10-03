@@ -65,6 +65,7 @@ module "iam" {
   oke_cluster_ocid                  = var.oke_cluster_ocid
   create_service_discovery_policies = var.enable_service_log
   tags                              = var.tags
+  iam_resource_tags                 = var.iam_resource_tags
 
   providers = {
     oci = oci.home_region

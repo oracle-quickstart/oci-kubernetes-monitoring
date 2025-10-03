@@ -63,6 +63,12 @@ variable "oke_cluster_ocid" {
   type = string
 }
 
+# root tags
+variable "iam_resource_tags" {
+  type    = object({ freeformTags = map(string), definedTags = map(string) })
+  default = null
+}
+
 # OCI Tags
 variable "tags" {
   type    = object({ freeformTags = map(string), definedTags = map(string) })

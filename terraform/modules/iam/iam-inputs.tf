@@ -37,3 +37,9 @@ variable "tags" {
   type    = object({ freeformTags = map(string), definedTags = map(string) })
   default = { "freeformTags" = {}, "definedTags" = {} }
 }
+
+# root tags
+variable "iam_resource_tags" {
+  type    = object({ freeformTags = map(string), definedTags = map(string) })
+  default = null
+}

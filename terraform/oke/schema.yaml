@@ -75,6 +75,8 @@ variableGroups:
       - ${fluentd_base_dir_path}
       - ${delay_in_seconds}
       - ${tags}
+      - ${opt_custom_tags_for_iam_compartment}
+      - ${iam_resource_tags}
       - ${template_id}
 
 
@@ -309,12 +311,42 @@ variables:
   tags:
     description: |-
         The tag values will take effect only if the updates are made before the first run of the stack.
-         The changes made to the tags after the first run will not take effect.
+        The changes made to the tags after the first run will not take effect.
     type: oci:identity:tag:value
     title: "Tags"
     required: false
     dependsOn:
       compartmentId: ${tenancy_ocid}
+
+  # Option to enable/disable metric server installation during helm deployment
+  opt_custom_tags_for_iam_compartment:
+    type: boolean
+    title: Use custom tags for IAM resources
+    description: |
+      By defaults the tags given in all resources will be applied to dynamic group and policies as well. 
+      Use this option to provide different tags for IAM resources which are created at root compartment.
+    default: false
+    visible:
+      eq:
+        - ${dropdown_create_dynamic_group_and_policies}
+        - "Create required IAM resources as part of the stack"
+
+  # OCI tags (root compartment)
+  iam_resource_tags:
+    title: Tags for IAM resources
+    description: |-
+        Define custom tags for resources in the root compartment. 
+        Tags set here apply only if configured before the first stack run. Changes made after the initial run will not be applied.
+    type: oci:identity:tag:value
+    required: true
+    dependsOn:
+      compartmentId: ${tenancy_ocid}
+    visible:
+      and:
+        - eq:
+          - ${dropdown_create_dynamic_group_and_policies}
+          - "Create required IAM resources as part of the stack"
+        - ${opt_custom_tags_for_iam_compartment}
 
   # Template ID
   # It's automatically set by version.auto.tfvars file and hence grayed out for users

@@ -81,6 +81,8 @@ locals {
   }
 
   combined_policy_statements = distinct(flatten([for policy, stmt in local.policy_stmts : stmt]))
+
+  iam_tags = var.iam_resource_tags == null ? var.tags : var.iam_resource_tags
 }
 
 # https://docs.oracle.com/en-us/iaas/api/#/en/identity/20160918/DynamicGroup/
@@ -91,8 +93,8 @@ resource "oci_identity_dynamic_group" "oke_dynamic_group" {
   matching_rule  = local.complied_dynamic_group_rules
 
   #tags
-  defined_tags  = var.tags.definedTags
-  freeform_tags = var.tags.freeformTags
+  defined_tags  = local.iam_tags.definedTags
+  freeform_tags = local.iam_tags.freeformTags
 
   lifecycle {
     ignore_changes = [defined_tags, freeform_tags]
@@ -107,8 +109,8 @@ resource "oci_identity_policy" "oke_monitoring_policy" {
   statements     = local.combined_policy_statements
 
   #tags
-  defined_tags  = var.tags.definedTags
-  freeform_tags = var.tags.freeformTags
+  defined_tags  = local.iam_tags.definedTags
+  freeform_tags = local.iam_tags.freeformTags
 
   lifecycle {
     ignore_changes = [defined_tags, freeform_tags]
