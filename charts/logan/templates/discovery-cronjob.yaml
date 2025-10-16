@@ -25,6 +25,10 @@ spec:
         spec:
           restartPolicy: {{ .Values.k8sDiscovery.objects.restartPolicy }}
           serviceAccountName: {{ $serviceAccount }}
+          {{- if .Values.tolerations }}
+          tolerations:
+          {{- toYaml .Values.tolerations | nindent 10 }}
+          {{- end }}
           {{- if .Values.image.imagePullSecrets }}
           imagePullSecrets:
           - name: {{ .Values.image.imagePullSecrets }}

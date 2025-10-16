@@ -139,6 +139,15 @@ resourceOverrides:
          cpu: 100m
          memory: 250Mi
 
+# -- Custom tolerations to apply to all pods in the chart.
+# Default: [] (no additional tolerations)
+# Example:
+# tolerations:
+#   - key: "example-taint"
+#     operator: "Exists"
+#     effect: "NoSchedule"
+tolerations: []
+
 # -- @param extraVolumes Extra volumes.
 # Example:
 #   - name: tmpDir

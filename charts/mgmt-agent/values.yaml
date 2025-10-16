@@ -115,3 +115,12 @@ deployment:
    
    # Provide the storage class for StatefulSet's PVC. If not provided then the Cluster's default storage class will be used.
    storageClass:
+
+# -- Custom tolerations to apply to all pods in the chart.
+# Default: [] (no additional tolerations)
+# Example:
+# tolerations:
+#   - key: "example-taint"
+#     operator: "Exists"
+#     effect: "NoSchedule"
+tolerations: []
