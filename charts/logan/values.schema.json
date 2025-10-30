@@ -16,19 +16,22 @@
         },
         "refreshInterval": {
           "type": "integer",
-          "minimum": 0
+          "minimum": 10
         },
         "readLinesLimit": {
           "type": "integer",
-          "minimum": 0
+          "minimum": 10
         },
         "readBytesLimitPerSecond": {
           "type": "integer",
-          "minimum": 0
+          "oneOf": [
+            { "const": -1 },
+            { "minimum": 8192 }
+          ]
         },
         "posFileCompactionInterval": {
-          "type": "integer",
-          "minimum": 0
+          "type": "string",
+          "pattern": "^[0-9]+[smhd]$"
         },
         "enableStatWatcher": {
           "type": "boolean"

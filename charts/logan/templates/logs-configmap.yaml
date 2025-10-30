@@ -69,49 +69,30 @@ data:
        {{- $groupTP := default dict $.Values.fluentd.kubernetesSystem.tailPlugin -}}
        {{- $globalTP := default dict $.Values.fluentd.tailPlugin -}}
        {{- /* hasKey enables explicit false values. can not use coalesce */}}
-       {{- if or (hasKey $logTP "readFromHead") (hasKey $groupTP "readFromHead") (hasKey $globalTP "readFromHead") }}
-       {{- $readFromHead := false }}
        {{- if hasKey $logTP "readFromHead" }}
-         {{- $readFromHead = $logTP.readFromHead }}
+       read_from_head {{ $logTP.readFromHead }}
        {{- else if hasKey $groupTP "readFromHead" }}
-         {{- $readFromHead = $groupTP.readFromHead }}
+       read_from_head {{ $groupTP.readFromHead }}
        {{- else if hasKey $globalTP "readFromHead" }}
-         {{- $readFromHead = $globalTP.readFromHead }}
+       read_from_head {{ $globalTP.readFromHead }}
        {{- end }}
-       read_from_head {{ $readFromHead }}
-       {{- end }}
-       {{- if or (hasKey $logTP "followInodes") (hasKey $groupTP "followInodes") (hasKey $globalTP "followInodes") }}
-       {{- $followInodes := false }}
        {{- if hasKey $logTP "followInodes" }}
-         {{- $followInodes = $logTP.followInodes }}
+       follow_inodes {{ $logTP.followInodes }}
        {{- else if hasKey $groupTP "followInodes" }}
-         {{- $followInodes = $groupTP.followInodes }}
+       follow_inodes {{ $groupTP.followInodes }}
        {{- else if hasKey $globalTP "followInodes" }}
-         {{- $followInodes = $globalTP.followInodes }}
+       follow_inodes {{ $globalTP.followInodes }}
        {{- end }}
-       follow_inodes {{ $followInodes }}
-       {{- end }}
-       {{- if or (hasKey $logTP "logLevel") (hasKey $groupTP "logLevel") (hasKey $globalTP "logLevel") }}
-       {{- $logLevel := "" }}
-       {{- if hasKey $logTP "logLevel" }}
-         {{- $logLevel = $logTP.logLevel }}
-       {{- else if hasKey $groupTP "logLevel" }}
-         {{- $logLevel = $groupTP.logLevel }}
-       {{- else if hasKey $globalTP "logLevel" }}
-         {{- $logLevel = $globalTP.logLevel }}
-       {{- end }}
-       log_level {{ $logLevel }}
-       {{- end }}
-       {{- if or (hasKey $logTP "enableStatWatcher") (hasKey $groupTP "enableStatWatcher") (hasKey $globalTP "enableStatWatcher") }}
-       {{- $enableStatWatcher := false }}
        {{- if hasKey $logTP "enableStatWatcher" }}
-         {{- $enableStatWatcher = $logTP.enableStatWatcher }}
+       enable_stat_watcher {{ $logTP.enableStatWatcher }}
        {{- else if hasKey $groupTP "enableStatWatcher" }}
-         {{- $enableStatWatcher = $groupTP.enableStatWatcher }}
+       enable_stat_watcher {{ $groupTP.enableStatWatcher }}
        {{- else if hasKey $globalTP "enableStatWatcher" }}
-         {{- $enableStatWatcher = $globalTP.enableStatWatcher }}
+       enable_stat_watcher {{ $globalTP.enableStatWatcher }}
        {{- end }}
-       enable_stat_watcher {{ $enableStatWatcher }}
+       {{- $log_level := coalesce $logTP.logLevel $groupTP.logLevel $globalTP.logLevel -}}
+       {{- if $log_level }}
+       log_level {{ $log_level }}
        {{- end }}
        {{- $refreshInterval := coalesce $logTP.refreshInterval $groupTP.refreshInterval $globalTP.refreshInterval -}}
        {{- if $refreshInterval }}
@@ -244,49 +225,30 @@ data:
        {{- $groupTP := default dict $.Values.fluentd.linuxSystem.tailPlugin -}}
        {{- $globalTP := default dict $.Values.fluentd.tailPlugin -}}
        {{- /* hasKey enables explicit false values. can not use coalesce */}}
-       {{- if or (hasKey $logTP "readFromHead") (hasKey $groupTP "readFromHead") (hasKey $globalTP "readFromHead") }}
-       {{- $readFromHead := false }}
        {{- if hasKey $logTP "readFromHead" }}
-         {{- $readFromHead = $logTP.readFromHead }}
+       read_from_head {{ $logTP.readFromHead }}
        {{- else if hasKey $groupTP "readFromHead" }}
-         {{- $readFromHead = $groupTP.readFromHead }}
+       read_from_head {{ $groupTP.readFromHead }}
        {{- else if hasKey $globalTP "readFromHead" }}
-         {{- $readFromHead = $globalTP.readFromHead }}
+       read_from_head {{ $globalTP.readFromHead }}
        {{- end }}
-       read_from_head {{ $readFromHead }}
-       {{- end }}
-       {{- if or (hasKey $logTP "followInodes") (hasKey $groupTP "followInodes") (hasKey $globalTP "followInodes") }}
-       {{- $followInodes := false }}
        {{- if hasKey $logTP "followInodes" }}
-         {{- $followInodes = $logTP.followInodes }}
+       follow_inodes {{ $logTP.followInodes }}
        {{- else if hasKey $groupTP "followInodes" }}
-         {{- $followInodes = $groupTP.followInodes }}
+       follow_inodes {{ $groupTP.followInodes }}
        {{- else if hasKey $globalTP "followInodes" }}
-         {{- $followInodes = $globalTP.followInodes }}
+       follow_inodes {{ $globalTP.followInodes }}
        {{- end }}
-       follow_inodes {{ $followInodes }}
-       {{- end }}
-       {{- if or (hasKey $logTP "logLevel") (hasKey $groupTP "logLevel") (hasKey $globalTP "logLevel") }}
-       {{- $logLevel := "" }}
-       {{- if hasKey $logTP "logLevel" }}
-         {{- $logLevel = $logTP.logLevel }}
-       {{- else if hasKey $groupTP "logLevel" }}
-         {{- $logLevel = $groupTP.logLevel }}
-       {{- else if hasKey $globalTP "logLevel" }}
-         {{- $logLevel = $globalTP.logLevel }}
-       {{- end }}
-       log_level {{ $logLevel }}
-       {{- end }}
-       {{- if or (hasKey $logTP "enableStatWatcher") (hasKey $groupTP "enableStatWatcher") (hasKey $globalTP "enableStatWatcher") }}
-       {{- $enableStatWatcher := false }}
        {{- if hasKey $logTP "enableStatWatcher" }}
-         {{- $enableStatWatcher = $logTP.enableStatWatcher }}
+       enable_stat_watcher {{ $logTP.enableStatWatcher }}
        {{- else if hasKey $groupTP "enableStatWatcher" }}
-         {{- $enableStatWatcher = $groupTP.enableStatWatcher }}
+       enable_stat_watcher {{ $groupTP.enableStatWatcher }}
        {{- else if hasKey $globalTP "enableStatWatcher" }}
-         {{- $enableStatWatcher = $globalTP.enableStatWatcher }}
+       enable_stat_watcher {{ $globalTP.enableStatWatcher }}
        {{- end }}
-       enable_stat_watcher {{ $enableStatWatcher }}
+       {{- $log_level := coalesce $logTP.logLevel $groupTP.logLevel $globalTP.logLevel -}}
+       {{- if $log_level }}
+       log_level {{ $log_level }}
        {{- end }}
        {{- $refreshInterval := coalesce $logTP.refreshInterval $groupTP.refreshInterval $globalTP.refreshInterval -}}
        {{- if $refreshInterval }}
@@ -385,49 +347,30 @@ data:
        {{- $groupTP := default dict $.Values.fluentd.linuxSystem.tailPlugin -}}
        {{- $globalTP := default dict $.Values.fluentd.tailPlugin -}}
        {{- /* hasKey enables explicit false values. can not use coalesce */}}
-       {{- if or (hasKey $logTP "readFromHead") (hasKey $groupTP "readFromHead") (hasKey $globalTP "readFromHead") }}
-       {{- $readFromHead := false }}
        {{- if hasKey $logTP "readFromHead" }}
-         {{- $readFromHead = $logTP.readFromHead }}
+       read_from_head {{ $logTP.readFromHead }}
        {{- else if hasKey $groupTP "readFromHead" }}
-         {{- $readFromHead = $groupTP.readFromHead }}
+       read_from_head {{ $groupTP.readFromHead }}
        {{- else if hasKey $globalTP "readFromHead" }}
-         {{- $readFromHead = $globalTP.readFromHead }}
+       read_from_head {{ $globalTP.readFromHead }}
        {{- end }}
-       read_from_head {{ $readFromHead }}
-       {{- end }}
-       {{- if or (hasKey $logTP "followInodes") (hasKey $groupTP "followInodes") (hasKey $globalTP "followInodes") }}
-       {{- $followInodes := false }}
        {{- if hasKey $logTP "followInodes" }}
-         {{- $followInodes = $logTP.followInodes }}
+       follow_inodes {{ $logTP.followInodes }}
        {{- else if hasKey $groupTP "followInodes" }}
-         {{- $followInodes = $groupTP.followInodes }}
+       follow_inodes {{ $groupTP.followInodes }}
        {{- else if hasKey $globalTP "followInodes" }}
-         {{- $followInodes = $globalTP.followInodes }}
+       follow_inodes {{ $globalTP.followInodes }}
        {{- end }}
-       follow_inodes {{ $followInodes }}
-       {{- end }}
-       {{- if or (hasKey $logTP "logLevel") (hasKey $groupTP "logLevel") (hasKey $globalTP "logLevel") }}
-       {{- $logLevel := "" }}
-       {{- if hasKey $logTP "logLevel" }}
-         {{- $logLevel = $logTP.logLevel }}
-       {{- else if hasKey $groupTP "logLevel" }}
-         {{- $logLevel = $groupTP.logLevel }}
-       {{- else if hasKey $globalTP "logLevel" }}
-         {{- $logLevel = $globalTP.logLevel }}
-       {{- end }}
-       log_level {{ $logLevel }}
-       {{- end }}
-       {{- if or (hasKey $logTP "enableStatWatcher") (hasKey $groupTP "enableStatWatcher") (hasKey $globalTP "enableStatWatcher") }}
-       {{- $enableStatWatcher := false }}
        {{- if hasKey $logTP "enableStatWatcher" }}
-         {{- $enableStatWatcher = $logTP.enableStatWatcher }}
+       enable_stat_watcher {{ $logTP.enableStatWatcher }}
        {{- else if hasKey $groupTP "enableStatWatcher" }}
-         {{- $enableStatWatcher = $groupTP.enableStatWatcher }}
+       enable_stat_watcher {{ $groupTP.enableStatWatcher }}
        {{- else if hasKey $globalTP "enableStatWatcher" }}
-         {{- $enableStatWatcher = $globalTP.enableStatWatcher }}
+       enable_stat_watcher {{ $globalTP.enableStatWatcher }}
        {{- end }}
-       enable_stat_watcher {{ $enableStatWatcher }}
+       {{- $log_level := coalesce $logTP.logLevel $groupTP.logLevel $globalTP.logLevel -}}
+       {{- if $log_level }}
+       log_level {{ $log_level }}
        {{- end }}
        {{- $refreshInterval := coalesce $logTP.refreshInterval $groupTP.refreshInterval $globalTP.refreshInterval -}}
        {{- if $refreshInterval }}
@@ -577,41 +520,24 @@ data:
        {{- $logTP := default dict $logDefinition.tailPlugin -}}
        {{- $globalTP := default dict $.Values.fluentd.tailPlugin -}}
        {{- /* hasKey enables explicit false values. can not use coalesce */}}
-       {{- if or (hasKey $logTP "readFromHead") (hasKey $globalTP "readFromHead") }}
-       {{- $readFromHead := false }}
        {{- if hasKey $logTP "readFromHead" }}
-         {{- $readFromHead = $logTP.readFromHead }}
+       read_from_head {{ $logTP.readFromHead }}
        {{- else if hasKey $globalTP "readFromHead" }}
-         {{- $readFromHead = $globalTP.readFromHead }}
+       read_from_head {{ $globalTP.readFromHead }}
        {{- end }}
-       read_from_head {{ $readFromHead }}
-       {{- end }}
-       {{- if or (hasKey $logTP "followInodes") (hasKey $globalTP "followInodes") }}
-       {{- $followInodes := false }}
        {{- if hasKey $logTP "followInodes" }}
-         {{- $followInodes = $logTP.followInodes }}
+       follow_inodes {{ $logTP.followInodes }}
        {{- else if hasKey $globalTP "followInodes" }}
-         {{- $followInodes = $globalTP.followInodes }}
+       follow_inodes {{ $globalTP.followInodes }}
        {{- end }}
-       follow_inodes {{ $followInodes }}
-       {{- end }}
-       {{- if or (hasKey $logTP "logLevel") (hasKey $globalTP "logLevel") }}
-       {{- $logLevel := "" }}
-       {{- if hasKey $logTP "logLevel" }}
-         {{- $logLevel = $logTP.logLevel }}
-       {{- else if hasKey $globalTP "logLevel" }}
-         {{- $logLevel = $globalTP.logLevel }}
-       {{- end }}
-       log_level {{ $logLevel }}
-       {{- end }}
-       {{- if or (hasKey $logTP "enableStatWatcher") (hasKey $globalTP "enableStatWatcher") }}
-       {{- $enableStatWatcher := false }}
        {{- if hasKey $logTP "enableStatWatcher" }}
-         {{- $enableStatWatcher = $logTP.enableStatWatcher }}
+       enable_stat_watcher {{ $logTP.enableStatWatcher }}
        {{- else if hasKey $globalTP "enableStatWatcher" }}
-         {{- $enableStatWatcher = $globalTP.enableStatWatcher }}
+       enable_stat_watcher {{ $globalTP.enableStatWatcher }}
        {{- end }}
-       enable_stat_watcher {{ $enableStatWatcher }}
+       {{- $log_level := coalesce $logTP.logLevel $globalTP.logLevel -}}
+       {{- if $log_level }}
+       log_level {{ $log_level }}
        {{- end }}
        {{- $refreshInterval := coalesce $logTP.refreshInterval $globalTP.refreshInterval -}}
        {{- if $refreshInterval }}
@@ -737,41 +663,24 @@ data:
        {{- $groupTP := default dict $.Values.fluentd.genericContainerLogs.tailPlugin -}}
        {{- $globalTP := default dict $.Values.fluentd.tailPlugin -}}
        {{- /* hasKey enables explicit false values. can not use coalesce */}}
-       {{- if or (hasKey $groupTP "readFromHead") (hasKey $globalTP "readFromHead") }}
-       {{- $readFromHead := false }}
        {{- if hasKey $groupTP "readFromHead" }}
-         {{- $readFromHead = $groupTP.readFromHead }}
+       read_from_head {{ $groupTP.readFromHead }}
        {{- else if hasKey $globalTP "readFromHead" }}
-         {{- $readFromHead = $globalTP.readFromHead }}
+       read_from_head {{ $globalTP.readFromHead }}
        {{- end }}
-       read_from_head {{ $readFromHead }}
-       {{- end }}
-       {{- if or (hasKey $groupTP "followInodes") (hasKey $globalTP "followInodes") }}
-       {{- $followInodes := false }}
        {{- if hasKey $groupTP "followInodes" }}
-         {{- $followInodes = $groupTP.followInodes }}
+       follow_inodes {{ $groupTP.followInodes }}
        {{- else if hasKey $globalTP "followInodes" }}
-         {{- $followInodes = $globalTP.followInodes }}
+       follow_inodes {{ $globalTP.followInodes }}
        {{- end }}
-       follow_inodes {{ $followInodes }}
-       {{- end }}
-       {{- if or (hasKey $groupTP "logLevel") (hasKey $globalTP "logLevel") }}
-       {{- $logLevel := "" }}
-       {{- if hasKey $groupTP "logLevel" }}
-         {{- $logLevel = $groupTP.logLevel }}
-       {{- else if hasKey $globalTP "logLevel" }}
-         {{- $logLevel = $globalTP.logLevel }}
-       {{- end }}
-       log_level {{ $logLevel }}
-       {{- end }}
-       {{- if or (hasKey $groupTP "enableStatWatcher") (hasKey $globalTP "enableStatWatcher") }}
-       {{- $enableStatWatcher := false }}
        {{- if hasKey $groupTP "enableStatWatcher" }}
-         {{- $enableStatWatcher = $groupTP.enableStatWatcher }}
+       enable_stat_watcher {{ $groupTP.enableStatWatcher }}
        {{- else if hasKey $globalTP "enableStatWatcher" }}
-         {{- $enableStatWatcher = $globalTP.enableStatWatcher }}
+       enable_stat_watcher {{ $globalTP.enableStatWatcher }}
        {{- end }}
-       enable_stat_watcher {{ $enableStatWatcher }}
+       {{- $log_level := coalesce $groupTP.logLevel $globalTP.logLevel -}}
+       {{- if $log_level }}
+       log_level {{ $log_level }}
        {{- end }}
        {{- $refreshInterval := coalesce $groupTP.refreshInterval $globalTP.refreshInterval -}}
        {{- if $refreshInterval }}
@@ -950,5 +859,4 @@ data:
           
     </worker>
     {{- end }}
-    {{- end }} 
-
+    {{- end }}

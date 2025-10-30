@@ -267,7 +267,7 @@ fluentd:
       # frequency of flushing the chunks to output plugin.
       flushInterval: 60 # seconds
       # If true, follow files by inodes instead of paths to better handle file rotations (e.g., Kubernetes/containerd).
-      # followInodes:
+      followInodes: true
       # Interval (seconds) to refresh the list of watched files.
       # refreshInterval:
       # Maximum number of lines to read from a file per iteration.
