@@ -1,5 +1,10 @@
 # Change Log
 
+# 2025-10-28
+### Changed
+- Fluentd collector container image has been updated to version 1.7.3
+- Adds configurable tail plugin parameters for log collection
+
 # 2025-09-16
 ### Changed
 - As per the recent service name change from `Logging Analytics` to `Log Analytics`, updated the relevant documentation and descriptions to reflect the name change.

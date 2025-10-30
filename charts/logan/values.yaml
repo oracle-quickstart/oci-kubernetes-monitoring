@@ -53,7 +53,7 @@ image:
    # Image pull secrets for. Secret must be in the namespace defined by namespace
    imagePullSecrets:
    # -- Replace this value with actual docker image url
-   url: container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.7.2
+   url: container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.7.3
    # -- Image pull policy
    imagePullPolicy: Always
 
@@ -262,8 +262,22 @@ fluentd:
    tailPlugin:
       # If true, starts to read the logs from the head of the file or the last read position recorded in pos_file
       readFromHead: true
+      # Specifies the log level for the tail plugin. Options: debug, info, warn, error, fatal
+      # logLevel:
       # frequency of flushing the chunks to output plugin.
       flushInterval: 60 # seconds
+      # If true, follow files by inodes instead of paths to better handle file rotations (e.g., Kubernetes/containerd).
+      # followInodes:
+      # Interval (seconds) to refresh the list of watched files.
+      # refreshInterval:
+      # Maximum number of lines to read from a file per iteration.
+      # readLinesLimit:
+      # Throttle file reading by limiting bytes read per second.
+      # readBytesLimitPerSecond:
+      # Interval (seconds) to compact pos_file and remove stale/unused entries.
+      # posFileCompactionInterval:
+      # If true, enable stat-based watcher for file change detection.
+      # enableStatWatcher:
       # Specifies the encoding of logs. By default, in_tail emits string value as ASCII-8BIT encoding. If encoding is specified, in_tail changes string to given encoding.
       # When encoding is set at this level, it gets applied to all the logs being collected. Instead, it can also be set at individual logs under sections like kubernetesSystem, genericContainerLogs, customLogs etc.
       # encoding:
@@ -285,6 +299,18 @@ fluentd:
       #worker:
       # -- To set timezone override for all kubernetesSystem logs (applies only to log records without explicit timezone identifier in the record itself)
       #timezone:
+      # Optional group-level tail plugin overrides for all kubernetesSystem.logs[*]
+      # tailPlugin:
+         # readFromHead: true
+         # logLevel:
+         # flushInterval: 60
+         # followInodes:
+         # refreshInterval:
+         # readLinesLimit:
+         # readBytesLimitPerSecond:
+         # posFileCompactionInterval:
+         # enableStatWatcher:
+         # encoding:
 
       logs:
          # -- Kube Proxy logs collection configuration
@@ -295,6 +321,18 @@ fluentd:
             ociLALogSourceName: "Kubernetes Proxy Logs"
             # Regular expression pattern for the starting line in case of multi-line logs.
             multilineStartRegExp: /^\S\d{2}\d{2}\s+[^\:]+:[^\:]+:[^\.]+\.\d{0,3}/
+            # Per-log tail plugin overrides take highest precedence
+            #tailPlugin:
+               # readFromHead: true
+               # logLevel:
+               # flushInterval: 60
+               # followInodes:
+               # refreshInterval:
+               # readLinesLimit:
+               # readBytesLimitPerSecond:
+               # posFileCompactionInterval:
+               # enableStatWatcher:
+               # encoding:
             #metadata:
                #"Client Host Region": "America"
                #"Environment": "Production"
@@ -423,6 +461,18 @@ fluentd:
       #worker:
       # -- To set timezone override for all linuxSystem logs (applies only to log records without explicit timezone identifier in the record itself)
       #timezone:
+      # Optional group-level tail plugin overrides for all linuxSystem.logs[*]
+      # tailPlugin:
+         # readFromHead: true
+         # logLevel:
+         # flushInterval: 60
+         # followInodes:
+         # refreshInterval:
+         # readLinesLimit:
+         # readBytesLimitPerSecond:
+         # posFileCompactionInterval:
+         # enableStatWatcher:
+         # encoding:
 
       logs:
          # -- Linux CRON logs collection configuration
@@ -435,6 +485,18 @@ fluentd:
             multilineStartRegExp: /^(?:(?:\d+\s+)?<([^>]*)>(?:\d+\s+)?)?\S+\s+\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2}\s+/
             # -- To set timezone override for cronlog (applies only to log records without explicit timezone identifier in the record itself)
             #timezone:
+            # Per-log tail plugin overrides take highest precedence
+            # tailPlugin:
+               # readFromHead: true
+               # logLevel:
+               # flushInterval: 60
+               # followInodes:
+               # refreshInterval:
+               # readLinesLimit:
+               # readBytesLimitPerSecond:
+               # posFileCompactionInterval:
+               # enableStatWatcher:
+               # encoding:
 
          # -- Linux CRON logs collection configuration
          securelog:
@@ -644,6 +706,18 @@ fluentd:
       #worker: 1
       # -- To set timezone override for genericContainerLogs (applies only to log records without explicit timezone identifier in the record itself)
       #timezone:
+      # Optional group-level tail plugin overrides for all generic container logs
+      # tailPlugin:
+         # readFromHead: true
+         # logLevel:
+         # flushInterval: 60
+         # followInodes:
+         # refreshInterval:
+         # readLinesLimit:
+         # readBytesLimitPerSecond:
+         # posFileCompactionInterval:
+         # enableStatWatcher:
+         # encoding:
 
    # -- Configuration for any custom logs which are not part of the default configuration defined in this file.
    # All the pod/container logs will be collected as per "genericContainerLogs" section.
@@ -670,6 +744,18 @@ fluentd:
          #worker:
          # -- To set timezone override for "custom-id1" (applies only to log records without explicit timezone identifier in the record itself)
          #timezone:
+         # Per-log tail plugin overrides take highest precedence for this custom source
+         # tailPlugin:
+            # readFromHead: true
+            # logLevel:
+            # flushInterval: 60
+            # followInodes:
+            # refreshInterval:
+            # readLinesLimit:
+            # readBytesLimitPerSecond:
+            # posFileCompactionInterval:
+            # enableStatWatcher:
+            # encoding:
       #custom-id2:
          #path: /var/log/custom/*.log
          # Log Analytics log source to use for parsing and processing the logs:
@@ -678,6 +764,18 @@ fluentd:
          #multilineStartRegExp:
          # Set isContainerLog to false if the log is not a container log (/var/log/containers/*.log). Default value is true.
          #isContainerLog: false
+         # Per-log tail plugin overrides take highest precedence for this custom source
+         # tailPlugin:
+            # readFromHead: true
+            # logLevel:
+            # flushInterval: 60
+            # followInodes:
+            # refreshInterval:
+            # readLinesLimit:
+            # readBytesLimitPerSecond:
+            # posFileCompactionInterval:
+            # enableStatWatcher:
+            # encoding:
 
    #  -- Alternative approach to define the configuration for any custom logs which are not part of the default configuration defined in this file.
    # Provide the Fluentd configuration with the source and filter sections for your custom logs in this section. Exclude the match section. It would be used without any modification.

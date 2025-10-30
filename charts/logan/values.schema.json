@@ -1,5 +1,48 @@
 {
   "$schema": "http://json-schema.org/schema#",
+  "$defs": {
+    "tailPlugin": {
+      "type": "object",
+      "properties": {
+        "readFromHead": {
+          "type": "boolean"
+        },
+        "flushInterval": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "followInodes": {
+          "type": "boolean"
+        },
+        "refreshInterval": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "readLinesLimit": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "readBytesLimitPerSecond": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "posFileCompactionInterval": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "enableStatWatcher": {
+          "type": "boolean"
+        },
+        "encoding": {
+          "type": "string"
+        },
+        "logLevel": {
+          "type": "string",
+          "enum": ["debug", "info", "warn", "error", "fatal"]
+        }
+      }
+    }
+  },
   "required": [
     "runtime",
     "authtype",
@@ -51,6 +94,72 @@
       "properties": {
         "baseDir": {
           "type": "string"
+        },
+        "tailPlugin": {
+          "$ref": "#/$defs/tailPlugin"
+        },
+        "kubernetesSystem": {
+          "type": "object",
+          "properties": {
+            "tailPlugin": {
+              "$ref": "#/$defs/tailPlugin"
+            },
+            "logs": {
+              "type": "object",
+              "patternProperties": {
+                ".*": {
+                  "type": "object",
+                  "properties": {
+                    "tailPlugin": {
+                      "$ref": "#/$defs/tailPlugin"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "linuxSystem": {
+          "type": "object",
+          "properties": {
+            "tailPlugin": {
+              "$ref": "#/$defs/tailPlugin"
+            },
+            "logs": {
+              "type": "object",
+              "patternProperties": {
+                ".*": {
+                  "type": "object",
+                  "properties": {
+                    "tailPlugin": {
+                      "$ref": "#/$defs/tailPlugin"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "genericContainerLogs": {
+          "type": "object",
+          "properties": {
+            "tailPlugin": {
+              "$ref": "#/$defs/tailPlugin"
+            }
+          }
+        },
+        "customLogs": {
+          "type": "object",
+          "patternProperties": {
+            ".*": {
+              "type": "object",
+              "properties": {
+                "tailPlugin": {
+                  "$ref": "#/$defs/tailPlugin"
+                }
+              }
+            }
+          }
         }
       }
     },
