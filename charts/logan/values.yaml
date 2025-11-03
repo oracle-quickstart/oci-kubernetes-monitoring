@@ -294,6 +294,8 @@ fluentd:
          #"Client Host Region": "America"
          #"Environment": "Production"
          #"Third Key": "Third Value"
+      # DEPRECATED: This parameter is deprecated and will be removed in a future release.
+      # Use ...tailPlugin.encoding instead.
       #encoding:
       # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
       #worker:
@@ -338,6 +340,8 @@ fluentd:
                #"Environment": "Production"
                #"Third Key": "Third Value"
             #ociLALogGroupID:
+            # DEPRECATED: This parameter is deprecated and will be removed in a future release.
+            # Use ...tailPlugin.encoding instead.
             #encoding:
             # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
             #worker:
@@ -456,6 +460,8 @@ fluentd:
          #"Client Host Region": "America"
          #"Environment": "Production"
          #"Third Key": "Third Value"
+      # DEPRECATED: This parameter is deprecated and will be removed in a future release.
+      # Use ...tailPlugin.encoding instead.
       #encoding:
       # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
       #worker:
@@ -739,6 +745,8 @@ fluentd:
             #"Client Host Region": "America"
             #"Environment": "Production"
             #"Third Key": "Third Value"
+         # DEPRECATED: This parameter is deprecated and will be removed in a future release.
+         # Use ...tailPlugin.encoding instead.
          #encoding:
          # Worker number in case of multi process workers enabled. If not set when multi process workers enabled, then it defaults to 0.
          #worker:
