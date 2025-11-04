@@ -11,8 +11,7 @@ Thank you for installing {{ .Chart.Name }} [{{ .Chart.Version }}]
 {{- if $logan.fluentd.kubernetesSystem.encoding }}
 
 WARNING: '.Values.oci-onm-logan.fluentd.kubernetesSystem.encoding' is DEPRECATED and will be removed in a future release.
-Use: .Values.oci-onm-logan.fluentd.kubernetesSystem.tailPlugin.encoding
-Remove the deprecated value from your configuration.
+Use '.Values.oci-onm-logan.fluentd.kubernetesSystem.tailPlugin.encoding' instead.
 {{- end }}
 
 {{- $k8sLogs := $logan.fluentd.kubernetesSystem.logs -}}
@@ -21,8 +20,7 @@ Remove the deprecated value from your configuration.
   {{- if and $logDef $logDef.encoding }}
 
 WARNING: '.Values.oci-onm-logan.fluentd.kubernetesSystem.logs.{{ $logName }}.encoding' is DEPRECATED and will be removed in a future release.
-Use: .Values.oci-onm-logan.fluentd.kubernetesSystem.logs.{{ $logName }}.tailPlugin.encoding
-Remove the deprecated value from your configuration.
+Use '.Values.oci-onm-logan.fluentd.kubernetesSystem.logs.{{ $logName }}.tailPlugin.encoding' instead.
   {{- end }}
 {{- end }}
 {{- end }}
@@ -30,8 +28,7 @@ Remove the deprecated value from your configuration.
 {{- if $logan.fluentd.linuxSystem.encoding }}
 
 WARNING: '.Values.oci-onm-logan.fluentd.linuxSystem.encoding' is DEPRECATED and will be removed in a future release.
-Use: .Values.oci-onm-logan.fluentd.linuxSystem.tailPlugin.encoding
-Remove the deprecated value from your configuration.
+Use '.Values.oci-onm-logan.fluentd.linuxSystem.tailPlugin.encoding' instead.
 {{- end }}
 
 {{- $linuxLogs := $logan.fluentd.linuxSystem.logs -}}
@@ -40,8 +37,7 @@ Remove the deprecated value from your configuration.
   {{- if and $logDef $logDef.encoding }}
 
 WARNING: '.Values.oci-onm-logan.fluentd.linuxSystem.logs.{{ $logName }}.encoding' is DEPRECATED and will be removed in a future release.
-Use: .Values.oci-onm-logan.fluentd.linuxSystem.logs.{{ $logName }}.tailPlugin.encoding
-Remove the deprecated value from your configuration.
+Use '.Values.oci-onm-logan.fluentd.linuxSystem.logs.{{ $logName }}.tailPlugin.encoding' instead.
   {{- end }}
 {{- end }}
 {{- end }}
@@ -49,8 +45,7 @@ Remove the deprecated value from your configuration.
 {{- if $logan.fluentd.genericContainerLogs.encoding }}
 
 WARNING: '.Values.oci-onm-logan.fluentd.genericContainerLogs.encoding' is DEPRECATED and will be removed in a future release.
-Use: .Values.oci-onm-logan.fluentd.genericContainerLogs.tailPlugin.encoding
-Remove the deprecated value from your configuration.
+Use '.Values.oci-onm-logan.fluentd.genericContainerLogs.tailPlugin.encoding' instead.
 {{- end }}
 
 {{- $customLogs := $logan.fluentd.customLogs -}}
@@ -59,8 +54,7 @@ Remove the deprecated value from your configuration.
   {{- if and $logDef $logDef.encoding }}
 
 WARNING: '.Values.oci-onm-logan.fluentd.customLogs.{{ $logName }}.encoding' is DEPRECATED and will be removed in a future release.
-Use: .Values.oci-onm-logan.fluentd.customLogs.{{ $logName }}.tailPlugin.encoding
-Remove the deprecated value from your configuration.
+Use '.Values.oci-onm-logan.fluentd.customLogs.{{ $logName }}.tailPlugin.encoding' instead.
   {{- end }}
 {{- end }}
 {{- end }}
