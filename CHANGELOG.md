@@ -1,9 +1,10 @@
 # Change Log
 
-# 2025-10-28
+# 2025-11-05
 ### Changed
 - Fluentd collector container image has been updated to version 1.7.3
 - Adds configurable tail plugin parameters for log collection
+- Set `follow_inodes` parameter in Fluentd's tail plugin to `true` by default  
 
 # 2025-09-16
 ### Changed
