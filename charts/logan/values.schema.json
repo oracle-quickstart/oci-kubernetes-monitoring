@@ -51,6 +51,34 @@
       "properties": {
         "baseDir": {
           "type": "string"
+        },
+        "tolerations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["key", "operator"],
+            "properties": {
+              "key": {
+                "type": "string"
+              },
+              "operator": {
+                "type": "string",
+                "enum": ["Equal", "Exists"]
+              },
+              "value": {
+                "type": "string"
+              },
+              "effect": {
+                "type": "string",
+                "enum": ["NoSchedule", "PreferNoSchedule", "NoExecute"]
+              },
+              "tolerationSeconds": {
+                "type": "integer"
+              }
+            },
+            "additionalProperties": false
+          },
+          "default": []
         }
       }
     },
@@ -95,6 +123,75 @@
         "additionalProperties": false
       },
       "default": []
+    },
+    "k8sDiscovery": {
+      "type": "object",
+      "properties": {
+        "objects": {
+          "type": "object"
+        },
+        "tolerations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["key", "operator"],
+            "properties": {
+              "key": {
+                "type": "string"
+              },
+              "operator": {
+                "type": "string",
+                "enum": ["Equal", "Exists"]
+              },
+              "value": {
+                "type": "string"
+              },
+              "effect": {
+                "type": "string",
+                "enum": ["NoSchedule", "PreferNoSchedule", "NoExecute"]
+              },
+              "tolerationSeconds": {
+                "type": "integer"
+              }
+            },
+            "additionalProperties": false
+          },
+          "default": []
+        }
+      }
+    },
+    "tcpconnect": {
+      "type": "object",
+      "properties": {
+        "tolerations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["key", "operator"],
+            "properties": {
+              "key": {
+                "type": "string"
+              },
+              "operator": {
+                "type": "string",
+                "enum": ["Equal", "Exists"]
+              },
+              "value": {
+                "type": "string"
+              },
+              "effect": {
+                "type": "string",
+                "enum": ["NoSchedule", "PreferNoSchedule", "NoExecute"]
+              },
+              "tolerationSeconds": {
+                "type": "integer"
+              }
+            },
+            "additionalProperties": false
+          },
+          "default": []
+        }
+      }
     }
   }
 }
