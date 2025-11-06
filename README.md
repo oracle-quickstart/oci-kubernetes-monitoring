@@ -196,6 +196,8 @@ Create OCI Log Analytics LogGroup(s) if not done already. Refer [Create Log Grou
       # -- OCID for OKE cluster or a unique ID for other Kubernetes clusters.
       kubernetesClusterID:
       # -- Provide a unique name for the cluster. This would help in uniquely identifying the logs and metrics data at OCI Log Analytics and OCI Monitoring respectively.
+      # ** Note ** - This value must be same as the cluster key in entity metadata fields above
+      # <Cluster_Name>_<Cluster_Creation_Time>
       kubernetesClusterName:
 
     oci-onm-logan:
