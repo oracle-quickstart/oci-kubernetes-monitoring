@@ -1,0 +1,60 @@
+{{/*
+  NOTES.txt for oci-onm chart
+  Deprecation warnings for encoding values in the oci-onm-logan subchart.
+  This file is rendered as a Helm template.
+*/}}
+
+Thank you for installing {{ .Chart.Name }} [{{ .Chart.Version }}]
+
+{{- $logan := index .Values "oci-onm-logan" -}}
+
+{{- if $logan.fluentd.kubernetesSystem.encoding }}
+
+WARNING: '.Values.oci-onm-logan.fluentd.kubernetesSystem.encoding' is DEPRECATED and will be removed in a future release.
+Use '.Values.oci-onm-logan.fluentd.kubernetesSystem.tailPlugin.encoding' instead.
+{{- end }}
+
+{{- $k8sLogs := $logan.fluentd.kubernetesSystem.logs -}}
+{{- if $k8sLogs }}
+{{- range $logName, $logDef := $k8sLogs }}
+  {{- if and $logDef $logDef.encoding }}
+
+WARNING: '.Values.oci-onm-logan.fluentd.kubernetesSystem.logs.{{ $logName }}.encoding' is DEPRECATED and will be removed in a future release.
+Use '.Values.oci-onm-logan.fluentd.kubernetesSystem.logs.{{ $logName }}.tailPlugin.encoding' instead.
+  {{- end }}
+{{- end }}
+{{- end }}
+
+{{- if $logan.fluentd.linuxSystem.encoding }}
+
+WARNING: '.Values.oci-onm-logan.fluentd.linuxSystem.encoding' is DEPRECATED and will be removed in a future release.
+Use '.Values.oci-onm-logan.fluentd.linuxSystem.tailPlugin.encoding' instead.
+{{- end }}
+
+{{- $linuxLogs := $logan.fluentd.linuxSystem.logs -}}
+{{- if $linuxLogs }}
+{{- range $logName, $logDef := $linuxLogs }}
+  {{- if and $logDef $logDef.encoding }}
+
+WARNING: '.Values.oci-onm-logan.fluentd.linuxSystem.logs.{{ $logName }}.encoding' is DEPRECATED and will be removed in a future release.
+Use '.Values.oci-onm-logan.fluentd.linuxSystem.logs.{{ $logName }}.tailPlugin.encoding' instead.
+  {{- end }}
+{{- end }}
+{{- end }}
+
+{{- if $logan.fluentd.genericContainerLogs.encoding }}
+
+WARNING: '.Values.oci-onm-logan.fluentd.genericContainerLogs.encoding' is DEPRECATED and will be removed in a future release.
+Use '.Values.oci-onm-logan.fluentd.genericContainerLogs.tailPlugin.encoding' instead.
+{{- end }}
+
+{{- $customLogs := $logan.fluentd.customLogs -}}
+{{- if $customLogs }}
+{{- range $logName, $logDef := $customLogs }}
+  {{- if and $logDef $logDef.encoding }}
+
+WARNING: '.Values.oci-onm-logan.fluentd.customLogs.{{ $logName }}.encoding' is DEPRECATED and will be removed in a future release.
+Use '.Values.oci-onm-logan.fluentd.customLogs.{{ $logName }}.tailPlugin.encoding' instead.
+  {{- end }}
+{{- end }}
+{{- end }}
