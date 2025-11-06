@@ -70,8 +70,10 @@ Charts for sending Kubernetes platform logs, compute logs, and Kubernetes Object
 | fluentd.rewriteTagPlugin.hostname_command | string | `"cat /etc/hostname"` |  |
 | fluentd.tailPlugin | object | `{"flushInterval":60,"readFromHead":true}` | Config for Logs Collection using fluentd tail plugin |
 | fluentd.timezone | string | `nil` | To set timezone override for all logs collected using this solution (applies only to log records without explicit timezone identifier in the record itself) |
+| fluentd.tolerations | list | `[]` | Custom tolerations to apply to the fluentd pod in the chart. Default: [] (no additional tolerations) Example: tolerations:   - key: "example-taint"     operator: "Exists"     effect: "NoSchedule" |
 | global.namespace | string | `"oci-onm"` | Kubernetes Namespace for creating monitoring resources. Ignored if oci-kubernetes-monitoring-common.createNamespace set to false. |
 | global.resourceNamePrefix | string | `"oci-onm"` | Resource names prefix used, where allowed. |
+| global.tolerations | list | `[]` | Custom tolerations to apply to all pods in the chart. Default: [] (no additional tolerations) Example: tolerations:   - key: "example-taint"     operator: "Exists"     effect: "NoSchedule" |
 | image.imagePullPolicy | string | `"Always"` | Image pull policy |
 | image.imagePullSecrets | string | `nil` |  |
 | image.url | string | `"container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.7.2"` | Replace this value with actual docker image url |
@@ -101,6 +103,7 @@ Charts for sending Kubernetes platform logs, compute logs, and Kubernetes Object
 | k8sDiscovery.objects.restartPolicy | string | `"Never"` |  |
 | k8sDiscovery.objects.successfulJobsHistoryLimit | int | `3` |  |
 | k8sDiscovery.objects.thread_count | string | `nil` |  |
+| k8sDiscovery.tolerations | list | `[]` | Custom tolerations to apply to the k8sDiscovery cronjob pods. Default: [] (no additional tolerations) Example: tolerations:   - key: "example-taint"     operator: "Exists"     effect: "NoSchedule" |
 | kubernetesClusterID | string | `nil` | OKE Cluster OCID/EKS Cluster ARN etc. e.g. ocid1.cluster.oc1.phx.aaaaaaaahhbadf3rxa62faaeixanvr7vftmkg6hupycbf4qszctf2wbmqqxq |
 | kubernetesClusterName | string | `nil` | Kubernetes Cluster name. Need not be the OKE Cluster display name. e.g. production-cluster |
 | namespace | string | `"{{ .Values.global.namespace }}"` | Kubernetes Namespace for deploying monitoring resources deployed by this chart. |
@@ -129,7 +132,8 @@ Charts for sending Kubernetes platform logs, compute logs, and Kubernetes Object
 | resources.requests | object | `{"cpu":"100m","memory":"250Mi"}` | Resource requests |
 | runtime | string | `"cri"` | Container runtime for Kubernetes Cluster. Requires fluentd configuration changes accordingly Allowed values: docker, cri(for OKE 1.20 and above) |
 | serviceAccount | string | `"{{ .Values.global.resourceNamePrefix }}"` | Kubernetes ServiceAccount |
-| tolerations | list | `[]` | Custom tolerations to apply to all pods in the chart. Default: [] (no additional tolerations) Example: tolerations:   - key: "example-taint"     operator: "Exists"     effect: "NoSchedule" |
+| tcpconnect | object | `{"tolerations":[]}` | TCP connect logs collection configuration |
+| tcpconnect.tolerations | list | `[]` | Custom tolerations to apply to the tcpconnect daemonset pods. Default: [] (no additional tolerations) Example: tolerations:   - key: "example-taint"     operator: "Exists"     effect: "NoSchedule" |
 | volumes | object | `{"containerdataHostPath":"/u01/data/docker/containers","podsHostPath":"/var/log/pods"}` | Log logvolumes for pod logs and container logs |
 | volumes.containerdataHostPath | string | `"/u01/data/docker/containers"` | Path to the container data logs on Kubernetes Nodes |
 | volumes.podsHostPath | string | `"/var/log/pods"` | Path to the pod logs on Kubernetes Nodes |

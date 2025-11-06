@@ -27,9 +27,9 @@ spec:
         runAsGroup: {{ default 0 .Values.deployment.security.runAsGroup }}
         fsGroup: {{ default 0 .Values.deployment.security.fsGroup }}
       serviceAccountName: {{ include "mgmt-agent.serviceAccount" . }}
-      {{- if .Values.tolerations }}
+      {{- if or .Values.tolerations .Values.global.tolerations }}
       tolerations:
-      {{- toYaml .Values.tolerations | nindent 8 }}
+      {{- include "mgmt-agent.mergeTolerations" . | nindent 8 }}
       {{- end }}
       {{- if .Values.mgmtagent.image.secret }}
       imagePullSecrets:

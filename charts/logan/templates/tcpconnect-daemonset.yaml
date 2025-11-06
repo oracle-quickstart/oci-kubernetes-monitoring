@@ -26,13 +26,9 @@ spec:
         version: v1
     spec:
       serviceAccountName: {{ include "logan.serviceAccount" . }}
+      {{- if or .Values.tcpconnect.tolerations .Values.global.tolerations }}
       tolerations:
-      - key: node-role.kubernetes.io/master
-        effect: NoSchedule
-      - key: node-role.kubernetes.io/control-plane
-        effect: NoSchedule
-      {{- if .Values.tolerations }}
-      {{- toYaml .Values.tolerations | nindent 6 }}
+      {{- include "tcpconnect.mergeTolerations" . | nindent 6 }}
       {{- end }}
       {{- if $imagePullSecrets }}
       imagePullSecrets:
