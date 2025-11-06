@@ -1,5 +1,9 @@
 # Change Log
 
+# 2025-11-06
+### Changed
+- Quick fix for NOTES.txt when logan chart is disabled
+
 # 2025-11-05
 ### Changed
 - Fluentd collector container image has been updated to version 1.7.3
