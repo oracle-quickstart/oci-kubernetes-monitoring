@@ -27,6 +27,10 @@ spec:
         runAsGroup: {{ default 0 .Values.deployment.security.runAsGroup }}
         fsGroup: {{ default 0 .Values.deployment.security.fsGroup }}
       serviceAccountName: {{ include "mgmt-agent.serviceAccount" . }}
+      {{- if or .Values.tolerations .Values.global.tolerations }}
+      tolerations:
+      {{- include "mgmt-agent.mergeTolerations" . | nindent 8 }}
+      {{- end }}
       {{- if .Values.mgmtagent.image.secret }}
       imagePullSecrets:
         - name: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent-container-registry-key
