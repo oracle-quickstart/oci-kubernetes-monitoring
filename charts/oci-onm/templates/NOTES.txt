@@ -8,6 +8,8 @@ Thank you for installing {{ .Chart.Name }} [{{ .Chart.Version }}]
 
 {{- $logan := index .Values "oci-onm-logan" -}}
 
+{{- if $logan.enabled }}
+
 {{- if $logan.fluentd.kubernetesSystem.encoding }}
 
 WARNING: '.Values.oci-onm-logan.fluentd.kubernetesSystem.encoding' is DEPRECATED and will be removed in a future release.
@@ -57,4 +59,6 @@ WARNING: '.Values.oci-onm-logan.fluentd.customLogs.{{ $logName }}.encoding' is D
 Use '.Values.oci-onm-logan.fluentd.customLogs.{{ $logName }}.tailPlugin.encoding' instead.
   {{- end }}
 {{- end }}
+{{- end }}
+
 {{- end }}
