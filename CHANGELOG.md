@@ -1,5 +1,9 @@
 # Change Log
 
+# 2025-11-19
+### Changed
+- Management Agent container image has been updated to version 1.10.0
+
 # 2025-11-06
 ### Changed
 - Quick fix for NOTES.txt when logan chart is disabled
