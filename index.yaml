@@ -3,6 +3,30 @@ entries:
   oci-onm:
   - apiVersion: v2
     appVersion: 3.0.0
+    created: "2025-11-25T20:56:12.785461119+05:30"
+    dependencies:
+    - condition: oci-onm-common.enabled
+      name: oci-onm-common
+      repository: file://../common
+      version: 3.1.0
+    - condition: oci-onm-logan.enabled
+      name: oci-onm-logan
+      repository: file://../logan
+      version: 4.1.0
+    - condition: oci-onm-mgmt-agent.enabled
+      name: oci-onm-mgmt-agent
+      repository: file://../mgmt-agent
+      version: 3.0.5
+    description: Helm chart for collecting Kubernetes logs & objects and metrics using
+      Fluentd and ManagementAgent into OCI Log Analytics and OCI Monitoring respectively.
+    digest: 6d14ec3a25577217bbb95955e50c1c832b9107b96c2a273eaeda3719b70c6346
+    name: oci-onm
+    type: application
+    urls:
+    - oci-onm-4.1.2.tgz
+    version: 4.1.2
+  - apiVersion: v2
+    appVersion: 3.0.0
     created: "2025-11-07T11:23:30.159333+05:30"
     dependencies:
     - condition: oci-onm-common.enabled
@@ -688,4 +712,4 @@ entries:
     urls:
     - https://github.com/oracle-quickstart/oci-kubernetes-monitoring/releases/download/oci-onm-mgmt-agent-3.0.1/oci-onm-mgmt-agent-3.0.1.tgz
     version: 3.0.1
-generated: "2025-11-07T11:23:30.159526+05:30"
+generated: "2025-11-25T20:56:12.785681297+05:30"
