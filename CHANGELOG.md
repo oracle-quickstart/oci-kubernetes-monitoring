@@ -1,5 +1,9 @@
 # Change Log
 
+# 2025-12-05
+### Changed
+- metrics-server deployment and image updated to version 0.8.0
+
 # 2025-11-19
 ### Changed
 - Management Agent container image has been updated to version 1.10.0
