@@ -55,6 +55,8 @@ variableGroups:
   - title: Create dynamic group and policy (tenancy level admin access required)
     variables:
       - ${dropdown_create_dynamic_group_and_policies}
+      - ${opt_custom_tags_for_iam_compartment}
+      - ${iam_resource_tags}
 
   - title: Create resources for OCI Observability and Management services
     variables:
@@ -75,8 +77,6 @@ variableGroups:
       - ${fluentd_base_dir_path}
       - ${delay_in_seconds}
       - ${tags}
-      - ${opt_custom_tags_for_iam_compartment}
-      - ${iam_resource_tags}
       - ${template_id}
 
 
