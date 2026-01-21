@@ -63,6 +63,7 @@ It does extensive enrichment of logs, metrics and object information to enable c
     ```
     ALL {instance.compartment.id='OKE Cluster Compartment OCID'}
     ```
+    - **Note**: _When working with multiple compartments you need to change the ALL to ANY because the dynamic group will evaluate if a instance matches all the conditions of both compartments.
     - **Note**: _This dynamic group is not required for non OKE or when you choose to use Config file based AuthZ for monitoring the logs._
 
   * Create a user and user group using which the logs to be published to OCI Log Analytics. Refer [Managing Users](https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/managingusers.htm) and [Managing User Groups](https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/managinggroups.htm) for details.
