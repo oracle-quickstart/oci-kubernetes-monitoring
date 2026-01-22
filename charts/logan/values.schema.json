@@ -78,7 +78,7 @@
     },
     "authtype": {
       "type": "string",
-      "enum": ["InstancePrincipal", "config"]
+      "enum": ["InstancePrincipal", "config", "WorkloadIdentity"]
     },
     "namespace": {
       "type": "string"
