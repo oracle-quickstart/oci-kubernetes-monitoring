@@ -44,6 +44,8 @@ spec:
               - exec
               - oci-loganalytics-kubernetes-discovery
             {{- /* mandatory inputs */}}
+              - --authtype
+              - {{ .Values.authtype }}
               - --kubernetes_cluster_id
               - {{ $kubernetesClusterId }}
               - --kubernetes_cluster_name
