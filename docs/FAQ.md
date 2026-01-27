@@ -51,7 +51,7 @@ _Additionally, the following volumes of type hostPath would be created and mount
 
 #### Logs
 
-The solutions offers collection of various logs of from the Kubernetes cluster into OCI Log Analytics and offer rich analytics on top of the collected logs. Users may choose to customise the log collection by modifying the out of the box configuration that it provides.
+The solutions offers collection of various logs of from the Kubernetes cluster into OCI Log Analytics and offer rich analytics on top of the collected logs. Users may choose to customize the log collection by modifying the out of the box configuration that it provides.
 
 * Kubernetes System/Service Logs
     * The following logs are configured to be collected by default under this category. 
@@ -73,7 +73,7 @@ The solutions offers collection of various logs of from the Kubernetes cluster i
         * Ksplice Uptrack logs
         * Yum logs
 * Pod/Container (Application) Logs
-    * All the container logs available under `/var/log/containers/` on each worker nodes would be collected by default and processed using a generic Log Source named `Kubernetes Container Generic Logs`. However, users have ability to process different container logs using different Parsers/Sources at Log Analytics. Refer [this](#custom-logs.md) section to learn on how to perform the customisations. 
+    * All the container logs available under `/var/log/containers/` on each worker nodes would be collected by default and processed using a generic Log Source named `Kubernetes Container Generic Logs`. However, users have ability to process different container logs using different Parsers/Sources at Log Analytics. Refer [this](#custom-logs.md) section to learn on how to perform the customizations. 
 
 #### Metrics
 
@@ -164,7 +164,7 @@ subjects:
     namespace: <Namespace>
 ```
 
-### How to customise resource names created by the solution ?
+### How to customize resource names created by the solution ?
 
 By default most of the Kubernetes resources created by the solution have prefix `oci-onm`. You may modify the same by overriding the helm variable, `global.resourceNamePrefix`.
 
@@ -184,7 +184,7 @@ Optionally, you may set the ImagePullSecret to pull the images using the followi
 
 [`oci-onm-mgmt-agent.mgmtagent.image.secret`](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/charts/mgmt-agent/values.yaml#L34)
 
-### How to customise the resource limits and requests for various monitoring pods ? 
+### How to customize the resource limits and requests for various monitoring pods ? 
 
 By default pods deployed through `oci-onm-logan` daemonset and `oci-onm-discovery` cronjob (responsible for logs and discovery collection) are limited to `500Mi` memory with requests set to `250Mi` memory and `100m` cpu. While these default limits work for most of the moderate environments; depending on the environment, log volume and other relevant factors, these limits can be tuned. 
 

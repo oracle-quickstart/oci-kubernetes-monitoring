@@ -15,7 +15,7 @@ This approach works for all the use-cases, except for multi-line plain text form
 * Refer [this doc](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) to find how to add the annotation through Pod's metadata section. This is the recommended approach as it provides the persistent behavior.
 * Refer [this doc](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#annotate) to find how to add annotation through 'kubectl annotate' command. You may use this approach for quick testing.
 
-**Note** The following configuration parameters are supported for customisation through Pod Annotations in addition to logSource,
+**Note** The following configuration parameters are supported for customization through Pod Annotations in addition to logSource,
 
 * oracle.com/oci_la_log_group_id => to use custom logGroupId (oci_la_log_group_id)
 * oracle.com/oci_la_entity_id => to use custom entityId (oci_la_entity_id)
