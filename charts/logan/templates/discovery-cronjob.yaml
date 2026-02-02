@@ -45,11 +45,7 @@ spec:
               - oci-loganalytics-kubernetes-discovery
             {{- /* mandatory inputs */}}
               - --auth_type
-              {{- if eq .Values.authtype "WorkloadIdentity" }}
-              - oke_workload_identity
-              {{- else }}
               - {{ .Values.authtype }}
-              {{- end }}
               - --kubernetes_cluster_id
               - {{ $kubernetesClusterId }}
               - --kubernetes_cluster_name
