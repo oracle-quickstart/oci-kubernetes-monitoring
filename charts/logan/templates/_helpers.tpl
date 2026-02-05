@@ -31,15 +31,7 @@
 
 #serviceAccount
 {{- define "logan.serviceAccount" -}}
-  {{- if .Values.serviceAccount.create -}}
-    {{- if .Values.serviceAccount.name -}}
-      {{ .Values.serviceAccount.name }}
-    {{- else -}}
-      {{ include "logan.resourceNamePrefix" . }}-logan-sa
-    {{- end -}}
-  {{- else -}}
-    {{- default "default" .Values.serviceAccount.name -}}
-  {{- end -}}
+  {{ include "common.tplvalues.render" ( dict "value" .Values.serviceAccount "context" .) }}
 {{- end -}}
 
 #kubernetesClusterId
