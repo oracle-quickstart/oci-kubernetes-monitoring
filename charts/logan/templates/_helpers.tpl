@@ -31,7 +31,7 @@
 
 #serviceAccount
 {{- define "logan.serviceAccount" -}}
-  {{ include "common.tplvalues.render" ( dict "value" .Values.serviceAccount.name "context" .) }}
+  {{ include "common.tplvalues.render" ( dict "value" .Values.serviceAccount "context" .) }}
 {{- end -}}
 
 #kubernetesClusterId
