@@ -32,13 +32,9 @@ oci-onm-common:
 runtime: cri
 
 # -- Authentication type for authenticating with OCI Log Analytics service
-# -- Allowed values: InstancePrincipal, config
-authtype: WorkloadIdentity
+# -- Allowed values: InstancePrincipal, config, WorkloadIdentity
+authtype: InstancePrincipal
 
-serviceAccount:
-  create: false
-  name: "oci-onm"
-  annotations: {}
 # This parameter is required only for realms where the OCI Ruby SDK is not supported.
 # Format: <oci-region>.oci.<oci_domain>
 # Example: us-ashburn-1.oci.oraclecloud.com
