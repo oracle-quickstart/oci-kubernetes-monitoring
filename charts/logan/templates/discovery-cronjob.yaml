@@ -48,6 +48,8 @@ spec:
               - --auth_type
             {{- if eq .Values.authtype "WorkloadIdentity" }}
               - oke_workload_identity
+            {{- else if eq .Values.authtype "InstancePrincipal" }}
+              - instance_principal
             {{- else }}
               - {{ .Values.authtype }}
             {{- end }}
