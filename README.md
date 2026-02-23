@@ -63,7 +63,6 @@ It does extensive enrichment of logs, metrics and object information to enable c
 | OCI Log Analytics Connect Cluster | OKE*** | :heavy_check_mark: | Manual | Partial Control (Recommended) | Customizations are possible through `Helm` once deployed using `Log Analytics Connect Cluster` flow from Console, which is applicable for both Automatic and Manual Deployment modes. We recommend choosing Manual Deployment mode for OKE clusters with Private API Server endpoint, as support for the automatic deployment for the same would be available soon. |
 | Helm | All* | :heavy_check_mark:**  | Manual| Full Control (Recommended) | |
 | OCI Resource Manager | OKE | :heavy_check_mark:** | :heavy_check_mark: | Partial Control | Customizations are possible through `Helm` once deployed using `OCI Resource Manager`. | 
-| Terraform | OKE | :heavy_check_mark:** | :heavy_check_mark: | Partial Control | Customizations are possible through `Helm` once deployed using `Terraform`. | 
 | kubectl | All* | :heavy_check_mark:** | Manual | Full Control (Not recommended) | |
 
 \* For some environments, modification of the configuration may be required.

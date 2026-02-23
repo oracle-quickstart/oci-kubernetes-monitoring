@@ -1,5 +1,9 @@
 # Change Log
 
+# 2026-02-17
+### Changed
+- Fluentd collector container image has been updated to version 1.7.4 having OS and discovery gem update
+
 # 2025-11-19
 ### Changed
 - Management Agent container image has been updated to version 1.10.0
