@@ -822,7 +822,7 @@ data:
           @type oci-logging-analytics
           enable_ruby               true
           {{- if $.Values.authtype }}
-          auth_type                 "{{ $.Values.authtype }}"
+          auth_type                 "{{ eq $.Values.authtype "config" | ternary "ConfigFile" $.Values.authtype }}"
           {{- end }}
           namespace                 "{{ $.Values.ociLANamespace }}"
           endpoint                  "{{ $.Values.fluentd.ociLoggingAnalyticsOutputPlugin.endpoint }}"
