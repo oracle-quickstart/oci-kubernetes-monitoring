@@ -1,8 +1,8 @@
 # Change Log
 
-# 2025-12-05
+# 2026-02-17
 ### Changed
-- metrics-server deployment and image updated to version 0.8.0
+- Fluentd collector container image has been updated to version 1.7.4 having OS and discovery gem update
 
 # 2025-11-19
 ### Changed
