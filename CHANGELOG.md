@@ -1,5 +1,10 @@
 # Change Log
 
+## 2026-03-18
+### Changed
+- Management Agent docker image has been updated to version 1.12.0
+- Default metrics-server has been updated to version 0.8.1
+
 # 2026-02-17
 ### Changed
 - Fluentd collector container image has been updated to version 1.7.4 having OS and discovery gem update
