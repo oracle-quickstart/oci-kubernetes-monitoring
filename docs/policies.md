@@ -4,16 +4,31 @@
 
 ## Table of Contents
 
-1. [Instance Principal Based Policies](#instance-principal-based-policies)
+1. [Placeholders Reference](#placeholders-reference)
+2. [Instance Principal Based Policies](#instance-principal-based-policies)
    - [Dynamic Groups](#dynamic-groups)
    - [Policy Statements](#instance-principal-policy-statements)
-2. [Workload Identity Based Policies](#workload-identity-based-policies)
+3. [Workload Identity Based Policies](#workload-identity-based-policies)
    - [Policy Statements](#workload-identity-policy-statements)
-3. [User Principal Based Policies](#user-principal-based-policies)
+4. [User Principal Based Policies](#user-principal-based-policies)
    - [User Groups](#user-groups)
    - [Policy Statements](#user-principal-policy-statements)
-4. [Placeholders Reference](#placeholders-reference)
 5. [References](#references)
+
+## Placeholders Reference
+
+| Placeholder | Description |
+|-------------|-------------|
+| `<ONM_Compartment_OCID>` | Compartment where Observability/monitoring resources live |
+| `<OKE_Cluster_Compartment_OCID>` | Compartment of the OKE cluster (used in dynamic group rule) |
+| `<OKE_Compartment_OCID>` | Compartment where OKE, VCN, subnets, LBs, node pools live |
+| `<OKE_Cluster_OCID>` | OCID of the specific OKE cluster |
+| `<OCI_Management_Agent_Dynamic_Group>` | Name of the Management Agent dynamic group |
+| `<OKE_Instances_Dynamic_Group>` | Name of the OKE instances dynamic group |
+| `<User_Group>` | Name of the user group for log publishing |
+| `<K8S_Namespace>` | Kubernetes namespace (default: `oci-onm`) |
+| `<K8S_ServiceAccount>` | Kubernetes service account (default: `oci-onm`) |
+
 
 ## Instance Principal Based Policies
 
@@ -186,20 +201,6 @@ Allow any-user to {LOG_ANALYTICS_LOG_GROUP_UPLOAD_LOGS} in compartment id <ONM_C
 ```text
 Allow group <User_Group> to use tag-namespaces in tenancy where any {target.tag-namespace.name='example-ns-1', target.tag-namespace.name='example-ns-2'}
 ```
-
-## Placeholders Reference
-
-| Placeholder | Description |
-|-------------|-------------|
-| `<ONM_Compartment_OCID>` | Compartment where Observability/monitoring resources live |
-| `<OKE_Cluster_Compartment_OCID>` | Compartment of the OKE cluster (used in dynamic group rule) |
-| `<OKE_Compartment_OCID>` | Compartment where OKE, VCN, subnets, LBs, node pools live |
-| `<OKE_Cluster_OCID>` | OCID of the specific OKE cluster |
-| `<OCI_Management_Agent_Dynamic_Group>` | Name of the Management Agent dynamic group |
-| `<OKE_Instances_Dynamic_Group>` | Name of the OKE instances dynamic group |
-| `<User_Group>` | Name of the user group for log publishing |
-| `<K8S_Namespace>` | Kubernetes namespace (default: `oci-onm`) |
-| `<K8S_ServiceAccount>` | Kubernetes service account (default: `oci-onm`) |
 
 ## References
 
