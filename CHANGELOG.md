@@ -1,5 +1,10 @@
 # Change Log
 
+# 2026-04-21
+### Changed
+- Fluentd collector container image has been updated to version 1.7.5 having Oracle Linux security errata and dependency gem updates.
+  - Similar updates to build files (Dockerfile, Gemfile) that helps building custom container image.
+
 # 2026-02-17
 ### Changed
 - Fluentd collector container image has been updated to version 1.7.4 having OS and discovery gem update
