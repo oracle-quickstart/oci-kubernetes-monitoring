@@ -277,7 +277,21 @@ Use the following `helm uninstall` command to uninstall the chart. Provide the r
 helm uninstall <release-name>
 ```
 Refer [this](https://helm.sh/docs/helm/helm_uninstall/) for further details on `helm uninstall`.
-  
+
+###### Service log stack cleanup (when `k8sDiscovery.infra.enable_service_log: true`)
+
+The chart creates OCI Resource Manager (ORM) infrastructure for service log collection via a discovery CronJob. A Helm **pre-delete hook** runs before any resources are removed to destroy that ORM stack and avoid orphaned, cost-incurring resources.
+
+- The hook runs the same image as the discovery CronJob and sets `svc_log_stack_destroy_in_progress` in ConfigMap `oci-onm-discovery-state-tracker` so any concurrently starting discovery pods exit immediately (no race with destroy).
+- Default timeout for the ORM destroy is `k8sDiscovery.infra.stack_operation_timeout` (seconds). For production, set it to `600` to give Terraform time to finish.
+- Read hook logs after uninstall with `kubectl logs job/oci-onm-discovery-destroy -n <namespace> --follow` (or `-l job-name=oci-onm-discovery-destroy` if the Job object is gone).
+
+If the hook cannot start (e.g., Pending pod) or you must force uninstall, use the escape hatch:
+```
+helm uninstall <release-name> -n <namespace> --no-hooks
+```
+Using `--no-hooks` skips ORM stack destruction. Manually destroy the stack in **OCI Console → Resource Manager → Stacks** to prevent continued service log collection and charges. For deeper edge cases and flow details, see `destroy-hook.md`.
+
 #### OCI Resource Manager
 
 Launch OCI Resource Manager Stack in OCI Tenancy and Region of the OKE Cluster, which you want to monitor.
