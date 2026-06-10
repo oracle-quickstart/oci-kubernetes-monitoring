@@ -1,5 +1,11 @@
 # Change Log
 
+
+# 2026-05-08
+### Changed
+- Management Agent container image has been updated to version 1.13.0
+- Default metrics-server has been updated to version 0.8.1 
+
 # 2026-04-29
 ### Changed
 - Fluentd collector container image has been updated to version 1.7.5 having Oracle Linux Base Image Updates and dependency gem updates.
