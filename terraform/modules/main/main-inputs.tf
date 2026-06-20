@@ -172,6 +172,18 @@ variable "enable_service_log" {
   default = false
 }
 
+variable "deploy_jms_plugin" {
+  type        = bool
+  default     = false
+  description = "Deploy JMS plugin for Management agent."
+}
+
+variable "jms_fleet_ocid" {
+  type        = string
+  default     = ""
+  description = "User provided JMS Fleet OCID. Used only when deploy_jms_plugin is true."
+}
+
 ####
 ##  Developer Options
 ####

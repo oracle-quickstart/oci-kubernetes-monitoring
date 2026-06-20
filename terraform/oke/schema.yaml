@@ -71,6 +71,8 @@ variableGroups:
       - ${stack_deployment_option}
       - ${enable_service_log}
       - ${opt_deploy_metric_server}
+      - ${deploy_jms_plugin}
+      - ${jms_fleet_ocid}
       - ${helm_chart_version}
       - ${fluentd_base_dir_path}
       - ${delay_in_seconds}
@@ -304,6 +306,28 @@ variables:
     title: Delay in seconds
     description: |-
       Adds custom delay in seconds before creating resources
+
+  # Option to enable JMS plugin
+  deploy_jms_plugin:
+    type: boolean
+    title: Enable Java Management Service (JMS) plugin
+    description: |-
+      Check the box to enable JMS plugin for Management agent in the cluster.
+      For more information about JMS, refer the <a href="https://www.oracle.com/java/jms/" target="_blank" rel="noopener noreferrer">documentation</a>.
+    default: false
+
+  # User provided JMS fleet OCID
+  jms_fleet_ocid:
+    type: string
+    title: JMS Fleet OCID
+    description: |-
+      Provide the JMS Fleet OCID to connect the cluster. This is required when the JMS plugin is enabled.
+      To get the Fleet OCID, navigate to the <a href="https://cloud.oracle.com/jms/fleets" target="_blank" rel="noopener noreferrer">Java Management Service console</a>, select the desired fleet, and copy the OCID from the Fleet details.
+    required: true
+    pattern: '^(ocid1\.jmsfleet\.\S+$)'
+    visible:
+      and:
+        - ${deploy_jms_plugin}
 
   # OCI tags
   tags:
