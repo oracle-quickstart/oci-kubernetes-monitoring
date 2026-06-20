@@ -56,3 +56,21 @@
     {{- "UNDEFINED" -}}
   {{- end -}}
 {{- end -}}
+
+# Merge k8sDiscovery tolerations with global
+{{- define "k8sdiscovery.mergeTolerations" -}}
+{{- $result := concat (.Values.k8sDiscovery.tolerations | default list) (.Values.global.tolerations | default list) -}}
+{{- toYaml $result -}}
+{{- end -}}
+
+# Merge tcpconnect tolerations with global
+{{- define "tcpconnect.mergeTolerations" -}}
+{{- $result := concat (.Values.tcpconnect.tolerations | default list) (.Values.global.tolerations | default list) -}}
+{{- toYaml $result -}}
+{{- end -}}
+
+# Merge fluentd tolerations with global
+{{- define "fluentd.mergeTolerations" -}}
+{{- $result := concat (.Values.fluentd.tolerations | default list) (.Values.global.tolerations | default list) -}}
+{{- toYaml $result -}}
+{{- end -}}

@@ -10,6 +10,14 @@ global:
   kubernetesClusterID:
   # -- Provide a unique name for the cluster. This would help uniquely identifying the logs and metrics data at OCI Log Analytics and OCI Monitoring respectivelt, when moitoring multiple clustersa
   kubernetesClusterName:
+  # -- Global tolerations applied to all pods in subcharts.
+  # Default: [] (no global tolerations)
+  # Example:
+  # tolerations:
+  #   - key: "global-taint"
+  #     operator: "Exists"
+  #     effect: "NoSchedule"
+  tolerations: []
 
 oci-onm-common:
   # -- By default, a cluster role, cluster role binding and serviceaccount will be created for the monitoring pods to be able to (readonly) access various objects within the cluster, to support collection of various telemetry data. You may set this to false and provide your own serviceaccount which has the necessary cluster role(s) binded to it. Refer, README for the cluster role definition and other details.

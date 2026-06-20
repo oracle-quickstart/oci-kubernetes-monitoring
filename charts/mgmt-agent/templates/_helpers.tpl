@@ -41,3 +41,9 @@
     {{- "UNDEFINED" -}}
   {{- end -}}
 {{- end -}}
+
+# Merge tolerations: mgmtagent-specific first, then global
+{{- define "mgmt-agent.mergeTolerations" -}}
+{{- $result := concat (.Values.mgmtagent.tolerations | default list) (.Values.global.tolerations | default list) -}}
+{{- toYaml $result -}}
+{{- end -}}

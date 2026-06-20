@@ -30,11 +30,10 @@ spec:
         version: v1
     spec:
       serviceAccountName: {{ include "logan.serviceAccount" . }}
+      {{- if or .Values.fluentd.tolerations .Values.global.tolerations }}
       tolerations:
-      - key: node-role.kubernetes.io/master
-        effect: NoSchedule
-      - key: node-role.kubernetes.io/control-plane
-        effect: NoSchedule
+      {{- include "fluentd.mergeTolerations" . | nindent 6 }}
+      {{- end }}
       {{- if $imagePullSecrets }}
       imagePullSecrets:
       - name: {{ .Values.image.imagePullSecrets }}

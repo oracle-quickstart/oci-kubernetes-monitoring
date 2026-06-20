@@ -7,6 +7,14 @@ global:
   namespace: oci-onm
   # -- Resource names prefix used, where allowed.
   resourceNamePrefix: oci-onm
+  # -- Custom tolerations to apply to all pods in the chart.
+  # Default: [] (no additional tolerations)
+  # Example:
+  # tolerations:
+  #   - key: "example-taint"
+  #     operator: "Exists"
+  #     effect: "NoSchedule"
+  tolerations: []
 
 oci-onm-common:
 # -- Automatically create, a readonly cluster role, cluster role binding and
@@ -203,6 +211,15 @@ fluentd:
    multiProcessWorkers: 0
    # -- To set timezone override for all logs collected using this solution (applies only to log records without explicit timezone identifier in the record itself)
    timezone:
+
+   # -- Custom tolerations to apply to the fluentd pod in the chart.
+   # Default: [] (no additional tolerations)
+   # Example:
+   # tolerations:
+   #   - key: "example-taint"
+   #     operator: "Exists"
+   #     effect: "NoSchedule"
+   tolerations: []
 
    # Configuration for oci-logging-analytics fluentd output plugin
    ociLoggingAnalyticsOutputPlugin:
@@ -861,3 +878,22 @@ k8sDiscovery:
       bearer_token_file:
       # secret_dir: Path to Kubernetes service account token file to access Kubernetes API
       secret_dir:
+   # -- Custom tolerations to apply to the k8sDiscovery cronjob pods.
+   # Default: [] (no additional tolerations)
+   # Example:
+   # tolerations:
+   #   - key: "example-taint"
+   #     operator: "Exists"
+   #     effect: "NoSchedule"
+   tolerations: []
+
+# -- TCP connect logs collection configuration
+tcpconnect:
+   # -- Custom tolerations to apply to the tcpconnect daemonset pods.
+   # Default: [] (no additional tolerations)
+   # Example:
+   # tolerations:
+   #   - key: "example-taint"
+   #     operator: "Exists"
+   #     effect: "NoSchedule"
+   tolerations: []

@@ -31,6 +31,10 @@ spec:
         version: v1
     spec:
       serviceAccountName: {{ include "logan.serviceAccount" . }}
+      {{- if or .Values.fluentd.tolerations .Values.global.tolerations }}
+      tolerations:
+      {{- include "fluentd.mergeTolerations" . | nindent 6 }}
+      {{- end }}
       {{- if $imagePullSecrets }}
       imagePullSecrets:
       - name: {{ .Values.image.imagePullSecrets }}
