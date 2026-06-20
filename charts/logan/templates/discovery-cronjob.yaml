@@ -11,6 +11,9 @@ kind: CronJob
 metadata:
   name: {{ .Values.global.resourceNamePrefix }}-discovery
   namespace: {{ $kubernetesNamespace }}
+  labels:
+    app: {{ $resourceNamePrefix }}-discovery
+    app.kubernetes.io/name: {{ $resourceNamePrefix }}-discovery
 spec:
   schedule: {{ .Values.k8sDiscovery.objects.cronSchedule | quote }}
   startingDeadlineSeconds: 120
@@ -22,9 +25,14 @@ spec:
       backoffLimit: {{ .Values.k8sDiscovery.objects.backoffLimit }}
       activeDeadlineSeconds: 600
       template:
+        metadata:
+          labels:
+            app: {{ $resourceNamePrefix }}-discovery
+            app.kubernetes.io/name: {{ $resourceNamePrefix }}-discovery
         spec:
           restartPolicy: {{ .Values.k8sDiscovery.objects.restartPolicy }}
           serviceAccountName: {{ $serviceAccount }}
+          automountServiceAccountToken: true
           {{- if .Values.image.imagePullSecrets }}
           imagePullSecrets:
           - name: {{ .Values.image.imagePullSecrets }}
@@ -32,6 +40,14 @@ spec:
           containers:
           - name: k8-discovery-job
             image: {{ .Values.image.url }}
+            securityContext:
+              runAsNonRoot: true
+              runAsUser: 1000
+              runAsGroup: 1000
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
             {{- if eq $authtype "config" }}
             volumeMounts:
             - name: ociconfigdir
