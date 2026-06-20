@@ -1,0 +1,86 @@
+{{- $authtype := .Values.authtype | lower }}
+{{- $resourceNamePrefix := .Values.global.resourceNamePrefix }}
+{{- $kubernetesClusterName := (include "logan.kubernetesClusterName" .) }}
+{{- $kubernetesClusterId := (include "logan.kubernetesClusterId" .) }}
+{{- $kubernetesNamespace := (include "logan.namespace" .) }}
+{{- $serviceAccount := (include "logan.serviceAccount" .) }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ $resourceNamePrefix }}-discovery-destroy
+  namespace: {{ $kubernetesNamespace }}
+  annotations:
+    "helm.sh/hook": pre-delete
+    "helm.sh/hook-weight": "0"
+    "helm.sh/hook-delete-policy": before-hook-creation
+spec:
+  backoffLimit: {{ .Values.k8sDiscovery.objects.backoffLimit }}
+  activeDeadlineSeconds: 600
+  template:
+    spec:
+      restartPolicy: Never
+      serviceAccountName: {{ $serviceAccount }}
+      {{- if .Values.image.imagePullSecrets }}
+      imagePullSecrets:
+      - name: {{ .Values.image.imagePullSecrets }}
+      {{- end }}
+      containers:
+      - name: k8s-discovery-destroy
+        image: {{ .Values.image.url }}
+        {{- if eq $authtype "config" }}
+        volumeMounts:
+        - name: ociconfigdir
+          mountPath: {{ .Values.oci.path }}
+          readOnly: true
+        {{- end }}
+        command:
+          - bundle
+          - exec
+          - oci-loganalytics-kubernetes-discovery
+          - destroy
+        {{- if .Values.authtype }}
+          - --auth_type
+        {{- if eq .Values.authtype "WorkloadIdentity" }}
+          - oke_workload_identity
+        {{- else if eq .Values.authtype "InstancePrincipal" }}
+          - instance_principal
+        {{- else }}
+          - {{ .Values.authtype }}
+        {{- end }}
+        {{- end }}
+          - --kubernetes_cluster_id
+          - {{ $kubernetesClusterId }}
+          - --kubernetes_cluster_name
+          - {{ $kubernetesClusterName }}
+          - --kubernetes_cluster_namespace
+          - {{ $kubernetesNamespace }}
+          - --oci_la_namespace
+        {{- if .Values.ociLANamespace }}
+          - {{ .Values.ociLANamespace }}
+        {{- else }}
+          {{- required "ociLANamespace is required" .Values.ociLANamespace }}
+        {{- end }}
+          - --oci_la_log_group_id
+        {{- if .Values.k8sDiscovery.objects.ociLALogGroupID }}
+          - {{ .Values.k8sDiscovery.objects.ociLALogGroupID }}
+        {{- else if .Values.ociLALogGroupID }}
+          - {{ .Values.ociLALogGroupID }}
+        {{- else }}
+          {{- required "ociLALogGroupID is required" .Values.ociLALogGroupID }}
+        {{- end }}
+        {{- if eq .Values.authtype "config" }}
+        {{- if and .Values.oci.path .Values.oci.file }}
+          - --config_file_location
+          - {{ .Values.oci.path -}}/{{ .Values.oci.file }}
+        {{- else }}
+          {{- required "oci.path and oci.file are required" .Values.oci.path }}
+        {{- end }}
+        {{- end }}
+      {{- if eq $authtype "config" }}
+      volumes:
+      - name: ociconfigdir
+        projected:
+          sources:
+          - secret:
+              name: {{ $resourceNamePrefix }}-oci-config
+      {{- end }}
