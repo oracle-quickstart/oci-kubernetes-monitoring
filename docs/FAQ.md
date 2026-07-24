@@ -186,7 +186,7 @@ Optionally, you may set the ImagePullSecret to pull the images using the followi
 
 ### How to use self-hosted container images?
 
-If the cluster cannot pull the public Oracle Container Registry images, for example due to restricted outbound network access or a FIPS-enabled environment, refer to [self-hosted container images](self-host-images.md). This guide explains how to use copies of the published images hosted in a registry reachable by the cluster.
+If a cluster cannot, or is not allowed to, pull images from Oracle Container Registry, refer to the [self-hosted container images runbook](self-host-images.md). The runbook explains how to use self-hosted copies of the required images with a manual `oci-onm` Helm installation.
 
 ### How to customize the resource limits and requests for various monitoring pods ? 
 
