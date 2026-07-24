@@ -321,6 +321,8 @@ Refer [here](#3c-import-dashboards).
 
 #### [Building Custom Container Images](./docs/custom-images.md)
 
+#### [Self-hosting Container Images](./docs/self-host-images.md)
+
 ## Contributing
 
 This project welcomes contributions from the community. Before submitting a pull request, please [review our contribution guide](./CONTRIBUTING.md)
