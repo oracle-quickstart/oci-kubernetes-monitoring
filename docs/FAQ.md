@@ -170,7 +170,7 @@ By default most of the Kubernetes resources created by the solution have prefix 
 
 ### How to use custom container images ? 
 
-Refer [this](custom-images.md) for instructions to build custom container images. 
+Refer [this](custom-images.md) for instructions to build custom container images.
 
 Use the following helm variables to override the default Image location :
 
@@ -183,6 +183,10 @@ Optionally, you may set the ImagePullSecret to pull the images using the followi
 [`oci-onm-logan.image.imagePullSecrets`](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/charts/logan/values.yaml#L49)
 
 [`oci-onm-mgmt-agent.mgmtagent.image.secret`](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/charts/mgmt-agent/values.yaml#L34)
+
+### How to use self-hosted container images?
+
+If a cluster cannot, or is not allowed to, pull images from Oracle Container Registry, refer to the [self-hosted container images runbook](self-host-images.md). The runbook explains how to use self-hosted copies of the required images with a manual `oci-onm` Helm installation.
 
 ### How to customize the resource limits and requests for various monitoring pods ? 
 
