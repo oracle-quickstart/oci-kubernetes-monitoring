@@ -8,6 +8,7 @@ metadata:
   namespace: {{ include "mgmt-agent.namespace" . }}
   labels:
     app: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent
+    app.kubernetes.io/name: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent
 spec:
   serviceName: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent
   replicas: 1
@@ -22,12 +23,16 @@ spec:
         checksum/env-configmap: {{ include (print $.Template.BasePath "/env-configmap.yaml") . | sha256sum }}
       labels:
         app: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent
+        app.kubernetes.io/name: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent
     spec:
       securityContext:
         runAsUser: {{ default 0 .Values.deployment.security.runAsUser }}
         runAsGroup: {{ default 0 .Values.deployment.security.runAsGroup }}
         fsGroup: {{ default 0 .Values.deployment.security.fsGroup }}
+        seccompProfile:
+          type: RuntimeDefault
       serviceAccountName: {{ include "mgmt-agent.serviceAccount" . }}
+      automountServiceAccountToken: true
       {{- if .Values.mgmtagent.image.secret }}
       imagePullSecrets:
         - name: {{ include "mgmt-agent.resourceNamePrefix" . }}-mgmt-agent-container-registry-key
@@ -68,8 +73,11 @@ spec:
             - mountPath: /tmp
               name: tmp
           securityContext:
-           allowPrivilegeEscalation: false
-           readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
       volumes:
         - name: mgmtagent-secret
           secret:
