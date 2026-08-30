@@ -6,6 +6,14 @@ global:
   namespace: oci-onm
   # -- Prefix to be attached to resources created through this chart. Not all resources may have this prefix.
   resourceNamePrefix: oci-onm
+  # -- Custom tolerations to apply to all pods in the chart.
+  # Default: [] (no additional tolerations)
+  # Example:
+  # tolerations:
+  #   - key: "example-taint"
+  #     operator: "Exists"
+  #     effect: "NoSchedule"
+  tolerations: []
 
 oci-onm-common:
   # -- By default, a cluster role, cluster role binding and serviceaccount will be created for the monitoring pods to be able to (readonly) access various objects within the cluster, to support collection of various telemetry data. You may set this to false and provide your own serviceaccount (in the parent chart(s)) which has the necessary cluster role(s) binded to it. Refer, README for the cluster role definition and other details.
@@ -32,6 +40,14 @@ mgmtagent:
       url:
       # -- Image secrets to use for pulling container image (base64 encoded content of ~/.docker/config.json file)
       secret:
+   # -- Custom tolerations to apply to the mgmtagent pod in the chart.
+   # Default: [] (no additional tolerations)
+   # Example:
+   # tolerations:
+   #   - key: "example-taint"
+   #     operator: "Exists"
+   #     effect: "NoSchedule"
+   tolerations: []
    # Please specify additional environment variables in name:value pairs
    extraEnv:
       # Openjdk on RHEL with FIPS requires the default security property to be disabled, 

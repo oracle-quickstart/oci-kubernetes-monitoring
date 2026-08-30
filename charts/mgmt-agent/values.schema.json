@@ -62,6 +62,42 @@
                     [
                         "url"
                     ]
+                },
+                "tolerations":
+                {
+                    "type": "array",
+                    "items":
+                    {
+                        "type": "object",
+                        "required": ["key", "operator"],
+                        "properties":
+                        {
+                            "key":
+                            {
+                                "type": "string"
+                            },
+                            "operator":
+                            {
+                                "type": "string",
+                                "enum": ["Equal", "Exists"]
+                            },
+                            "value":
+                            {
+                                "type": "string"
+                            },
+                            "effect":
+                            {
+                                "type": "string",
+                                "enum": ["NoSchedule", "PreferNoSchedule", "NoExecute"]
+                            },
+                            "tolerationSeconds":
+                            {
+                                "type": "integer"
+                            }
+                        },
+                        "additionalProperties": false
+                    },
+                    "default": []
                 }
             },
             "anyOf":
@@ -263,6 +299,36 @@
     [
         "namespace"
     ],
+    "properties": {
+      "tolerations": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["key", "operator"],
+          "properties": {
+            "key": {
+              "type": "string"
+            },
+            "operator": {
+              "type": "string",
+              "enum": ["Equal", "Exists"]
+            },
+            "value": {
+              "type": "string"
+            },
+            "effect": {
+              "type": "string",
+              "enum": ["NoSchedule", "PreferNoSchedule", "NoExecute"]
+            },
+            "tolerationSeconds": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": false
+        },
+        "default": []
+      }
+    },
     "title": "Values",
     "type": "object"
 }
