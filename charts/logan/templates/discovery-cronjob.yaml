@@ -12,7 +12,7 @@ metadata:
   name: {{ .Values.global.resourceNamePrefix }}-discovery
   namespace: {{ $kubernetesNamespace }}
 spec:
-  schedule: {{ .Values.k8sDiscovery.objects.cronSchedule | quote }}
+  schedule: "{{ include "randomOffsetCronSchedule" . }}"
   startingDeadlineSeconds: 120
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: {{ .Values.k8sDiscovery.objects.successfulJobsHistoryLimit }}

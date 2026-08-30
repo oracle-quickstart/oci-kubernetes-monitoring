@@ -56,3 +56,19 @@
     {{- "UNDEFINED" -}}
   {{- end -}}
 {{- end -}}
+
+#Add random offset for discovery job
+{{- define "randomOffsetCronSchedule" -}}
+  {{- $cronSchedule := .Values.k8sDiscovery.objects.cronSchedule -}}
+  {{- $cronParts := regexSplit " " $cronSchedule -1 -}}
+  {{- $minutePart := index $cronParts 0 -}}
+  {{- if hasPrefix "*/" $minutePart -}}
+    {{- $interval := trimPrefix "*/" $minutePart | atoi -}}
+    {{- $intervalInt := int $interval -}}
+    {{- $randomOffset := randInt 0 $intervalInt -}}
+    {{- $newMinutePart := printf "%d/%d" $randomOffset $interval -}} 
+    {{- printf "%s %s %s %s %s" $newMinutePart (index $cronParts 1) (index $cronParts 2) (index $cronParts 3) (index $cronParts 4) -}}
+  {{- else -}}
+    {{- $cronSchedule -}}
+  {{- end -}}
+{{- end -}}
