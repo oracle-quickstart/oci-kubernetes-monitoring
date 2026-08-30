@@ -2,15 +2,32 @@
 # Licensed under the Universal Permissive License v1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 locals {
-  install_key   = oci_management_agent_management_agent_install_key.Kubernetes_AgentInstallKey.key
   freeform_tags = module.format_tags.freeform_tags_string
   defined_tags  = module.format_tags.defined_tags_string
-  inputRspFileContent = base64encode(join("\n", [
-    "ManagementAgentInstallKey = ${local.install_key}",
-    "AgentDisplayName = k8_mgmt_agent-${var.uniquifier}",
-    "FreeFormTags = ${local.freeform_tags}",
-    "DefinedTags = ${local.defined_tags}"
-  ]))
+  inputRspFileContent = (var.deploy_jms_plugin ?
+    base64encode(join("\n", [
+      base64decode(trimspace(data.external.agent_plugin_config[0].result.content)),
+      "AgentDisplayName = k8_mgmt_agent-${var.uniquifier}",
+      "FreeFormTags = ${local.freeform_tags}",
+      "DefinedTags = ${local.defined_tags}"
+    ])) :
+    base64encode(join("\n", [
+      "ManagementAgentInstallKey = ${oci_management_agent_management_agent_install_key.Kubernetes_AgentInstallKey.key}",
+      "AgentDisplayName = k8_mgmt_agent-${var.uniquifier}",
+      "FreeFormTags = ${local.freeform_tags}",
+      "DefinedTags = ${local.defined_tags}"
+    ]))
+  )
+}
+
+data "external" "agent_plugin_config" {
+  count = var.deploy_jms_plugin ? 1 : 0
+  program = ["bash", "${path.module}/resources/generate_jms_plugin_config.sh"]
+
+  query = {
+    fleet_ocid    = var.jms_fleet_ocid
+    install_key = oci_management_agent_management_agent_install_key.Kubernetes_AgentInstallKey.id
+  }
 }
 
 output "defined_tags_string" {
