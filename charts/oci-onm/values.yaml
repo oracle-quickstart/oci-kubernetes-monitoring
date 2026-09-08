@@ -31,7 +31,8 @@ oci-onm-logan:
   kubernetesClusterID: "{{ .Values.global.kubernetesClusterID }}"
   kubernetesClusterName: "{{ .Values.global.kubernetesClusterName }}"
   image:
-    url: container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.8.0
+    # Use the 2.0.0-ol9 tag for the Oracle Linux 9 image, which includes FIPS-supported binaries.
+    url: container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:2.0.0-ol8
   # Go to OCI Log Analytics Administration, click Service Details, and note the namespace value.
   ociLANamespace:
   # OCI Log Analytics Default Log Group OCID

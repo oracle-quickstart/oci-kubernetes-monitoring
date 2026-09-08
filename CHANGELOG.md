@@ -1,5 +1,10 @@
 # Change Log
 
+# 2026-09-08
+### Changed
+- Fluentd collector container image has been updated to version 2.0.0. 
+- The OL9-based image (`2.0.0-ol9`) is available for FIPS-enabled environments.
+
 # 2026-08-04
 ### Changed
 - Fluentd collector container image has been updated to version 1.8.0 having Oracle Linux Base Image Updates and dependency gem updates.
