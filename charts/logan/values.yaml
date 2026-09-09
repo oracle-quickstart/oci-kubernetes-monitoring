@@ -53,7 +53,7 @@ image:
    # Image pull secrets for. Secret must be in the namespace defined by namespace
    imagePullSecrets:
    # -- Replace this value with actual docker image url
-   # Use the 2.0.0-ol9 tag for the Oracle Linux 9 image, which includes FIPS-supported binaries.
+   # Use the <version>-ol9 tag for an Oracle Linux 9-compatible image that includes FIPS libraries.
    url: container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:2.0.0-ol8
    # -- Image pull policy
    imagePullPolicy: Always

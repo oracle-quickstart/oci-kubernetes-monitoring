@@ -184,10 +184,15 @@ Optionally, you may set the ImagePullSecret to pull the images using the followi
 
 [`oci-onm-mgmt-agent.mgmtagent.image.secret`](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/charts/mgmt-agent/values.yaml#L34)
 
-### How to use FIPS-enabled container images ?
+### How to use the OL9-compatible container image with FIPS libraries ?
 
-The Oracle Linux 9 (OL9) Fluentd collector image contains FIPS-supported binaries. To use the OL9 image, override `oci-onm-logan.image.url` with the `2.0.0-ol9` tag in your Helm values:
+The Oracle Linux 9 (OL9) compatible Fluentd collector image includes libraries for FIPS environments.
 
+OL9 images are available for image versions 2.0.0 onwards.
+
+To use the OL9-compatible image, override `oci-onm-logan.image.url` with the `<version>-ol9` tag in your Helm values:
+
+Example:
 ```
 oci-onm-logan:
   image:
