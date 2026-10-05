@@ -75,3 +75,5 @@ releases/
 
 # debug files
 tf-debug/
+/.codex
+/.idea/

@@ -1,5 +1,24 @@
 # Change Log
 
+# 2026-09-08
+### Changed
+- Fluentd collector container image has been updated to version 2.0.0. 
+- An OL9-compatible image (`2.0.0-ol9`) that includes FIPS libraries is also available.
+
+# 2026-08-04
+### Changed
+- Fluentd collector container image has been updated to version 1.8.0 having Oracle Linux Base Image Updates and dependency gem updates.
+
+# 2026-05-08
+### Changed
+- Management Agent container image has been updated to version 1.13.0
+- Default metrics-server has been updated to version 0.8.1 
+
+# 2026-04-29
+### Changed
+- Fluentd collector container image has been updated to version 1.7.5 having Oracle Linux Base Image Updates and dependency gem updates.
+  - Similar updates to build files (Dockerfile, Gemfile) that helps building custom container image.
+
 # 2026-02-17
 ### Changed
 - Fluentd collector container image has been updated to version 1.7.4 having OS and discovery gem update

@@ -31,7 +31,8 @@ oci-onm-logan:
   kubernetesClusterID: "{{ .Values.global.kubernetesClusterID }}"
   kubernetesClusterName: "{{ .Values.global.kubernetesClusterName }}"
   image:
-    url: container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:1.7.4
+    # Use the <version>-ol9 tag for an Oracle Linux 9-compatible image that includes FIPS libraries.
+    url: container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:2.0.0-ol8
   # Go to OCI Log Analytics Administration, click Service Details, and note the namespace value.
   ociLANamespace:
   # OCI Log Analytics Default Log Group OCID
@@ -56,6 +57,6 @@ oci-onm-mgmt-agent:
     # Follow steps documented at https://github.com/oracle/docker-images/tree/main/OracleManagementAgent to build docker image.
     image:
       # Replace this value with actual docker image URL for Management Agent
-      url: container-registry.oracle.com/oci_observability_management/oci-management-agent:1.10.0
+      url: container-registry.oracle.com/oci_observability_management/oci-management-agent:1.13.0
       # Image secrets to use for pulling container image (base64 encoded content of ~/.docker/config.json file)
       secret:

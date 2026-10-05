@@ -20,8 +20,9 @@ ENV FLUENTD_DISABLE_BUNDLER_INJECTION 1
 COPY Gemfile* /fluentd/
 COPY tcpconnect.* /fluentd/
 
-# Install ruby, ruby-libs along with rubygems and bundler.
-RUN microdnf -y module enable ruby:3.3 \
+# Apply current Oracle Linux security errata before layering runtime dependencies.
+RUN microdnf -y update --setopt=install_weak_deps=0 --nodocs \
+ && microdnf -y module enable ruby:3.3 \
 # Install ruby and ruby-libs, disabling week dependencies
  && microdnf -y install --setopt=install_weak_deps=0 --nodocs ruby ruby-libs \
 # Install rubygems (it's dependencies rubygem-openssl rubygem-psych), disabling week dependencies
@@ -63,8 +64,9 @@ ENV GEM_HOME /fluentd/vendor/bundle/ruby/3.3
 # skip runtime bundler installation
 ENV FLUENTD_DISABLE_BUNDLER_INJECTION 1
 
-# Install ruby, ruby-libs along with rubygems and bundler.
-RUN microdnf -y module enable ruby:3.3 \
+# Apply current Oracle Linux security errata before installing runtime packages.
+RUN microdnf -y update --setopt=install_weak_deps=0 --nodocs \
+ && microdnf -y module enable ruby:3.3 \
 # Install ruby and ruby-libs, disabling week dependencies
  && microdnf -y install --setopt=install_weak_deps=0 --nodocs ruby ruby-libs \ 
 # Install rubygems (it's dependencies rubygem-openssl rubygem-psych), disabling week dependencies
