@@ -821,6 +821,9 @@ data:
        <match oci{{- ternary (print "." $currWorker) "" $multiWorkersEnabled }}.**>
           @type oci-logging-analytics
           enable_ruby               true
+          {{- if $.Values.authtype }}
+          auth_type                 "{{ eq $.Values.authtype "config" | ternary "ConfigFile" $.Values.authtype }}"
+          {{- end }}
           namespace                 "{{ $.Values.ociLANamespace }}"
           endpoint                  "{{ $.Values.fluentd.ociLoggingAnalyticsOutputPlugin.endpoint }}"
           collection_source         "kubernetes_solution"
