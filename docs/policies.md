@@ -39,7 +39,7 @@ ALL {instance.compartment.id='<OKE_Cluster_Compartment_OCID>'}
 
 ```text
 Allow dynamic-group <OKE_Instances_Dynamic_Group> to {LOG_ANALYTICS_LOG_GROUP_UPLOAD_LOGS} in compartment id <ONM_Compartment_OCID>
-Allow dynamic-group <OKE_Instances_Dynamic_Group> to {LOG_ANALYTICS_DISCOVERY_UPLOAD} in tenancy
+Allow dynamic-group <OKE_Instances_Dynamic_Group> to {LOG_ANALYTICS_DISCOVERY_UPLOAD} in compartment id <ONM_Compartment_OCID>
 Allow dynamic-group <OKE_Instances_Dynamic_Group> to read loganalytics-entity in compartment id <ONM_Compartment_OCID>
 
 Allow dynamic-group <OKE_Instances_Dynamic_Group> to {CLUSTER_READ} in compartment id <OKE_Compartment_OCID> where target.cluster.id='<OKE_Cluster_OCID>'
@@ -96,7 +96,7 @@ where all {request.principal.type='workload', request.principal.namespace='<K8S_
 
 ```text
 Allow any-user to {LOG_ANALYTICS_LOG_GROUP_UPLOAD_LOGS} in compartment id <ONM_Compartment_OCID> where all {request.principal.type='workload', request.principal.namespace='<K8S_Namespace>', request.principal.service_account='<K8S_ServiceAccount>', request.principal.cluster_id='<OKE_Cluster_OCID>'}
-Allow any-user to {LOG_ANALYTICS_DISCOVERY_UPLOAD} in tenancy where all {request.principal.type='workload', request.principal.namespace='<K8S_Namespace>', request.principal.service_account='<K8S_ServiceAccount>', request.principal.cluster_id='<OKE_Cluster_OCID>'}
+Allow any-user to {LOG_ANALYTICS_DISCOVERY_UPLOAD} in compartment id <ONM_Compartment_OCID> where all {request.principal.type='workload', request.principal.namespace='<K8S_Namespace>', request.principal.service_account='<K8S_ServiceAccount>', request.principal.cluster_id='<OKE_Cluster_OCID>'}
 Allow any-user to read loganalytics-entity in compartment id <ONM_Compartment_OCID> where all {request.principal.type='workload', request.principal.namespace='<K8S_Namespace>', request.principal.service_account='<K8S_ServiceAccount>', request.principal.cluster_id='<OKE_Cluster_OCID>'}
 
 Allow any-user to {CLUSTER_READ} in compartment id <OKE_Compartment_OCID> where all {request.principal.type='workload', request.principal.namespace='<K8S_Namespace>', request.principal.service_account='<K8S_ServiceAccount>', request.principal.cluster_id='<OKE_Cluster_OCID>'}
@@ -150,7 +150,7 @@ Reference: [Managing Users](https://docs.oracle.com/en-us/iaas/Content/Identity/
 
 ```text
 Allow group <User_Group> to {LOG_ANALYTICS_LOG_GROUP_UPLOAD_LOGS} in compartment id <ONM_Compartment_OCID>
-Allow group <User_Group> to {LOG_ANALYTICS_DISCOVERY_UPLOAD} in tenancy
+Allow group <User_Group> to {LOG_ANALYTICS_DISCOVERY_UPLOAD} in compartment id <ONM_Compartment_OCID>
 Allow group <User_Group> to read loganalytics-entity in compartment id <ONM_Compartment_OCID>
 
 Allow group <User_Group> to {CLUSTER_READ} in compartment id <OKE_Compartment_OCID>
