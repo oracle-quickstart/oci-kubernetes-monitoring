@@ -1,5 +1,12 @@
 # Change Log
 
+# 2026-11-04
+### Added
+- Support for OKE Workload Identity authentication.
+### Changed
+- Fluentd collector container image has been updated to version 2.1.0.
+- OCI ONM and Log Analytics Helm chart versions have been updated to 4.5.0.
+
 # 2026-09-08
 ### Changed
 - Fluentd collector container image has been updated to version 2.0.0. 
