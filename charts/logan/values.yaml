@@ -32,7 +32,7 @@ oci-onm-common:
 runtime: cri
 
 # -- Authentication type for authenticating with OCI Log Analytics service
-# -- Allowed values: InstancePrincipal, config
+# -- Allowed values: InstancePrincipal, config, WorkloadIdentity
 authtype: InstancePrincipal
 
 # This parameter is required only for realms where the OCI Ruby SDK is not supported.
@@ -54,7 +54,7 @@ image:
    imagePullSecrets:
    # -- Replace this value with actual docker image url
    # Use the <version>-ol9 tag for an Oracle Linux 9-compatible image that includes FIPS libraries.
-   url: container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:2.0.0-ol8
+   url: container-registry.oracle.com/oci_observability_management/oci-la-fluentd-collector:2.1.0-ol8
    # -- Image pull policy
    imagePullPolicy: Always
 
