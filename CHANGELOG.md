@@ -1,5 +1,9 @@
 # Change Log
 
+# 2026-11-11
+### Changed
+- Management Agent container image has been updated to version 1.15.0
+
 # 2026-11-04
 ### Added
 - Support for OKE Workload Identity authentication.
