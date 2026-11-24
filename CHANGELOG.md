@@ -1,5 +1,10 @@
 # Change Log
 
+# 2026-11-24
+### Changed
+- Fluentd collector container image has been updated to version 2.2.0 with security fixes, using `2.2.0-ol8` by default and `2.2.0-ol9` as the Oracle Linux 9 alternative.
+- OCI ONM and Log Analytics Helm chart versions have been updated to 4.5.2 and 4.5.1, respectively.
+
 # 2026-11-11
 ### Changed
 - Management Agent container image has been updated to version 1.15.0
