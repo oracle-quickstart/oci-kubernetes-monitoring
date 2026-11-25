@@ -12,6 +12,7 @@ metadata:
   namespace: {{ include "logan.namespace" . }}
   labels:
     app: {{ $resourceNamePrefix }}-logan
+    app.kubernetes.io/name: {{ $resourceNamePrefix }}-logan
     version: v1
 spec:
   selector:
@@ -27,9 +28,14 @@ spec:
         checksum/configmap: {{ include (print $.Template.BasePath "/logs-configmap.yaml") . | sha256sum }}
       labels:
         app: {{ $resourceNamePrefix }}-logan
+        app.kubernetes.io/name: {{ $resourceNamePrefix }}-logan
         version: v1
     spec:
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
       serviceAccountName: {{ include "logan.serviceAccount" . }}
+      automountServiceAccountToken: true
       tolerations:
       - key: node-role.kubernetes.io/master
         effect: NoSchedule
@@ -43,10 +49,15 @@ spec:
       - name: {{ $resourceNamePrefix }}-fluentd
         image: {{ .Values.image.url }}
         imagePullPolicy: {{ default "IfNotPresent" .Values.image.imagePullPolicy }}
-        {{- if .Values.privileged }}
         securityContext:
+          {{- if .Values.privileged }}
           privileged: {{ .Values.privileged }}
-        {{- end}}
+          {{- end }}
+          runAsUser: 0
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
         env:
           - name: FLUENTD_CONF
             value: {{ .Values.fluentd.path }}/{{ .Values.fluentd.file }}

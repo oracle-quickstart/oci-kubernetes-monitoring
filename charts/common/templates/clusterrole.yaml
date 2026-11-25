@@ -11,7 +11,13 @@ rules:
   - apiGroups:
       - ""
     resources:
-      - '*'
+      - nodes
+      - namespaces
+      - pods
+      - services
+      - events
+      - persistentvolumes
+      - persistentvolumeclaims
     verbs:
       - get
       - list
@@ -20,12 +26,28 @@ rules:
     verbs: ["get"]
   - apiGroups:
       - apps
-      - batch
-      - discovery.k8s.io
-      - metrics.k8s.io
-      - storage.k8s.io
     resources:
-      - '*'
+      - daemonsets
+      - deployments
+      - replicasets
+      - statefulsets
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - batch
+    resources:
+      - jobs
+      - cronjobs
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - discovery.k8s.io
+    resources:
+      - endpointslices
     verbs:
       - get
       - list

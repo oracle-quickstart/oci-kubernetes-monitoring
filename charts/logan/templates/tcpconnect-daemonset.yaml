@@ -13,6 +13,7 @@ metadata:
   namespace: {{ include "logan.namespace" . }}
   labels:
     app: {{ $resourceNamePrefix }}-logan-tcpconnect
+    app.kubernetes.io/name: {{ $resourceNamePrefix }}-logan-tcpconnect
     version: v1
 spec:
   selector:
@@ -23,9 +24,11 @@ spec:
     metadata:
       labels:
         app: {{ $resourceNamePrefix }}-logan-tcpconnect
+        app.kubernetes.io/name: {{ $resourceNamePrefix }}-logan-tcpconnect
         version: v1
     spec:
-      serviceAccountName: {{ include "logan.serviceAccount" . }}
+      automountServiceAccountToken: false
+      serviceAccountName: {{ $resourceNamePrefix }}-tcpconnect
       tolerations:
       - key: node-role.kubernetes.io/master
         effect: NoSchedule
