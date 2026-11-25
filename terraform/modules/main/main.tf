@@ -97,10 +97,12 @@ module "management_agent" {
   source = "../mgmt_agent"
   count  = local.module_controls_enable_mgmt_agent_module ? 1 : 0
 
-  uniquifier       = md5(var.oke_cluster_ocid)
-  compartment_ocid = var.oci_onm_compartment_ocid
-  tags             = var.tags
-  debug            = var.debug
+  uniquifier          = md5(var.oke_cluster_ocid)
+  compartment_ocid    = var.oci_onm_compartment_ocid
+  tags                = var.tags
+  debug               = var.debug
+  deploy_jms_plugin   = var.deploy_jms_plugin
+  jms_fleet_ocid      = var.jms_fleet_ocid
 }
 
 # deploy oke-monitoring solution (helm release)

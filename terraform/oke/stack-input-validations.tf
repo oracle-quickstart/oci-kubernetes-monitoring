@@ -31,3 +31,16 @@ resource "null_resource" "public_oke_check" {
     }
   }
 }
+
+locals {
+  validate_jms_override = var.deploy_jms_plugin == false || length(var.jms_fleet_ocid) > 0
+}
+
+resource "null_resource" "validate_jms_key_override" {
+  lifecycle {
+    precondition {
+      condition     = local.validate_jms_override
+      error_message = "Missing input. JMS Fleet OCID is required to enable Java Management Service (JMS) plugin."
+    }
+  }
+}

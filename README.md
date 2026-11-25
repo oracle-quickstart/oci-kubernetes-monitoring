@@ -1,6 +1,6 @@
 # OCI Kubernetes Monitoring Solution
 
-OCI Kubernetes Monitoring Solution is a turn-key Kubernetes monitoring and management package based on OCI Log Analytics cloud service, OCI Monitoring, OCI Management Agent and Fluentd.
+OCI Kubernetes Monitoring Solution is a turn-key Kubernetes monitoring and management package based on OCI Log Analytics cloud service, OCI Monitoring, OCI Management Agent, Fluentd and OCI Java Management Service(Optional)
 
 It enables DevOps, Cloud Admins, Developers, and Sysadmins to
 
@@ -12,6 +12,14 @@ It enables DevOps, Cloud Admins, Developers, and Sysadmins to
 across their entire environment - using Logs, Metrics, and Object metadata.
 
 It does extensive enrichment of logs, metrics and object information to enable cross correlation across entities from different tiers in OCI Log Analytics. A collection of dashboards is provided to get users started quickly.
+
+
+>**(Optional) OCI Java Management Service**
+
+[Java Management Service (JMS)](https://www.oracle.com/java/jms/) provides enhanced visibility and compliance status for Java runtimes used in Kubernetes clusters. Through centralized orchestration of Java Flight Recorder (JFR), JMS enables deep diagnostics making it easier to monitor performance and troubleshoot issues with Java applications.
+
+Refer to the [setup guide](./docs/enable-jms.md) to enable JMS with this monitoring solution.
+
 
 ## Solution UI
 
@@ -33,6 +41,11 @@ It does extensive enrichment of logs, metrics and object information to enable c
 
 </details>
 
+## JMS monitoring
+
+![Java Runtime Details](./docs/java-runtime-details.png)
+
+![JFR Recording](./docs/jfr-recording.png)
 
 ## Get Started :rocket:
 
@@ -320,6 +333,8 @@ Refer [here](#3c-import-dashboards).
 #### [Custom Logs Configuration](./docs/custom-logs.md)
 
 #### [Building Custom Container Images](./docs/custom-images.md)
+
+#### [Enabling Java Management Service](./docs/enable-jms.md)
 
 ## Contributing
 
